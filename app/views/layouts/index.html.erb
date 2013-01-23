@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xml:lang="zh" lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="msvalidate.01" content="76119A89703430A2C4DE9766A11E7448" />
+<title>WanderWorld地球漫遊</title>
+<link rel="shortcut icon" href="<%=asset_path('logo.ico')%>"/>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <%= javascript_include_tag "application" %>
+  <%= stylesheet_link_tag "index" %>
+  <%= csrf_meta_tags %>
+<meta property="fb:app_id" content="369699423051845" />
+<%if @trip_id%>
+	<%if @tt=Trip.find_by_id(@trip_id)%>
+		<%if @tt_user=@tt.user%>
+			<%if @tt_user.fbid%>
+				<meta property="fb:admins" content="<%=@tt_user.fbid%>"/>
+			<%end%>
+			<meta property="wanderworld:author" content="<%=@tt_user.username%>"/>
+		<%end%>
+	<%end%>
+	<%if @tp_id%>
+		<meta property="og:url" content="http://www.wanderworld.com.tw/<%=@trip_id%>/<%=@tp_id%>"/>
+		<% @tmp=TripPoint.find_by_id(@tp_id)	%>
+		<% if @tmp%>
+			<meta property="og:type" content="wanderworld:journal"/>
+			<meta property="og:title" content="<%=@tmp.trip.name%>-<%=@tmp.place.name%>"/>
+			<% if (@tpost=@tmp.micropost)&&@tpost.article%>
+				<meta property="og:description" content="<%=@tmp.micropost.article.gsub(/<[^>]*>/,'')%>"/>
+			<%end%>
+		<%end%>
+	<%else%>
+		<%if @tk=Trip.find_by_id(@trip_id)%>
+			<meta property="og:type" content="wanderworld:trip"/>
+			<meta property="og:url" content="http://www.wanderworld.com.tw/<%=@trip_id%>"/>
+			<meta property="og:title" content="<%=@tk.name%>"/>
+		<%end%>
+	<%end%>
+<%else%>
+	<meta property="og:title" content="WanderWorld地球漫遊"/>
+<%end%>
+<meta property="og:image" content="http://www.wanderworld.com.tw/assets/LOGO%E9%BB%91%E9%AB%94%E7%9B%B4%E8%A1%8C-06-3aff113131bb39ef88f07522473feccb.png"/>
+<!--<script type="text/javascript" src="<%=asset_path('application.js')%>"></script>
+--><!--<script type="text/javascript" src="<%=asset_path('jquery.js')%>"></script>
+-->
+<!--
+<script type="text/javascript" src="<%=asset_path('jquery.jscrollpane.min.js')%>"></script>
+
+<script type="text/javascript" src="<%=asset_path('jquery.tools.min.js')%>"></script>
+-->
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true&language=zh-TW"></script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-30218831-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+<body>
+<%= yield %>
+</body>
+</html>

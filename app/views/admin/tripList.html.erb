@@ -1,0 +1,8 @@
+<table border="1">  
+	<%@trip.each do |i|%>
+	<tr>
+		<td><%=i.user.username%></td>
+		<td><a href="/<%=i.id%>"><%=i.name%></a></td>
+	</tr>
+	<%end%>
+</table>

@@ -1,0 +1,214 @@
+/* CSS Document */
+body {
+	font-family:微軟正黑體;
+	color:white;
+	background-image:url(<%=asset_path('felt.png')%>);
+}
+h2 {
+	font-size:18px;
+}
+
+h1 {
+	font-size:28px;
+}
+
+table {
+	text-align:right;
+}
+
+/*Header區塊樣式*/
+.logo {
+	height:40px;
+	width:auto;
+	margin-top:5px;
+	margin-left:5px;
+	padding:0;
+}
+
+.header {
+	width:100%;
+	height:50px;
+	min-width:960px;
+	background:#000;
+	position:absolute;
+	display:block;
+	left:0;
+	top:0;
+	margin:0px;
+	padding:0;
+	z-index:50;
+	-webkit-box-shadow:0px 3px 10px  #333;
+}
+.header_inner {
+	width: 1024px;
+	margin: 60px auto 0px auto;
+
+}
+
+#header_left {
+	min-width:850px;
+}
+
+
+#main_list {
+	position:absolute;
+	bottom:10px;
+	right:10px;
+}
+.floating {
+	display:inline;
+}
+
+a {
+	text-decoration: none;
+	color:#666;
+}
+a:hover {
+	color:black;
+	font-weight:bold;
+}
+
+/*主要內容*/
+.content {
+	width:90%;
+	height:500px;
+	min-width:960px;
+	padding:0px;
+	margin:0 auto;
+	position:relative;
+	top:5%;
+}
+
+/*左半邊*/
+.content_left{
+	width:50%;
+        min-width:450px;
+        max-height:100%;
+        padding:0px;
+        position:relative;
+        float:left;
+        top:80px;
+        left:0px;
+}
+
+.content img {
+	width:100%;
+	position:relative;
+	float:left;
+}
+
+/*右半邊*/
+.content_right {
+        width:42%;
+        min-width:450px;
+        max-height:100%;
+        margin-left:30px;
+        padding:0px;
+        position:relative;
+        float:left;
+        top:80px;
+}
+
+
+
+/*
+#introduction {
+	width:48%;
+	min-width:400px;
+	margin:0px;
+	padding:0px;
+	position:absolute;
+	top:390px;
+	background-color:rgba(60,60,60,0.6);
+	color:white;
+	font-size:18px;
+}*/
+
+/*關於地球漫遊*/
+.wanderworld {
+  width: 860px;
+  -webkit-column-count:2;
+  -moz-column-count:2;
+  padding: 10px;
+  background: #fff;
+  -webkit-border-radius:4px;
+  -moz-border-radius:4px;
+  border-radius:4px;
+}  
+
+
+/*facebook登入區塊*/
+#fbLoginArea {
+	height:120px;
+	margin-bottom:10px;
+	padding:5px 0px 0px 5px;
+	background-color:rgba(240,150,20 ,0.7);
+}
+fb:login-button #fbLoginButton {
+	width:400px;
+}
+/*註冊&登入*/
+.fill_form {
+	width:80%;
+	min-width:450px;
+	top:10%;
+	padding:5px 0px 5px 5px;
+	border-style:solid;
+	border-width:thin;
+	border-color:#CCC;
+	border-radius:5px;
+	background-color:rgba(60,60,60,0.7);
+	position:relative;
+}
+.fill_form h2 {
+	margin:0px;
+	border-bottom-style:solid;
+	border-bottom-width:thin;
+	border-bottom:#FFF;
+
+}
+
+.rigistercss {
+  height:auto;
+  max-width: 550px;
+  padding:10px;
+  background:#fff;
+  -webkit-border-radius:4px;
+  -moz-border-radius:4px;
+  border-radius:4px;
+  left:28%;
+}
+.fill {
+	width:200px;
+}
+
+.submit {
+	position:absolute;
+	height:2em;
+	width:5em;
+	font-size:16px;
+	font-family:微軟正黑體;
+	float:right;
+	right:0px;
+	bottom:10px;
+}
+
+#footer {
+	width:100%;
+	height:70px;
+	min-width:960px;
+	left:0px;
+	bottom:0px;
+	margin:0px;
+	padding:0px;
+	z-index:50;
+	font-size:14px;
+	text-align:center
+}
+
+#footer li {
+	display:inline-block;
+	list-style-type:none;
+	padding:100px 10px 0px 10px;
+	color:#666;
+}

@@ -1,0 +1,12 @@
+<html>
+<head>
+<%
+cache_expire = 60*60*24*365
+response.headers["Pragma"] = "public"
+response.headers["Cache-Control"] = "max-age=#{cache_expire}"
+response.headers["Expires"]=Time.at(Time.now.to_i + cache_expire).strftime("%D, %d %M % Y %H:%i:%s");
+%>
+<script src="//connect.facebook.net/zh_TW/all.js"></script>
+</head>
+<body></body>
+</html>

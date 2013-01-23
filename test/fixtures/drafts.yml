@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  user: 
+  trip: 
+  trip_point: 
+  article: MyText
+
+two:
+  user: 
+  trip: 
+  trip_point: 
+  article: MyText

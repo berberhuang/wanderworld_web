@@ -1,0 +1,234 @@
+body {	
+	font-family:微軟正黑體;
+	font-size:14px;
+	margin:0;
+	background:#F1F1F1;
+	/*background:#E7EBF2;*/
+	/*background-image:url(<%=asset_path('purty_wood.png') %>);*/
+}
+a {
+	text-decoration: none 
+}
+
+a:link ,a:visited {
+        font-family:微軟正黑體;
+        font-size:20px;
+        color:black;
+        text-decoration:none;
+}
+
+/*頻道按鈕切換*/
+.channel span {
+	color:black;
+	font-size:14pt;
+	background:rgba(220,220,220,0.2);
+	font-weight:bold;
+}
+
+.channel a {
+	color:gray;
+	font-size:12pt;
+}
+
+
+/*content從此開始*/
+
+.wrap{
+	width: 100%;
+	position: absolute;
+	top: 40px;
+	left: 0px;
+	min-width: 1280px;
+	padding: 0px;
+	margin: 0px;
+	border-width: 0px;
+}
+
+.left_block {
+	min-width:160px;
+	float:left;
+	height:100%;
+}
+
+.main_block {
+	min-width:960px;
+	width: 960px;
+	margin:0px auto 0px auto ;
+/*	border-left: 1px solid #CCC;
+	border-right: 1px solid #CCC;*/
+}
+
+.friend_block {
+	color:black;
+	min-width:160px;
+	position: absolute;
+	top:20px;
+	right:10px;
+	padding:0px 0px 0px 0px;
+	overflow-y:auto;
+	box-shadow:0px 0px 5px 3px rgba(0,0,0,0.5);
+	background-color:white;
+	border: 1px solid #D7D7D7;
+}
+
+.friend_block h3 {
+	padding: 5px 0px 5px 0px;
+	text-align: center;
+	border-bottom: 1px solid #D7D7D7;
+	margin: 0;
+}
+.friend_all {
+	overflow-y:auto;
+	overflow-x: hidden;
+}
+
+.friend_block ::-webkit-scrollbar {
+    width: 10px;
+}
+
+
+/* Track */
+.friend_block ::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+/* Handle */
+.friend_block ::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(200,200,200,0.4);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+#loading {
+	height:30px;
+        background:rgba(40,40,40,0.7);
+        text-align:center;
+        font-size:14pt;
+        color:white;
+        font-weight:bold;
+        width:140px;
+        right:0px;
+        z-index:2;
+        margin: 15px 10px 15px 10px;
+
+	background: -moz-linear-gradient(top,  rgba(40,40,40,0.6) 0%, rgba(40,40,40,0.8) 50%, rgba(40,40,40,0.6) 93%, rgba(40,40,40,0.6) 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(40,40,40,0.6)), color-stop(50%,rgba(40,40,40,0.8)), color-stop(93%,rgba(40,40,40,0.6)), color-stop(100%,rgba(40,40,40,0.6))); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top,  rgba(40,40,40,0.6) 0%,rgba(40,40,40,0.8) 50%,rgba(40,40,40,0.6) 93%,rgba(40,40,40,0.6) 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top,  rgba(40,40,40,0.6) 0%,rgba(40,40,40,0.8) 50%,rgba(40,40,40,0.6) 93%,rgba(40,40,40,0.6) 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top,  rgba(40,40,40,0.6) 0%,rgba(40,40,40,0.8) 50%,rgba(40,40,40,0.6) 93%,rgba(40,40,40,0.6) 100%); /* IE10+ */
+        background: linear-gradient(top,  rgba(40,40,40,0.6) 0%,rgba(40,40,40,0.8) 50%,rgba(40,40,40,0.6) 93%,rgba(40,40,40,0.6) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#99282828', endColorstr='#99282828',GradientType=0 ); /* IE6-9 */
+
+}
+
+
+.main_title {
+	margin:20px 0px 0px 10px;
+	font-size:1.5em;
+	text-shadow:5px 5px 0px rgba(0, 0, 0, 0.08),-5px 5px 1px rgba(0, 0, 0, 0.08);
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.trip_item {
+	width:280px;
+	height:155px;
+	float:left;
+	margin:15px 0px 15px 14px;
+	padding:10px;
+	/*min-width:960px;*/
+ 	box-shadow: 0px 0px 20px rgba(0,0,0,0.5); /*Firefox */
+/*	-webkit-box-shadow: 0px 0px 20px #999;  Safari 和 Chrome */
+	border-radius:5px;
+	background-color:rgba(255,255,255,0.85);
+	
+}
+.trip_item h3 {
+	height:25px;
+	margin:5px 0px 5px 0px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.thumbtack {
+	position: absolute;
+}
+
+.thumbtack img { 
+	width:30px;
+	position: absolute;
+	top: -25px;
+	left: -10px;
+}
+
+.tripcontent {
+	height:45px;
+	word-wrap: break-word;
+	word-break: normal;
+	margin:10px 0px 10px 0px;
+	font-size: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-indent:24px;
+}
+
+.author_img {
+	float:left;
+	line-height:30px;
+}
+.author_img img {
+        float:left;
+	width:30px;
+}
+
+.author_name {
+	float:left;
+	margin-left:10px;
+}
+
+.friend_list {
+        width:100%;
+	height:35px;
+	margin:0;
+/*	line-height:35px;*/
+	cursor: pointer;
+	overflow: hidden;
+	white-space: nowrap;
+	padding: 5px 0 5px 10px;
+}
+.friend_list:hover {
+	background-color:#F8CB9C;
+}
+
+
+.friend_img {
+	height:35px;
+	width:35px;
+        float:left;
+	overflow:hidden;
+}
+.friend_img img {
+        width:35px;
+}
+
+.friend_info {
+        margin-left:40px;
+		
+}
+.friend_name {
+
+}
+.friend_travel {
+	color: rgba(20, 20, 20, 0.8);
+	font-size:8px;
+}
+
+/*特殊功能*/
+.clear {
+	clear:both;
+}
+

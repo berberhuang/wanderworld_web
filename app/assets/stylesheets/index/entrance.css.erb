@@ -1,0 +1,201 @@
+/* CSS Document */
+
+body {
+	font-family:微軟正黑體;
+	font-size:14px;
+	color:white;
+	background-image:url(<%=asset_path('felt.png') %>);
+	vertical-align:center;
+	margin:0;
+}
+h2 {
+	font-size:16px;
+}
+
+table {
+	text-align:right;
+}
+input[type='submit'],input[type='button'],button {
+       cursor: pointer;
+}
+input {
+        border-radius: 3px;
+        border: 1px solid #AAA;
+}
+button {
+        font-family: 微軟正黑體;
+        font-size: 14px;
+}
+a {
+        text-decoration: none;
+}
+
+#outer {
+	width:100%;
+	min-width:1024px;
+	height:100%;
+	max-height:750px;
+	margin:0px;
+	padding:0px;
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	
+
+}
+
+/*Header區塊樣式*/
+.logo {
+        height:50px;
+        width:auto;
+	position: relative;
+	top: 5px;
+}
+.header {
+        width:100%;
+        height:60px;
+        background:#000;
+        left:0;
+        top:0;
+        margin:0px;
+        padding:0;
+        position:absolute;
+        z-index:3;
+        min-width:1280px;
+        -webkit-box-shadow:0px 3px 10px  #333;
+}
+.header_inner {
+        width: 1024px;
+        margin: 0px auto 0px auto;
+
+}
+
+a {
+	text-decoration: none;
+	color:#666;
+}
+a:hover {
+	color:black;
+	font-weight:bold;
+}
+
+/*主要內容*/
+.content {
+	width: 1024px;
+	margin: 80px auto 0px auto;
+}
+
+/*左半邊*/
+.content_left{
+	width: 600px;
+	padding: 0px;
+	margin: 0px;
+	float: left;
+	left: 0px;
+}
+
+.content img {
+	width: 590px;
+	height: 420px;
+	float: left;
+	margin: 5px;
+	padding: 0px;
+}
+
+/*右半邊*/
+.content_right {
+	width:424px;
+	padding:0px;
+	margin:0px;
+	position:relative;
+	float:left;
+}
+
+.fill_form {
+        width:404px;
+        padding:5px;
+        margin:5px 5px 10px 5px;
+        border-radius:5px;
+        background-color:rgba(60,60,60,0.7);
+        position:relative;
+}
+.fill_form h2 {
+        margin:0px;
+}
+
+
+
+/*關於地球漫遊*/
+.wanderworld {
+  width: 860px;
+  -webkit-column-count:2;
+  -moz-column-count:2;
+  padding: 10px;
+  background: #fff;
+  -webkit-border-radius:4px;
+  -moz-border-radius:4px;
+  border-radius:4px;
+}  
+
+
+/*facebook登入區塊*/
+#fbLoginArea {
+	height:120px;
+	background-color:rgba(240,150,20 ,0.7);
+}
+fb:login-button #fbLoginButton {
+	width:400px;
+}
+#fb_friend {
+	z-index:3;
+}
+/*註冊&登入*/
+.rigistercss {
+  height:auto;
+  max-width: 550px;
+  padding:10px;
+  background:#fff;
+  -webkit-border-radius:4px;
+  -moz-border-radius:4px;
+  border-radius:4px;
+  left:28%;
+}
+.fill {
+	width:200px;
+}
+
+.submit {
+	position:absolute;
+	height:2em;
+	width:5em;
+	font-size:16px;
+	font-family:微軟正黑體;
+	float:right;
+	right:15px;
+	bottom:10px;
+}
+
+#footer {
+	width:100%;
+	min-width:960px;
+	position:relative;
+	margin: 50px 0 0 0;
+	padding:0px;
+	z-index:50;
+	font-size:14px;
+	text-align:center
+}
+
+#footer ul {
+	margin:0;
+	padding: 0;
+}
+#footer li {
+	display:inline-block;
+	list-style-type:none;
+	padding:0;
+	margin: 0px 10px 0px 10px;
+	color:#666;
+}

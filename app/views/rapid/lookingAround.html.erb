@@ -1,0 +1,108 @@
+<% 	
+	def hasPermission id
+		if permissionCheck (isTripExist(id))
+			return true
+		else
+			return false
+		end
+	end
+
+	def isTripExist id
+		@t=Trip.find_by_id(id)
+	end
+
+	def permissionCheck obj
+		if obj
+			if obj.user_id==session[:user_id]
+				return obj
+			end
+		else
+			return nil
+		end
+	end
+%>
+
+<%=content_for :css do%>
+	<%=stylesheet_link_tag "lookingAround"%>
+<%end%>
+<%=content_for :fb_init_yes do%>
+	getFriendList();
+<%end%>
+<%=content_for :fb_init_no do%>
+	$('#loading').text('需使用Facebook登入才能使用此功能'); 
+	$('.friend_block').hide();       
+<%end%>
+
+<script>
+function toFriend(){
+	$('#myfriend').show();
+	$('#everyone').hide();
+}
+function toEveryone(){
+	$('#myfriend').hide();
+	$('#everyone').show();
+}
+$(function(){
+	reLayout();
+	$(window).bind('resize',function(){
+		reLayout();
+	});
+});
+</script>
+
+<div class="wrap">
+	<div class="main_block" id="myfriend" style="display:none"> 
+		<div class="main_title">好友遊記</div>
+		<div id="aboutFriendFunc" style="text-align:center;"><br>您需要使用facebook登入才能使用好友相關功能</div>
+		<div class="collection">
+			<div id="friendLine1"></div>
+       		        <div class="clear"></div>
+		</div>		
+		<div class="channel" style="text-align:center;"><a href="javascript:toEveryone()">所有</a> <span>好友</span></div>
+	</div>
+	<div class="main_block" id="everyone"> 
+		<div class="main_title">最新遊記</div>
+		<div class="collection">
+			<%for i in 0..5%>
+			<div class="trip_item">
+				<!--<div class="thumbtack">
+					<img src="http://www.pigzz.com/uploads/allimg/111204/2251063610-14.png">  
+				</div>-->
+				<%item=@trip_list[i].trip%>
+				<%tp=@trip_list[i].trip_point%>
+                <h3 class="tripname" title="<%=tp.place.name%>-<%=item.name%>"><a href="/<%=item.id%>/<%=tp.id%>" target="_blank"><%=tp.place.name%></a></h3>
+				<h4 style="font-size:12pt;color:black;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;margin:0;font-weight:normal;"><%=item.name%></h4>
+				<div class="tripcontent"><%=@hot_trip_description[i]%></div>				
+				<div class="author_img">
+					<%t=item.user%>
+					<%if t.fbid%>
+						<img src="https://graph.facebook.com/<%=t.fbid%>/picture">
+					<%else%>
+						<img src="<%=asset_path('logo.png')%>">
+					<%end%>
+				</div>
+				<div class="author_name"><%=t.username%></div>
+				<br/><div style="float:right;font-size:9pt"><%=item.updated_at.to_s.slice(0,10)%></div>
+			</div>
+			<%end%>
+			<div class="clear"></div>
+			<div class="channel" style="text-align:center;"><span>所有</span> <a href="javascript:toFriend()">好友</a></div>
+		</div>		
+	</div> 
+	<div style="clear: both;display: block"> </div>
+	<div class="friend_block">
+	 	<h3>好友的旅行</h3>	
+		<div class="friend_all">
+		<div id="loading">Loading...</div>
+		</div>	
+	</div>
+</div>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1239 @@
+body {
+	margin:0px;
+	font-family:微軟正黑體;
+	font-size:14px;
+	background:#F1F1F1;
+}
+input[type='submit'],input[type='button'],button {
+       cursor: pointer;
+}
+input {
+	border-radius: 3px;
+	border: 1px solid #AAA;
+}
+button {
+	font-family: 微軟正黑體;
+	font-size: 14px;
+}
+a {
+	text-decoration: none;	
+}
+/*主控制*********************************************************************/
+#main_control {
+	position:absolute;
+	top:60px;
+	left:5px;
+	width:120px;
+	font-size:16px;
+  border-right:grey 0px groove;
+  border-radius:10px 0 0 10px;
+  background-color:rgba(210,210,210,1);
+  z-index:2;
+  -webkit-box-shadow:-4px 4px 5px  rgba(0,0,0,0.5);
+  border-left:black 1px groove;
+}
+.book {
+	width: 24px;
+	height: 100%;
+	background: url(<%=asset_path('address_book.png') %>) repeat-y;
+	background-size: 20px;
+	right: -15px;
+	position: absolute;
+	z-index: 3;
+}
+#person {
+	top:20px;
+	left:5px;
+	width:100px;
+	position:absolute;
+	z-index:2;
+	-webkit-border-radius:5px;
+	-moz-border-radius:12px;
+	border-radius:5px;
+	border:white 1px solid;
+ 	padding:2px;
+} 
+
+#person_avatar {
+ 	width:96px;
+	height:96px;
+	overflow-y:hidden;
+	float:left;
+	margin: 2px 2px 5px 2px;
+	border-radius:5px;	
+}
+
+#person_avatar img {
+ 	width:96px;
+	border-radius:5px;
+}
+
+#person_name {
+	float:left;
+	text-align: center;
+	width: 100%; font-family:arial;
+
+color:rgba(0,0,0,1);
+
+word-wrap: break-word;
+
+
+
+}
+
+#person_name h3 {
+	font-weight: bold;
+	padding: 0;
+	margin: 2px 0 2px 0;
+}
+
+/*總覽鈕*/
+
+#other_button {
+	top: 160px;
+	left: 5px;
+	width: 105px;
+	position:absolute;
+	z-index:2;
+	font-size: 14px;
+}
+
+.items {
+	width: 100%;
+	height: 30px;
+	float: left;
+	margin: 0px 0px 0px 0px;
+	padding: 0px;
+	line-height:35px;
+	/*box-shadow: 0px 0px 20px rgba(0,0,0,0.5);*/
+	-webkit-border-radius:0px;
+	-moz-border-radius:10px;
+	border-radius: 0px;
+	background-color: rgba(180, 180, 180,1 );
+	text-align: left;
+	color:rgba(60,60,60,1);
+	text-indent:5px;
+	border:white 1px solid;
+}
+/*
+#person {
+	top:20px;
+	left:27px;
+	width:96px;
+	position:absolute;
+	z-index:2;
+	-webkit-border-radius:12px;
+	-moz-border-radius:12px;
+	border-radius:12px;
+	padding:5px;
+	background-color: rgb(220,220,220);
+}
+#person_avatar {
+	width:100%;
+	height:86px;
+	overflow-y:hidden;
+	float:left;
+	margin-bottom: 5px;	
+	border-radius: 12px 12px 0px 0px;
+}
+#person_avatar img {
+	width:100%;
+}
+#person_name {
+	float:left;
+	text-align: center;
+	width: 100%;
+	background-color: rgb(200, 200, 200);
+	border-radius: 0px 0px 12px 12px;
+	word-wrap: break-word;
+}
+#person_name h3 {
+	font-weight: normal;
+	padding: 0;
+	margin: 2px 0 5px 0;
+}*/
+/*總覽鈕*//*
+#other_button {
+	top: 180px;
+	left: 30px;
+	width: 100px;
+	position:absolute;
+	z-index:2;
+	font-size: 16px;
+}
+.items {
+	width: 100%;
+	height: 35px;
+	float: left;
+	margin: 0px 0px 15px 0px;
+	padding: 0px;
+	line-height:35px;
+	box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
+	-webkit-border-radius:10px;
+	-moz-border-radius:10px;
+	border-radius: 10px;
+	background-color: rgba(255, 255, 255, 0.85);
+	text-align: center;
+	color:black;
+}*/
+.items:hover {
+	background-color:#545F69;
+	color:white;
+	cursor:pointer;
+	cursor:hand;
+}
+
+/*關於我*********************************************************************/
+#about_me {
+	background-color: rgba(0, 0, 0, 0.85);
+	
+}
+.mid_block {
+	margin:0 0px 0 130px;
+	width:auto;
+	height:100%;
+	background-repeat: no-repeat;	
+	background-color:white;
+}
+#config {
+	position:absolute;
+	top:10px;
+	right:10px;
+	width:60px;
+	height:30px;
+	border-radius:5px;
+	background-color: rgba(255, 255, 255, 0.85);	
+	text-align: center;
+	cursor:pointer;
+	line-height: 30px;
+}
+#aboutme_background {
+	-webkit-filter : none;
+	width:100%;
+	position:absolute;
+	top:0px;
+	left:130px;
+	background: #F1F1F1;
+}
+/*編輯器*/
+#aboutme_editor {
+	z-index:1;
+	position:relative; 
+	top:80px;
+	left:-80px;
+	width:auto;
+	margin: 0;
+	padding: 0;
+	float: right;
+	background-color: rgba(255, 255, 255, 0.85);
+	box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+#headDiv {
+	width:100%; 
+	height:20px; 
+	cursor:move;
+	float:left; 
+	background-color: rgba(255, 255, 255, 0.85);
+	border-radius: 5px 5px 0 0;
+}
+#close{
+	cursor:pointer;
+	margin:5px;
+	position: absolute;
+	right: 0;
+}
+#tabs{
+	float:left;
+	width: 400px;
+	height: 450px;
+}
+.float_item {
+	float:left;
+	line-height: 30px;
+	margin-right: 10px;
+}
+#about_bg {
+	width:100%;
+
+}
+#about_bg_width {
+	width:35px;
+	float:left;
+	margin: 4px 0;
+}
+#slider-range-min {
+	width:200px;
+	float:left;
+	margin: 8px;
+}
+#filter_slider { width: 300px; }
+#filter_slider > div { width: 150px; }
+.float_right {
+	float:right;
+}
+#about_title {
+	width:100%;
+	line-height: 20px;
+}
+#about_fontfamily {
+	width:110px;
+}
+#about_fontsize {
+	width:50px;
+	margin: 0 10px 0 0;
+	height: 30px;
+}
+#about_fontsize_drop {
+	position: absolute;
+	padding: 8px 10px;
+	border: 1px solid #79B7E7;
+	background-color: #FDFEFE;
+
+}
+#about_fontsize_bar {
+	width:100px;
+	height:5px;
+}
+#about_fontsize_bar a {
+	width: 1em;
+	height: 0.8em;
+
+}
+#about_editor {
+	width:100%;
+	height:100px;
+
+}
+.ui-dialog {
+	font-family: 微軟正黑體;
+}
+
+/*編輯區*/
+#aboutme_main {
+	position:relative;
+	top:50px;
+	left:50px;
+	width:auto;
+	float:left;
+	cursor:move;
+}
+#aboutme_main:hover #aboutme_move {
+	display:block;	
+}
+#aboutme_main:hover {
+	border: 1px coral solid;
+}                
+#aboutme_move {
+	width:20px;
+        height:20px;
+	background-image: url(<%=asset_path('move2.png') %>);
+	position: absolute;
+	right: -25px;	
+	cursor: move;
+	display:none; 
+}
+#aboutme_title {
+	min-width: 300px;
+	max-width: 800px;
+	word-wrap: break-word;
+}
+#aboutme_content {
+	min-width: 300px;
+	max-width: 800px;
+	word-wrap: break-word;
+}
+/*漫遊日誌*********************************************************************/
+.main_content {
+	width:100%;
+	position:absolute;
+	top:40px;
+	left:0px;
+	min-width:1280px;
+	padding:0px;
+	margin:0px;
+	border-width:0px;
+	overflow:hidden;
+	background-color: rgba(50, 50, 50, 1);
+}
+/*google地圖*/
+#map_canvas {
+	width:100%;
+	height:100%;
+	position:absolute;
+	top:0px;
+	left:130px;
+	padding:0px;
+	margin:0px;
+	border-width:0px;
+}
+#map_small {
+	position:absolute;
+	right:0px;
+	bottom:0px;
+	width:260px;
+	height:200px;
+	background:#F1F1F1;
+	z-index:4;
+}
+#map_adjust {
+	width:50px;
+	height:50px;
+	position:absolute;
+	top:40px;
+	left:200px;
+	z-index:1;
+}
+#map_adjust:hover {
+	cursor:pointer;
+	cursor:hand;	
+}
+/*留言框*/
+#commentScope {
+	height:90%;
+	min-height:300px;
+	width:320px;
+	position:absolute;
+	display:none;
+	top:10px;
+	right:-500px;
+	background:rgba(40,40,40,0.9);
+	z-index:1;
+	border-radius:10px;
+	padding:0px;
+	margin:0;
+	overflow-x:visible;
+	overflow-y:auto;
+	-webkit-box-shadow:3px 3px 3px  #333;
+}
+.TripPointName {
+	color:white;
+	font-weight:bold;
+	margin-left:10px;
+}
+#comment {
+	background:#333;
+}
+
+/*旅行清單*/
+.list {
+	height:100%;
+	width:260px;
+	position:absolute;
+	top:0px;
+	right:0px;
+	float:right;
+	background:rgba(40,40,40,0.6);
+	z-index:1;
+	padding:0;
+	margin:0;
+	-webkit-box-shadow:3px 3px 3px  #333;
+	color:white;
+}
+.list a:link ,.list a:visited {
+	color:white;
+	text-decoration:none;
+}
+.list ::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+.list ::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+.list ::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(200,200,200,0.7); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+.sociales {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+#timeline {
+	width: 100%;
+	height: 600px;
+	overflow: hidden;
+	margin: 30px 0px;
+	padding: 0;
+	position: relative;
+	background: url(<%=asset_path('dot.gif')%>) 23px top repeat-y;
+	font-family: Georgia, serif;
+	float:left;
+}
+#load_trip{
+	margin: 15px 25px;
+}
+#dates {
+	width: 220px;
+	float: left;
+	margin: 0;
+	padding: 600px 20px;
+	cursor: url(<%=asset_path('cursor_hand.png')%>),auto;
+	position: relative;
+	top: -600px;
+}
+#dates li {
+	list-style: none;	
+	font-size: 20px;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+#dates a {
+	color: #ffffcc;
+	-webkit-transition: 0.5s;
+	-moz-transition: 0.5s;
+	-o-transition: 0.5s;
+	-ms-transition: 0.5s;
+	transition: 0.5s;
+	cursor: pointer;
+	background: url(<%=asset_path('biggerdot.png')%>) left center no-repeat;
+	padding-left: 10px;
+}
+#dates a:hover ,a.selected {
+	color: #ffcc00;
+}
+#dates .selected {
+	
+	color: #ffcc00;
+}
+
+.trip_list_info {
+	width:160px;
+	font-family: 微軟正黑體;
+	font-size: 14px;
+	float: left;
+	margin-bottom: 10px;
+	margin-left: 20px;
+	border: 1px solid #AAA;
+	padding: 5px;
+}
+.trip_list_info:hover .trip_edit {
+        display: inline;
+}
+.now_info {
+	float: left;
+	width: 260px;
+	margin-bottom: 10px;
+	font-family: 微軟正黑體;
+}
+.trip_edit {
+	display:none;
+	position: relative;
+	top: 0px;
+	right: 0px;
+	float: right;
+	cursor: pointer;
+}
+.trip_edit_menu {
+	display:none;
+	position: absolute;
+	width: 60px;
+	right: 0px;
+	background:lightGrey;
+	border-radius: 3px;
+	color: blue;
+	text-align: center;
+}
+.trip_edit_menu img {
+	float: left;
+        margin: 1px 5px 1px 0;
+	width: 16px;
+}
+.trip_edit_menu div {
+        padding:3px 5px;
+        cursor:pointer;
+}
+.trip_edit_menu div:hover {
+        background-color:#F8CB9C;
+}
+.trip_list_date {
+	cursor:pointer;
+	width:90%;
+}
+.trip_list_name {
+        cursor:pointer;
+}
+
+
+#next,
+#prev {
+	position: absolute;
+	left: 100px;
+	font-size: 70px;
+	width: 38px;
+	height: 22px;
+	background-position: 0 -44px;
+	background-repeat: no-repeat;
+	text-indent: -9999px;
+	overflow: hidden;
+}
+#next:hover,
+#prev:hover {
+	background-position:  0 0;
+}
+#next {
+	bottom: 20px;
+	background-image: url(<%=asset_path('next_v.png')%>);
+	cursor: pointer;
+}
+#prev {
+	top: 60px;
+	background-image: url(<%=asset_path('prev_v.png')%>);
+	cursor: pointer;
+}
+#next.disabled,
+#prev.disabled {
+	opacity: 0.2;
+}
+
+/*旅行資訊*/
+#trip_information {
+	position:relative;
+	width:auto;
+	margin:15px 10px 0px 15px;
+	padding-bottom: 15px;
+	border-bottom-style:solid;
+	border-color:white;
+	border-bottom-width:thin;
+}
+#trip_logo {
+	width:40px;
+	float:left;
+	margin: 15px 15px 0 15px;
+}
+#trip_logo img {
+	width:40px;
+}
+#trip_title {
+	width: auto;
+	margin: 15px 0 0 0;
+	float: left;
+}
+#trip_title h2 {
+	line-height:40px;
+}
+#trip_create {
+	float: left;
+	margin: 20px 0 0 25px;
+}
+.create_button {
+	border-radius:3px;
+	border: 1px solid rgba(255, 162, 63, 0.8);
+	width:60px;
+	height:30px;
+	background-color:rgba(255, 162, 63, 0.8);
+}
+.information {
+	padding:0;
+	margin:0;
+	font-weight: normal;
+}
+.information input {
+	width:100%;
+	font-size:16px;
+}
+.information a {
+	word-wrap: break-word;	
+}
+#trip_names {
+	width:100%;
+	margin:10px 0px 0px 0px;
+	padding:0px;
+	float:left;
+}
+#trip_name {
+	width:90%; 
+	margin:0;
+	float:left
+}
+#trip_name h1 {
+	font-size:18px;
+}
+#trip_name input {
+        font-size:18px;
+}
+        
+#return_triplist {
+	width:10%; 
+	margin:0;
+	float:left;
+	position: absolute;
+	right: 0;
+	cursor:pointer;
+}
+#trip_date {
+	width: 100%;
+	float:left;
+	margin:10px 0px 0px 0px;
+}
+#trip_date input {
+	width:100%;
+        font-size:16px;
+}
+#trip_friend {
+	width: 100%;
+	margin: 5px 0px 0px 0px;
+	padding: 0px;
+	float: left;
+}
+#trip_friend_add {
+	display:none;
+	float:right;
+	width:18px;
+	cursor:pointer;
+}
+#trip_status {
+	width: 100%;
+	margin: 5px 0px 0px 0px;
+	padding: 0px;
+	float: left;
+}
+
+/*讀取列表*/
+.loading {
+	height:30px;
+	line-height: 30px;
+	background:rgba(40,40,40,0.7);
+	text-align:center;
+	font-weight:bold;
+	width:auto;
+	right:0px;
+	margin: 15px 15px 15px 15px;
+	display:none;
+}
+.load_name {
+	float:left;
+	margin-left: 60px;
+	font-family: 微軟正黑體;
+}
+.barlittle {
+	background-color:#2187e7;  
+	background-image: -moz-linear-gradient(45deg, #2187e7 25%, #a0eaff); 
+	background-image: -webkit-linear-gradient(45deg, #2187e7 25%, #a0eaff);
+	width:5px;
+	height:5px;
+	float:left;
+	margin-top:12px;
+	margin-left:5px;
+        opacity:0.1;
+	-moz-transform:scale(0.7);
+	-webkit-transform:scale(0.7);
+	-moz-animation:move 1s infinite linear;
+	-webkit-animation:move 1s infinite linear;
+}
+#block_1{
+ 	-moz-animation-delay: .1s;
+	-webkit-animation-delay: .1s;
+ }
+#block_2{
+ 	-moz-animation-delay: .2s;
+	-webkit-animation-delay: .2s;
+}
+#block_3{
+ 	-moz-animation-delay: .3s;
+	-webkit-animation-delay: .3s;
+}
+#block_4{
+ 	-moz-animation-delay: .4s;
+	-webkit-animation-delay: .4s;
+}
+#block_5{
+ 	-moz-animation-delay: .5s;
+	-webkit-animation-delay: .5s;
+}
+@-moz-keyframes move{
+	0%{-moz-transform: scale(1.2);opacity:1;}
+	100%{-moz-transform: scale(0.7);opacity:0.1;}
+}
+@-webkit-keyframes move{
+	0%{-webkit-transform: scale(1.2);opacity:1;}
+	100%{-webkit-transform: scale(0.7);opacity:0.1;}
+}
+
+/*景點列表*/
+.scroll-pane{
+	width:auto;
+	overflow: auto;
+	margin:15px 5px 15px 15px;
+	padding:0px 0px 0px 0px;
+}
+#newTripLoading {
+	width:20px;
+        height:20px;
+        float:left;
+}
+#newTripLoad {
+	position: relative;
+	top: 12px;
+	left: 195px;
+}
+.trippoint_placeholder {
+	border: 2px dashed #AAA;
+	height:20px;
+	/*background-color:bisque;*/
+}
+.trip_point_group {	
+	/*float: left;*/
+	width: 100%;
+	padding-bottom: 10px;
+}
+.trip_point_group:hover  .trip_point_add {
+	display: inline;
+}
+.trip_point_group:hover  .trip_point_edit {
+        display: inline;
+}
+.trip_point_tittle {
+	float: left;
+	width: 80%;
+	cursor:pointer;
+}
+.trip_point_tittle input {
+	width: 100%;
+}
+.trip_point_add {
+	display:none;
+	width: 10%;
+	cursor: pointer;
+	position: relative;
+	float: left;
+}
+.trip_point_add img {
+	width: 18px;
+}
+.trip_point_edit {
+	display:none;
+	height: 18px;
+	width: 18px;
+	cursor:pointer;
+	position: relative;
+	float: right;
+}
+.trip_point_edit img {
+	width: 16px;
+}
+.trip_point {
+	list-style-type:none;
+	margin:0;
+	padding:10px 0px 0px 0px;
+	float: left;
+	width: 100%;
+}
+ul.trip_point li:hover  .point_name {
+        margin-left:4px;
+}
+ul.trip_point li:hover  .point_mark {
+	display: inline;
+}
+ul.trip_point li:hover  .point_edit {
+	display: inline;
+}
+.point {
+	width: 100%;
+}
+.point_edit {
+	float:right;
+	display:none;
+	position: relative;
+	right: 0px;
+	margin: 2px 0;
+}
+.point_edit img {
+	height:20px;
+	opacity:0.5;
+	/*height:100%;*/
+}
+.point_edit img:hover {
+	opacity:1;
+	cursor:pointer;
+	cursor:hand;  /*if ie*/
+}
+.point_mark {
+	width:20px;
+	height:20px;
+	margin: 2px 0 2px 0;	
+	float:left;
+}
+.point_name {
+	width:170px;
+	line-height:25px;
+	margin-left:25px;
+	float:left;
+	margin-left:5px;
+	cursor: pointer;
+}
+.point_edit_menu {
+	display: none;
+	position: absolute;
+	width: 110px;
+	right: 0px;
+	background: lightGrey;
+	border-radius: 3px;
+	color: blue;
+	text-align: left;
+	padding: 2px 0;
+}
+.point_edit_menu img {
+	float: left;
+	margin: 1px 5px 1px 0;	
+	opacity:1;
+}
+.point_edit_menu div {
+        padding:3px 5px;
+	cursor:pointer;
+}
+.point_edit_menu div:hover {
+        background-color:#F8CB9C;
+}
+.point_edit_menu img {
+        height:16px;
+}
+
+#add_group_tittle {
+	display:none;
+	margin: 0 15px;
+}
+.group_edit_menu {
+	display: none;
+	position: absolute;
+	width: 120px;
+	right: 0px;
+	background: lightGrey;
+	border-radius: 3px;
+	color: blue;
+	text-align: left;
+	padding:2px 0;
+}
+.group_edit_menu img {
+	float: left;
+	margin: 1px 5px 1px 0;
+
+}
+.group_edit_menu div {
+	padding:3px 5px;
+}
+.group_edit_menu div:hover {
+        background-color:#F8CB9C;
+}
+
+/*新增景點*/
+#trip_control {
+	margin: 15px 15px 15px 15px;
+	padding: 0px 0px 0px 0px;
+}
+.place {
+	margin-left:5px;
+	width:180px;
+}
+a#add:link,a#add:visited {
+	position:relative;
+	left:40px;
+	color:rgba(180,180,180,0.8);
+	text-decoration:underline;
+}
+a#add:hover {
+	color:white;
+}
+a#add:active {
+	color:rgba(200,200,200,0.8)
+}
+
+/*瀏覽人次*/
+#view_num {
+	margin: 15px 15px 20px 15px;
+	padding: 0px 0px 0px 0px;
+	float:left;
+	position: absolute;
+	bottom: 0px;
+}
+#view_num span {
+	color:#FC8;
+	font-weight:bold;
+}
+
+/*分享*/
+#sharetoFB {
+	float:right;
+	margin:15px 15px 20px 15px;
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+}
+#share {
+	float:right;
+}
+.icon {
+	width:36px;
+	height:48px;
+}
+
+/*隱藏的內容框*/
+#slidesContainer_s {
+	bottom:20px;
+	width:100px;
+	height:20px;
+	position: absolute;
+	z-index:1;
+	background: rgba(255,255,255,0.85);
+	-webkit-border-radius:4px;
+	-moz-border-radius:4px;
+	border-radius:4px;
+	text-align: center;
+	cursor:pointer;
+}
+#slidesContainer_s a{
+	color:gray;
+}
+
+/*內容框*/
+#slidesContainer {
+	width:890px;
+	height:260px;
+	background: rgba(255,255,255,0.85);
+	-webkit-border-radius:4px;
+	-moz-border-radius:4px;
+	border-radius:4px 4px 0px 0px;
+	z-index:1;
+	position:absolute;
+	bottom:0px;
+	overflow:hidden;
+}
+#slidesContainer:hover .editTool img {
+	display:inline;
+}
+#slidesContainer ::-webkit-scrollbar {
+    width: 10px;
+	height: 10px;
+}
+#slidesContainer ::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+#slidesContainer ::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(200,200,200,0.4); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+.bounceDiv  {
+	text-align:center;
+}
+.bounceDiv img:hover {
+	cursor:pointer;
+}
+#bounce:hover, #collapse:hover {
+	background:rgba(100,100,100,0.07);
+	cursor:pointer;
+	cursor:hand; 
+}
+#like {
+	position:absolute;
+	left:15px;
+	top:10px;
+}
+#notpublic {
+	display:inline;
+	position:absolute;
+	top:10px;
+	right:110px;;
+	color:gray;
+}
+#hide_this {
+	position:absolute;
+	right:15px;
+	top:10px;
+	cursor:pointer;
+}
+#hide_this img {
+	height:16px;
+}
+#move_this {
+	position:absolute;
+        right:30px;
+        top:3px;
+}
+#move_this img {
+        height:30px;
+}
+
+.editTool {
+	position: absolute;
+	right: 35px;
+	top: 6px;
+}
+.editTool img {
+	/*display:none;*/
+	float:right;
+	height:20px;
+	top:0px;
+	opacity:0.5;
+}
+.editTool img:hover {
+	opacity:1;
+	cursor:pointer;
+	cursor:hand;  
+}
+#slide_main{
+	height:225px;
+}
+.control  {
+	float:left;
+	display:inline;
+	width:40px;
+	height:100%;
+	cursor: pointer;
+	line-height : 200px;
+	white-space : nowrap;
+}
+.control  img{
+	width:100%;
+	opacity:0.2;
+	vertical-align : middle;
+}
+.control:after {
+  content : ".";
+  font-size : 0;
+  -webkit-text-size-adjust : none;
+}
+.control  img:hover{
+	opacity:0.7;
+}
+#journal {
+	display:inline;
+	margin:0 0 0 0;
+	padding:0 0 0 0;
+	width:810px; /*avoid horizontal scroll */
+	height:100%; 
+	float:left;
+}
+#foo {
+	display:none;
+	position: absolute;
+	top: 140px;
+	left: 445px;
+}
+.foo_load {
+	font-size: 20px;
+	position: absolute;
+	top: -12px;
+	width: 60px;
+	left: 25px;
+
+}
+#toolbarDiv {
+	display:none;
+}
+#toolbar {
+	display:inline;
+	width:708px;
+}
+.slide {
+	height:100%;
+	overflow-x:hidden;
+	overflow-y:auto;
+	word-wrap:break-word;
+	width:100%;
+}
+#editPostDiv {
+	height:100%;
+
+}
+#editPost {
+	border-style:solid;
+	background:white;
+	border-color:rgb(204,204,204);
+	border-width:1px;
+	width:710px;
+}
+
+#editPost img,#postContent img ,#fullPostContent img {
+	max-width:800px;
+}
+#continue {
+	float:right;
+	color:blue;
+}
+#postToFB {
+	width: 50px;
+	height: 24px;
+	float: left;
+}
+#postToFB:hover {
+        background:rgb(219,219,219);
+        cursor:pointer;
+        cursor:hand; 
+}
+#postToFB input {
+        float: left;
+        margin: 6px 0px 6px 6px;
+}
+#postToFB input:hover {
+	cursor:pointer;
+}
+.controlButton {
+	position:absolute;
+	top:38px;
+	right:55px;
+	height: 24px;
+}
+.controlButton button {
+	border-radius: 3px;
+	border: 1px solid #969696;
+	width: 50px;
+	height: 25px;
+	background-color: #F1F1F1;
+	vertical-align: middle;
+}
+/*FB分享*********************************************************************/
+.sharecss {
+	width: 400px;
+	height: 150px;
+	background: white;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	padding: 10px;
+}
+.sharecss_l{
+	width: 250px;
+	height:100%;
+	float:left;
+}
+#shareInput {
+	width: 95%;
+}
+.sharecss_r{
+	width: 150px;
+	height:100%;
+	float:right;
+}
+
+/*手動輸入*********************************************************************/
+#add_new {
+	width:45%;
+	padding-top:10px;
+	padding-left:10px;
+	background: rgba(255,255,255,0.75);
+	-webkit-border-radius:4px;
+	-moz-border-radius:4px;
+	border-radius:4px;
+	z-index:4;
+	position:absolute;
+	top:80px;
+	left:28%;
+}
+#add_new img {
+	width:40px;
+	height:40px;
+}
+
+
+

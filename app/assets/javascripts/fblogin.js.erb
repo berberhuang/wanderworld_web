@@ -1,0 +1,70 @@
+function fb_init(callback){
+  window.fbAsyncInit = function() {
+          FB.init({
+            appId      : '369699423051845', // App ID
+            channelUrl : '//www.wanderworld.com.tw/fb/channel', // Channel File
+            status     : true, 
+            cookie     : true,
+            xfbml      : true,
+            oauth      : true,
+          });
+	    // Additional initialization code here
+	    fb_ui_init();
+	    if(callback)
+     		callback();
+	
+        };
+        (function(d){
+           var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+           js = d.createElement('script'); js.id = id; js.async = true;
+           js.src = "//connect.facebook.net/zh_TW/all.js";
+           d.getElementsByTagName('head')[0].appendChild(js);
+         }(document));
+
+
+	if(navigator.appName=="Microsoft Internet Explorer"){
+		alert("我們強烈建議你使用Chrome、Firefox等瀏覽器來使用我們的服務\n使用Internet Explore 可能無法完整體驗我們的服務甚至有操作上的問題");
+	}
+}
+
+function fb_ui_init(){
+	FB.getLoginStatus(function(response){
+		if(response.status=="connected"){
+			$('.fb-login-button').show();
+		}else{
+		}	
+	});
+}
+
+function onLogin(){
+	FB.getLoginStatus(function(r){
+		if(r.status=='connected'){
+			window.location.href="https://www.facebook.com/dialog/oauth?client_id=369699423051845&redirect_uri=http://www.wanderworld.com.tw/userSession/getAccessToken&scope=email,publish_actions";
+		}
+	});
+}
+function onLogout(){
+	FB.logout();
+	setTimeout('window.location.href="/userSession/logout";',500);
+}
+
+function postToWall(){
+	var t=$('#input li:eq(0)').val();
+	if(!pointData[t].post_simple)
+		loadPost(t,function(){
+		FB.ui({method:'feed',link:'http://wanderworld.com.tw/'+trip_id,name:trip_name,description:pointData[t].post_simple.slice(0,10000),picture:"<%='http://wanderworld.com.tw'+asset_path('banner_logo_walker.png')%>"});
+		});
+	else
+		FB.ui({method:'feed',link:'http://wanderworld.com.tw/'+trip_id,name:trip_name,description:pointData[t].post_simple.slice(0,10000),picture:"<%='http://wanderworld.com.tw'+asset_path('banner_logo_walker.png')%>"});
+}
+
+function addCommentsAndLike(){
+	var t=document.getElementById('comment');
+	t.innerHTML="<fb:comments href='http://www.wanderworld.com.tw/"+trip_id+"/"+pointData[editTarget_id].tripPoint_id+"' num_posts='4' width='305' data-colorscheme='dark'></fb:comments>";
+	var k=$('#like')[0];
+	k.innerHTML='<div class="fb-like" data-href="http://www.wanderworld.com.tw/'+trip_id+'/'+pointData[editTarget_id].tripPoint_id+'" data-send="false" data-layout="button_count" data-width="50" data-show-faces="false"></div>';	
+
+	FB.XFBML.parse(t);
+	FB.XFBML.parse(k);
+	
+}

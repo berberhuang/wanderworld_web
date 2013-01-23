@@ -1,0 +1,115 @@
+<div id="fb-root"></div>
+<script>
+	var login_s=true;
+	$(function(){
+		fb_init();
+	});
+</script>
+<div id="outer">
+<div class="header">
+	<div class="header_inner">
+		<img class="logo" src="<%=asset_path('banner_logo_walker.png')%>" />
+	</div>
+</div>
+<div class="content">
+	<!--左半邊-->
+	<div class="content_left">
+		<img src="<%=asset_path('pin_your_travel.jpg')%>"/>
+	</div>
+	<!--右半邊-->
+	<div class="content_right">
+    		<!--FB登入-->
+		<div id="fbLoginArea" class="fill_form">
+			<h2>以facebook身分開始使用地球漫遊</h2>
+			<div class="fb-login-button" id="custom_fb_login" style="width:400px;display:block" autologoutlink="false" onlogin="onLogin()">登入</div>
+			<div class="fb-login-button" id="fb_friend" data-show-faces="true" data-width="400" data-max-rows="1" style="display:none"></div>
+		</div>
+		<!--登入-->
+	        <div class="fill_form">
+			<h2>登入</h2>       
+ 			<%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f|%>
+                 		<table width="300px" border="0">
+					<tr>
+						<th scope="row" width="70px">E-mail</th>
+						<td><%=f.email_field :email, :class=>'fill', :placeholder=>"請輸入您的E-mail"%></td>
+					</tr>
+					<tr>
+						<th scope="row">密碼</th>
+						<td><%=f.password_field :password, :class=>"fill" ,:placeholder=>"請輸入您的密碼" %></td>
+					</tr>
+                  			<%if flash[:loginfail]%>
+                        		<tr>
+                                		<td></td>
+                                		<td style="color:yellow;padding-left: 20px;text-align: left;">您輸入的帳號或密碼有誤</td>
+                        		</tr>
+                  			<%end%>
+                		</table>
+                		<%=f.submit '登入' , :id=>"login_button",:class=>"submit" %>
+        		<%end%>
+			<div style="clear: both;display: block"> </div>
+	        </div>
+		<!--註冊-->
+        	<div class="fill_form">
+			<h2>開始使用WanderWorld地球漫遊，分享你的旅行故事。</h2>
+			<%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
+				<table width="300px" border="0">
+		                	<tr>
+                    				<th scope="col" width="70px">E-mail</th>
+                    				<th scope="col"><%=f.email_field :email,:class=>"fill",:placeholder=>"您將來登入用的帳號"%></th>
+                  			</tr>
+                  			<tr>
+                    				<th scope="row">名稱</th>
+                    				<td><%=f.text_field :username,:class=>"fill",:placeholder=>"您在網站中的名稱"%></td>
+                  			</tr>
+                  			<tr>
+                    				<th scope="row">密碼</th>
+                    				<td><%=f.password_field :password ,:class=>"fill",:minlength=>"8",:maxlength=>"12" ,:placeholder=>"請輸入8~12字的密碼"  %></td>
+                  			</tr>
+                  			<tr>
+                    				<th scope="row">確認密碼</th>
+                    				<td><%=f.password_field :password_confirmation,:class=>"fill",:placeholder=>"請輸入8~12字的密碼" %></td>
+                  			</tr>
+					 <%if flash[:account_repeat]%>
+                                        <tr>
+                                                <td></td>
+                                                <td style="color:yellow;padding-left: 20px;text-align: left;">帳號重複</td>
+                                        </tr>
+                                        <%end%>
+					<%if flash[:password_diff]%>
+                                        <tr>
+                                                <td></td>
+                                                <td style="color:yellow;padding-left: 20px;text-align: left;">密碼不符請重新輸入</td>
+                                        </tr>
+                                        <%end%>
+                		</table>
+                		<%=f.submit '開始使用',:id=>"rigister_button", :class=>"submit" %>
+                	<%end%>
+	        </div>
+	</div>
+	<div style="clear: both;display: block"> </div>
+</div>
+<div id="footer">
+	<ul>
+    		<li><a href="#about_wanderworld" rel="facebox.wanderworld">關於地球漫遊</a></li>
+	        <li><a href="mailto:bluebetterlife@gmail.com" target="_blank">聯繫我們</a></li>
+        	<li><a href="http://wanderworld-ideaaxis.blogspot.com/" target="_blank">BLOG</a></li>
+	</ul>
+</div>	
+</div>
+<!--關於地球漫遊-->
+<div id="about_wanderworld" style="display:none;">
+	<h1>地球漫遊：關於旅行中的精采故事</h1><br/>
+   	<h3>"我們相信，每一次旅行都是改變，值得紀錄。"</h3>
+   	<p><span class="introduction">WanderWorld地球漫遊是幫助人們紀錄旅行的服務；我們喜歡旅行，相信網路世界應該要有比Blog和facebook更有個性的旅行紀錄方式。</span><br/>
+   	<span class="introduction">地球漫遊有兩個主要特色，分別是地圖式服務和時間軸分類:</span>
+	<h3>地圖式服務</h3>
+    <span class="introduction">在記錄旅行這件事情上，還有什麼比直接釘照片在地圖上更容易?我們相信，這樣不僅簡單有趣，而且充滿個性。</span>
+	<h3>時間軸分類方式:</h3>
+    <span class="introduction break">旅行，是人們在某一時間內漫遊於世界各地的過程。透過直覺式的時間軸分類方式，各位將能夠跨越地域的限制，將旅行適當的分類紀錄。</span></p>
+    <h1>BLUES團隊</h1>
+    BLUE是藍調的意思。因為我們喜歡聽藍調爵士樂，所以以此命名。<br/>
+
+<object id="prezi_f0f59b9598ba355f3705a3ecd721f8542636f0ff" name="prezi_f0f59b9598ba355f3705a3ecd721f8542636f0ff" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="400" height="300"><param name="movie" value="http://prezi.com/bin/preziloader.swf"/><param name="allowfullscreen" value="true"/><param name="allowscriptaccess" value="always"/><param name="bgcolor" value="#ffffff"/><param name="flashvars" value="prezi_id=f0f59b9598ba355f3705a3ecd721f8542636f0ff&amp;lock_to_path=0&amp;color=ffffff&amp;autoplay=no&amp;autohide_ctrls=0"/><embed id="preziEmbed_f0f59b9598ba355f3705a3ecd721f8542636f0ff" name="preziEmbed_f0f59b9598ba355f3705a3ecd721f8542636f0ff" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="400" height="300" bgcolor="#ffffff" flashvars="prezi_id=f0f59b9598ba355f3705a3ecd721f8542636f0ff&amp;lock_to_path=0&amp;color=ffffff&amp;autoplay=no&amp;autohide_ctrls=0"></embed></object>
+
+    <h1><a href="http://wanderworld-ideaaxis.blogspot.com/" target="_blank" id="wanderworld_ideaaxis">創業心得日誌→</a></h1>
+</div>

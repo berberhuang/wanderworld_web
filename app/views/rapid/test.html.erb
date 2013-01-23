@@ -1,0 +1,431 @@
+<% 	
+	def hasPermission id
+		if permissionCheck (isTripExist(id))
+			return true
+		else
+			return false
+		end
+	end
+
+	def isTripExist id
+		@t=Trip.find_by_id(id)
+	end
+
+	def permissionCheck obj
+		if obj
+			if obj.user_id==session[:user_id]
+				return obj
+			end
+		else
+			return nil
+		end
+	end
+%>
+<%= content_for :css do %>
+	<%= stylesheet_link_tag    "index_layout" %>
+<%end%>
+<script type="text/javascript">
+	function tmpPutData(){
+		if(fid && false){
+                	<% if session[:update].eql?("d")%>
+                        	$.get('/fb/update?user_id=<%=session[:user_id]%>',null,function(r){
+	                tt=r;
+        	        var t_i=0;
+        	        for(;t_i<r[0].length;t_i++){
+               	        	FB.api(fid+'/wanderworld:create?trip=http://www.wanderworld.com.tw/'+r[0][t_i].id,'POST',function(r){et=r;});
+                        	log(r[0][0].id);
+                        	log(r[1][0][0].id);
+                        	var tp_i=0;
+	                        for(;tp_i<r[1][t_i].length;tp_i++){
+        	                        FB.api(fid+'/wanderworld:create?journal=http://www.wanderworld.com.tw/'+r[0][t_i].id+'/'+r[1][t_i][tp_i].id,'POST');
+	                        }
+        	        }
+	        });
+        	                <%session[:update]="n"%>
+                	<%end%>
+                }
+	}	
+	
+	//是否使用FB登入
+	<%if session[:fbid]%>
+		var fid=<%=session[:fbid]%>;
+	<%else%>
+		var fid=false;
+	<%end%>
+
+	$(function(){
+		<% if session[:username]%>
+			login_s=true;
+		<%end%>
+		initialize();
+		$('.place').autocomplete({source:'/place/search'});
+		<%if session[:profile_user_id] %>
+			user_id=<%=session[:profile_user_id]%>;
+			<%session[:profile_user_id]=nil%>
+			returnTripList();
+		
+		<%elsif session[:username]&&@trip_id==nil%>
+			user_id=<%=session[:user_id]%>;
+			returnTripList();
+		/*	<%if @t=User.find(session[:user_id]).trips.sort {|a,b| b.id<=>a.id }%>			
+				<% if @t[0] %>
+						loadTrip(<%=@t[0].id%>);
+				<%else%>
+					$('#loading').hide();
+					newTrip();
+				<%end%>
+			<%else%>
+				$('#loading').hide();
+				newTrip();
+			<%end%>*/
+		<%elsif @trip_id==nil%>
+			window.location="/index/index"
+		<%else%>
+			<% if @tp_id%>
+				loadTrip(<%=@trip_id%>,<%=@tp_id%>);
+			<%else%>
+				loadTrip(<%=@trip_id%>);
+			<%end%>
+		<%end%>
+		<%if flash[:loginfail]%>
+			$('.floating a:eq(0)').click();
+		<%end%>  
+	});
+
+</script>
+<script type="text/javascript">
+	bkLib.onDomLoaded(function() {
+		var myNicEditor=new nicEditor({maxHeight : 160 ,buttonList : ['save','fontSize','fontFamily','bold','italic','underline','left','center','right','strikeThrough','html','image','upload','link','unlink','forecolor','removeformat','pagebreak']});
+		myNicEditor.setPanel('toolbar');
+		myNicEditor.addInstance('editPost');
+	});
+</script>
+
+<!--隱藏區塊-->
+<div id="hide_block" style="display:none"></div>
+
+<!--主控制-->
+<div id="main_control">
+	<div id="person" >
+		<div id="person_avatar">
+			<% if  session[:avatar_src]%>
+	           	<img src='<%=session[:avatar_src]%>'></img>
+			<% else%>
+				<img src='<%=asset_path("user_avatar.png")%>'></img>
+			<% end %>
+		</div>
+		<div id="person_name"></div>
+		<div style="clear: both;display: block"></div>	
+	</div>
+	<div id="other_button" >
+		<!--<div id="button_aboutme" class="items" onclick="showAboutMe()"> 關於我 </div>-->
+		<div id="button_traveljournal" class="items" onclick="showTravelJournal()"> 旅行列表 </div>
+		<!--<div class="items"> 好友動態 </div>
+		<div class="items"> 相簿 </div>-->
+	</div>
+</div>
+
+
+<!--關於我-->
+<div id="about_me" class="main_content" style="display:none">
+	<div id="aboutme_all" class="mid_block">
+		<!--背景-->
+		<img id="aboutme_background" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg">
+		<!--內容-->
+		<div id="aboutme_main" class="aboutme_block" >
+			<div id="aboutme_move" ></div>
+			<div id="aboutme_title" ></div>
+			<div id="aboutme_content" ></div>
+			<div style="clear: both;display: block"></div>	
+		</div>
+		<div id="config">編輯</div>	
+		<!--編輯器-->
+		<div id="aboutme_editor" style="display:none">
+			<div id="headDiv">
+				<div id="close"><img src='<%=asset_path("closelabel.png") %>' style="width:10px"></img></div>
+			</div>
+			<div id="tabs">
+				<ul>
+					<li><a href="#tabs-1">背景</a></li>
+					<li><a href="#tabs-2">內容</a></li>
+				</ul>
+				<div id="tabs-1">
+					<div >從網址：(請在圖片上按右鍵"複製影像網址")</div>
+					<div>
+						<input id="about_bg" type="text" value="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" />
+					</div>
+					<div >	
+						<div class="float_item">大小</div>
+						<input id="about_bg_width" type="text" value="100" />
+						<div class="float_item">%</div>
+						<div id="slider-range-min"></div>
+						<div style="clear: both;display: block"> </div>
+					</div>
+					<div id="filter_slider">
+						<div id="filter_none">
+							<img style="-webkit-filter : none;" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
+							<center><span>原圖</span></center>
+						</div>
+						<div>
+							<img style="-webkit-filter : blur(2px);" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
+							<center><span>模糊</span></center>
+						</div>
+						<div>
+							<img style="-webkit-filter : grayscale(0.5)" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
+							<center><span>50%灰度</span></center>
+						</div>
+						<div>
+							<img style="-webkit-filter : grayscale(1)" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
+							<center><span>100%灰度</span></center>
+						</div>
+						<div>
+							<img style="-webkit-filter : sepia(0.5)" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
+							<center><span>50%褐色</span></center>
+						</div>
+						<div>
+							<img style="-webkit-filter : sepia(1)" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
+							<center><span>100%褐色</span></center>
+						</div>
+						<div>
+							<img style="-webkit-filter : brightness(5)" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
+							<center><span>50%亮度</span></center>
+						</div>
+						<div>
+							<img style="-webkit-filter : hue-rotate(180deg)" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
+							<center><span>色相</span></center>
+						</div>
+						<div>
+							<img style="-webkit-filter : saturate(5)" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
+							<center><span>飽和度</span></center>
+						</div>
+						<div>
+							<img style="-webkit-filter : contrast(1.4)" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
+							<center><span>對比度</span></center>
+						</div>
+					</div>	
+				</div>
+				<div id="tabs-2">
+					<div>
+						<div class="float_item">標題</div>
+						<select id="about_fontfamily" name="about_fontfamily" class="float_right" style="display: none; ">
+							<option value="新細明體">新細明體</option>
+							<option value="標楷體">標楷體</option>
+							<option value="微軟正黑體" selected="selected">微軟正黑體</option>
+						</select>
+						<div id="" class="float_right">
+							<button id="about_fontsize" >40</button>
+							<div id="about_fontsize_drop" style="display:none;"><div id="about_fontsize_bar"></div></div>
+						</div>
+						<div id="colorSelector2" class="float_right"><div style="background-color: #4d62b3"></div></div>
+						<div id="dialog_color" title="色彩編輯器"><div id="colorpickerHolder2"></div></div>						
+					</div>
+					<div ><input id="about_title" type="text" value="來去旅行吧!!!" /></div>
+					<div style="line-height: 30px;" >自我介紹</div>
+					<textarea id="about_editor"  style="width:100%"></textarea>	
+					<div style="clear: both;display: block"> </div>
+				</div>
+			</div>
+		</div>			
+	</div>
+</div>
+
+
+<!--漫遊日誌-->
+<div id="travel_journal" class="main_content" >
+	<!--google地圖-->
+	<div id="map_canvas"></div>
+	<!--<div id="map_small"></div>-->
+	<div id="map_adjust" title="調整地圖"  onclick="computeMap();">
+		<img src='<%=asset_path("view_all.png")%>'></img>
+	</div>
+	<!--留言框-->
+	<div id="commentScope">
+		<h2 class="TripPointName"> </h2>
+		<div id="comment"></div>
+	</div>
+	<!--旅行列表-->
+	<div id="trip_list" class="list" style="display:none;">
+		<div id="trip_logo">
+			<img src='<%=asset_path("logo_walker.png")%>'></img>
+		</div>
+		<div id="trip_title">
+			<h2 class="information">旅行列表</h2>
+		</div>
+		<div id="trip_create" style="display:none;">
+			<button id="trip_create_button" onclick="newTrip()">新增</button>
+		</div>	
+		<div id="prev" onclick="toTop()"></div>
+		<div id="timeline">
+			<div id="load_trip" class="loading">
+				<div class="load_name">Loading</div>
+				<div id="block_1" class="barlittle"></div>
+				<div id="block_2" class="barlittle"></div>
+				<div id="block_3" class="barlittle"></div>
+				<div id="block_4" class="barlittle"></div>
+				<div id="block_5" class="barlittle"></div>
+			</div>
+			<ul id="dates"></ul>
+		</div>
+		<div id="next" onclick="toBottom()"></div>
+	</div>
+	<!--旅行-->
+	<div id="trip_one" class="list" style="display:block;">
+		<!--旅行資訊-->
+		<div id="trip_information">
+			<div id="trip_names">
+				<div id="trip_name" >
+                			<h1 class="information" >
+						<div><a></a></div>
+						<input style="display:none;" placeholder="輸入旅行名稱" onkeydown="finishEditTripName(event)" />
+					</h1>
+				</div>
+				<div id="return_triplist" >
+					<img style="height:23px" src='<%=asset_path("undo_blue.png")%>' onclick="returnTripList()" title="返回旅行列表"/>
+				</div>
+			</div>
+			<div id="trip_date">
+				<div><a></a></div>
+				<input id="date_picker" type="text" readonly="readonly" style="display:none;" onkeydown="finishEditTripDate(event)" />
+			</div>
+			<!--<div id="trip_friend">
+				<div style="float:left;width:90%"><a>與 黃浩宇、Rola Jeffrey和Wayne Chu</a></div>
+				<div id="trip_friend_add"><img style="height:18px" src='<%=asset_path("button_plus_blue.png")%>' onclick="" title="增加朋友"/></div>
+			</div>-->
+			<div id="trip_status" style="display:none;">
+				<div style="float:left">狀態：</div>
+				<div style="float:left;color:#FB9B35"><a></a></div>
+			</div>
+			<div style="clear: both;display: block"> </div>
+		</div>
+		<!--讀取列表-->
+		<div id="load_point" class="loading">
+			<div class="load_name">Loading</div>
+			<div id="block_1" class="barlittle"></div>
+			<div id="block_2" class="barlittle"></div>
+			<div id="block_3" class="barlittle"></div>
+			<div id="block_4" class="barlittle"></div>
+			<div id="block_5" class="barlittle"></div>
+		</div>
+		<!--景點列表-->
+		<div class="scroll-pane">
+			<div class="trip_point_all">
+				<div id="group_bottom" style="clear: both;display: block"></div>
+			</div>
+			<div id="edit_div" style="display:none;right:0px;">
+				<div class="" id="edit" onclick="editPost()"><img src='<%=asset_path("edit.png")%>'>編輯遊記</div>
+				<div class=""><img src='<%=asset_path("config.png")%>'>更改景點</div>
+				<div class="" id="delete" onclick="removeTripPoint()"><img src='<%=asset_path("closelabel.png")%>'>刪除景點</div>
+			</div>
+		</div>
+		<div id="add_group_tittle">
+			<button id="trip_create_button" onclick="addGroupTittle()">新增</button>
+		</div>
+		<!--新增景點-->
+		<div id="trip_control" style="display:none">
+			<li id="protoBox" style="display:none;">
+				<div class="unDefinePos">
+					<input class="place" type="text" size="20" placeholder="輸入景點名稱" onkeydown="enterTripPoint(event)" onfocus="ui_unloadTripPointSwitchControl((editTarget_id==-1)?false:true)" onblur="blurAddBox()" />
+					<a href="##" onclick="enterTripPoint(event)">標記</a>
+				</div>
+			</li>
+			<a href="javascript:addBox();" id="add" >新增景點</a>
+		</div>
+		<!--瀏覽人次-->
+		<div id="view_num">
+			<span>瀏覽人次：<span id="count"></span></span>
+        	</div>
+		<!--分享-->
+		<div id="sharetoFB">
+			<a href="#share_button" rel="facebox.sharecss" id="share" >分享</a>
+			<div style="clear: both;display: block"> </div>
+		</div>
+		<div style="clear: both;display: block"> </div>
+	</div>
+
+	<!--隱藏的內容框-->
+	<div id="slidesContainer_s" style="display:none">
+		<a href="##" onclick="hideContainer();">顯示遊記框</a>
+	</div>
+
+	<!--內容框-->
+	<div id="slidesContainer" style="display:none">
+		<div class="bounceDiv">
+			<div id="bounce" title="展開(快捷鍵:上)" onclick="clickBounce()">
+					<img src='<%=asset_path("bounce.png")%>' />
+			</div>
+			<div id="collapse" title="收合(快捷鍵:ESC)" style="display:none" onclick="clickCollapse()">
+				<img src='<%=asset_path("collapse.png")%>' />
+			</div>
+			<div id="like"></div>
+			<div class="editTool">
+				<img src='<%=asset_path("settings.png")%>' title="設定">
+				<img src='<%=asset_path("edit.png")%>' title="編輯遊記">
+			</div>
+			<div id="move_this"><img src='<%=asset_path("arrow_move.png")%>' /></div>
+			<div id="hide_this">
+				<a href="##" onclick="hideContainer();">
+					<img src="http://www.famfamfam.com/lab/icons/silk/icons/delete.png" title="隱藏遊記框"/>
+				</a>
+			</div>
+		</div>
+		<div id="slidebottom">
+			<div id="leftControl" class="control" onclick="shiftLeft()">
+				<img src='<%=asset_path("left-03.png")%>' title="上一個景點(快捷鍵:左)" />
+			</div>
+			<div id="travel_info">
+				<div id="toolbarDiv">
+					<div id="toolbar"></div>
+				</div>
+				<div class="slide">
+					<div id="controlScroll" style="display:none"></div>
+					<div id="editPostDiv">
+							<div id="editPost"></div>
+					</div>
+					<div id="postContent"></div>
+					<a id="continue" href="##" onclick="clickBounce()">繼續閱讀</a>
+					<div id="fullPostContent" style="display:none"></div>
+				</div>
+				<div class="controlButton">
+					<div id="postToFB" title="發布到Facebook" style="display:none" onclick="checkbox()">
+						<input type="checkbox" id="check" onclick="checkbox()"  />
+						<img src='<%=asset_path("Facebook_icon.png")%>' style="height:25px" />
+					</div>
+					<button id="finishPost" onclick="finishPost()">完成</button>
+					<button id="cancelEdit" onclick="cancelEdit()">取消編輯</button>
+					<button id="ignorePost" onclick="closePost()">略過</button>
+				</div>
+			</div>
+			<div id="rightControl" class="control" onclick="shiftRight()">
+				<img src='<%=asset_path("right-04.png")%>' title="下一個景點(快捷鍵:右)" />
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--FB分享-->
+<div id="share_button" style="display:none;">
+	<div class="sharecss_l">
+		<span>按Ctrl+C複製下列網址</span>
+		<input id="shareInput" placeholder="這裡將出現分享用縮網址" size="50" />
+		<button onclick="postToWall()">分享到facebook</button>
+		<!--<a name="fb_share" type="button_count" href="http://www.facebook.com/sharer.php">分享</a><script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>-->
+		<!--<span>將足跡地圖嵌入BLOG文章中</span><br/>
+		<input id="embedInput" type="url" placeholder="<embed>瓜拉拉瓜拉瓜拉</embed>" size="50"/>-->
+	</div>
+	<div class="sharecss_r">
+		<img src='<%=asset_path("LOGO黑體直行-06.png")%>' style="height:145px;"/>
+	</div>
+</div>
+
+
+<!--手動輸入-->
+<div id="add_new" style="display:none">
+    	糟了，找不到你想標記的地點，試試看手動輸入吧!
+        <ol>
+	       	<li>輸入附近的地理資訊試試看<input type="search" placeholder="試著輸入國家、城市、以及附近景點或經緯度、地址" size="40" onkeydown="searchPos(event)" />
+        	<button class="search" onclick="searchPos(event)">搜尋</button></li>
+        	<li>按下搜尋後，請將地圖上的<img src='<%=asset_path("logo.png")%>' />拖至正確位置，並點選下方「完成」或「取消」</li>
+        </ol>
+        <button class="finish" onclick="finishSetNewManPos()">完成</button><button class="cancel" onclick="cancelSetNewManPos()">取消</button>
+</div>
+
