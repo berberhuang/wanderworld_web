@@ -192,7 +192,7 @@ jQuery.fn.daterangepicker = function(settings){
 		if(rp.data('state') == 'open'){ 
 			rp.fadeOut(300).data('state', 'closed');
 			options.onClose(); 
-			finishEditTripDate();
+			tripPointList.finishEditTripDate();
 		}
 	}
 	function toggleRP(){

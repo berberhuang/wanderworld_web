@@ -1,0 +1,162 @@
+var PathOnMap=function(){
+	var pointData=[];
+	var tmp_mark;
+	return {
+		//建立標記
+		createMark:function(title,item_id,latlng,canvasURL){
+			var item=new google.maps.Marker({
+				position: latlng,
+				map: map,
+				title: title,
+				icon: canvasURL,
+				//animation: google.maps.Animation.DROP,
+				draggable: false,
+				item_id:item_id
+			});
+			google.maps.event.addListener(item, 'click', function(){/*toggleBounce(item);*/clickPointTitle(item_id);});
+			item.setMap(map);
+			pointData[item_id]=item;
+			map.setCenter(latlng);
+
+		},
+		updateMark:function(){
+			if(pointData.length>0){
+				for(p_i in pointData){
+					pointData[p_i].setMap();
+				}
+			}
+			pointData=[];
+			
+			var tpList = DataStatus.tripPointList;
+			var groupList = DataStatus.groupList;
+			var i=1;
+			for(var g_i in groupList){
+				var group_id=groupList[g_i].id;
+				var mark_color=getGroupColor(groupList[g_i].id,groupList);
+				
+				for(var tp_i in tpList){
+					if(tpList[tp_i].group_id==group_id){
+						var id=tpList[tp_i].id;
+						var latlng=new google.maps.LatLng(tpList[tp_i].place.latitude, tpList[tp_i].place.longitude, false);									
+						PathOnMap.createMark(tpList[tp_i].place.name,id,latlng,getMarkURL(i++,mark_color));
+						pointData[id].setDraggable(false);
+					}
+				}
+			}
+		},
+		//建立未確認的暫時mark
+		createTmpMark:function(title,group_id,latlng){
+			this.deleteTmpMark();	
+
+			var item=new google.maps.Marker({
+				position: latlng,
+				map: map,
+				title: title,
+				icon: getMarkURL('P',getGroupColor(group_id,DataStatus.groupList)),
+				animation: google.maps.Animation.DROP,
+				draggable: false,
+				group_id:group_id
+			});
+			//google.maps.event.addListener(item, 'click', function(){toggleBounce(item);});
+			item.setMap(map);
+			tmp_mark=item;
+			map.setCenter(latlng);
+		},
+
+		deleteTmpMark:function(){
+			if(tmp_mark)
+				tmp_mark.setMap();
+			tmp_mark=null;
+		},
+
+		//刪除標記
+		deleteMark:function(i){
+			if(!pointData[i])
+				return ;
+			var j;
+			for(j=i-1;j>=0;j--){
+				if(pointData[j]){
+					var t;
+					var s=true;
+					for(t=i+1;t<pointData.length;t++){
+						if(pointData[t]){
+							if(pointData[j].polyline)
+								pointData[j].polyline.setPath([pointData[j].getPosition(),pointData[t].getPosition()])
+							if(pointData[i].polyline)
+								pointData[i].polyline.setMap();
+							pointData[i].polyline=null;
+							s=false;
+							break;
+						}
+					}
+					if(s){
+						if(pointData[j].polyline)
+							pointData[j].polyline.setMap();
+						pointData[j].polyline=null;
+						if(pointData[i])
+							pointData[i].setMap();
+					}
+					break;
+				}	
+			}
+			if(pointData[i]){
+				if(pointData[i].polyline)
+					pointData[i].polyline.setMap();
+				pointData[i].polyline=null;
+				pointData[i].setMap();
+			}
+		},
+		//標記彈跳動畫
+		toggleBounce:function(item) {
+			if(item.getAnimation() != null) {
+				item.setAnimation(null);
+			}else{
+				item.setAnimation(google.maps.Animation.BOUNCE);
+			}
+		},
+		//改變順序動作時重新牽線(ui=jquery.event)
+		redrawLine:function(ui){
+			var i=0;
+			for(;i<pointData.length;i++){
+				if(pointData[i]){
+					var j=i+1;
+					var next;
+					for(;j<pointData.length;j++){
+						if(pointData[j]){
+							next=pointData[j];
+							break;	
+						}
+					}
+					
+					if(pointData[i].polyline&&next==null){
+						pointData[i].polyline.setMap();
+					}else if(pointData[i].polyline&&next!=null){
+						pointData[i].polyline.setMap();
+						pointData[i].polyline=new google.maps.Polyline({
+							geodesic:true,
+							map:map,
+							strokeWeight:3,
+							strokeColor:getGroupColor(next.group_id),
+							path:[pointData[i].getPosition(),next.getPosition()]
+						});					
+					}else if(next!=null){
+						pointData[i].polyline=new google.maps.Polyline({
+							geodesic:true,
+							map:map,
+							strokeWeight:3,
+							strokeColor:getGroupColor(next.group_id),
+							path:[pointData[i].getPosition(),next.getPosition()]
+						});					
+					
+					}
+				}		
+			}
+		},
+		getTmpMark:function(){
+			return tmp_mark;
+		},
+		setTmpMark_place_id:function(pid){
+			tmp_mark.place_id=pid;
+		}
+	};
+}();

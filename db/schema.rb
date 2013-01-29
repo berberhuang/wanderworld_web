@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120605141611) do
+ActiveRecord::Schema.define(:version => 20130125144233) do
 
   create_table "checkin_points", :force => true do |t|
     t.integer  "user_id"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(:version => 20120605141611) do
     t.datetime "updated_at"
     t.integer  "trip_id"
     t.boolean  "public"
+    t.float    "sort_id"
   end
 
   create_table "journeys", :force => true do |t|
@@ -73,7 +74,7 @@ ActiveRecord::Schema.define(:version => 20120605141611) do
     t.integer  "place_id",   :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "sort_id"
+    t.float    "sort_id"
     t.integer  "group_id"
   end
 

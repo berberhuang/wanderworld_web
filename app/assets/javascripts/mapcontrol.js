@@ -2,12 +2,14 @@ var zoom_w,cen_x,cen_y;
 var map_flag=false;
 function computeMap()
 {
+
 	//找最邊邊的點
+	var pointData=DataStatus.tripPointList;
 	var array_lat = new Array();
 	var array_lng = new Array();
 	for(var i in pointData){
-		array_lat[i]=pointData[i].getPosition().lat();
-		array_lng[i]=pointData[i].getPosition().lng();
+		array_lat[i]=pointData[i].place.latitude;
+		array_lng[i]=pointData[i].place.longitude;
 	}
 	var array_left = new Array();
 	var array_right = new Array();
@@ -70,10 +72,10 @@ function computeMap()
 	}	
 	var max_y=-90,min_y=90;//緯度
 	for(var i in pointData){
-			if (pointData[i].getPosition().lat() > max_y)
-					max_y = pointData[i].getPosition().lat();
-			if (pointData[i].getPosition().lat() < min_y)
-					min_y = pointData[i].getPosition().lat();
+			if (pointData[i].place.latitude > max_y)
+					max_y = pointData[i].place.latitude;
+			if (pointData[i].place.latitude < min_y)
+					min_y = pointData[i].place.latitude;
 	}
 	
 	//算出距離與中心
@@ -110,15 +112,18 @@ function computeMap()
 	
 	MapAdjust();
 	map_flag=true;
+
+		
 }
 //調整地圖的縮放及中心
-function MapAdjust() {		
+function MapAdjust() {
+	var pointData=DataStatus.tripPointList;
 	if(pointData.length==0){	//沒有景點
 		map.setCenter(new google.maps.LatLng(23.80, 121.500));
 		map.setZoom(8);		
 	}else if(pointData.length==1){	//只有一個點
-		cen_x=pointData[0].getPosition().lng();
-		cen_y=pointData[0].getPosition().lat();
+		cen_x=pointData[0].place.longitude;
+		cen_y=pointData[0].place.latitude;
 		zoom_w=8;
 	}else{
 		//向下調整16px(因為標誌在實際點的上方),向左調整list的寬度

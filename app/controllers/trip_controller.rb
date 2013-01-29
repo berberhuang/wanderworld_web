@@ -55,20 +55,22 @@ class TripController < ApplicationController
 		@trip=isTripExist(params[:id])
 		if @trip
 			@trip.count+=1
-			@trip.save
-
+			@trip.save	
 			
-			@tp=@trip.trip_points.sort{|a,b| a.sort_id<=>b.sort_id}
+			@group_list=@trip.groups.find(:all,:order=>'sort_id ASC')
+			
+			@tp=@trip.trip_points.find(:all,:order=>'sort_id ASC')
 			@place=[]
-			@group_title=Hash.new
+			#@group_title=Hash.new
 			@tp.each_with_index do |item,index|
 				@place[index]=item.place
 			end
 
-			@trip.groups.each do |g|
-				@group_title[g.id]=g.title
-			end
-			render :json=>[@tp,@place,@group_title]
+			#@trip.groups.each do |g|
+			#	@group_title[g.id]=g.title
+			#end
+			#render :json=>[@tp,@place,@group_title]
+			render :json=>[@group_list,@tp,@place]
 		else
 			render :json=>nil
 		end
@@ -141,9 +143,16 @@ class TripController < ApplicationController
 		if(permissionCheck(@trip))
 			@g=Group.new
 			if @g
+				@sort_id=Group.limit(1).select('sort_id').order('sort_id DESC').find_by_trip_id(params[:trip_id])
+				if @sort_id
+					@sort_id = @sort_id.sort_id+1
+				else
+					@sort_id=0
+				end
 				@g.title=params[:title]
 				@g.trip_id=@trip.id
 				@g.public=false;
+				@g.sort_id=@sort_id
 				@g.save
 				render :json=>@g.id
 				return
@@ -177,21 +186,14 @@ class TripController < ApplicationController
 		@trip=isTripExist(params[:trip_id])	
 		if(permissionCheck(@trip))
 			if @trip
-				@tp=@trip.trip_points
-				group_n=TripPoint.find(:all,:conditions=>['group_id=?',params[:group_id]]).size
-				bound=params[:insert_sort_id].to_i
-				@tp.each do |s|
-					if s.sort_id.to_i>=bound
-						s.sort_id+=group_n
-						s.save
-					end
+				@g=Group.find_by_id(params[:group_id])
+				if @g
+					@g.sort_id=params[:new_sort_id]
+					@g.save
+				else
+					render :json=>nil
+					return
 				end
-
-				@group_member=TripPoint.find(:all,:conditions=>['group_id = ?',params[:group_id]], :order=>'sort_id ASC')
-				@group_member.each_with_index do |t,index|
-					t.sort_id=bound+index
-					t.save
-				end			
 
 				render :json=>true
 				return
@@ -200,24 +202,22 @@ class TripController < ApplicationController
 		render :json=>nil
 	end
 
-	def changeTripPointOrder   ##  target_id 正在被移動的東西的 tripPoint_id,    insert_sort_id 被移動物件的sort_id 的新值
+	def changeTripPointOrder 
 		@trip=isTripExist(params[:trip_id])	
 		if(permissionCheck(@trip))
 			if @trip
-				@tp=@trip.trip_points
-				@target=TripPoint.find_by_id(params[:target_id])
-				bound=params[:insert_sort_id].to_i
-				@tp.each do |s|
-					if s.sort_id.to_i>=bound
-						s.sort_id+=1
-						s.save
-					end
+				@target=TripPoint.find_by_id(params[:tripPoint_id])
+				if @target 
+					@target.sort_id=params[:new_sort_id]
+					@target.group_id=params[:new_group_id]
+					@target.save
+				else
+					render :json=>nil
+					return
 				end
-				@target.sort_id=bound
-				@target.group_id=params[:group_id]
-				@target.save
 				render :json=>true
 				return
+				
 			end
 		end
 		render :json=>nil
@@ -274,66 +274,45 @@ class TripController < ApplicationController
 		end
 	end
 
-	def insertPoint
-		if admCheck
-			@tpoint=TripPoint.new(params[:trip_point])
-			if pemissionCheck(isTripExist(@tpoint.trip_id))
-				if !place_id=Place.where(:name=>@tpoint.name,:city=>@tpoint.city)[0]
-					place_id=Place.create(:name=>@tpoint.name,:longitude=>@tpoint.longitude,:latitude=>@tpoint.latitude,:city=>@tpoint.city)
-				end
-				place_id=place_id.id 
-				if !place_id
-					render :json=>nil
-					return 
-				end
-				@tpoint.user_id=session[:user_id]
-				@tpoint.place_id=place_id
-				@tpoint.trip_id=params[:id]
-				@tpoint.save
-				render :json=>[@tpoint.id]
-			else
-				render :json=>nil
-			end
-		end
-	end
+#	def insertPoint
+#		if admCheck
+#			@tpoint=TripPoint.new(params[:trip_point])
+#			if pemissionCheck(isTripExist(@tpoint.trip_id))
+#				if !place_id=Place.where(:name=>@tpoint.name,:city=>@tpoint.city)[0]
+#					place_id=Place.create(:name=>@tpoint.name,:longitude=>@tpoint.longitude,:latitude=>@tpoint.latitude,:city=>@tpoint.city)
+#				end
+#				place_id=place_id.id 
+#				if !place_id
+#					render :json=>nil
+#					return 
+#				end
+#				@tpoint.user_id=session[:user_id]
+#				@tpoint.place_id=place_id
+#				@tpoint.trip_id=params[:id]
+#				@tpoint.save
+#				render :json=>[@tpoint.id]
+#			else
+#				render :json=>nil
+#			end
+#		end
+#	end
 
 	def insertPointById
 		@tpoint=TripPoint.new(params[:trip_point])
 		if admCheck && @tpoint.place_id
 			if permissionCheck(isTripExist(params[:id]))
-				@insertPos=TripPoint.find_by_id(params[:pre_tp_id])
-				if @insertPos
-					TripPoint.find(:all,:conditions=>['trip_id =? AND sort_id>?',params[:id],@insertPos.sort_id]).each do |a|
-						a.sort_id+=1
-						a.save
+				if(params[:tripPoint_id]!='-1')				
+					if(@tmp=TripPoint.find(params[:tripPoint_id]))
+						@tmp.sort_id=@tpoint.sort_id
+						@tmp.save
+						render :json=>@tmp
+						return
 					end
-					@tpoint.sort_id=@insertPos.sort_id+1
-				else
-					@tp=TripPoint.find(:all,:conditions=>['trip_id = ?',params[:id]],:order=>'sort_id ASC')
-					@tp.each do |a|
-						a.sort_id+=1
-						a.save
-					end		
-
-					if(@tp.length>0)
-						@tpoint.sort_id=@tp[0].sort_id-1
-					else
-						@tpoint.sort_id=0
-					end
-				end
-
-				if(params[:tripPoint_id]!='-1')
-					#if(@tmp=TripPoint.find(params[:tripPoint_id]))
-					#	@tmp.sort_id=@tpoint.sort_id
-					#	@tmp.save
-					#	render :json=>[@tmp.id,@tmp.sort_id]
-					#	return
-					#end
 				end
 				@tpoint.user_id=session[:user_id]
 				@tpoint.trip_id=params[:id]
 				@tpoint.save
-				render :json=>[@tpoint.id,@tpoint.sort_id]
+				render :json=>@tpoint
 			else
 				render :json=>nil
 			end

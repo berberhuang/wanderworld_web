@@ -2,36 +2,47 @@ class RapidController < ApplicationController
 	def index		
 		@newuser=User.new
 		@user_session=UserSession.new
+				
 		@trip_id=params[:id]
-		@tp_id=params[:tp_id]	
-		@user_id=params[:user_id]
-
-		if @trip_id && @tp_id
-			logPosition '/'+@trip_id+'/'+@tp_id
-		elsif @trip_id
-			logPosition '/'+@trip_id
-		else
-			logPosition '/'
+		@trip_point_id=params[:tp_id]	
+		
+		#從處理要求triplist要求
+		@user_id = params[:user_id]
+		
+		#如果id不正常或不存在 忽略指定參數
+		if @trip_id && @trip_id.to_i.to_s!=@trip_id || !Trip.select('id').find_by_id(@trip_id.to_i)
+			@trip_id = nil
+			@trip_point_id = nil
 		end
-
-		#如果id不正常或不存在 導回首頁
-		if @trip_id
-			if @trip_id.to_i.to_s!=@trip_id
-				#支援輸入人名的能力
-				if( t=User.where(["username = ? AND fbid IS NOT NULL",params[:id]]).all[0])
-					if(@trip=t.trips[0])
-						redirect_to '/'+@trip.id.to_s
-						return
-					end
-				end
-				redirect_to '/'
+		
+		if @trip_point_id && @trip_point_id.to_i.to_s!=@trip_point_id || !TripPoint.select('id').find_by_id(@trip_point_id.to_i)
+			@trip_point_id = nil
+		end
+		
+		#檢查完畢
+		
+		if @trip_id && @trip_point_id
+			@url= '/'+@trip_id+'/'+@trip_point_id
+			logSrcURL @url
+		elsif @trip_id
+			@url= '/'+@trip_id
+			logSrcURL @url
+		else
+			if @user_id && User.select('id').find_by_id(@user_id.to_s)
+				@triplist=true
+				@url= '/rapid/triplist/'+@user_id
+				logSrcURL = @url
 				return
 			end
-		else
-			if @user_id
-				session[:profile_user_id]=@user_id
+			if session[:user_id]
+				@triplist=true
+				@url= '/rapid/triplist/'+session[:user_id].to_s
+				logSrcURL = @url
+				return
 			end
+			redirect_to '/'
 		end
+		
 	end
 
 	def triplist
@@ -39,14 +50,7 @@ class RapidController < ApplicationController
 		@user_session=UserSession.new
 	
 		@user_id=params[:id]
-		if @user_id.to_i.to_s!=@user_id
-			if( t=User.where(["username = ? AND fbid IS NOT NULL",@user_id]).all[0])
-				if(t.id)
-					redirect_to '/rapid/index?user_id='+t.id.to_s
-					return
-				end
-			end
-			
+		if @user_id.to_i.to_s!=@user_id		
 			redirect_to '/'
 			return
 		end
@@ -74,7 +78,7 @@ class RapidController < ApplicationController
 		@user_session=UserSession.new
 	end
 
-	def logPosition str
+	def logSrcURL str
 		session[:url]=str
 	end	
 

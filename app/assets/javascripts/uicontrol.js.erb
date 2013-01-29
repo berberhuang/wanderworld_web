@@ -1,12 +1,13 @@
 //依照權限切換ui
 function ui_modeSwitch(t){
+	alert(t);
 	if(t){		
-		$('#trip_name div').click(function(){editTripName();});
+		$('#trip_name div').click(function(){tripPointList.UiListener.editTripName();});
 		$('#trip_name div').css('cursor','pointer');
-		$('#trip_date div').click(function(){editTripDate();});
+		$('#trip_date div').click(function(){tripPointList.UiListener.editTripDate();});
 		$('#trip_date div').css('cursor','pointer');
 		//$('#trip_friend_add').show();
-		$('#add_group_tittle').show();		
+		$('#group_create_button').show();		
 		$('.editTool').show();		
 		//$('#add').show();		
 	}else{		
@@ -15,184 +16,19 @@ function ui_modeSwitch(t){
 		$('#trip_date div').unbind('click');
 		$('#trip_date div').css('cursor','auto');
 		//$('#trip_friend_add').hide();
-		$('#add_group_tittle').hide();	
+		$('#group_create_button').hide();	
 		$('.editTool').hide();	
 		//$('#add').hide();
 	}
+	
 }
 
-/*旅行********************************************************************************/
+/*景點*******************************************************************************/
 
-//編輯旅行名稱
-function ui_editTripName(){
-	trip_name=$('#trip_name a:eq(0)').text();
-	$('#trip_name div').hide().parent().find('input').show().focus().val(trip_name);
-}
-//完成編輯旅行名稱
-function ui_finishEditTripName(){
-	var a=$('#trip_name a:eq(0)');
-	var input=$('#trip_name input');
-	if(a.text().replace(/[\s]*/,"").length==0 && input.val().replace(/[\s]*/,"").length==0) 
-		a.text("請輸入旅行名稱");
-	else
-		a.text((input.val().replace(/[\s]*/,"").length!=0)?input.val():a.text());
-	$('#trip_name div').show();
-	input.hide();
-}
-//編輯旅行日期
-function ui_editTripDate(){
-	trip_date=$('#trip_date a:eq(0)').text();
-	$('#trip_date div').hide().parent().find('input').show().focus().val(trip_date);	
-}
-//完成編輯旅行日期
-function ui_finishEditTripDate(){
-	var a=$('#trip_date a:eq(0)');
-	var input=$('#trip_date input');
-	a.text((input.val().replace(/[\s]*/,"").length!=0)?input.val():a.text());
-	$('#trip_date div').show();		
-	var startdate = input.val().split("-")[0].replace(/\//g,'-').replace(/\ /,'');
-	if(input.val().split("-")[1])
-		var enddate = input.val().split("-")[1].replace(/\//g,'-').replace(/\ /,'');
-	else
-		var enddate = startdate;
-	if( getdate() < startdate ){
-		$('#trip_status').show();
-		$('#trip_status a').text('倒數 '+getDateDiff(startdate,getdate())+' 天');
-	}else if(getdate() >= startdate && getdate() <= enddate){
-		$('#trip_status').show();
-		$('#trip_status a').text('正在旅行');
-	}else if( getdate() > enddate ){
-		$('#trip_status').hide();
-		$('#trip_status a').text('');
-	}		
-	input.hide();
-}
 
-/*群組**************************************************************************/
 
-//插入群組
-function ui_insertGroup(group_id,title){
-	var str='';
-	str+='<div id="trip_point_group_'+group_id+'" class="trip_point_group">';
-	str+='  <div class="trip_point_tittle" onclick="clickGroupTitle('+group_id+')"><a>'+title+'</a><input value="'+title+'" placeholder="輸入遊記名稱" onkeydown="enterGroupName('+group_id+',event)" style="display:none;"></div>';                                            
-	str+='  <div class="trip_point_add" title="新增景點" onclick="addPoint('+group_id+')">';
-	if(edit_s){
-		str+='<img src="<%=asset_path('button_plus_blue.png')%>"></img>';		
-	}
-	str+='  </div>';
-	str+='  <div class="trip_point_edit" onclick="editGroup('+group_id+')">';
-	if(edit_s){                                                     
-		str+='<img src="<%=asset_path('edit2.png')%>" title="編輯"></img>';
-		str+='<div class="group_edit_menu">';
-		str+='<div onclick="editGroupName('+group_id+')"><img src="<%=asset_path('doc_edit.png')%>">更改遊記名稱</div>';
-		str+='<div onclick="editPost()"><img src="<%=asset_path('pencil.png')%>">編輯遊記</div>';
-		str+='<div onclick="deleteGroup('+group_id+')"><img src="<%=asset_path('delete1.png')%>">刪除遊記</div>';
-		str+='</div>';          
-	}
-	str+='  </div>';	
-	str+='  <ul class="trip_point"></ul>';
-	str+='  <div style="clear: both;display: block"></div>';
-	str+='</div>';
-	$('.trip_point_all').append(str);
-}
-//建立新群組
-function ui_createGroup(title){
-	createGroup(title,function(result){		
-		var group_id=result;
-		ui_insertGroup(group_id,title);		
-		$('#group_bottom').appendTo($('.trip_point_all'));
-		$('.scroll-pane').animate({scrollTop:$(document).height()}, 'slow');
-		ui_finishEditGroupName(group_id);
-		reLayout();
-		reSortable(true);		
-	});
-}
-//完成編輯群組名稱
-function ui_finishEditGroupName(id){
-	var a=$('#trip_point_group_'+id+' .trip_point_tittle a:eq(0)');
-	var input=$('#trip_point_group_'+id+' .trip_point_tittle input');
-	a.text((input.val().replace(/[\s]*/,"").length!=0)?input.val():a.text());
-	$('#trip_point_group_'+id+' .trip_point_tittle a').show();
-	input.hide();
-}
 
-/*景點********************************************************************************/
 
-//加入景點
-function ui_addTripPoint(i,group_id,title,mark_color){
-	str='';
-	str+='<li value="'+i+'">'
-	str+='<div class="point">';						
-	str+='<img class="point_mark" src="'+getMarkURL(i+1,mark_color)+'" />';
-	str+='<a class="point_name" onclick="clickPointTitle(event)">'+title+'</a>';
-	str+='<div class="point_edit">';
-	if(edit_s){		
-		str+='<img src="<%=asset_path('settings.png')%>" onclick="editPoint(event)" title="編輯"></img>';
-		str+='<div class="point_edit_menu">';
-		str+='<div onclick="editPost()"><img src="<%=asset_path('pencil.png')%>">編輯遊記</div>';
-		str+='<div onclick="removeTripPoint(event)"><img src="<%=asset_path('delete1.png')%>">刪除景點</div>';
-		str+='</div>';	
-	}
-	str+='</div>';
-	str+='<div style="clear: both;display: block"></div>';
-	str+='</div>';
-	str+='</li>';
-	$('#trip_point_group_'+group_id+' ul').append(str);
-}
-//移除景點
-function ui_removeTripPoint(item_id){
-	$('.trip_point_all li[value='+item_id+']').remove();
-	deleteMark(item_id);
-	var tmp_pointData=new Array();
-	var point=$('.point');
-	for(i=0;i<point.length;i++){
-		var tmp=$(point[i]).parent().attr('value');
-		tmp_pointData[i]=pointData[tmp];
-		$(point[i]).parent().attr('value',i);
-	}
-	pointData=tmp_pointData;
-	ui_updateNumberMark();
-	redrawLine();
-	//reLayout();
-}
-//點選景點得視覺效果
-function ui_selectList(item_id){
-	ui_unselectList();
-	$('.trip_point_all li[value='+item_id+'] a:eq(0)').css('background','rgba(0, 149, 255, 0.45)');
-}
-//取消鎖定景點的效果
-function ui_unselectList(){
-    $('.trip_point_all li a').css('background','none');
-}
-//更新所有標記數字
-function ui_updateNumberMark(){
-	var i=0;
-	var li=$('.point');
-	var icon=new Array();
-	for(;i<li.length;i++){
-		icon[i]=getMarkURL(i+1,getGroupColor(pointData[i].group_id));
-		$(li[i]).find('.point_mark').attr('src',icon[i]);
-	}
-	for(i=0;i<pointData.length;i++){
-		pointData[i].setIcon(icon[i]);
-		pointData[i].setMap(map);
-	}
-}
-//找不到景點的景點標注框
-function ui_setNewManPos(){
-	$('#add_new').show(500).find('input').val('');
-	//失去焦點的時候隱藏		
-	ui_unloadTripPointSwitchControl(false);
-	$('.list').unbind('click').click(function(){
-		ui_closeNewManPos();
-		confirmCancel();
-	});
-}
-//關閉找不到景點的景點標注框
-function ui_closeNewManPos(){
-	$('.list').unbind('click');
-	$('#add_new').hide(500);
-}
 
 /*遊記********************************************************************************/
 
@@ -489,17 +325,7 @@ function ui_showMarkDetail(item_id){
 		window.history.pushState(state,document.title,'/'+trip_id);
 	});
 }
-//關閉描點的資訊框
-function ui_closeMarkDetail(){
-	if(infowindow)
-		infowindow.close();
-}
-//關閉確認訊息框
-function ui_closeConfirmBox(){
-	if(confirmWindow)
-		confirmWindow.close();
-	confirmWindow=null;	
-}
+
 
 /*鍵盤控制********************************************************************************/
 

@@ -1,95 +1,36 @@
-<% 	
-	def hasPermission id
-		if permissionCheck (isTripExist(id))
-			return true
-		else
-			return false
-		end
-	end
-
-	def isTripExist id
-		@t=Trip.find_by_id(id)
-	end
-
-	def permissionCheck obj
-		if obj
-			if obj.user_id==session[:user_id]
-				return obj
-			end
-		else
-			return nil
-		end
-	end
-%>
 <%= content_for :css do %>
 	<%= stylesheet_link_tag    "index_layout" %>
 <%end%>
 <script type="text/javascript">
-	function tmpPutData(){
-		if(fid && false){
-                	<% if session[:update].eql?("d")%>
-                        	$.get('/fb/update?user_id=<%=session[:user_id]%>',null,function(r){
-	                tt=r;
-        	        var t_i=0;
-        	        for(;t_i<r[0].length;t_i++){
-               	        	FB.api(fid+'/wanderworld:create?trip=http://www.wanderworld.com.tw/'+r[0][t_i].id,'POST',function(r){et=r;});
-                        	log(r[0][0].id);
-                        	log(r[1][0][0].id);
-                        	var tp_i=0;
-	                        for(;tp_i<r[1][t_i].length;tp_i++){
-        	                        FB.api(fid+'/wanderworld:create?journal=http://www.wanderworld.com.tw/'+r[0][t_i].id+'/'+r[1][t_i][tp_i].id,'POST');
-	                        }
-        	        }
-	        });
-        	                <%session[:update]="n"%>
-                	<%end%>
-                }
-	}	
+	//編輯顯示的URL
 	
+	window.history.pushState(null,document.title,"<%=@url%>");
+	
+	//-----------------check user login status------------------//
+	
+	//是否已登入
+	<% if session[:username]%>
+		EnvData.is_login=true;
+		UserData.user_id=<%=session[:user_id]%>;
+	<%end%>
+
 	//是否使用FB登入
 	<%if session[:fbid]%>
-		var fid=<%=session[:fbid]%>;
+		UserData.facebook_id=<%=session[:fbid]%>;
 	<%else%>
-		var fid=false;
+		UserData.facebook_id=false;
 	<%end%>
 
 	$(function(){
-		<% if session[:username]%>
-			login_s=true;
-		<%end%>
 		initialize();
-		$('.place').autocomplete({source:'/place/search'});
-		<%if session[:profile_user_id] %>
-			user_id=<%=session[:profile_user_id]%>;
-			<%session[:profile_user_id]=nil%>
-			returnTripList();
-		
-		<%elsif session[:username]&&@trip_id==nil%>
-			user_id=<%=session[:user_id]%>;
-			returnTripList();
-		/*	<%if @t=User.find(session[:user_id]).trips.sort {|a,b| b.id<=>a.id }%>			
-				<% if @t[0] %>
-						loadTrip(<%=@t[0].id%>);
-				<%else%>
-					$('#loading').hide();
-					newTrip();
-				<%end%>
-			<%else%>
-				$('#loading').hide();
-				newTrip();
-			<%end%>*/
-		<%elsif @trip_id==nil%>
-			window.location="/index/index"
-		<%else%>
-			<% if @tp_id%>
-				loadTrip(<%=@trip_id%>,<%=@tp_id%>);
-			<%else%>
-				loadTrip(<%=@trip_id%>);
-			<%end%>
+		<% if @trip_point_id %>
+			tripPointList.loadTripPoint(<%=@trip_point_id%>);
+		<% elsif @trip_id %>
+			tripPointList.loadTrip(<%=@trip_id%>);
+		<% elsif @user_id %>
+			tripListbar.loadTripList(<%=@user_id%>);
 		<%end%>
-		<%if flash[:loginfail]%>
-			$('.floating a:eq(0)').click();
-		<%end%>  
+		
 	});
 
 </script>
@@ -248,11 +189,11 @@
 			<h2 class="information">旅行列表</h2>
 		</div>
 		<div id="trip_create" style="display:none;">
-			<button id="trip_create_button" class="create_button" onclick="newTrip()" title="新增一個旅行">新增</button>
-		</div>	
+			<button id="trip_create_button" class="create_button" title="新增一個旅行">新增</button>
+		</div>
 		<div id="prev" onclick="toTop()" title="至頂端"></div>
-		<div id="timeline">
-			<div id="load_trip" class="loading">
+			<div id="timeline">
+				<div id="load_trip" class="loading">
 				<div class="load_name">Loading</div>
 				<div id="block_1" class="barlittle"></div>
 				<div id="block_2" class="barlittle"></div>
@@ -260,39 +201,30 @@
 				<div id="block_4" class="barlittle"></div>
 				<div id="block_5" class="barlittle"></div>
 			</div>
-			<ul id="dates"></ul>
+		<ul id="dates"></ul>
 		</div>
 		<div id="next" onclick="toBottom()" title="至底端"></div>
 	</div>
 	<!--旅行-->
-	<div id="trip_one" class="list" style="display:block;">
+	<div id="trip_one" class="list" style="display:none;">	
 		<!--旅行資訊-->
-		<div id="trip_information">
-			<div id="trip_names">
-				<div id="trip_name" >
-                			<h1 class="information" >
-						<div><a></a></div>
-						<input style="display:none;" placeholder="輸入旅行名稱" onkeydown="finishEditTripName(event)" />
-					</h1>
-				</div>
+		<div class="trip_information">
+			<div class="trip_names">
+				<h1 class="information" >
+					<div id="trip_name" ></div>
+				</h1>
 				<div id="return_triplist" >
-					<img style="height:23px" src='<%=asset_path("undo_blue.png")%>' onclick="returnTripList()" title="返回旅行列表"/>
+					<img style="height:23px" src='<%=asset_path("undo_blue.png")%>' title="返回旅行列表"/>
 				</div>
 			</div>
-			<div id="trip_date">
-				<div><a></a></div>
-				<input id="date_picker" type="text" readonly="readonly" style="display:none;" onkeydown="finishEditTripDate(event)" />
-			</div>
-			<!--<div id="trip_friend">
-				<div style="float:left;width:90%"><a>與 黃浩宇、Rola Jeffrey和Wayne Chu</a></div>
-				<div id="trip_friend_add"><img style="height:18px" src='<%=asset_path("button_plus_blue.png")%>' onclick="" title="增加朋友"/></div>
-			</div>-->
+			<div id="trip_date"></div>
 			<div id="trip_status" style="display:none;">
 				<div style="float:left">狀態：</div>
 				<div style="float:left;color:#FB9B35"><a></a></div>
 			</div>
 			<div style="clear: both;display: block"> </div>
-		</div>
+			</div>
+			
 		<!--讀取列表-->
 		<div id="load_point" class="loading">
 			<div class="load_name">Loading</div>
@@ -303,23 +235,15 @@
 			<div id="block_5" class="barlittle"></div>
 		</div>
 		<!--景點列表-->
-		<div class="scroll-pane">
-			<div class="trip_point_all">
-				<div id="group_bottom" style="clear: both;display: block"></div>
-			</div>
-			<div id="edit_div" style="display:none;right:0px;">
-				<div class="" id="edit" onclick="editPost()"><img src='<%=asset_path("edit.png")%>'>編輯遊記</div>
-				<div class=""><img src='<%=asset_path("config.png")%>'>更改景點</div>
-				<div class="" id="delete" onclick="removeTripPoint()"><img src='<%=asset_path("closelabel.png")%>'>刪除景點</div>
-			</div>
+		<div id="trip_point_list">
 		</div>
-		<div id="add_group_tittle">
-			<button id="group_create_button" class="create_button" onclick="addGroup()" title="新增一篇遊記">新增</button>
+		<div class="add_group_title">
+			<button id="group_create_button" class="create_button" title="新增一篇遊記">新增</button>
 		</div>
 		<!--瀏覽人次-->
 		<div id="view_num">
 			<span>瀏覽人次：<span id="count"></span></span>
-        	</div>
+			</div>
 		<!--分享-->
 		<div id="sharetoFB">
 			<a href="#share_button" rel="facebox.sharecss" id="share" >分享</a>
@@ -403,10 +327,10 @@
 <div id="add_new" style="display:none">
     	糟了，找不到你想標記的地點，試試看手動輸入吧!
         <ol>
-	       	<li>輸入附近的地理資訊試試看<input type="search" placeholder="試著輸入國家、城市、以及附近景點或經緯度、地址" size="40" onkeydown="searchPos(event)" />
-        	<button class="search" onclick="searchPos(event)">搜尋</button></li>
+	       	<li>輸入附近的地理資訊試試看<input type="search" placeholder="試著輸入國家、城市、以及附近景點或經緯度、地址" size="40" onkeydown="tripPointEdit.UiListener.searchPos(event)" />
+        	<button class="search" onclick="tripPointEdit.UiListener.searchPos(event)">搜尋</button></li>
         	<li>按下搜尋後，請將地圖上的<img id="pointTarget" src='<%=asset_path("logo.png")%>' />拖至正確位置，並點選下方「完成」或「取消」</li>
         </ol>
-        <button class="finish" onclick="finishSetNewManPos()">完成</button><button class="cancel" onclick="cancelSetNewManPos()">取消</button>
+        <button class="finish">完成</button><button class="cancel" onclick="tripPointEdit.UiListener.cancelSetNewManPos()">取消</button>
 </div>
 

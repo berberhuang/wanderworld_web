@@ -2,7 +2,7 @@ var browserSupportFlag =  new Boolean();
 var map;
 var confirmWindow;
 var infowindow;
-var pointData=new Array();
+//var pointData=new Array();
 var index=2;
 var user_id;
 var trip_id=-1;
@@ -20,15 +20,24 @@ var tmpArray;
 var openPopUi=0;
 var back=true;
 var keyboard_s=false;
-var tmp_mark;
+var tripPointList;
 
 //初始化
 function initialize() {
+
+	//載入widget
+	tripPointList=new TripPointListbarModule('#trip_one');
+	
+	tripPointEdit = new TripPointEditModule('#add_new');
+	
+	TripListbar.init_trip_listbar('#trip_list');
+	
 	//依照解析度調整布局
 	reLayout(); 
 	$(window).bind('resize',function(){
 		reLayout();
 	});
+
 	//初始化地圖
 	var latlng = new google.maps.LatLng(23.80, 121.500);
   	var myOptions = {
@@ -48,51 +57,18 @@ function initialize() {
 	};
 	map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 	map.setCenter(latlng);
-	//初始環境變數
-	resetEnv();	
-	//初始化日曆
-	$('#date_picker').daterangepicker({		
-		presetRanges: [{text: '今天', dateStart: 'today', dateEnd: 'today' }],
-		presets: {
-			specificDate: '選擇一日', 
-			dateRange: '日期區間'
-		},		 
-		posX: null,
-		posY: null,
-		arrows: false, 
-		dateFormat: 'yy/mm/dd',
-		rangeSplitter: '-',
-		rangeStartTitle:'開始日期',
-		rangeEndTitle:'結束日期',
-		doneButtonText:'完成',
-		closeOnSelect:false,
-		onOpen: function(){
-			var input=$('#trip_date input');	
-			if(input.val().split("-")[1])
-				$('.ui-daterangepicker-dateRange').click();			
-			else if(input.val().split("-")[0].replace(/\//g,'-').replace(/\ /,'')!=getdate())
-				$('.ui-daterangepicker-specificDate').click();
-		},
-		datepickerOptions: {
-			changeYear: true,
-			changeMonth: true,
-			prevText:  '上月' ,  
-            nextText:  '下月' , 
-			monthNames: [ '1月' , '2月' , '3月' , '4月' , '5月' , '6月' ,'7月' , '8月' , '9月' , '10月' , '11月' , '12月' ],  
-            monthNamesShort: [ '1月' , '2月' , '3月' , '4月' , '5月' , '6月' , '7月' , '8月' , '9月' , '10月' , '11月' , '12月' ], 
-			dayNames: [ '星期日' , '星期一' , '星期二' , '星期三' , '星期四' , '星期五' , '星期六' ],  
-			dayNamesShort: [ '週日' , '週一' , '週二' , '週三' , '週四' , '週五' , '週六' ], 
-			dayNamesMin: [ '日' , '一' , '二' , '三' , '四' , '五' , '六' ], 
-			//yearSuffix:  '年',
-			showMonthAfterYear:  true 
-		}		
-	}); 
+		
+	
 
+	//初始環境變數
+	//resetEnv();		 
+	
 	$('#share').click(function(){
 		$('.popup #shareInput').val('http://www.wanderworld.com.tw/'+trip_id).select();
 	});
 	////////待整理//////////////////	
 	
+	// 文字編輯器初始化
 	var config = { 
 		skin : 'kama2',
 		height : '100%',
@@ -116,9 +92,11 @@ function initialize() {
 		handles: "nw",
 		aspectRatio: 260 / 200
 	});
-	timeline();	
+	
+	TripListbar.timeline();	
 	$("#slidesContainer").draggable({ containment: "#map_canvas" ,handle:'#move_this' ,axis: "x"  });
 	search_name();
+	
 	////////////////////////////////
 	
 	var opts,target,spinner;
@@ -158,37 +136,10 @@ function initialize() {
 	};
 	target = document.getElementById('newTripLoad');
 	spinner = new Spinner(opts).spin(target);	
-}
-
-
-//起動調換順序事件
-function reSortable(permission){
-	if(permission){
-		$('.trip_point').sortable({
-			disabled: false,
-			connectWith: "ul",
-			axis: 'y',
-			placeholder: "trippoint_placeholder",
-			stop:function(event,ui){editPointOrder(ui);}
-		});	
-		$('.trip_point_all').sortable({
-			disabled: false,
-			axis: 'y',
-			tolerance: 'pointer',
-			placeholder: "trippoint_placeholder",
-			stop:function(event,ui){editGroupOrder(ui);}
-		});
-	}
-	else{
-		$('.trip_point').sortable({
-			disabled: true
-		});	
-		$('.trip_point_all').sortable({
-			disabled: true
-		});
-	}
 	
+
 }
+
 //重新建構pointData  用新的index編排
 function reIndex(){
 	var point=$('.point');
@@ -201,94 +152,11 @@ function reIndex(){
 	pointData=tmp_pointData;
 }
 
-//改變tripPoint順序時的反應
-function editPointOrder(ui){
-	var orig=ui.item.val();
-	var i;
-	var point=$('.point');
-	var dst;
-	var prev;
 
-	var insert_sort_id;
-	
-	for(i=0;i<point.length;i++){
-		if($(point[i]).parent().val()==orig){
-			prev=$(point[i-1]).parent().val();
-		}
-	}
 
-//	prev=$(ui.item).prev('li');
-	if(prev>=0){
-		insert_sort_id=pointData[prev].sort_id+1;
-	}else{
-		insert_sort_id=0;
-	}
-	
-	var group=$(ui.item).parent().parent().attr('id').split('_group_')[1];
-	pointData[orig].group_id=group;
-
-	changeTripPointOrder(pointData[orig].tripPoint_id,insert_sort_id,group);
-// 更新sort_id
-	for(i=0;i<pointData.length;i++){
-		if(pointData[i].sort_id>=insert_sort_id){
-			pointData[i].sort_id+=1;
-		}
-	}
-	pointData[orig].sort_id=insert_sort_id;
-
-//更新 pointData中的index編排 (對應到li value)
-	reIndex();
-	ui_updateNumberMark();
-	redrawLine();
-	
-}
-//改變遊記的順序	
-function editGroupOrder(ui){
-	var orig=ui.item.attr('id');
-	var i;
-	var groups=$('.trip_point_group:has(\'.point\')');
-	var target_numbers=ui.item.find('.point').length;
-	var dst;
-	var prev;
-
-	var insert_sort_id;
-
-	t=ui;
-	for(i=0;i<groups.length;i++){
-		if($(groups[i]).attr('id')==orig){
-			prev=i-1;
-		}
-	}
-
-//	prev=$(ui.item).prev('li');
-	if(prev>=0){
-		t2=insert_sort_id=pointData[$(groups[prev]).find('li:last').val()].sort_id+1;
-	}else{
-		insert_sort_id=0;
-	}
-	t4=orig;
-	changeGroupOrder(insert_sort_id,orig.split('_group_')[1]);
-// 更新sort_id
-	for(i=0;i<pointData.length;i++){
-		if(pointData[i].sort_id>=insert_sort_id){
-			pointData[i].sort_id+=target_numbers;
-		}
-	}
-
-	var target=$(ui.item).find('.point');
-	for(i=0;i<target.length;i++){
-		pointData[$(target[i]).parent().attr('value')].sort_id=insert_sort_id+i;
-	}
-	
-
-//更新 pointData中的index編排 (對應到li value)
-	reIndex();
-	ui_updateNumberMark();
-	redrawLine();
-}
 //初始環境
 function resetEnv(){
-	var i;
+/*	var i;
 	for(i=0;i<pointData.length;i++)
 		deleteMark(i);
 	pointData=new Array();
@@ -302,6 +170,7 @@ function resetEnv(){
 	deleteList=new Array();
 	editTarget_id=-1;
 	closePost();
+*/
 }
 //因應解析度重新布局
 function reLayout(){
@@ -311,7 +180,7 @@ function reLayout(){
 	$('#map_canvas').css('width',$(document).width()-130 );
 	$('#timeline').css('height', $('.list').height()-130);
 	//景點區高度
-	var other_h = ($('#trip_information').height()+30) + $('#add_group_tittle').height() + ($('#view_num').height()+30);
+	var other_h = ($('#trip_information').height()+30) + $('#add_group_title').height() + ($('#view_num').height()+30);
 	if(other_h+($('.trip_point_all').height()+30) > $('.list').height()){
 		$('.scroll-pane').css('height', $('.list').height()-other_h-30);
 	}
@@ -347,635 +216,6 @@ function reLayout(){
 	$('.friend_all').css('height',$(window).height()-$('.header').height()-102 );
 }
 
-
-
-//加入新的點
-function insertPoint(title,item_id,latlng,canvasURL){
-	createMark(title,item_id,latlng,canvasURL);
-//	redrawLine();
-/*
-	deleteMark(item_id);
-//	//標記的設定
-	var item=new google.maps.Marker({
-		position: latlng,
-		map: map,
-		title: title,
-		icon: canvasURL,
-		draggable: false,
-		item_id:item_id
-	});
-
-	//拖動標記完畢事件
-	google.maps.event.addListener(item,'dragend',function(event){
-		var i=pointData.indexOf(this);
-		var j;
-		for(j=i-1;j>=0;j--)
-			if(pointData[j]){
-				pointData[j].polyline.setPath([pointData[j].getPosition(),pointData[i].getPosition()])
-				break;
-			}
-		
-		for(j=i+1;j<pointData.length;j++)
-			if(pointData[j]){
-				pointData[i].polyline.setPath([pointData[i].getPosition(),pointData[j].getPosition()])
-				break;
-			}		
-	});
-*/ /*
-	//點擊標記事件
-	google.maps.event.addListener(item,'click',function(){showTripPoint(item.item_id);});
-	
-	item.setMap(map);
-	pointData[item_id]=item;
-	//if(!lockmap)ui_showPos(item_id);
-
-	//標記連線
-	i=item_id;
-	var j;
-	for(j=i-1;j>=0;j--){
-		if(pointData[j]){			
-			if(pointData[j].polyline)
-				pointData[j].polyline.setPath([pointData[j].getPosition(),pointData[i].getPosition()])
-			else
-				pointData[j].polyline=new google.maps.Polyline({
-					geodesic:true,
-					map:map,
-					strokeWeight:3,
-					strokeColor:'#009696',
-					path:[pointData[j].getPosition(),pointData[i].getPosition()]
-				});					
-			break;
-		}
-	}	
-	for(j=i+1;j<pointData.length;j++){
-		if(pointData[j]){			
-			if(pointData[i].polyline)
-				pointData[i].polyline.setPath([pointData[i].getPosition(),pointData[j].getPosition()])
-			else			
-				pointData[i].polyline=new google.maps.Polyline({
-					geodesic:true,
-					map:map,
-					strokeWeight:3,
-					strokeColor:'#009696',
-					path:[pointData[i].getPosition(),pointData[j].getPosition()]
-				});
-			break;	
-		}		
-	}
-*/	
-}
-//建立標記
-function createMark(title,item_id,latlng,canvasURL){
-	deleteMark(item_id);
-	var item=new google.maps.Marker({
-		position: latlng,
-		map: map,
-		title: title,
-		icon: canvasURL,
-		//animation: google.maps.Animation.DROP,
-		draggable: false,
-		item_id:item_id
-	});
-	google.maps.event.addListener(item, 'click', function(){/*toggleBounce(item);*/clickPointTitle(item_id);});
-	item.setMap(map);
-	pointData[item_id]=item;
-	map.setCenter(latlng);
-
-}
-//建立未確認的暫時mark
-function createTmpMark(title,group_id,latlng){
-	deleteTmpMark();	
-
-	var item=new google.maps.Marker({
-		position: latlng,
-		map: map,
-		title: title,
-		icon: getMarkURL('P',getGroupColor(group_id)),
-		animation: google.maps.Animation.DROP,
-		draggable: false,
-		group_id:group_id
-	});
-	//google.maps.event.addListener(item, 'click', function(){toggleBounce(item);});
-	item.setMap(map);
-	tmp_mark=item;
-	map.setCenter(latlng);
-}
-
-function deleteTmpMark(){
-	ui_closeConfirmBox();
-	if(tmp_mark)
-		tmp_mark.setMap();
-	tmp_mark=null;
-}
-
-//刪除標記
-function deleteMark(i){
-	if(!pointData[i])
-		return ;
-	var j;
-	for(j=i-1;j>=0;j--){
-		if(pointData[j]){
-			var t;
-			var s=true;
-			for(t=i+1;t<pointData.length;t++){
-				if(pointData[t]){
-					if(pointData[j].polyline)
-						pointData[j].polyline.setPath([pointData[j].getPosition(),pointData[t].getPosition()])
-					if(pointData[i].polyline)
-						pointData[i].polyline.setMap();
-					pointData[i].polyline=null;
-					s=false;
-					break;
-				}
-			}
-			if(s){
-				if(pointData[j].polyline)
-					pointData[j].polyline.setMap();
-				pointData[j].polyline=null;
-				if(pointData[i])
-					pointData[i].setMap();
-			}
-			break;
-		}	
-	}
-	if(pointData[i]){
-		if(pointData[i].polyline)
-			pointData[i].polyline.setMap();
-		pointData[i].polyline=null;
-		pointData[i].setMap();
-	}
-}
-//標記彈跳動畫
-function toggleBounce(item) {
-	if(item.getAnimation() != null) {
-		item.setAnimation(null);
-	}else{
-		item.setAnimation(google.maps.Animation.BOUNCE);
-	}
-}
-//改變順序動作時重新牽線(ui=jquery.event)
-function redrawLine(ui){
-	var i=0;
-	for(;i<pointData.length;i++){
-		if(pointData[i]){
-			var j=i+1;
-			var next;
-			for(;j<pointData.length;j++){
-				if(pointData[j]){
-					next=pointData[j];
-					break;	
-				}
-			}
-			
-			if(pointData[i].polyline&&next==null){
-				pointData[i].polyline.setMap();
-			}else if(pointData[i].polyline&&next!=null){
-				pointData[i].polyline.setMap();
-				pointData[i].polyline=new google.maps.Polyline({
-					geodesic:true,
-					map:map,
-					strokeWeight:3,
-					strokeColor:getGroupColor(next.group_id),
-					path:[pointData[i].getPosition(),next.getPosition()]
-				});					
-			}else if(next!=null){
-				pointData[i].polyline=new google.maps.Polyline({
-					geodesic:true,
-					map:map,
-					strokeWeight:3,
-					strokeColor:getGroupColor(next.group_id),
-					path:[pointData[i].getPosition(),next.getPosition()]
-				});					
-			
-			}
-		}		
-	}
-
-
-//	var target=$(ui.item).val();
-//	log(target);
-	
-	
-	
-	
-/*	
-	
-	var list=$('#input li');
-	var endpos;
-	var i;
-	var old_endpos_id;
-	var new_endpos_id=-1;
-	for(i=0;i<list.length;i++){
-		if(list[i].value==target){
-			log(i);
-			endpos=i;
-			if(list[i+1])
-				old_endpos_id=pointData[list[i+1].value].tripPoint_id;
-			else
-				old_endpos_id=pointData[list[i].value].tripPoint_id;
-			break;
-		}
-	}
-	//deleteMark(target);
-	var sort_id=-1;
-	var tmp_pointData=new Array();
-	for(i=0;i<list.length;i++){
-		list[i].value=i;
-		if(pointData[list[i].value]){
-			if(i>endpos){
-				pointData[list[i].value].sort_id=list[i].value+1;
-				tmp_pointData[list[i].value+1]=pointData[list[i].value];
-				list[i].value+=1;	
-				//list[i].value=100;
-				tmp_pointData[list[i].value].item_id=tmp_pointData[list[i].value].sort_id;
-			}else if(i==endpos){
-
-			}else{
-				tmp_pointData[list[i].value]=pointData[list[i].value];
-				tmp_pointData[list[i].value].item_id=tmp_pointData[list[i].value].sort_id;
-			}
-		}else{
-			//alert('error');
-		}
-	}
-	var k=list[endpos].value;
-	if(list[endpos-1]){
-		pointData[list[endpos].value].sort_id=list[endpos-1].value+1;
-		list[endpos].value=list[endpos-1].value+1;
-		new_endpos_id=pointData[list[endpos-1].value].tripPoint_id;
-	}else if(list[endpos+1]){
-		pointData[list[endpos].value].sort_id=list[endpos+1].value-1;
-		list[endpos].value=list[endpos+1].value-1;
-		//list[endpos].value=100;
-	}else{
-		pointData[list[endpos].value].sort_id=0;
-		list[endpos].value=0;
-	}
-	endpos=list[endpos].value;
-	tmp_pointData[endpos]=pointData[k];
-	tmp_pointData[endpos].item_id=tmp_pointData[endpos].sort_id;	
-	
-	pointData=tmp_pointData;	
-	
-	changeTripPointOrder(old_endpos_id,pointData[endpos].tripPoint_id,new_endpos_id);
-	index++;
-	var t=pointData[endpos].tripPoint_id;
-	insertPoint(pointData[endpos].title,endpos,pointData[endpos].position);
-	pointData[endpos].tripPoint_id=t;
-	pointData[endpos].setDraggable(false);
-	pointData[endpos].sort_id=endpos;*/
-}
-
-
-//判斷現在位置所在區域
-function findPosZone(name,latlng,ok_callback){
-	var gcoder=new google.maps.Geocoder();
-	gcoder.geocode({'latLng':latlng,'region':'TW'},function(results,status){
-		if(status==google.maps.GeocoderStatus.OK){
-			var i;
-			var city;
-			for(i=0;i<results[0].address_components.length;i++){
-				if(results[0].address_components[i].types[0]==='administrative_area_level_3'){
-					city=results[0].address_components[i].long_name;
-					break;
-				}else if(results[0].address_components[i].types[0]==='administrative_area_level_2'){
-					city=results[0].address_components[i].long_name;
-					break;
-				}else if(results[0].address_components[i].types[0]==='administrative_area_level_1'){
-					city=results[0].address_components[i].long_name;
-					break;
-				}else if(results[0].address_components[i].types[0]==='country'){
-					city=results[0].address_components[i].long_name;
-					break;
-				}
-			}
-			if(!city)
-				city="";
-			if(ok_callback)
-				ok_callback(name,city,latlng);
-		}else{
-		}
-	});
-}
-
-//尋找未知位置
-function findUnknowPos(group_id,name,search_str,ok_callback,new_callback,fail_callback){
-	var gcoder=new google.maps.Geocoder();
-	gcoder.geocode({'address':search_str,'region':'TW'},function(results,status){
-		if(status==google.maps.GeocoderStatus.OK){
-			var i;
-			var city;
-			for(i=0;i<results[0].address_components.length;i++){
-				if(results[0].address_components[i].types[0]==='administrative_area_level_3'){
-					city=results[0].address_components[i].long_name;
-					break;
-				}else if(results[0].address_components[i].types[0]==='administrative_area_level_2'){
-					city=results[0].address_components[i].long_name;
-					break;
-				}else if(results[0].address_components[i].types[0]==='administrative_area_level_1'){
-					city=results[0].address_components[i].long_name;
-					break;
-				}else if(results[0].address_components[i].types[0]==='country'){
-					city=results[0].address_components[i].long_name;
-					break;
-				}
-			}
-			if(!city)
-				city="";
-			
-			$.get("/trip/findPlace",{p_name:name,p_city:city},function(result){
-				if(result){
-					var t=new google.maps.LatLng(result[2],result[3],false);
-					if(ok_callback)
-						ok_callback(group_id,result[0],name,result[1],t);
-				}else{
-					if(new_callback)
-						new_callback(group_id,name,city,results[0].geometry.location);
-				}
-			});
-		}else{
-			$.get("/place/search",{term:name},function(result){
-				if(result.length){
-					if(ok_callback){
-						$.get("/trip/findPlace",{p_name:result[0].split(",")[0],p_city:result[0].split(",")[1]},function(result){
-							if(result){
-								var t=new google.maps.LatLng(result[2],result[3],false);
-								if(ok_callback)
-									$('#newTripPoint .place').val(result[4]+','+result[1]);
-									ok_callback(group_id,result[0],result[4],result[1],t);
-							}else{
-								if(fail_callback)
-									fail_callback(group_id,name);
-							}
-						});
-					}
-						
-				}else{
-					if(fail_callback)
-						fail_callback(group_id,name);
-				}
-			});
-		}
-	});
-
-}
-//尋找景點的位置
-function findPlacePos(group_id,name,zone,ok_callback,new_callback,fail_callback){
-	if(!name)
-		return;
-	if(!zone){
-		zone="";
-		findUnknowPos(group_id,name,name,ok_callback,new_callback,fail_callback);
-		return;
-	}
-	var str=name+" "+zone;
-	$.get("/trip/findPlace",{p_name:name,p_city:zone},function(result){
-		if(result){
-			var t=new google.maps.LatLng(result[2],result[3],false);
-			ok_callback(group_id,result[0],name,result[1],t);
-		}else{
-			findUnknowPos(group_id,name,str,ok_callback,new_callback,fail_callback);
-		}
-	});
-}
-//設定tmp_mark資訊
-function setTmpMarkInfo(group_id,place_id,city){
-	tmp_mark.tripPoint_id=-1;
-	tmp_mark.setDraggable(false);
-	tmp_mark.place_id=place_id
-	tmp_mark.v=-1;
-
-	var pre_li=$('#trip_point_group_'+group_id+' ul li:last');
-	if(pre_li[0]){
-		tmp_mark.v=$('#trip_point_group_'+group_id+' ul li:last').attr('value');
-		tmp_mark.sort_id=pointData[$('#trip_point_group_'+group_id+' ul li:last').attr('value')].sort_id+1;
-	}else{
-		var start_point=$('#trip_point_group_'+group_id);
-		var t=start_point;
-		while((t=t.prev('.trip_point_group'))&&t[0]){
-			var tmp_li;
-			if((tmp_li=t.find('li:last'))&&tmp_li[0]){
-				tmp_mark.v=tmp_li.attr('value');
-				tmp_mark.sort_id=pointData[tmp_li.attr('value')].sort_id+1;
-				break;
-			}
-		}
-		if(tmp_mark.v==-1){
-			while((t=t.next('.trip_point_group'))&&t[0]){
-				var tmp_li;
-				if((tmp_li=t.find('li:last'))&&tmp_li[0]){
-					tmp_mark.v=tmp_li.attr('value')-2;
-					tmp_mark.sort_id=pointData[tmp_li.attr('value')].sort_id-1;
-					break;
-				}
-			}
-		}
-		if(tmp_mark.v==-1){
-			tmp_mark.v=-1;
-			tmp_mark.sort_id=0;
-		}
-	}
-}
-
-//定位新的景點並加入
-function addItem(callback){
-	var str=$('#newTripPoint .place').val();
-	var group_id=$('#newTripPoint').attr('value');
-	var box=str.split(",");
-	var name=box[0];
-	var city="";
-	if(box[1])
-		city=box[1].split(',')[0];
-	var gcoder=new google.maps.Geocoder();
-	findPlacePos(group_id,name,city,
-	function(group_id,place_id,name,city,pos){
-		createTmpMark(name,group_id,pos);
-		
-		setTmpMarkInfo(group_id,place_id,city);
-
-		$('#newTripPoint .place').val(name+','+city);
-		confirmTripPoint(name);
-		$('#newTripLoad').appendTo($('#hide_block'));
-		if(callback)
-			callback();
-	},
-	function(group_id,name,city,pos){
-		createTmpMark(name,group_id,pos);
-
-		setTmpMarkInfo(group_id,-1,city);	
-
-		$('#newTripPoint .place').val(name+','+city);
-		confirmPlace(name);
-		$('#newTripLoad').appendTo($('#hide_block'));		
-		if(callback)
-			callback();
-	},
-	function(group_id,name){
-		$('#newTripLoad').appendTo($('#hide_block'));
-		$('#pointTarget').attr('src',getMarkURL('P',getGroupColor(group_id)))
-		setNewManPos();
-	});
-}
-//按關鍵字尋找景點位置
-function findPos(group_id,str){
-	findPlacePos(group_id,str,'',
-	function(group_id,place_id,name,city,pos){
-		var str=$('#newTripPoint .place').val().split(',')[0];
-		createTmpMark(str,group_id,pos);
-		setTmpMarkInfo(group_id,-1,city);
-		$('#newTripPoint .place').val(str+','+city);
-		tmp_mark.setDraggable(true);
-		//ui_showPos(item_id);
-	},
-	function(group_id,name,city,pos){
-		var str=$('#newTripPoint .place').val().split(',')[0];
-		createTmpMark(str,group_id,pos);
-		setTmpMarkInfo(group_id,-1,city);
-		$('#newTripPoint .place').val(str+','+city);
-		tmp_mark.setDraggable(true);
-		//ui_showPos(item_id);
-	},null);
-}
-//show確認新增景點對話框
-function confirmTripPoint(name){
-	var contentStr='<div>將<span id="3" style="font-weight:bold">&nbsp'+name+'&nbsp</span>標記在此<br />'
-			+'<button onclick="confirmOk()">確定</button><button onclick="confirmCancel()">取消</button></div><a id="isWrong" style="float:right;color:black" href="javascript:wrongTripPoint()">位置錯了嗎?</a>';	
-	if(confirmWindow){
-		//var s=(confirmWindow.item_id==item_id);
-		if(confirmWindow.s_new)
-			confirmNewOK();
-		else
-			confirmOk();
-	//	if(s)
-	//		return;
-		closePost();
-	}
-	confirmWindow = new google.maps.InfoWindow({
-   		 content: contentStr,
-		 s_new:false
-	});
-	confirmWindow.open(map,tmp_mark);	
-        google.maps.event.addListener(confirmWindow,'closeclick',function(){confirmCancel();});
-}
-
-//show確認新增地點對話框
-function confirmPlace(name){
-	var contentStr='<div>你是第一個新增這個景點的朋友!<br />請拖曳<img style="width:30px;" src="'+getMarkURL('P',getGroupColor(tmp_mark.group_id))+'"/>將景點標記在正確位置,<br />並按下確定<br />'
-			+'<button onclick="confirmNewOK()">確定</button><button onclick="confirmCancel()">取消</button></div><a id="isWrong" style="float:right;color:black;text-decoration:underline" href="javascript:wrongPlace()">位置錯了？請按這裡</a>';	
-	if(confirmWindow){
-		var s=(confirmWindow);
-		if(confirmWindow.s_new)
-			confirmNewOK();
-		else
-			confirmOk();
-		if(s)
-			return;
-		closePost();
-	}
-	confirmWindow = new google.maps.InfoWindow({
-   		 content: contentStr,
-		s_new:true
-	});
-	confirmWindow.open(map,tmp_mark);
-        google.maps.event.addListener(confirmWindow,'closeclick',function(){confirmCancel();});
-}
-
-function wrongTripPoint(){
-	ui_closeConfirmBox();
-	ui_closeMarkDetail();
-	tmp_mark.setDraggable(true);
-	setNewManPos();
-}
-
-function wrongPlace(){
-	ui_closeConfirmBox();
-	ui_closeMarkDetail();
-	setNewManPos();
-}
-
-//新增景點確認
-function confirmOk(){
-	var item=$('#newTripPoint');
-	var group_id=item.attr('value');
-//	item.find('a').remove();
-//	var name=item.find('.place').val().split(",")[0];
-//	if(!name){
-//		alert('no string in posbox');
-//		return ;
-//	}
-	saveTripPoint(group_id,function(){
-		var item_id=tmp_mark.v+1;
-		var tmpTitle=tmp_mark.title;
-		var sort_id=tmp_mark.sort_id;
-		deleteTmpMark();
-		ui_addTripPoint(item_id,group_id,tmpTitle,getGroupColor(group_id));
-		item.remove();
-		reIndex();
-		for(var i=0;i<pointData.length;i++){
-			if(pointData[item_id].sort_id>=sort_id){
-				pointData[item_id].sort_id+=1;
-			}
-		}
-		pointData[item_id].sort_id=sort_id
-		ui_updateNumberMark();
-		redrawLine();
-		reLayout();
-		reSortable(edit_s);
-		editTarget_id=item_id;
-		ui_showMarkDetail(item_id);
-	//	ui_createPost(item_id);
-		ui_selectList(item_id);
-	});
-}
-//新增地點確認
-function confirmNewOK(){
-	log('confirmNewOk');
-	var item=$('#newTripPoint');
-	var str=item.find('.place').val();
-	var box=str.split(",");
-	createPlace(box[0],tmp_mark.position.lng(),tmp_mark.position.lat(),box[1],function(result){
-		log('finishCreatePlace');
-		log(result[0]);
-		if(result[0]){
-			tmp_mark.place_id=result[0];
-			saveTripPoint(tmp_mark.group_id,function(){
-				var item_id=tmp_mark.v+1;
-				var sort_id=tmp_mark.sort_id;
-				ui_addTripPoint(item_id,tmp_mark.group_id,box[0],getGroupColor(tmp_mark.group_id));
-	
-				deleteTmpMark();
-				item.remove();
-				reIndex();
-				for(var i=0;i<pointData.length;i++){
-					if(pointData[item_id].sort_id>=sort_id){
-					pointData[item_id].sort_id+=1;
-					}
-				}
-				pointData[item_id].sort_id=sort_id
-				ui_updateNumberMark();
-				redrawLine();
-				reLayout();
-				reSortable(edit_s);
-				editTarget_id=item_id;
-				ui_showMarkDetail(item_id);
-			//	ui_createPost(item_id);
-				ui_selectList(item_id);
-				ui_closeConfirmBox();
-			});
-		}else{
-			alert('fail save');
-		}
-	});
-}
-//取消確認對話框
-function confirmCancel(){
-	$('#newTripPoint .place').val("");
-	deleteTmpMark();
-	ui_closeConfirmBox();
-	ui_closeMarkDetail();
-	newTripFlag=0;
-	setTimeout('$("#newTripPoint input").bind("clickoutside",function(){$("#newTripPoint").remove();$("#newTripPoint input").unbind("clickoutside");});',50);
-}
 //*/
 
 //檢測位置

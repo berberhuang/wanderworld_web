@@ -1,0 +1,51 @@
+var TripListbar = function(){
+	
+	return {
+		//初始化
+		init_trip_listbar:function(obj){
+			obj=obj+' ';
+			$(obj+'#trip_create_button').click(this.newTrip);
+			
+			EnvData.isTripListLoaded=true;
+		},
+		
+		/*旅行列表********************************************************************************/
+
+		//新建一個旅行(click)
+		newTrip:function(){
+			resetEnv();
+			trip_id=-1;
+			$('#trip_list').hide();
+			$('#trip_one').show();
+			ui_modeSwitch(true);
+			reLayout();
+			$('#trip_name a:eq(0)').text("");
+			$('#trip_date a:eq(0)').text(getdate().replace(/-/g,'/'));
+			$('#trip_date input').val(getdate().replace(/-/g,'/'));
+			TripPointListbar.UiListener.editTripName();
+			$('.trip_point').sortable('enable');
+			reLayout();
+			map.setCenter(new google.maps.LatLng(23.80, 121.500));
+			map.setZoom(8);
+		},
+		//時間軸設置
+		timeline:function(){
+			//可垂直拖曳
+			$("#dates").draggable({ axis: "y" });	
+			//點擊時變換遊標圖示
+			$("#dates").mousedown(function(){
+				$("#dates").css("cursor","url(<%=asset_path('cursor_drag_hand.png')%>),auto");
+			}).mouseup(function(){
+				$("#dates").css("cursor","url(<%=asset_path('cursor_hand.png')%>),auto");
+			});	
+			//滑鼠滾輪滾動時間軸
+			$("#dates").bind("mousewheel",function(event, delta) {
+				if(delta>0){
+					$("#dates").css('top',($("#dates").position().top+30)+"px");
+				}else{
+					$("#dates").css('top',($("#dates").position().top-30)+"px");
+				}
+			});
+		}
+	};
+}();
