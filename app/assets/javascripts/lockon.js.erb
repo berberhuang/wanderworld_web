@@ -180,7 +180,7 @@ function reLayout(){
 	$('#map_canvas').css('width',$(document).width()-130 );
 	$('#timeline').css('height', $('.list').height()-130);
 	//景點區高度
-	var other_h = ($('#trip_information').height()+30) + $('#add_group_title').height() + ($('#view_num').height()+30);
+	var other_h = ($('.trip_information').height()+30) + $('.add_group_title').height() + ($('#view_num').height()+30);
 	if(other_h+($('.trip_point_all').height()+30) > $('.list').height()){
 		$('.scroll-pane').css('height', $('.list').height()-other_h-30);
 	}

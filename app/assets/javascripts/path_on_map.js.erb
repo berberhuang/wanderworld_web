@@ -23,6 +23,9 @@ var PathOnMap=function(){
 			if(pointData.length>0){
 				for(p_i in pointData){
 					pointData[p_i].setMap();
+					if(pointData[p_i].polyline){
+						pointData[p_i].polyline.setMap();
+					}
 				}
 			}
 			pointData=[];
@@ -40,6 +43,7 @@ var PathOnMap=function(){
 						var latlng=new google.maps.LatLng(tpList[tp_i].place.latitude, tpList[tp_i].place.longitude, false);									
 						PathOnMap.createMark(tpList[tp_i].place.name,id,latlng,getMarkURL(i++,mark_color));
 						pointData[id].setDraggable(false);
+						pointData[id].group_id=group_id;
 					}
 				}
 			}
@@ -115,43 +119,42 @@ var PathOnMap=function(){
 			}
 		},
 		//改變順序動作時重新牽線(ui=jquery.event)
-		redrawLine:function(ui){
-			var i=0;
-			for(;i<pointData.length;i++){
-				if(pointData[i]){
-					var j=i+1;
-					var next;
-					for(;j<pointData.length;j++){
-						if(pointData[j]){
-							next=pointData[j];
-							break;	
+		redrawLine:function(){
+			debug=pointData;
+			var groupList=DataStatus.groupList;
+			var tpList=DataStatus.tripPointList;
+			var prev_tpid,next_tpid;
+			
+			
+			for(var p_i in pointData){
+				if(pointData[p_i].polyline){
+					pointData[p_i].polyline.setMap();
+					pointData[p_i]=null;
+				}
+			}
+			
+			
+			for(var i=0; i<groupList.length;i++){
+				var gid=groupList[i].id;
+				for(var j=0; j<tpList.length; j++){
+					if(tpList[j].group_id==gid){
+						prev_tpid=next_tpid;
+						next_tpid=tpList[j].id;
+						if(prev_tpid){
+							var path=pointData[prev_tpid].polyline=new google.maps.Polyline({
+								geodesic:true,
+								map:map,
+								strokeWeight:3,
+								strokeColor:getGroupColor(pointData[prev_tpid].group_id),
+								path:[pointData[prev_tpid].getPosition(),pointData[next_tpid].getPosition()]
+							});	
+							path.setMap(map);
 						}
 					}
-					
-					if(pointData[i].polyline&&next==null){
-						pointData[i].polyline.setMap();
-					}else if(pointData[i].polyline&&next!=null){
-						pointData[i].polyline.setMap();
-						pointData[i].polyline=new google.maps.Polyline({
-							geodesic:true,
-							map:map,
-							strokeWeight:3,
-							strokeColor:getGroupColor(next.group_id),
-							path:[pointData[i].getPosition(),next.getPosition()]
-						});					
-					}else if(next!=null){
-						pointData[i].polyline=new google.maps.Polyline({
-							geodesic:true,
-							map:map,
-							strokeWeight:3,
-							strokeColor:getGroupColor(next.group_id),
-							path:[pointData[i].getPosition(),next.getPosition()]
-						});					
-					
-					}
-				}		
+				}
 			}
 		},
+		
 		getTmpMark:function(){
 			return tmp_mark;
 		},

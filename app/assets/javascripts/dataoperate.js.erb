@@ -155,6 +155,7 @@ function loadTrip(id,tp_id){
 			
 			PathOnMap.updateMark();
 					
+			PathOnMap.redrawLine();
 	/*		
 			$('#group_bottom').appendTo($('.trip_point_all'));
 			redrawLine();
@@ -263,26 +264,10 @@ function saveGroupName(id){
 function deleteGroup(id){
 	log('deleteGroup');
 	if(window.confirm('您確定要刪除?') == true){
-		var points=$('#trip_point_group_'+id+' li');
-		for(var i=0;i<points.length;i++){
-			deleteMark(points[i].value);
-		}
-		$('#trip_point_group_'+id).remove();
-
-		var tmp_pointData=new Array();
-
-		var point=$('.point');
-		for(i=0;i<point.length;i++){
-			var tmp=$(point[i]).parent().attr('value');
-			tmp_pointData[i]=pointData[tmp];
-			$(point[i]).parent().attr('value',i);
-		}
-		pointData=tmp_pointData;
-		ui_updateNumberMark();
-		redrawLine();
 		$.get("/trip/deleteGroup/"+id);
-		reLayout();
-	}	
+		return true;
+	}
+	return false;
 }
 
 //改變旅行順序
