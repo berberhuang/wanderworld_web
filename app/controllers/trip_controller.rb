@@ -254,7 +254,7 @@ class TripController < ApplicationController
 			t=Trip.new(params[:trip])
 			t.user_id=session[:user_id]
 			if !t.save
-				render :text=>"fail"
+				render :json=>nil
 			else
 				render :text=>t.id
 			end

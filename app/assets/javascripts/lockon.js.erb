@@ -21,6 +21,8 @@ var openPopUi=0;
 var back=true;
 var keyboard_s=false;
 var tripPointList;
+var tripPointEdit;
+var tripListbar;
 
 //初始化
 function initialize() {
@@ -30,7 +32,7 @@ function initialize() {
 	
 	tripPointEdit = new TripPointEditModule('#add_new');
 	
-	TripListbar.init_trip_listbar('#trip_list');
+	tripListbar = new TripListbarModule('#trip_list');
 	
 	//依照解析度調整布局
 	reLayout(); 
@@ -93,7 +95,6 @@ function initialize() {
 		aspectRatio: 260 / 200
 	});
 	
-	TripListbar.timeline();	
 	$("#slidesContainer").draggable({ containment: "#map_canvas" ,handle:'#move_this' ,axis: "x"  });
 	search_name();
 	
@@ -140,32 +141,51 @@ function initialize() {
 
 }
 
-//重新建構pointData  用新的index編排
-function reIndex(){
-	var point=$('.point');
-	var tmp_pointData=new Array();
-	for(i=0;i<point.length;i++){
-		var tmp=$(point[i]).parent().attr('value');
-		tmp_pointData[i]=pointData[tmp];
-		$(point[i]).parent().attr('value',i);
-	}
-	pointData=tmp_pointData;
+function loadTrip(id,callback){
+	tripListbar.UiControl.hide();
+	tripPointList.UiControl.show();
+	resetEnv();
+	Data.loadTrip(id,null,{
+		tripInfo:function(){
+			tripPointList.loadTripInfo();
+			if(callback)
+				callback();
+		},
+		tripPointList:function(){
+			tripPointList.loadTripPointList();
+		}
+	});
 }
 
+function loadTripList(id,callback){
+	tripPointList.UiControl.hide();
+	tripListbar.UiControl.show();
+	resetEnv();
+	Data.loadTripList(id,function(){
+		tripListbar.loadTripList(id);
+		if(callback)
+			callback();
+	});
+}
+
+function createNewTrip(){
+	Data.createTrip(function(trip_id){
+		loadTrip(trip_id,tripPointList.editTripName);
+	});
+}
 
 
 //初始環境
 function resetEnv(){
-/*	var i;
-	for(i=0;i<pointData.length;i++)
-		deleteMark(i);
-	pointData=new Array();
-	$('#trip_name a:eq(0)').text('');
-	$('#trip_date a:eq(0)').text('');
-	$('#trip_name div').unbind('click');
-	$('#trip_date div').unbind('click');
-	$('#trip_status').hide();
-	$('.trip_point_group').remove();
+	DataStatus={};
+	DataStatus.tripPointList=[];
+	DataStatus.groupList=[];
+	
+	tripPointList.reset();
+	tripListbar.reset();
+	PathOnMap.updateMark();
+	
+/*	
 	index=0;
 	deleteList=new Array();
 	editTarget_id=-1;
@@ -181,8 +201,8 @@ function reLayout(){
 	$('#timeline').css('height', $('.list').height()-130);
 	//景點區高度
 	var other_h = ($('.trip_information').height()+30) + $('.add_group_title').height() + ($('#view_num').height()+30);
-	if(other_h+($('.trip_point_all').height()+30) > $('.list').height()){
-		$('.scroll-pane').css('height', $('.list').height()-other_h-30);
+	if(other_h+($('.trip_point_all').height()+50) > $('.list').height()){
+		$('.scroll-pane').css('height', $('.list').height()-other_h-50);
 	}
 	else{
 		$('.scroll-pane').css('height', $('.trip_point_all').height());

@@ -1,3 +1,6 @@
+.hidden{
+	display:none;
+}
 /*---------------必要tag設定--------------*/
 /*旅行資訊*/
 #trip_name {
@@ -45,14 +48,24 @@
 /*未整理*/
 .trip_point_group {	
 	/*float: left;*/
-	width: 100%;
+	padding-left:1%;
+	width: 99%;
 	padding-bottom: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
 }
 .trip_point_group:hover  .trip_point_add {
 	display: inline;
 }
 .trip_point_group:hover  .trip_point_edit {
         display: inline;
+}
+.trip_point_group:hover  .add_trip_point {
+        display: inline;
+}
+.trip_point_group:hover  .add_trip_point_space {
+        display: none;
 }
 .trip_point_title {
 	float: left;
@@ -62,15 +75,26 @@
 .trip_point_title input {
 	width: 100%;
 }
-.trip_point_add {
+.add_trip_point{
 	display:none;
-	width: 10%;
-	cursor: pointer;
-	position: relative;
-	float: left;
+	cursor:pointer;
+	float:left;
+	width:140px;
+	height:20px;
+	overflow:hidden;
+	background-color:rgba(0,0,0,0.2);
+	padding-left:35%;
+	border-style:dashed;
+	border-width:2px;
+	border-color:rgba(0,0,0,0.4);
 }
-.trip_point_add img {
-	width: 18px;
+.add_trip_point_space{
+	float:left;
+	width:135px;
+	height:24px;
+}
+.add_trip_point img {
+	width: 17px;
 }
 .trip_point_edit {
 	display:none;
@@ -132,6 +156,10 @@ ul.trip_point li:hover  .point_edit {
 	float:left;
 	margin-left:5px;
 	cursor: pointer;
+	
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
 }
 .point_edit_menu {
 	display: none;
@@ -150,7 +178,7 @@ ul.trip_point li:hover  .point_edit {
 	opacity:1;
 }
 .point_edit_menu div {
-        padding:3px 5px;
+    padding:3px 5px;
 	cursor:pointer;
 }
 .point_edit_menu div:hover {
@@ -276,6 +304,7 @@ ul.trip_point li:hover  .point_edit {
 	z-index:1;
 	padding:0;
 	margin:0;
+	overflow-x:hidden;
 	-webkit-box-shadow:3px 3px 3px  #333;
 	color:white;
 }

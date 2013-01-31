@@ -1,34 +1,3 @@
-//依照權限切換ui
-function ui_modeSwitch(t){
-	alert(t);
-	if(t){		
-		$('#trip_name div').click(function(){tripPointList.UiListener.editTripName();});
-		$('#trip_name div').css('cursor','pointer');
-		$('#trip_date div').click(function(){tripPointList.UiListener.editTripDate();});
-		$('#trip_date div').css('cursor','pointer');
-		//$('#trip_friend_add').show();
-		$('#group_create_button').show();		
-		$('.editTool').show();		
-		//$('#add').show();		
-	}else{		
-		$('#trip_name div').unbind('click');
-		$('#trip_name div').css('cursor','auto');
-		$('#trip_date div').unbind('click');
-		$('#trip_date div').css('cursor','auto');
-		//$('#trip_friend_add').hide();
-		$('#group_create_button').hide();	
-		$('.editTool').hide();	
-		//$('#add').hide();
-	}
-	
-}
-
-/*景點*******************************************************************************/
-
-
-
-
-
 
 /*遊記********************************************************************************/
 

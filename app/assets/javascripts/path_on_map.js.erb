@@ -73,43 +73,6 @@ var PathOnMap=function(){
 			tmp_mark=null;
 		},
 
-		//刪除標記
-		deleteMark:function(i){
-			if(!pointData[i])
-				return ;
-			var j;
-			for(j=i-1;j>=0;j--){
-				if(pointData[j]){
-					var t;
-					var s=true;
-					for(t=i+1;t<pointData.length;t++){
-						if(pointData[t]){
-							if(pointData[j].polyline)
-								pointData[j].polyline.setPath([pointData[j].getPosition(),pointData[t].getPosition()])
-							if(pointData[i].polyline)
-								pointData[i].polyline.setMap();
-							pointData[i].polyline=null;
-							s=false;
-							break;
-						}
-					}
-					if(s){
-						if(pointData[j].polyline)
-							pointData[j].polyline.setMap();
-						pointData[j].polyline=null;
-						if(pointData[i])
-							pointData[i].setMap();
-					}
-					break;
-				}	
-			}
-			if(pointData[i]){
-				if(pointData[i].polyline)
-					pointData[i].polyline.setMap();
-				pointData[i].polyline=null;
-				pointData[i].setMap();
-			}
-		},
 		//標記彈跳動畫
 		toggleBounce:function(item) {
 			if(item.getAnimation() != null) {

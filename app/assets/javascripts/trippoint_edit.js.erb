@@ -7,7 +7,7 @@ var TripPointEditModule = function(item){
 	target.find('.finish').click(function(){tripPointEdit.UiListener.finishSetNewManPos();});
 	
 
-	//計算愈新增景點的sort_id
+	//計算欲新增景點的sort_id
 	var getNewTripPoint_sort_id=function(){
 		
 		var group_id=newTripPointData.group_id;
@@ -267,10 +267,7 @@ var TripPointEditModule = function(item){
 	}
 	
 	return {
-		//加入新的點
-		//insertPoint:function(title,item_id,latlng,canvasURL){
-		//	PathOnMap.createMark(title,item_id,latlng,canvasURL);	
-		//},		
+
 		
 		//定位新的景點並加入
 		addItem:function(group_id,item){
@@ -336,7 +333,7 @@ var TripPointEditModule = function(item){
 				var name = newTripPointData.name;
 				var tmp_mark=PathOnMap.getTmpMark();
 				
-				saveTripPoint(-1,place_id,sort_id,group_id,function(tp){
+				Data.saveTripPoint(-1,place_id,sort_id,group_id,function(tp){
 					tripPointEdit.UiListener.confirmCancel();
 					item.remove();
 					
@@ -349,10 +346,15 @@ var TripPointEditModule = function(item){
 					
 					DataStatus.tripPointList.push(tp);
 					
+					tripPointList.UiControl.enableAddTripPoint(group_id);
 					tripPointList.UiControl.insertTripPoint(tp.id,group_id,name);
 					tripPointList.UiControl.updateMark();
 					
+					
 					PathOnMap.updateMark();
+					PathOnMap.redrawLine();
+					
+					reLayout();
 					
 				});
 			},
@@ -364,7 +366,7 @@ var TripPointEditModule = function(item){
 				var str=item.val();
 				var box=str.split(",");
 				var tmp_mark=PathOnMap.getTmpMark();
-				createPlace(box[0],tmp_mark.position.lng(),tmp_mark.position.lat(),box[1],function(result){
+				Data.createPlace(box[0],tmp_mark.position.lng(),tmp_mark.position.lat(),box[1],function(result){
 					log('finishCreatePlace');
 					log(result[0]);
 					if(result[0]){
@@ -373,7 +375,7 @@ var TripPointEditModule = function(item){
 						var place_id = result[0];
 						PathOnMap.setTmpMark_place_id(result[0]);
 
-						saveTripPoint(-1,place_id,sort_id,group_id,function(tp){
+						Data.saveTripPoint(-1,place_id,sort_id,group_id,function(tp){
 							tripPointEdit.UiListener.confirmCancel();
 							//PathOnMap.deleteTmpMark();
 							item.remove();
@@ -387,10 +389,14 @@ var TripPointEditModule = function(item){
 							
 							DataStatus.tripPointList.push(tp);
 							
+							tripPointList.UiControl.enableAddTripPoint(group_id);
 							tripPointList.UiControl.insertTripPoint(tp.id,group_id,box[0]);
 							tripPointList.UiControl.updateMark();
 							
+							
 							PathOnMap.updateMark();
+							PathOnMap.redrawLine();
+							reLayout();
 							
 						});
 					}else{
@@ -424,7 +430,7 @@ var TripPointEditModule = function(item){
 						newTripPointInput.val(name+','+city);
 						newTripPointData.city=city;
 
-						createPlace(name,pos.lng(),pos.lat(),city,function(result){
+						Data.createPlace(name,pos.lng(),pos.lat(),city,function(result){
 
 							if(!result){
 								$('#add_new').hide();
@@ -438,7 +444,7 @@ var TripPointEditModule = function(item){
 							var place_id = result[0];
 							PathOnMap.setTmpMark_place_id(result[0]);
 
-							saveTripPoint(-1,place_id,newTripPointData.sort_id,newTripPointData.group_id,function(tp){
+							Data.saveTripPoint(-1,place_id,newTripPointData.sort_id,newTripPointData.group_id,function(tp){
 								PathOnMap.deleteTmpMark();
 								newTripPointInput.remove();
 								
@@ -448,12 +454,16 @@ var TripPointEditModule = function(item){
 									latitude:tmp_mark.position.lat(),
 									longitude:tmp_mark.position.lng()
 								}
-
+								
+								DataStatus.tripPointList.push(tp);
+								
+								tripPointList.UiControl.enableAddTripPoint(group_id);
 								tripPointList.UiControl.insertTripPoint(tp.id,group_id,name);
 								tripPointList.UiControl.updateMark();
 								
 								PathOnMap.updateMark();
-							
+								PathOnMap.redrawLine();
+								reLayout();
 							/*
 								//var item_id=tmp_mark.v+1;
 								//ui_addTripPoint(item_id,tmp_mark.group_id,$('#newTripPoint .place').val().split(',')[0],getGroupColor(tmp_mark.group_id));
@@ -483,7 +493,7 @@ var TripPointEditModule = function(item){
 				closeMarkDetail();
 				
 				$('#pointTarget').attr('src',getMarkURL('P',getGroupColor(newTripPointData.group_id)));
-				PathOnMap.getTmpMark().setDraggable(true);
+				
 				setNewManPos();
 			},
 			//取消新增手動地點

@@ -26,12 +26,14 @@
 		<% if @trip_point_id %>
 			tripPointList.loadTripPoint(<%=@trip_point_id%>);
 		<% elsif @trip_id %>
-			tripPointList.loadTrip(<%=@trip_id%>);
+			loadTrip(<%=@trip_id%>);
 		<% elsif @user_id %>
-			tripListbar.loadTripList(<%=@user_id%>);
+			loadTripList(<%=@user_id%>);
 		<%end%>
 		
 	});
+	
+	
 
 </script>
 

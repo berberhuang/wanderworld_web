@@ -36,8 +36,10 @@ class RapidController < ApplicationController
 			end
 			if session[:user_id]
 				@triplist=true
-				@url= '/rapid/triplist/'+session[:user_id].to_s
+				@user_id=session[:user_id].to_s
+				@url= '/rapid/triplist/'+@user_id
 				logSrcURL = @url
+				
 				return
 			end
 			redirect_to '/'
