@@ -318,8 +318,10 @@ var TripPointListbarModule = function(obj){
 							finishNewGroupName(name);
 						}else{
 							item.unbind('clickoutside').remove();
-							reLayout();
+							
 						}
+						reLayout();
+						$('.scroll-pane').animate({scrollTop:$(document).height()}, 'slow');
 					});
 				},50);
 			},
@@ -387,6 +389,8 @@ var TripPointListbarModule = function(obj){
 						if(name.length!=0){
 							finishNewGroupName(name);
 						}
+						reLayout();
+						$('.scroll-pane').animate({scrollTop:$(document).height()}, 'slow');
 					}
 				}
 			},
