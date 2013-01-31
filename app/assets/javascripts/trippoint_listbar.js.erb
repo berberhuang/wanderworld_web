@@ -689,13 +689,13 @@ var TripPointListbarModule = function(obj){
 				}
 				
 				str+='  </div>';	
-				str+='  <ul class="trip_point">';
-				//<img src="<%=asset_path('button_plus_blue.png')%>"></img>
+				str+='  <ul class="trip_point">';			
+				str+='	</ul>';
 				if(DataStatus.isOwner){  
+					//<img src="<%=asset_path('button_plus_blue.png')%>"></img>	
 					str+='	<div class="add_trip_point">新增景點</div>';
 					str+='	<div class="add_trip_point_space"></div>';
 				}
-				str+='	</ul>';
 				str+='  <div style="clear: both;display: block"></div>';
 				str+='</div>';
 				
@@ -741,7 +741,7 @@ var TripPointListbarModule = function(obj){
 				str+='</div>';
 				str+='</li>';
 				
-				var item=$(str).insertBefore(target.find('#trip_point_group_'+group_id+' ul .add_trip_point'))
+				var item=$(str).appendTo(target.find('#trip_point_group_'+group_id+' ul'))
 						.find('#removeTripPoint').click(function(){
 							UiListener.removePoint(i);
 						}).end()
