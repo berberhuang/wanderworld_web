@@ -65,7 +65,7 @@ var TripPointListbarModule = function(obj){
 	};
 
 	//完成編輯群組名稱
-	var finishEditName=function(id){
+	var finishEditGroupName=function(id){
 		var a=target.find('#trip_point_group_'+id+' .trip_point_title a:eq(0)');
 		var input=target.find('#trip_point_group_'+id+' .trip_point_title input');
 		a.text((input.val().replace(/[\s]*/,"").length!=0)?input.val():a.text()).show();
@@ -327,24 +327,39 @@ var TripPointListbarModule = function(obj){
 			},
 
 			//編輯景點(click)menu
-			editPoint:function(event){
-				edit_menu_id=event.target.parentNode.parentNode.parentNode.value;	
-				var item=$(event.target);
-				var menu=item.parent().css('display','block').find('.point_edit_menu').show();	
+			editPoint:function(event){	
+				var item=$(event.target).parents('li');
+				var id=item.val();
+				edit_menu_id=id;
+				var x=item.offset().left;
+				var y=item.offset().top;
+				//var menu=item.parent().css('display','block').find('.point_edit_menu').show();	
+				
+				var str='';
+				str+='<div class="point_edit_menu">';
+				str+='<div onclick="editPost()"><img src="<%=asset_path('pencil.png')%>">編輯遊記</div>';
+				str+='<div id="removeTripPoint"><img src="<%=asset_path('delete1.png')%>">刪除景點</div>';
+				str+='</div>';	
+				
+				var menu=$(str).appendTo('#trip_one').show().css('position','absolute').offset({left:x+115,top:y+18});
+				
+				menu.find('#removeTripPoint').click(function(){
+							UiListener.removePoint(id);
+							menu.unbind('clickoutside');
+							menu.unbind('mouseleave');
+							menu.remove();
+						}).end();
 				
 				setTimeout(function(){
 					menu.bind('clickoutside',function(){
-					
-						menu.find('.point_edit_menu').hide();
-						item.parent().css('display','');
 						menu.unbind('clickoutside');
 						menu.unbind('mouseleave');
+						menu.remove();
 					});
 					menu.bind('mouseleave',function(){
-						menu.find('.point_edit_menu').hide();
-						item.parent().css('display','');
 						menu.unbind('clickoutside').css('display','');
 						menu.unbind('mouseleave');
+						menu.remove();
 					});
 				},50);
 					
@@ -397,27 +412,43 @@ var TripPointListbarModule = function(obj){
 			
 			//編輯群組(按那隻筆)(click)
 			showEditGroupMenu:function(event){
-				var item=$(event.target);
-				item.css('display','block');
+				var item=$(event.target).parents('.trip_point_group');
+				var group_id=item.attr('id').split('_group_')[1];
+				var x=item.offset().left;
+				var y=item.offset().top;
 				
-				var menu=item.parents('.trip_point_group').find('.group_edit_menu').show();
-
-				setTimeout(function(){
-					menu.bind('clickoutside',function(){
-						menu.hide();
-						item.css('display','');
-						
-						menu.unbind('clickoutside');
-						menu.unbind('mouseleave');
+				
+				
+				var str='';
+				str+='<div class="group_edit_menu">';
+				str+='<div id="edit_name"><img src="<%=asset_path('doc_edit.png')%>">更改遊記名稱</div>';
+				str+='<div id="edit_post" onclick="editPost()"><img src="<%=asset_path('pencil.png')%>">編輯遊記</div>';
+				str+='<div id="delete_group"><img src="<%=asset_path('delete1.png')%>">刪除遊記</div>';
+				str+='</div>';				
+				
+				var menu=$(str).appendTo('#trip_one').show().css('position','absolute').offset({left:x+105,top:y+18});
+				
+				menu.find('#edit_name').click(function(){
+						UiListener.clickEditGroupName(group_id);
+					}).end()
+					.find('#delete_group').click(function(){
+						UiListener.clickDeleteGroup(group_id);
 					});
-					menu.bind('mouseleave',function(){
-						menu.hide();
-						item.css('display','');
-						
+		
+				
+				setTimeout(function(){
+					menu.bind('clickoutside',function(){						
 						menu.unbind('clickoutside');
 						menu.unbind('mouseleave');
+						menu.remove();
+					});
+					menu.bind('mouseleave',function(){						
+						menu.unbind('clickoutside');
+						menu.unbind('mouseleave');
+						menu.remove();
 					});
 				},50);
+				
 				/*
 				var goal=$(event.target).parents('.trip_point_group').position().top-$('.trip_point_group').eq(0).position().top;
 				var current=$('.scroll-pane').scrollTop();
@@ -684,12 +715,7 @@ var TripPointListbarModule = function(obj){
 				str+='  <div class="trip_point_edit">';
 
 				if(DataStatus.isOwner){                                                     
-					str+='<img src="<%=asset_path('edit2.png')%>" title="編輯"></img>';
-					str+='<div class="group_edit_menu">';
-					str+='<div id="edit_name"><img src="<%=asset_path('doc_edit.png')%>">更改遊記名稱</div>';
-					str+='<div id="edit_post" onclick="editPost()"><img src="<%=asset_path('pencil.png')%>">編輯遊記</div>';
-					str+='<div id="delete_group"><img src="<%=asset_path('delete1.png')%>">刪除遊記</div>';
-					str+='</div>';          
+					str+='<img src="<%=asset_path('edit2.png')%>" title="編輯"></img>';          
 				}
 				
 				str+='  </div>';	
@@ -712,12 +738,6 @@ var TripPointListbarModule = function(obj){
 						moduleInstance.UiControl.selectGroup(item);
 					}).end();
 				if(DataStatus.isOwner){
-					t.find('.group_edit_menu').find('#edit_name').click(function(){
-																	UiListener.clickEditGroupName(group_id);
-																}).end()
-											  .find('#delete_group').click(function(){
-																	UiListener.clickDeleteGroup(group_id);
-																});
 					t.find('.add_trip_point').click(function(event){
 													$(event.target).addClass('hidden').removeClass('add_trip_point')
 													.next().css('position','absolute');
@@ -735,10 +755,7 @@ var TripPointListbarModule = function(obj){
 				str+='<div class="point_edit">';
 				if(DataStatus.isOwner){		
 					str+='<img src="<%=asset_path('settings.png')%>" title="編輯"></img>';
-					str+='<div class="point_edit_menu">';
-					str+='<div onclick="editPost()"><img src="<%=asset_path('pencil.png')%>">編輯遊記</div>';
-					str+='<div id="removeTripPoint"><img src="<%=asset_path('delete1.png')%>">刪除景點</div>';
-					str+='</div>';	
+					
 				}
 				str+='</div>';
 				str+='<div style="clear: both;display: block"></div>';
@@ -746,9 +763,6 @@ var TripPointListbarModule = function(obj){
 				str+='</li>';
 				
 				var item=$(str).appendTo(target.find('#trip_point_group_'+group_id+' ul'))
-						.find('#removeTripPoint').click(function(){
-							UiListener.removePoint(i);
-						}).end()
 						.find('.point_name').click(function(event){
 							var item=$(event.target);
 							var id=item.parents('li').val();
