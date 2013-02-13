@@ -14,6 +14,7 @@ var DataStatus={
 	owner_user_id:null,
 	trip_id:null,
 	groupList:null,
+	contentList:null,
 	tripPointList:null,
 	tripList:null
 };

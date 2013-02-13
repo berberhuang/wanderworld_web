@@ -41,3 +41,4 @@ end
 gem 'execjs'
 gem 'therubyracer'
 gem 'oauth2','0.4.1'
+gem 'rb-readline'

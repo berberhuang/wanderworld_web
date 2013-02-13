@@ -68,8 +68,18 @@ var TripPointListbarModule = function(obj){
 	var finishEditGroupName=function(id){
 		var a=target.find('#trip_point_group_'+id+' .trip_point_title a:eq(0)');
 		var input=target.find('#trip_point_group_'+id+' .trip_point_title input');
-		a.text((input.val().replace(/[\s]*/,"").length!=0)?input.val():a.text()).show();
+		var str=(input.val().replace(/[\s]*/,"").length!=0)?input.val():a.text();
+		a.text(str).show();
 		input.hide();
+		
+		for(var i in DataStatus.groupList){
+			if(DataStatus.groupList[i].id==id){
+				DataStatus.groupList[i].title=str;
+				break;
+			}
+		}
+		contentBox.setGroupTitle(str);
+		
 		Data.saveGroupName(id);
 		reLayout();
 	};
@@ -88,6 +98,8 @@ var TripPointListbarModule = function(obj){
 		Data.createGroup(groupName,function(gid){
 			DataStatus.groupList.push({id:gid,title:groupName,sort_id:sort_id});
 			moduleInstance.UiControl.insertGroup(gid,groupName);
+			reLayout();
+			$('.scroll-pane').animate({scrollTop:$(document).height()}, 'slow');
 		});
 	};
 	
@@ -318,10 +330,10 @@ var TripPointListbarModule = function(obj){
 							finishNewGroupName(name);
 						}else{
 							item.unbind('clickoutside').remove();
-							
+							reLayout();
+							$('.scroll-pane').animate({scrollTop:$(document).height()}, 'slow');
 						}
-						reLayout();
-						$('.scroll-pane').animate({scrollTop:$(document).height()}, 'slow');
+						
 					});
 				},50);
 			},
@@ -341,7 +353,7 @@ var TripPointListbarModule = function(obj){
 				str+='<div id="removeTripPoint"><img src="<%=asset_path('delete1.png')%>">刪除景點</div>';
 				str+='</div>';	
 				
-				var menu=$(str).appendTo('#trip_one').show().css('position','absolute').offset({left:x+115,top:y+18});
+				var menu=$(str).appendTo('#trip_one').show().css('position','absolute').offset({left:x+115,top:y+20});
 				
 				menu.find('#removeTripPoint').click(function(){
 							UiListener.removePoint(id);
@@ -404,8 +416,9 @@ var TripPointListbarModule = function(obj){
 						if(name.length!=0){
 							finishNewGroupName(name);
 						}
-						reLayout();
-						$('.scroll-pane').animate({scrollTop:$(document).height()}, 'slow');
+						
+						
+						
 					}
 				}
 			},
@@ -422,7 +435,7 @@ var TripPointListbarModule = function(obj){
 				var str='';
 				str+='<div class="group_edit_menu">';
 				str+='<div id="edit_name"><img src="<%=asset_path('doc_edit.png')%>">更改遊記名稱</div>';
-				str+='<div id="edit_post" onclick="editPost()"><img src="<%=asset_path('pencil.png')%>">編輯遊記</div>';
+				str+='<div id="edit_post"><img src="<%=asset_path('pencil.png')%>">編輯遊記</div>';
 				str+='<div id="delete_group"><img src="<%=asset_path('delete1.png')%>">刪除遊記</div>';
 				str+='</div>';				
 				
@@ -433,6 +446,9 @@ var TripPointListbarModule = function(obj){
 					}).end()
 					.find('#delete_group').click(function(){
 						UiListener.clickDeleteGroup(group_id);
+					}).end()
+					.find('#edit_post').click(function(){
+						contentBox.clickEditPost(group_id,target.find('#trip_point_group_'+group_id+' li:first').val());
 					});
 		
 				
@@ -495,7 +511,10 @@ var TripPointListbarModule = function(obj){
 				target.find("#newTripPoint").unbind("clickoutside");
 				if(event.keyCode==13||event.type=='click'){
 					var item_id=$(event.target).parent().val();
-					tripPointEdit.addItem(group_id,item);				
+					tripPointEdit.addItem(group_id,item);
+					if(contentBox.isBounce()){
+						contentBox.UiControl.hideContent();
+					}					
 				}
 			},
 			//增加景點input框 失去焦點
@@ -555,6 +574,9 @@ var TripPointListbarModule = function(obj){
 			returnTripList:function(){
 				//resetEnv();
 				target.hide();
+				contentBox.cancelEdit();
+				contentBox.UiControl.hide();
+				//contentBox.UiControl.hideBounceButton();
 				//$('#trip_one').hide();
 				$('#trip_list').show();
 				//$('#dates').empty();
@@ -563,10 +585,6 @@ var TripPointListbarModule = function(obj){
 				map.setCenter(new google.maps.LatLng(23.80, 121.500));
 				map.setZoom(8);
 			},
-			//按下群組名稱
-			clickGroupTitle:function(group_id){
-				clickPointTitle($('#trip_point_group_'+group_id+' li:first').val());
-			}
 		};
 	
 	return {
@@ -710,7 +728,7 @@ var TripPointListbarModule = function(obj){
 			insertGroup: function(group_id,title){
 				var str='';
 				str+='<div id="trip_point_group_'+group_id+'" class="trip_point_group">';
-				str+='<div class="trip_point_title" onclick="clickGroupTitle('+group_id+')"><a>'+title+'</a>'
+				str+='<div class="trip_point_title"><a>'+title+'</a>'
 					+'<input placeholder="輸入遊記名稱" style="display:none;"></div>';                                            
 				str+='  <div class="trip_point_edit">';
 
@@ -733,6 +751,7 @@ var TripPointListbarModule = function(obj){
 					.find('.trip_point_edit').click(UiListener.showEditGroupMenu).end()
 					.find('.trip_point_title input').keydown(UiListener.keydownEditGroupName).end()
 					.find('.trip_point_title').click(function(event){
+						clickGroupTitle(group_id);
 						var item=$(event.target);
 						moduleInstance.UiControl.unselectTripPoint();
 						moduleInstance.UiControl.selectGroup(item);
@@ -766,8 +785,8 @@ var TripPointListbarModule = function(obj){
 						.find('.point_name').click(function(event){
 							var item=$(event.target);
 							var id=item.parents('li').val();
-							moduleInstance.UiControl.selectTripPoint(item);
-							clickPointTitle(id);
+							//moduleInstance.UiControl.selectTripPoint(item);
+							clickPointTitle(item.parents('.trip_point_group').attr('id').split('_group_')[1],id);
 						}).end();
 				if(DataStatus.isOwner){
 					item.find('.point_edit img').click(UiListener.editPoint);
@@ -777,11 +796,11 @@ var TripPointListbarModule = function(obj){
 			selectTripPoint:function(item){
 				moduleInstance.UiControl.unselectTripPoint();
 				moduleInstance.UiControl.selectGroup(item);
-				item.css('background','rgba(0, 149, 255, 0.45)');
+				item.addClass('trip_point_selected');
 			},
 			//取消鎖定景點的效果
 			unselectTripPoint:function(){
-				target.find('.trip_point_all li a').css('background','none');
+				target.find('.trip_point_all li a').removeClass('trip_point_selected');
 			},
 			selectGroup:function(item){
 				moduleInstance.UiControl.unselectGroup();

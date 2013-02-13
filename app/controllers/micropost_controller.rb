@@ -29,13 +29,13 @@ class MicropostController < ApplicationController
 
 	def getPost
 		@t=Group.find_by_id(params[:group_id])
-
-		if @t.trip.user.id==session[:user_id]||@t.public
+		@public=@t.public
+		if @t.trip.user.id==session[:user_id]||@public
 			if @t=@t.trip_points.sort!{|a,b| a.sort_id<=>b.sort_id}
-				sort_ids=[]
+				ids=[]
 				article=[]
 				@t.each_with_index do |tp,i|
-					sort_ids[i]=tp.sort_id
+					ids[i]=tp.id
 					if tp.micropost
 						article[i]=tp.micropost.article
 					else
@@ -43,12 +43,12 @@ class MicropostController < ApplicationController
 					end
 				end
 				
-				render :json=>[params[:group_id],sort_ids,article]
+				render :json=>[ids,article,@public]
 			else
-				render :json=>[params[:group_id],nil]
+				render :json=>[nil]
 			end
 		else
-				render :json=>[params[:group_id],nil]
+				render :json=>[nil]
 		end
 	end
 

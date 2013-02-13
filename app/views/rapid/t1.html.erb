@@ -1,47 +1,108 @@
+<% 	
+	def hasPermission id
+		if permissionCheck (isTripExist(id))
+			return true
+		else
+			return false
+		end
+	end
+
+	def isTripExist id
+		@t=Trip.find_by_id(id)
+	end
+
+	def permissionCheck obj
+		if obj
+			if obj.user_id==session[:user_id]
+				return obj
+			end
+		else
+			return nil
+		end
+	end
+%>
 <%= content_for :css do %>
 	<%= stylesheet_link_tag    "index_layout" %>
 <%end%>
 <script type="text/javascript">
-	//編輯顯示的URL
+	function tmpPutData(){
+		if(fid && false){
+                	<% if session[:update].eql?("d")%>
+                        	$.get('/fb/update?user_id=<%=session[:user_id]%>',null,function(r){
+	                tt=r;
+        	        var t_i=0;
+        	        for(;t_i<r[0].length;t_i++){
+               	        	FB.api(fid+'/wanderworld:create?trip=http://www.wanderworld.com.tw/'+r[0][t_i].id,'POST',function(r){et=r;});
+                        	log(r[0][0].id);
+                        	log(r[1][0][0].id);
+                        	var tp_i=0;
+	                        for(;tp_i<r[1][t_i].length;tp_i++){
+        	                        FB.api(fid+'/wanderworld:create?journal=http://www.wanderworld.com.tw/'+r[0][t_i].id+'/'+r[1][t_i][tp_i].id,'POST');
+	                        }
+        	        }
+	        });
+        	                <%session[:update]="n"%>
+                	<%end%>
+                }
+	}	
 	
-	window.history.pushState(null,document.title,"<%=@url%>");
-	
-	//-----------------check user login status------------------//
-	
-	//是否已登入
-	<% if session[:username]%>
-		EnvData.is_login=true;
-		UserData.user_id=<%=session[:user_id]%>;
-	<%end%>
-
 	//是否使用FB登入
 	<%if session[:fbid]%>
-		UserData.facebook_id=<%=session[:fbid]%>;
+		var fid=<%=session[:fbid]%>;
 	<%else%>
-		UserData.facebook_id=false;
+		var fid=false;
 	<%end%>
 
 	$(function(){
-		initialize();
-		<% if @trip_point_id %>
-			tripPointList.loadTripPoint(<%=@trip_point_id%>);
-		<% elsif @trip_id %>
-			loadTrip(<%=@trip_id%>);
-		<% elsif @user_id %>
-			loadTripList(<%=@user_id%>);
+		<% if session[:username]%>
+			login_s=true;
 		<%end%>
+		initialize();
+		$('.place').autocomplete({source:'/place/search'});
+		<%if session[:profile_user_id] %>
+			user_id=<%=session[:profile_user_id]%>;
+			<%session[:profile_user_id]=nil%>
+			returnTripList();
 		
+		<%elsif session[:username]&&@trip_id==nil%>
+			user_id=<%=session[:user_id]%>;
+			returnTripList();
+		/*	<%if @t=User.find(session[:user_id]).trips.sort {|a,b| b.id<=>a.id }%>			
+				<% if @t[0] %>
+						loadTrip(<%=@t[0].id%>);
+				<%else%>
+					$('#loading').hide();
+					newTrip();
+				<%end%>
+			<%else%>
+				$('#loading').hide();
+				newTrip();
+			<%end%>*/
+		<%elsif @trip_id==nil%>
+			window.location="/index/index"
+		<%else%>
+			<% if @tp_id%>
+				loadTrip(<%=@trip_id%>,<%=@tp_id%>);
+			<%else%>
+				loadTrip(<%=@trip_id%>);
+			<%end%>
+		<%end%>
+		<%if flash[:loginfail]%>
+			$('.floating a:eq(0)').click();
+		<%end%>  
 	});
-	
-	
 
 </script>
-
+<script type="text/javascript">
+	bkLib.onDomLoaded(function() {
+		var myNicEditor=new nicEditor({maxHeight : 160 ,buttonList : ['save','fontSize','fontFamily','bold','italic','underline','left','center','right','strikeThrough','html','image','upload','link','unlink','forecolor','removeformat','pagebreak']});
+		myNicEditor.setPanel('toolbar');
+		myNicEditor.addInstance('editPost');
+	});
+</script>
 
 <!--隱藏區塊-->
-<div id="hide_block" style="display:none">
-	 <div id="newTripLoad"></div>
-</div>
+<div id="hide_block" style="display:none"></div>
 
 <!--主控制-->
 <div id="main_control">
@@ -62,7 +123,6 @@
 		<!--<div class="items"> 好友動態 </div>
 		<div class="items"> 相簿 </div>-->
 	</div>
-	<div class="book" ></div>
 </div>
 
 
@@ -192,11 +252,11 @@
 			<h2 class="information">旅行列表</h2>
 		</div>
 		<div id="trip_create" style="display:none;">
-			<button id="trip_create_button" class="create_button" title="新增一個旅行">新增</button>
-		</div>
-		<div id="prev" onclick="toTop()" title="至頂端"></div>
-			<div id="timeline">
-				<div id="load_trip" class="loading">
+			<button id="trip_create_button" onclick="newTrip()">新增</button>
+		</div>	
+		<div id="prev" onclick="toTop()"></div>
+		<div id="timeline">
+			<div id="load_trip" class="loading">
 				<div class="load_name">Loading</div>
 				<div id="block_1" class="barlittle"></div>
 				<div id="block_2" class="barlittle"></div>
@@ -204,30 +264,39 @@
 				<div id="block_4" class="barlittle"></div>
 				<div id="block_5" class="barlittle"></div>
 			</div>
-		<ul id="dates"></ul>
+			<ul id="dates"></ul>
 		</div>
-		<div id="next" onclick="toBottom()" title="至底端"></div>
+		<div id="next" onclick="toBottom()"></div>
 	</div>
 	<!--旅行-->
-	<div id="trip_one" class="list" style="display:none;">	
+	<div id="trip_one" class="list" style="display:block;">
 		<!--旅行資訊-->
-		<div class="trip_information">
-			<div class="trip_names">
-				<h1 class="information" >
-					<div id="trip_name" ></div>
-				</h1>
+		<div id="trip_information">
+			<div id="trip_names">
+				<div id="trip_name" >
+                			<h1 class="information" >
+						<div><a></a></div>
+						<input style="display:none;" placeholder="輸入旅行名稱" onkeydown="finishEditTripName(event)" />
+					</h1>
+				</div>
 				<div id="return_triplist" >
-					<img style="height:23px" src='<%=asset_path("undo_blue.png")%>' title="返回旅行列表"/>
+					<img style="height:23px" src='<%=asset_path("undo_blue.png")%>' onclick="returnTripList()" title="返回旅行列表"/>
 				</div>
 			</div>
-			<div id="trip_date"></div>
+			<div id="trip_date">
+				<div><a></a></div>
+				<input id="date_picker" type="text" readonly="readonly" style="display:none;" onkeydown="finishEditTripDate(event)" />
+			</div>
+			<!--<div id="trip_friend">
+				<div style="float:left;width:90%"><a>與 黃浩宇、Rola Jeffrey和Wayne Chu</a></div>
+				<div id="trip_friend_add"><img style="height:18px" src='<%=asset_path("button_plus_blue.png")%>' onclick="" title="增加朋友"/></div>
+			</div>-->
 			<div id="trip_status" style="display:none;">
 				<div style="float:left">狀態：</div>
 				<div style="float:left;color:#FB9B35"><a></a></div>
 			</div>
 			<div style="clear: both;display: block"> </div>
-			</div>
-			
+		</div>
 		<!--讀取列表-->
 		<div id="load_point" class="loading">
 			<div class="load_name">Loading</div>
@@ -238,15 +307,33 @@
 			<div id="block_5" class="barlittle"></div>
 		</div>
 		<!--景點列表-->
-		<div id="trip_point_list">
+		<div class="scroll-pane">
+			<div class="trip_point_all">
+				<div id="group_bottom" style="clear: both;display: block"></div>
+			</div>
+			<div id="edit_div" style="display:none;right:0px;">
+				<div class="" id="edit" onclick="editPost()"><img src='<%=asset_path("edit.png")%>'>編輯遊記</div>
+				<div class=""><img src='<%=asset_path("config.png")%>'>更改景點</div>
+				<div class="" id="delete" onclick="removeTripPoint()"><img src='<%=asset_path("closelabel.png")%>'>刪除景點</div>
+			</div>
 		</div>
-		<div class="add_group_title">
-			<button id="group_create_button" class="create_button" title="新增一篇遊記">新增</button>
+		<div id="add_group_tittle">
+			<button id="trip_create_button" onclick="addGroupTittle()">新增</button>
+		</div>
+		<!--新增景點-->
+		<div id="trip_control" style="display:none">
+			<li id="protoBox" style="display:none;">
+				<div class="unDefinePos">
+					<input class="place" type="text" size="20" placeholder="輸入景點名稱" onkeydown="enterTripPoint(event)" onfocus="ui_unloadTripPointSwitchControl((editTarget_id==-1)?false:true)" onblur="blurAddBox()" />
+					<a href="##" onclick="enterTripPoint(event)">標記</a>
+				</div>
+			</li>
+			<a href="javascript:addBox();" id="add" >新增景點</a>
 		</div>
 		<!--瀏覽人次-->
 		<div id="view_num">
 			<span>瀏覽人次：<span id="count"></span></span>
-			</div>
+        	</div>
 		<!--分享-->
 		<div id="sharetoFB">
 			<a href="#share_button" rel="facebox.sharecss" id="share" >分享</a>
@@ -256,34 +343,61 @@
 	</div>
 
 	<!--隱藏的內容框-->
-	<div id="bounce" class="control" style="display:none">
-		<img src='<%=asset_path("left-03.png")%>' title="展開遊記框" />
+	<div id="slidesContainer_s" style="display:none">
+		<a href="##" onclick="hideContainer();">顯示遊記框</a>
 	</div>
 
 	<!--內容框-->
 	<div id="slidesContainer" style="display:none">
 		<div class="bounceDiv">
+			<div id="bounce" title="展開(快捷鍵:上)" onclick="clickBounce()">
+					<img src='<%=asset_path("bounce.png")%>' />
+			</div>
+			<div id="collapse" title="收合(快捷鍵:ESC)" style="display:none" onclick="clickCollapse()">
+				<img src='<%=asset_path("collapse.png")%>' />
+			</div>
 			<div id="like"></div>
-			<div id="notpublic" title="在編輯模式按下發布才能公開這篇遊記" style="display:none">尚未發布</div>
 			<div class="editTool">
+				<img src='<%=asset_path("settings.png")%>' title="設定">
 				<img src='<%=asset_path("edit.png")%>' title="編輯遊記">
 			</div>
-		</div>
-		<div id="collapse" class="control">
-			<img src='<%=asset_path("right-04.png")%>' title="縮小遊記框" />
-		</div>
-		<div class="controlButton">
-			<div id="postToFB" title="發布到Facebook" style="display:none" onclick="checkbox()">
-				<input type="checkbox" id="check" onclick="checkbox()"  />
-				<img src='<%=asset_path("Facebook_icon.png")%>' style="height:25px" />
+			<div id="move_this"><img src='<%=asset_path("arrow_move.png")%>' /></div>
+			<div id="hide_this">
+				<a href="##" onclick="hideContainer();">
+					<img src="http://www.famfamfam.com/lab/icons/silk/icons/delete.png" title="隱藏遊記框"/>
+				</a>
 			</div>
-			<button id="releasePost">發布</button>
-			<button id="finishPost">儲存</button>
-			<button id="cancelEdit" style="width: 80px;">取消編輯</button>
 		</div>
-		<div id="journal">
-			<div id="foo"><div class="foo_load">載入中</div></div>			
-			<div id="postContent"></div>				
+		<div id="slidebottom">
+			<div id="leftControl" class="control" onclick="shiftLeft()">
+				<img src='<%=asset_path("left-03.png")%>' title="上一個景點(快捷鍵:左)" />
+			</div>
+			<div id="travel_info">
+				<div id="toolbarDiv">
+					<div id="toolbar"></div>
+				</div>
+				<div class="slide">
+					<div id="controlScroll" style="display:none"></div>
+					<div id="editPostDiv">
+							<div id="editPost"></div>
+					</div>
+					<div id="postContent"></div>
+					<a id="continue" href="##" onclick="clickBounce()">繼續閱讀</a>
+					<div id="fullPostContent" style="display:none"></div>
+				</div>
+				<div class="controlButton">
+					<div id="postToFB" title="發布到Facebook" style="display:none" onclick="checkbox()">
+						<input type="checkbox" id="check" onclick="checkbox()"  />
+						<img src='<%=asset_path("Facebook_icon.png")%>' style="height:25px" />
+					</div>
+					<button id="finishPost" onclick="finishPost()">完成</button>
+					<button id="cancelEdit" onclick="cancelEdit()">取消編輯</button>
+					<button id="ignorePost" onclick="closePost()">略過</button>
+				</div>
+			</div>
+			<div id="rightControl" class="control" onclick="shiftRight()">
+				<img src='<%=asset_path("right-04.png")%>' title="下一個景點(快捷鍵:右)" />
+			</div>
 		</div>
 	</div>
 </div>
@@ -299,7 +413,7 @@
 		<input id="embedInput" type="url" placeholder="<embed>瓜拉拉瓜拉瓜拉</embed>" size="50"/>-->
 	</div>
 	<div class="sharecss_r">
-		<!--<img src='<%=asset_path("LOGO黑體直行-06.png")%>' style="height:145px;"/> -->
+		<img src='<%=asset_path("LOGO黑體直行-06.png")%>' style="height:145px;"/>
 	</div>
 </div>
 
@@ -308,10 +422,10 @@
 <div id="add_new" style="display:none">
     	糟了，找不到你想標記的地點，試試看手動輸入吧!
         <ol>
-	       	<li>輸入附近的地理資訊試試看<input type="search" placeholder="試著輸入國家、城市、以及附近景點或經緯度、地址" size="40" onkeydown="tripPointEdit.UiListener.searchPos(event)" />
-        	<button class="search" onclick="tripPointEdit.UiListener.searchPos(event)">搜尋</button></li>
-        	<li>按下搜尋後，請將地圖上的<img id="pointTarget" src='<%=asset_path("logo.png")%>' />拖至正確位置，並點選下方「完成」或「取消」</li>
+	       	<li>輸入附近的地理資訊試試看<input type="search" placeholder="試著輸入國家、城市、以及附近景點或經緯度、地址" size="40" onkeydown="searchPos(event)" />
+        	<button class="search" onclick="searchPos(event)">搜尋</button></li>
+        	<li>按下搜尋後，請將地圖上的<img src='<%=asset_path("logo.png")%>' />拖至正確位置，並點選下方「完成」或「取消」</li>
         </ol>
-        <button class="finish">完成</button><button class="cancel" onclick="tripPointEdit.UiListener.cancelSetNewManPos()">取消</button>
+        <button class="finish" onclick="finishSetNewManPos()">完成</button><button class="cancel" onclick="cancelSetNewManPos()">取消</button>
 </div>
 

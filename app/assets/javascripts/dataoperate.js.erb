@@ -309,7 +309,7 @@ var Data=(function(){
 		//儲存遊記
 		savePost:function(item_id){
 			log('savePost:'+item_id);
-			$.post('/micropost/savePost',{tripPoint_id:pointData[item_id].tripPoint_id,trip_id:trip_id,content:pointData[item_id].post_simple},function(result){
+			$.post('/micropost/savePost',{tripPoint_id:item_id,trip_id:trip_id,content:DataStatus.contentList[item_id]},function(result){
 				if(result){
 					log('write successful');	
 							
@@ -346,31 +346,32 @@ var Data=(function(){
 
 
 		loadPost:function (group_id,callback){
-			$('#foo').show();
-			var first_item_id=$('#trip_point_group_'+group_id+' li:first').attr('value');
-			if(pointData[first_item_id]){
-				log('loadPost: '+group_id);
+			
+			//var first_item_id=$('#trip_point_group_'+group_id+' li:first').attr('value');
+			//if(pointData[first_item_id]){
+			//	log('loadPost: '+group_id);
 				$.get('/micropost/getPost',{group_id:group_id},function(result){
-					if(result[1]){
-						var points=$('#trip_point_group_'+group_id+' li');
-						var i=0;
-						for(i=0;i<points.length;i++){
-							if(pointData[points[i].value].sort_id==result[1][i]){
-								if(result[2][i]!='')
-									pointData[points[i].value].post_simple=result[2][i];
-								else
-									pointData[points[i].value].post_simple='<p>&nbsp</p><p>&nbsp</p><p>&nbsp</p><p>&nbsp</p><p>&nbsp</p>';							
-							}
+					if(result[0]){
+						var ids=result[0];
+						var points=result[1];
+						if(!DataStatus.contentList){
+							DataStatus.contentList=[];
 						}
-						if(callback)
-							callback();
-						// pointData[result[0]].post_simple=result[1];
+						for(var i=0;i<points.length;i++){							
+								DataStatus.contentList[ids[i]]=points[i];
+						}		
+						if(!DataStatus.isPublic){
+							DataStatus.isPublic=[];
+						}
+						DataStatus.isPublic[group_id]=result[2];
 					}else{
 						log('您可能斷線了,或是我們伺服器出現某些問題,無法讀取文章');
 					}
-					$('#foo').hide();
+					
+					if(callback)
+						callback();
 				});			
-			}
+			//}
 		},
 
 

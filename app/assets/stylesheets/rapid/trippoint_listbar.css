@@ -68,6 +68,11 @@
 .trip_point_group:hover  .add_trip_point_space {
         display: none;
 }
+
+.trip_point_selected{
+	background-color:rgba(0, 149, 255, 0.45);
+}
+
 .trip_point_title {
 	float: left;
 	width: 80%;

@@ -1,0 +1,366 @@
+
+var ContentBoxModule = function(item){
+	var target=$(item);
+	var contentPanel=target.find('#postContent');
+	var editPanel=target.find('#editPostDiv');
+	var controlButton = target.find('.controlButton');
+	var editTool = target.find('.editTool');
+	var bounce=$('#bounce');
+	var collapse=target.find('#collapse');
+	var releasePost=target.find('#releasePost');
+	var finishPost=target.find('#finishPost');
+	var cancelEdit=target.find('#cancelEdit');
+	
+	var editor=[];	
+	
+	var edit_id;
+	var edit_group_id;
+	var show_id;
+	var show_group_id;
+	
+	var bounce_s=false;
+	
+	var moduleInstance;
+	
+	var UiListener={
+		//展開遊記
+		clickBounce:function(){
+			bounce_s=true;
+			target.animate({width:'976px'},500);
+			moduleInstance.UiControl.hideBounceButton();
+		},
+		//收合遊記
+		clickCollapse:function(){
+			bounce_s=false;
+			moduleInstance.UiControl.showBounceButton();
+			target.animate({width:'0px'},500);
+		},
+		//按下編輯遊記
+		clickEditPost:function(group_id,id){
+			edit_id=id;
+			edit_group_id=group_id;
+			controlButton.show();
+			if(DataStatus.isPublic[group_id]){
+				releasePost.hide();
+			}else{
+				releasePost.show();
+			}
+			
+			var list=target.find('.tp_box');
+			for(var i=0; i<list.length; i++){
+				(function(){
+					var id = list.eq(i).attr('id').split('_box_')[1];
+					list.eq(i).attr('contenteditable',true);
+					editor[id]=CKEDITOR.inline(list[i],{
+						on:{
+							focus:function(){
+								editor[id].setReadOnly(false);
+								tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
+							}
+						},
+						height : '100%',
+						toolbar : [	[ 'Undo','Redo' ],
+									[ 'Bold','Italic','Underline', '-' ,'JustifyLeft','JustifyCenter','JustifyRight', '-' ,'NumberedList','BulletedList', 'RemoveFormat'  ] ,
+									[ 'Link','Unlink' ],
+									//'/' , 
+									[ 'Font','FontSize', 'Templates' ],
+									[ 'TextColor' , 'BGColor' ],
+									[ 'Image' , 'HorizontalRule' ,'Maximize']
+								]
+					});
+				}());
+			}
+			
+			if(list.length==0){
+				contentPanel.append('<div>-----------------請先加入景點-----------------</div>');
+			}
+			
+			for(var i=0; i<list.length; i++){
+				if(i%2){
+					list.eq(i).addClass('red');
+				}else{
+					list.eq(i).addClass('green');
+				}
+			}
+			
+			var pointList=$('#trip_point_group_'+group_id+' .point_name');
+			for(var i=0; i<pointList.length; i++){
+				if(i%2){
+					pointList.eq(i).addClass('red_box');
+				}else{
+					pointList.eq(i).addClass('green_box');
+				}
+			}
+			
+			//$('.tp_box').click(function(event){
+				//console.log(event);
+				//debug=event;
+				//alert($(event.target).attr('id'));
+				//var id=$(event.target).attr('id').split('_box_')[1];
+				//tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));				
+			//})
+			
+			//CKEDITOR.instances.editPost.setData(DataStatus.contentList[id]);
+			/*if(!pointData[edit_menu_id])
+				return;
+			var points=$('#trip_point_group_'+pointData[edit_menu_id].group_id+' li');
+			var k=1;
+			for(var i=0;i<points.length;i++){
+				if(!pointData[edit_menu_id].post_simple){
+						loadPost(pointData[edit_menu_id].group_id,function(){
+						editing=true;
+						ui_editPost(edit_menu_id);
+						ui_unloadTripPointSwitchControl(true);
+					});
+					k=0;
+					break;
+				}
+			}
+			if(k){
+				editing=true;
+				ui_editPost(edit_menu_id);			
+				ui_unloadTripPointSwitchControl(true);
+			}*/
+			//showContainer();
+		},
+		clickCancelEdit:function(){
+			editPanel.hide();
+			controlButton.hide();
+			contentPanel.show();
+			edit_id=null;
+			for(var i in editor){
+				editor[i].setReadOnly(true);
+				editor[i].destroy();
+			}
+			var list = $('#postContent .tp_box');
+			for(var i in list){
+				list.eq(i).attr('contenteditable',null);
+			}
+			editor=[];
+			
+			var tpList=DataStatus.tripPointList;
+			var str='';
+			for(var i in DataStatus.groupList){
+				if(DataStatus.groupList[i].id==show_group_id){
+					str+='<div class="postTitle">'+DataStatus.groupList[i].title+'</div>';
+					break;
+				}
+			}
+			for(var i=0; i<tpList.length;i++){
+			if(tpList[i].group_id==show_group_id){
+				str+='<div class="tp_box" id="tp_box_'+tpList[i].id+'">';
+				str+=DataStatus.contentList[tpList[i].id];
+				str+='</div>';
+				}
+			}
+					
+			
+			contentPanel.empty().append(str);
+			
+			var pointList=$('#trip_point_group_'+edit_group_id+' .point_name');
+			for(var i=0; i<pointList.length; i++){
+				pointList.eq(i).removeClass('red_box');
+				pointList.eq(i).removeClass('green_box');
+			}
+			
+		},
+		clickFinishPost:function(){
+			for(var id in editor){
+				var str=editor[id].getData().replace(/.*<span style="display: none;">&nbsp;<\/span><\/div>/,'');
+				if(!DataStatus.contentList){
+					DataStatus.contentList=[];
+				}
+				DataStatus.contentList[id]=str;
+				if(str){
+					Data.savePost(id);
+				}
+			}			
+				
+			UiListener.clickCancelEdit();
+			
+			
+			//setGroupRelease(pointData[editTarget_id].group_id);
+
+			//if($('#postToFB input').attr('checked')!=null){
+			//	FB.ui({method:'feed',link:'http://wanderworld.com.tw/'+trip_id+'/'+pointData[editTarget_id].tripPoint_id,name:trip_name+'-'+$('#trip_point_group_'+pointData[editTarget_id].group_id+' .trip_point_title a').text(),description:pointData[editTarget_id].post_simple,picture:"<%='http://wanderworld.com.tw'+asset_path('view_all.png')%>"});
+			//}
+		},
+		clickReleasePost:function(){
+			for(var id in editor){
+				var str=editor[id].getData().replace(/.*<span style="display: none;">&nbsp;<\/span><\/div>/,'');
+				if(!DataStatus.contentList){
+					DataStatus.contentList=[];
+				}
+				DataStatus.contentList[id]=str;
+				if(str){
+					Data.savePost(id);
+				}
+			}			
+			
+			Data.setGroupRelease(edit_group_id);
+			DataStatus.isPublic[edit_group_id]=true;
+			target.find('#notpublic').hide();
+			
+			UiListener.clickCancelEdit();
+		}
+	};
+	
+	
+	bounce.click(UiListener.clickBounce);
+	collapse.click(UiListener.clickCollapse);
+	
+	finishPost.click(UiListener.clickFinishPost);
+	releasePost.click(UiListener.clickReleasePost);
+	cancelEdit.click(UiListener.clickCancelEdit);
+	
+	return{
+		init:function(){
+			moduleInstance=this;
+			target.css('width','0px');
+			target.show();
+		},
+		ownerModeSwitch:function(){
+			if(DataStatus.isOwner){
+				editTool.show();
+			}else{
+				editTool.hide();
+			}
+		},
+		isEditing:function(){
+			if(edit_id){
+				return true;
+			}
+			return false;
+		},
+		UiControl:{
+			hide:function(){
+				UiListener.clickCollapse();
+				bounce.hide(500);
+			},
+			showBounceButton:function(){
+				bounce.show(500);
+			},
+			hideBounceButton:function(){
+				bounce.hide(500);
+			},
+			hideContent:function(){
+				UiListener.clickCollapse();
+			},
+			showContent:function(group_id,id,callback){
+				show_id=id;
+				if(group_id==show_group_id){
+					if(id){
+						var t=$('#tp_box_'+id);
+						$('#journal').animate({scrollTop:t.position().top-$('#postContent>div:eq(0)').position().top},500,
+							function(){
+								tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
+							}
+						);
+					}else{
+						$('#journal').animate({scrollTop:0},500);
+					}
+					if(callback)
+						callback();
+					return ;
+				}
+				show_group_id=group_id;
+				
+				UiListener.clickBounce();
+				editPanel.hide();
+				controlButton.hide();
+				editTool.unbind('click').click(function(){UiListener.clickEditPost(group_id,id);});
+				
+				$('#foo').show();
+				Data.loadPost(group_id,function(result){
+					$('#foo').hide();
+					contentPanel.show();
+					contentPanel.empty();
+					var tpList=DataStatus.tripPointList;
+					var str='';
+					for(var i in DataStatus.groupList){
+						if(DataStatus.groupList[i].id==group_id){
+							str+='<div class="postTitle">'+DataStatus.groupList[i].title+'</div>';
+							break;
+						}
+					}
+
+					for(var i=0; i<tpList.length;i++){
+						if(tpList[i].group_id==group_id){
+							str+='<div class="tp_box" id="tp_box_'+tpList[i].id+'">';
+							str+=DataStatus.contentList[tpList[i].id];
+							str+='</div>';
+						}
+					}
+					
+					$(str).appendTo(contentPanel);
+					$('#journal').scroll(function(){
+						var pos=$('#journal').scrollTop();
+						
+						var id;
+						var list=contentPanel.find('.tp_box');
+						var posBase=list.eq(0).position().top;
+						for(var i in list){
+							if(list.eq(i).position().top-posBase>pos){
+								break;
+							}else{
+								id=list.eq(i).attr('id').split('_box_')[1];
+							}
+						}
+						tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));						
+					});
+					
+					if(DataStatus.isPublic[group_id] || !DataStatus.isOwner){
+						target.find('#notpublic').hide();
+					}else{
+						target.find('#notpublic').show();
+					}
+					
+					moduleInstance.UiControl.showContent(show_group_id,show_id);	
+				});
+				
+			},
+			setEditFocus:function(id){
+				var t=$('#tp_box_'+id);
+				$('#journal').animate({scrollTop:t.position().top-$('#postContent>div:eq(0)').position().top},500,function(){
+					t.focus();
+				});
+			},
+			reLayout:function(){
+				//遊記框高度
+				if(bounce_s){
+					//bounce.hide();
+					//$('#collapse').show();		
+					//$('#slidesContainer').css('height',$(document).height()-$('.header').height());
+					//$('#slide_main').css('height',$(document).height()-$('.header').height()-40);
+					//$('.cke_editor').css('height',$(document).height()-$('.header').height()-40-15);
+					$('.control').css('line-height', $(document).height()-$('.header').height()-40 +'px');
+					$('#foo').css('top',$('#journal').height()/2+30);
+				}
+				//遊記框位置
+				//var Container_r = 260 + ($(document).width()- 1280)/2  ;
+				//$('#slidesContainer').css('right',Container_r);
+				//$('#slidesContainer_s').css('right',Container_r);
+			}
+		},
+		//給trippointList的groupEdit上的editPost按鈕用
+		clickEditPost:function(group_id,id){
+			moduleInstance.UiControl.showContent(group_id,id,function(){
+				UiListener.clickEditPost(group_id,id);
+			});
+		},
+		//更改遊記框上方title
+		setGroupTitle:function(str){
+			target.find('.postTitle').text(str);
+		},
+		cancelEdit:function(){
+			if(edit_id){
+				UiListener.clickCancelEdit();
+			}
+		},
+		isBounce:function(){
+			if(bounce_s)
+				return true;
+			return false;
+		}
+	};
+};
