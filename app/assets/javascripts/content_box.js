@@ -78,7 +78,7 @@ var ContentBoxModule = function(item){
 			}
 			
 			if(list.length==0){
-				contentPanel.append('<div>-----------------請先加入景點-----------------</div>');
+				contentPanel.append('<div class="noPointMsg">-----------------請先加入景點-----------------</div>');
 			}
 			
 			for(var i=0; i<list.length; i++){
@@ -97,7 +97,7 @@ var ContentBoxModule = function(item){
 					pointList.eq(i).addClass('green_box');
 				}
 			}
-			
+			moduleInstance.UiControl.setEditFocus(id);
 			//$('.tp_box').click(function(event){
 				//console.log(event);
 				//debug=event;
@@ -277,6 +277,7 @@ var ContentBoxModule = function(item){
 						callback();
 					return ;
 				}
+				
 				show_group_id=group_id;
 				
 				UiListener.clickBounce();
@@ -285,6 +286,7 @@ var ContentBoxModule = function(item){
 				editTool.unbind('click').click(function(){UiListener.clickEditPost(group_id,id);});
 				
 				$('#foo').show();
+
 				Data.loadPost(group_id,function(result){
 					$('#foo').hide();
 					contentPanel.show();
@@ -309,11 +311,11 @@ var ContentBoxModule = function(item){
 					$(str).appendTo(contentPanel);
 					$('#journal').scroll(function(){
 						var pos=$('#journal').scrollTop();
-						
+
 						var id;
 						var list=contentPanel.find('.tp_box');
 						var posBase=list.eq(0).position().top;
-						for(var i in list){
+						for(var i=0;i<list.length;i++){
 							if(list.eq(i).position().top-posBase>pos){
 								break;
 							}else{
@@ -329,7 +331,7 @@ var ContentBoxModule = function(item){
 						target.find('#notpublic').show();
 					}
 					
-					moduleInstance.UiControl.showContent(show_group_id,show_id);	
+					moduleInstance.UiControl.showContent(show_group_id,show_id,callback);	
 				});
 				
 			},
@@ -406,17 +408,14 @@ var ContentBoxModule = function(item){
 				}
 			}
 		},
-		insertNewPointWhileEditing:function(group_id){
+		insertNewPoint:function(group_id){
 			if(edit_group_id&&edit_group_id==group_id){
-				var point=$('#trip_point_group_'+edit_group_id+' .trip_point li:last');
-				
+				$('.noPointMsg').remove();
+				var point=$('#trip_point_group_'+group_id+' .trip_point li:last');
 				var id=point.val();
 				DataStatus.contentList[id]='';
 				
-				var str='';
-				str+='<div class="tp_box" id="tp_box_'+id+'">';
-				str+=DataStatus.contentList[id];
-				str+='</div>';
+				var str='<div class="tp_box" id="tp_box_'+id+'"></div>';
 				
 				var tmp=$(str).appendTo(contentPanel);
 
@@ -447,6 +446,12 @@ var ContentBoxModule = function(item){
 							]
 				});			
 				
+			}else if(show_group_id==group_id){
+				var point=$('#trip_point_group_'+group_id+' .trip_point li:last');
+				var id=point.val();
+				DataStatus.contentList[id]='';
+				var str='<div class="tp_box" id="tp_box_'+id+'"></div>';
+				contentPanel.append(str);
 			}
 		},
 		deleteGroup:function(group_id){

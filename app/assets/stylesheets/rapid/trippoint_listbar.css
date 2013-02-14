@@ -204,6 +204,7 @@ ul.trip_point li:hover  .point_edit {
 	color: blue;
 	text-align: left;
 	padding:2px 0;
+	cursor:pointer;
 }
 .group_edit_menu img {
 	float: left;

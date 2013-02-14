@@ -354,6 +354,7 @@ var TripPointListbarModule = function(obj){
 			editPoint:function(event){	
 				var item=$(event.target).parents('li');
 				var id=item.val();
+				var group_id=item.parents('.trip_point_group').attr('id').split('_group_')[1];
 				edit_menu_id=id;
 				var x=item.offset().left;
 				var y=item.offset().top;
@@ -361,7 +362,7 @@ var TripPointListbarModule = function(obj){
 				
 				var str='';
 				str+='<div class="point_edit_menu">';
-				str+='<div onclick="editPost()"><img src="<%=asset_path('pencil.png')%>">編輯遊記</div>';
+				str+='<div id="editPostContent"><img src="<%=asset_path('pencil.png')%>">編輯遊記</div>';
 				str+='<div id="removeTripPoint"><img src="<%=asset_path('delete1.png')%>">刪除景點</div>';
 				str+='</div>';	
 				
@@ -369,6 +370,14 @@ var TripPointListbarModule = function(obj){
 				
 				menu.find('#removeTripPoint').click(function(){
 							UiListener.removePoint(id);
+							menu.unbind('clickoutside');
+							menu.unbind('mouseleave');
+							menu.remove();
+						}).end()
+					.find('#editPostContent').click(function(){
+							contentBox.cancelEditWarning(group_id,function(){
+								contentBox.clickEditPost(group_id,id);	
+							});
 							menu.unbind('clickoutside');
 							menu.unbind('mouseleave');
 							menu.remove();
@@ -455,12 +464,25 @@ var TripPointListbarModule = function(obj){
 				
 				menu.find('#edit_name').click(function(){
 						UiListener.clickEditGroupName(group_id);
+						
+						menu.unbind('clickoutside');
+						menu.unbind('mouseleave');
+						menu.remove();
 					}).end()
 					.find('#delete_group').click(function(){
 						UiListener.clickDeleteGroup(group_id);
+						
+						menu.unbind('clickoutside');
+						menu.unbind('mouseleave');
+						menu.remove();
 					}).end()
 					.find('#edit_post').click(function(){
-						contentBox.clickEditPost(group_id,target.find('#trip_point_group_'+group_id+' li:first').val());
+						contentBox.cancelEditWarning(group_id,function(){
+							contentBox.clickEditPost(group_id,target.find('#trip_point_group_'+group_id+' li:first').val());	
+						});
+						menu.unbind('clickoutside');
+						menu.unbind('mouseleave');
+						menu.remove();
 					});
 		
 				
