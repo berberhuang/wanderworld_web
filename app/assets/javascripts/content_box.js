@@ -338,15 +338,17 @@ var ContentBoxModule = function(item){
 			},
 			reLayout:function(){
 				//遊記框高度
-				//if(bounce_s){
+				if(bounce_s){
 					//bounce.hide();
 					//$('#collapse').show();		
 					//$('#slidesContainer').css('height',$(document).height()-$('.header').height());
 					//$('#slide_main').css('height',$(document).height()-$('.header').height()-40);
 					//$('.cke_editor').css('height',$(document).height()-$('.header').height()-40-15);
-					$('.control').css('line-height', $(document).height()-$('.header').height()-40 +'px');
-					$('#foo').css('top',$('#journal').height()/2+30);
-				//}
+					
+					target.width($(document).width()-390);
+				}
+				$('.control').css('line-height', $(document).height()-$('.header').height()-40 +'px');
+				$('#foo').css('top',$('#journal').height()/2+30);
 				//遊記框位置
 				//var Container_r = 260 + ($(document).width()- 1280)/2  ;
 				//$('#slidesContainer').css('right',Container_r);

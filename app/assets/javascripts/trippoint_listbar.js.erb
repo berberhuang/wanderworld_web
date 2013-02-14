@@ -586,8 +586,8 @@ var TripPointListbarModule = function(obj){
 			},
 			//按下返回旅行列表(click)
 			returnTripList:function(){
-				//resetEnv();				
-				contentBox.cancelEditWarning(function(){
+				//resetEnv();		
+				contentBox.cancelEditWarning(-1,function(){
 					target.hide();
 					contentBox.UiControl.hide();
 					contentBox.reset();
@@ -874,6 +874,9 @@ var TripPointListbarModule = function(obj){
 		editTripName:function(){
 			UiListener.clickEditTripName();
 			target.find('#trip_name_input').select();
+		},
+		showTravelJournal:function(){
+			UiListener.returnTripList();
 		}
 
 		/*景點********************************************************************************/

@@ -31,6 +31,7 @@ class MicropostController < ApplicationController
 		@t=Group.find_by_id(params[:group_id])
 		@public=@t.public
 		if @t.trip.user.id==session[:user_id]||@public
+			#已經發布公開
 			if @t=@t.trip_points.sort!{|a,b| a.sort_id<=>b.sort_id}
 				ids=[]
 				article=[]
@@ -45,10 +46,21 @@ class MicropostController < ApplicationController
 				
 				render :json=>[ids,article,@public]
 			else
-				render :json=>[nil]
+				render :json=>[[],[],false]
 			end
 		else
-				render :json=>[nil]
+			#沒有發布公開
+			if @t=@t.trip_points.sort!{|a,b| a.sort_id<=>b.sort_id}	
+				ids=[]
+				article=[]
+				@t.each_with_index do |tp,i|
+					ids[i]=tp.id
+					article[i]=''
+				end
+				render :json=>[ids,article,false]
+			else
+				render :json=>[[],[],false]
+			end
 		end
 	end
 	
@@ -62,7 +74,7 @@ class MicropostController < ApplicationController
 				render :json=> ['']
 			end
 		else
-			render :json=>[nil]
+			render :json=>['']
 		end
 	end
 
