@@ -277,24 +277,6 @@ function ui_adjustPointToCenter(item_id){
 	map.setCenter(new google.maps.LatLng(lat ,lng )); 
 }
 
-//顯示地圖上描點得資訊框
-function ui_showMarkDetail(item_id){
-	ui_closeMarkDetail();
-	infowindow=new google.maps.InfoWindow({
-		content: pointData[item_id].title
-	});
-	infowindow.open(map,pointData[item_id]);
-	google.maps.event.addListener(infowindow,'closeclick',function(){
-		closePost();
-		var state={
-			title:document.title,
-			url:'/',
-			trip_id:trip_id
-		}
-		window.history.pushState(state,document.title,'/'+trip_id);
-	});
-}
-
 
 /*鍵盤控制********************************************************************************/
 

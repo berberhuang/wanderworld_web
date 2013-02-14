@@ -577,6 +577,7 @@ var TripPointListbarModule = function(obj){
 				}
 				target.find('#trip_point_group_'+id).empty().remove();
 				moduleInstance.UiControl.updateMark();
+				contentBox.deleteGroup(id);
 				
 				PathOnMap.updateMark();
 				PathOnMap.redrawLine();

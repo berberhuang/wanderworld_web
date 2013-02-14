@@ -267,9 +267,11 @@ var ContentBoxModule = function(item){
 								tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
 							}
 						);
+						PathOnMap.centerOnTripPoint(id);
 					}else{
 						$('#journal').animate({scrollTop:0},500);
 					}
+					PathOnMap.closeInfoWindow();
 					moduleInstance.ownerModeSwitch();
 					if(callback)
 						callback();
@@ -445,6 +447,14 @@ var ContentBoxModule = function(item){
 							]
 				});			
 				
+			}
+		},
+		deleteGroup:function(group_id){
+			if(show_group_id==group_id){
+				if(edit_group_id==group_id){
+					UiListener.clickCancelEdit();
+				}
+				moduleInstance.UiControl.hide();
 			}
 		},
 		deleteTripPoint:function(group_id,id){
