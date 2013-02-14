@@ -11,28 +11,67 @@
   <!-- Set the viewport width to device width for mobile -->
   <meta name="viewport" content="width=device-width" />
 
-  <title>關於WanderWorld地球漫遊</title>
+  <title>WanderWorld地球漫遊</title>
   <link rel="shortcut icon" href="http://www.wanderworld.com.tw/assets/logo-31972393d4fb52fb065cab20c547f7a2.ico">
   <!-- Included CSS Files (Uncompressed) -->
+  <%= javascript_include_tag "newindex" %>
   <%= stylesheet_link_tag "newindex" %>
   <%= csrf_meta_tags %>
-  
-  <!-- Included CSS Files (Compressed) -->
-  <!--
-  <link rel="stylesheet" href="stylesheets/foundation.min.css">
--->
+
+
+	<script type="text/javascript">
+
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-30218831-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+
+		jQuery(document).ready(function($) {
+			$('a[rel*=facebox]').facebox({
+				loadingImage : "<%=asset_path('loading.gif')%>",
+				closeImage   : "<%=asset_path('closelabel.png')%>"
+			});
+			$.facebox.settings.opacity = 0.7;
+
+		});
+
+		<%if session[:username]%>
+			var login_s=true;
+		<%else%>
+			var login_s=false;
+		<%end%>
+
+		<%if session[:fbid]%>
+			var fid=<%=session[:fbid]%>;
+		<%else%>
+			var fid=null;
+		<%end%>
+
+	</script>
 
 </head>
 <body>
   <div id="fb-root"></div>
- <script>(function(d, s, id) {
-   var js, fjs = d.getElementsByTagName(s)[0];
-   if (d.getElementById(id)) return;
-   js = d.createElement(s); js.id = id;
-   js.src = "//connect.facebook.net/zh_TW/all.js#xfbml=1&appId=319719498074982";
-   fjs.parentNode.insertBefore(js, fjs);
- }(document, 'script', 'facebook-jssdk'));</script>
-  <!-- Header and Nav -->
+  <script>
+    $(function(){
+	fb_init(function(){
+                FB.getLoginStatus(function(){
+                        if(login_s&&fid){
+				<%=yield :fb_init_yes %>
+                        }
+                });
+                });
+    	if(!login_s||!fid){	
+		<%=yield :fb_init_no %>
+    	}
+    });
+</script>
+<!-- Header and Nav -->
   
   <div class="row header">
     <div class="three columns">
@@ -40,8 +79,11 @@
     </div>
     <div class="nine columns">
       <ul class="nav-bar right">
-        <li><a href="#">註冊</a></li>
-        <li><a href="#">登入</a></li>
+		<li class="floatingss" style="background-color:#000000;border-color:#000000;">
+			<div class="fb-login-button" id="custom_fb_login" style="width:400px;display:inline" autologoutlink="false" onlogin="onLogin()">登入</div>
+		</li>
+		<li class="floatingss"><a href="#rigister" rel="facebox.rigistercss">註冊</a></li>
+		<li class="floatingss"><a href="#login" rel="facebox.rigistercss">登入</a></li>
       </ul>
     </div>
   </div>
@@ -220,5 +262,54 @@
         }
     </script>
     <script type="text/javascript" src="path_to_js/storyjs-embed.js"></script>
+
+	<!--登入-->
+	<div id="login" style="display:none">
+		<%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
+		<table width="300px" border="0">
+			<tr>
+				<th scope="col">E-mail</th>
+				<th scope="col"><%=f.email_field :email, :class=>"fill", :placeholder=>"請輸入您的E-mail"%></th>
+			</tr>
+			<tr>
+				<th scope="row">密碼</th>
+				<td><%=f.password_field :password,:class=>"fill", :placeholder=>"請輸入您的密碼"%></td>
+			</tr>
+		</table>
+		<%if(flash[:loginfail])%>
+			<p class="loginfail">您輸入的帳號或密碼有誤</p>
+		<%end%>
+		<br />
+		<%=f.submit '登入' , :id=>"login_button"%>
+		<%end%>
+	</div>
+
+	<!--註冊-->
+	<div id="rigister" style="display:none">
+		<%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
+		<h1>開始使用<!--<img class="logo" src="<%=asset_path('banner_logo_walker.png')%>" />--></h1><br/>
+		<h3><span class="introduction">WanderWorld地球漫遊是幫助人們紀錄旅行的服務；我們喜歡旅行，相信網路世界應該要有比Blog和facebook更有個性的旅行紀錄方式。</span>
+		<span class="introduction">在地球漫遊，你可以輕易的將去過的地方和照片定在地圖上，做成一張獨一無二的個人旅行地圖。</span></h3>
+		<table width="300px" border="0">
+			<tr>
+				<th scope="col">E-mail</th>
+				<th scope="col"><%=f.email_field :email,:class=>"fill",:placeholder=>"您將來登入用的帳號"%></th>
+			</tr>
+			<tr>
+				<th scope="row">名稱</th>
+				<td><%=f.text_field :username,:class=>"fill",:placeholder=>"您在網站中的名稱"%></td>
+			</tr>
+			<tr>
+				<th scope="row">密碼</th>
+				<td><%=f.password_field :password, :class=>'fill', :placeholder=>'請輸入8~12字的密碼'%></td>
+			</tr>
+			<tr>
+				<th scope="row">再次輸入密碼</th>
+				<td><%=f.password_field :password_confirmation,:class=>"fill", :placeholder=>"請輸入8~12字的密碼"%></td>
+			</tr>
+		</table>
+		<%=f.submit '開始使用',:id=>"rigister_button"%>
+		<%end%>
+	</div>
 </body>
 </html>

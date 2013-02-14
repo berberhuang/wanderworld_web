@@ -12,9 +12,7 @@ class IndexController < ApplicationController
 			@user_session=UserSession.new
 		end
 	end
-	
-	def banded
-	end	
+
 	
 	def lab
 		UserSession.find.username;
