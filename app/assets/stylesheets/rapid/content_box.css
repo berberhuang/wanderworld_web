@@ -94,7 +94,7 @@
 #journal {
 	margin:70px 0 0 0;
 	padding:0 0 0 0;
-	width:910px; /*avoid horizontal scroll */
+	width:95%;/* avoid horizontal scroll */
 	height:85%;
 	float:left;
 	overflow-y:scroll;

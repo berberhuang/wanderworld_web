@@ -7,6 +7,7 @@ var Data=(function(){
 		//載入旅行列表
 		loadTripList:function(user_id,callback){
 			log('loadTripList'+user_id);
+			DataStatus.owner_user_id=user_id;
 			$('#load_trip').show();	
 			//無刷新跳轉
 			var state={

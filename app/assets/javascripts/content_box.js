@@ -29,7 +29,7 @@ var ContentBoxModule = function(item){
 				return;	
 			}
 			bounce_s=true;
-			target.animate({width:'976px'},500);
+			target.animate({width:$(document).width()-390+'px'},500);
 			moduleInstance.UiControl.hideBounceButton();
 		},
 		//收合遊記
@@ -270,6 +270,7 @@ var ContentBoxModule = function(item){
 					}else{
 						$('#journal').animate({scrollTop:0},500);
 					}
+					moduleInstance.ownerModeSwitch();
 					if(callback)
 						callback();
 					return ;
