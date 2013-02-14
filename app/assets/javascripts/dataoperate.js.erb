@@ -373,6 +373,22 @@ var Data=(function(){
 				});			
 			//}
 		},
+		loadOnePost:function(id,callback){
+			$.get('/micropost/getOnePost',{tripPoint_id:id},function(result){
+				if(result[0]){
+					if(!DataStatus.contentList){
+						DataStatus.contentList=[];
+					}
+					DataStatus.contentList[id]=result[0];	
+				}else{
+					log('您可能斷線了,或是我們伺服器出現某些問題,無法讀取文章');
+				}
+				
+				if(callback)
+					callback();
+			});			
+			//}
+		},
 
 
 		isFullPostExist:function(item_id,callback){

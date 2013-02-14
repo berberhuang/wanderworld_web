@@ -25,12 +25,18 @@ var ContentBoxModule = function(item){
 	var UiListener={
 		//展開遊記
 		clickBounce:function(){
+			if(bounce_s){
+				return;	
+			}
 			bounce_s=true;
 			target.animate({width:'976px'},500);
 			moduleInstance.UiControl.hideBounceButton();
 		},
 		//收合遊記
 		clickCollapse:function(){
+			if(!bounce_s){
+				return;
+			}
 			bounce_s=false;
 			moduleInstance.UiControl.showBounceButton();
 			target.animate({width:'0px'},500);
@@ -127,7 +133,7 @@ var ContentBoxModule = function(item){
 			editPanel.hide();
 			controlButton.hide();
 			contentPanel.show();
-			edit_id=null;
+			
 			for(var i in editor){
 				editor[i].setReadOnly(true);
 				editor[i].destroy();
@@ -158,11 +164,13 @@ var ContentBoxModule = function(item){
 			contentPanel.empty().append(str);
 			
 			var pointList=$('#trip_point_group_'+edit_group_id+' .point_name');
-			for(var i=0; i<pointList.length; i++){
+			for(var i=0; i < pointList.length; i++){
 				pointList.eq(i).removeClass('red_box');
 				pointList.eq(i).removeClass('green_box');
 			}
 			
+			edit_id=null;
+			edit_group_id=null;
 		},
 		clickFinishPost:function(){
 			for(var id in editor){
@@ -218,6 +226,7 @@ var ContentBoxModule = function(item){
 			moduleInstance=this;
 			target.css('width','0px');
 			target.show();
+			//target.append('');
 		},
 		ownerModeSwitch:function(){
 			if(DataStatus.isOwner){
@@ -227,7 +236,7 @@ var ContentBoxModule = function(item){
 			}
 		},
 		isEditing:function(){
-			if(edit_id){
+			if(edit_group_id){
 				return true;
 			}
 			return false;
@@ -244,11 +253,13 @@ var ContentBoxModule = function(item){
 				bounce.hide(500);
 			},
 			hideContent:function(){
-				UiListener.clickCollapse();
+				if(bounce_s)
+					UiListener.clickCollapse();
 			},
 			showContent:function(group_id,id,callback){
 				show_id=id;
 				if(group_id==show_group_id){
+					UiListener.clickBounce();
 					if(id){
 						var t=$('#tp_box_'+id);
 						$('#journal').animate({scrollTop:t.position().top-$('#postContent>div:eq(0)').position().top},500,
@@ -327,7 +338,7 @@ var ContentBoxModule = function(item){
 			},
 			reLayout:function(){
 				//遊記框高度
-				if(bounce_s){
+				//if(bounce_s){
 					//bounce.hide();
 					//$('#collapse').show();		
 					//$('#slidesContainer').css('height',$(document).height()-$('.header').height());
@@ -335,7 +346,7 @@ var ContentBoxModule = function(item){
 					//$('.cke_editor').css('height',$(document).height()-$('.header').height()-40-15);
 					$('.control').css('line-height', $(document).height()-$('.header').height()-40 +'px');
 					$('#foo').css('top',$('#journal').height()/2+30);
-				}
+				//}
 				//遊記框位置
 				//var Container_r = 260 + ($(document).width()- 1280)/2  ;
 				//$('#slidesContainer').css('right',Container_r);
@@ -353,14 +364,201 @@ var ContentBoxModule = function(item){
 			target.find('.postTitle').text(str);
 		},
 		cancelEdit:function(){
-			if(edit_id){
+			if(edit_group_id){
 				UiListener.clickCancelEdit();
 			}
 		},
-		isBounce:function(){
-			if(bounce_s)
-				return true;
-			return false;
+		//isBounce:function(){
+		//	if(bounce_s)
+		//		return true;
+		//	return false;
+		//},
+		reset:function(){
+			show_id=null;
+			show_group_id=null;
+		},
+		cancelEditWarning:function(group_id,callback){
+			if(edit_group_id && edit_group_id!=group_id){
+				$( "#dialog" ).dialog({
+				  resizable: false,
+				  height:140,
+				  modal: true,
+				  buttons: {
+					"放棄儲存": function() {
+					  $( this ).dialog( "close" );
+					  moduleInstance.cancelEdit();
+					  if(callback)
+						callback();
+					},
+					Cancel: function() {
+					  $( this ).dialog( "close" );
+					}
+				  }
+				});			
+			}else{
+				if(callback){
+					callback();
+				}
+			}
+		},
+		insertNewPointWhileEditing:function(group_id){
+			if(edit_group_id&&edit_group_id==group_id){
+				var point=$('#trip_point_group_'+edit_group_id+' .trip_point li:last');
+				
+				var id=point.val();
+				DataStatus.contentList[id]='';
+				
+				var str='';
+				str+='<div class="tp_box" id="tp_box_'+id+'">';
+				str+=DataStatus.contentList[id];
+				str+='</div>';
+				
+				var tmp=$(str).appendTo(contentPanel);
+
+				if(i%2){
+					point.find('.point_name').addClass('red_box');
+					tmp.addClass('red');
+				}else{
+					point.find('.point_name').addClass('green_box');
+					tmp.addClass('green');
+				}
+				
+				tmp.attr('contenteditable',true);
+				editor[id]=CKEDITOR.inline(tmp[0],{
+					on:{
+						focus:function(){
+							editor[id].setReadOnly(false);
+							tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
+						}
+					},
+					height : '100%',
+					toolbar : [	[ 'Undo','Redo' ],
+								[ 'Bold','Italic','Underline', '-' ,'JustifyLeft','JustifyCenter','JustifyRight', '-' ,'NumberedList','BulletedList', 'RemoveFormat'  ] ,
+								[ 'Link','Unlink' ],
+								//'/' , 
+								[ 'Font','FontSize', 'Templates' ],
+								[ 'TextColor' , 'BGColor' ],
+								[ 'Image' , 'HorizontalRule' ,'Maximize']
+							]
+				});			
+				
+			}
+		},
+		deleteTripPoint:function(group_id,id){
+			if(show_group_id==group_id){
+				target.find('#tp_box_'+id).remove();
+				if(edit_group_id==group_id){
+					var pointList=$('#trip_point_group_'+edit_group_id+' .point_name');
+					for(var i=0; i<pointList.length; i++){
+						pointList.eq(i).removeClass('red_box');
+						pointList.eq(i).removeClass('green_box');
+						if(i%2){
+							pointList.eq(i).addClass('red_box');
+						}else{
+							pointList.eq(i).addClass('green_box');
+						}
+					}
+					
+					var postList=target.find('.tp_box');
+					for(var i=0; i<postList.length; i++){
+						postList.eq(i).removeClass('red');
+						postList.eq(i).removeClass('green');
+						if(i%2){
+							postList.eq(i).addClass('red');
+						}else{
+							postList.eq(i).addClass('green');
+						}
+					}
+				}
+			}
+		},
+		changeTripPointOrder:function(group_id,new_group_id){
+			var g_id;
+			if(show_group_id==group_id){
+				g_id=group_id;
+			}else if(show_group_id==new_group_id){
+				g_id=new_group_id;
+			}
+			if(g_id){
+				
+				for(var i in DataStatus.tripPointList){
+					if(DataStatus.tripPointList[i].group_id==g_id){
+					
+						var t=contentPanel.find('#tp_box_'+DataStatus.tripPointList[i].id);
+						
+						if(t.length==0){
+							Data.loadOnePost(DataStatus.tripPointList[i].id,function(){
+								var id=DataStatus.tripPointList[i].id;
+								var str='';
+								str+='<div class="tp_box" id="tp_box_'+id+'">';
+								str+=DataStatus.contentList[id];
+								str+='</div>';
+								var tmp=$(str).appendTo(contentPanel);
+							
+								if(edit_group_id==g_id){
+									tmp.attr('contenteditable',true);
+									editor[id]=CKEDITOR.inline(tmp[0],{
+										on:{
+											focus:function(){
+												editor[id].setReadOnly(false);
+												tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
+											}
+										},
+										height : '100%',
+										toolbar : [	[ 'Undo','Redo' ],
+													[ 'Bold','Italic','Underline', '-' ,'JustifyLeft','JustifyCenter','JustifyRight', '-' ,'NumberedList','BulletedList', 'RemoveFormat'  ] ,
+													[ 'Link','Unlink' ],
+													//'/' , 
+													[ 'Font','FontSize', 'Templates' ],
+													[ 'TextColor' , 'BGColor' ],
+													[ 'Image' , 'HorizontalRule' ,'Maximize']
+												]
+									});		
+								}
+								
+								moduleInstance.changeTripPointOrder(g_id);
+							});
+							return;
+						}
+						t.appendTo(contentPanel);
+					}
+				}
+				var t=contentPanel.find('.tp_box:first');
+				var v=t.attr('id').split('_box_')[1];
+				for(var k=0; k < DataStatus.tripPointList.length; k++){
+					if(DataStatus.tripPointList[k].id==v){
+						if(DataStatus.tripPointList[k].group_id!=g_id){
+							t.remove();
+						}
+						break;
+					}
+				}
+				
+				if(edit_group_id==group_id){
+					var pointList=$('#trip_point_group_'+edit_group_id+' .point_name');
+					for(var i=0; i<pointList.length; i++){
+						pointList.eq(i).removeClass('red_box');
+						pointList.eq(i).removeClass('green_box');
+						if(i%2){
+							pointList.eq(i).addClass('red_box');
+						}else{
+							pointList.eq(i).addClass('green_box');
+						}
+					}
+					
+					var postList=target.find('.tp_box');
+					for(var i=0; i<postList.length; i++){
+						postList.eq(i).removeClass('red');
+						postList.eq(i).removeClass('green');
+						if(i%2){
+							postList.eq(i).addClass('red');
+						}else{
+							postList.eq(i).addClass('green');
+						}
+					}
+				}
+				
+			}
 		}
 	};
 };

@@ -161,6 +161,7 @@ function initialize() {
 	};
 	target = document.getElementById('newTripLoad');
 	spinner = new Spinner(opts).spin(target);	
+	
 }
 
 function loadTrip(id,callback){
@@ -236,7 +237,8 @@ function reLayout(){
 	
 	if(map_flag==true)
 		computeMap();
-	//lookingAround
+	
+/*	//lookingAround
 	var wrap_h;
 	if($(window).height()-$('.header').height() < $('.main_block').height()+20){
 			wrap_h=$('.main_block').height()+20;
@@ -246,6 +248,8 @@ function reLayout(){
 	$('.wrap').css('height', wrap_h);
 	$('.friend_block').css('height',$(window).height()-$('.header').height()-68 );
 	$('.friend_all').css('height',$(window).height()-$('.header').height()-102 );
+*/
+
 }
 
 //*/

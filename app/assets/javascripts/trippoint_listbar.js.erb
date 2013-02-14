@@ -140,10 +140,11 @@ var TripPointListbarModule = function(obj){
 			new_sort_id=(lowbound+highbound)/2;
 		}
 		
-		
+		var group_id;
 		var movedItem;
 		for(var i=0;i<tpList.length;i++){
 			if(tpList[i].id==orig){
+				group_id=tpList[i].group_id;
 				tpList[i].sort_id=new_sort_id;
 				tpList[i].group_id=new_group_id;
 				movedItem=tpList[i];
@@ -167,6 +168,17 @@ var TripPointListbarModule = function(obj){
 		if(movedItem){
 			DataStatus.tripPointList.push(movedItem);
 		}
+		ui.item.find('.point_name').unbind('click').click(function(event){
+			contentBox.cancelEditWarning(new_group_id,function(){
+				var item=$(event.target);
+				var id=item.parents('li').val();
+				//moduleInstance.UiControl.selectTripPoint(item);
+				clickPointTitle(item.parents('.trip_point_group').attr('id').split('_group_')[1],id);
+			});
+		}).removeClass('red_box').removeClass('green_box').end();
+		
+		
+		contentBox.changeTripPointOrder(group_id,new_group_id);
 		
 		moduleInstance.UiControl.updateMark();
 		PathOnMap.updateMark();
@@ -512,9 +524,8 @@ var TripPointListbarModule = function(obj){
 				if(event.keyCode==13||event.type=='click'){
 					var item_id=$(event.target).parent().val();
 					tripPointEdit.addItem(group_id,item);
-					if(contentBox.isBounce()){
-						contentBox.UiControl.hideContent();
-					}					
+					
+					contentBox.UiControl.hideContent();					
 				}
 			},
 			//增加景點input框 失去焦點
@@ -530,10 +541,12 @@ var TripPointListbarModule = function(obj){
 				var tpList=DataStatus.tripPointList;
 				for(var i=0; i<tpList.length; i++){
 					if(tpList[i].id==item_id){
+						contentBox.deleteTripPoint(tpList[i].group_id,item_id);
 						tpList[i]=null;
 						break;
 					}
 				}
+				
 				DataStatus.tripPointList=[];
 				for(var i=0; i<tpList.length; i++){
 					if(tpList[i]){
@@ -545,6 +558,7 @@ var TripPointListbarModule = function(obj){
 				
 				PathOnMap.updateMark();
 				PathOnMap.redrawLine();
+								
 				
 				reLayout();
 			},
@@ -572,18 +586,20 @@ var TripPointListbarModule = function(obj){
 			},
 			//按下返回旅行列表(click)
 			returnTripList:function(){
-				//resetEnv();
-				target.hide();
-				contentBox.cancelEdit();
-				contentBox.UiControl.hide();
-				//contentBox.UiControl.hideBounceButton();
-				//$('#trip_one').hide();
-				$('#trip_list').show();
-				//$('#dates').empty();
-				loadTripList(DataStatus.owner_user_id);
-				toTop();
-				map.setCenter(new google.maps.LatLng(23.80, 121.500));
-				map.setZoom(8);
+				//resetEnv();				
+				contentBox.cancelEditWarning(function(){
+					target.hide();
+					contentBox.UiControl.hide();
+					contentBox.reset();
+					//contentBox.UiControl.hideBounceButton();
+					//$('#trip_one').hide();
+					$('#trip_list').show();
+					//$('#dates').empty();
+					loadTripList(DataStatus.owner_user_id);
+					toTop();
+					map.setCenter(new google.maps.LatLng(23.80, 121.500));
+					map.setZoom(8);
+				});
 			},
 		};
 	
@@ -751,10 +767,12 @@ var TripPointListbarModule = function(obj){
 					.find('.trip_point_edit').click(UiListener.showEditGroupMenu).end()
 					.find('.trip_point_title input').keydown(UiListener.keydownEditGroupName).end()
 					.find('.trip_point_title').click(function(event){
-						clickGroupTitle(group_id);
-						var item=$(event.target);
-						moduleInstance.UiControl.unselectTripPoint();
-						moduleInstance.UiControl.selectGroup(item);
+						contentBox.cancelEditWarning(group_id,function(){
+							clickGroupTitle(group_id);
+							var item=$(event.target);
+							moduleInstance.UiControl.unselectTripPoint();
+							moduleInstance.UiControl.selectGroup(item);
+						});
 					}).end();
 				if(DataStatus.isOwner){
 					t.find('.add_trip_point').click(function(event){
@@ -783,10 +801,12 @@ var TripPointListbarModule = function(obj){
 				
 				var item=$(str).appendTo(target.find('#trip_point_group_'+group_id+' ul'))
 						.find('.point_name').click(function(event){
-							var item=$(event.target);
-							var id=item.parents('li').val();
-							//moduleInstance.UiControl.selectTripPoint(item);
-							clickPointTitle(item.parents('.trip_point_group').attr('id').split('_group_')[1],id);
+							contentBox.cancelEditWarning(group_id,function(){
+								var item=$(event.target);
+								var id=item.parents('li').val();
+								//moduleInstance.UiControl.selectTripPoint(item);
+								clickPointTitle(item.parents('.trip_point_group').attr('id').split('_group_')[1],id);
+							});
 						}).end();
 				if(DataStatus.isOwner){
 					item.find('.point_edit img').click(UiListener.editPoint);

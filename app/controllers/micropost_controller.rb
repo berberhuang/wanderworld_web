@@ -51,6 +51,20 @@ class MicropostController < ApplicationController
 				render :json=>[nil]
 		end
 	end
+	
+	def getOnePost
+		@t=TripPoint.find_by_id(params[:tripPoint_id])
+		@public=@t.group.public
+		if @t.trip.user.id==session[:user_id]||@public
+			if @t.micropost
+				render :json=> [@t.micropost.article]
+			else
+				render :json=> ['']
+			end
+		else
+			render :json=>[nil]
+		end
+	end
 
 
 
