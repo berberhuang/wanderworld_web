@@ -1,6 +1,16 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xml:lang="zh" lang="zh">
 <head>
+
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width" />
+
+ <!-- <title>關於WanderWorld地球漫遊</title>
+  <link rel="shortcut icon" href="http://www.wanderworld.com.tw/assets/logo-31972393d4fb52fb065cab20c547f7a2.ico">
+-->
+
+  
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="msvalidate.01" content="76119A89703430A2C4DE9766A11E7448" />
 <title>WanderWorld地球漫遊</title>
@@ -9,6 +19,7 @@
   <%= javascript_include_tag "application" %>
   <%= stylesheet_link_tag "index" %>
   <%= csrf_meta_tags %>
+<script src="javascripts/modernizr.foundation.js"></script>
 <meta property="fb:app_id" content="369699423051845" />
 <%if @trip_id%>
 	<%if @tt=Trip.find_by_id(@trip_id)%>

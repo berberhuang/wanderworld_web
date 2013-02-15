@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8" />
+
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width" />
+
+  <title>關於WanderWorld地球漫遊</title>
+  <link rel="shortcut icon" href="http://www.wanderworld.com.tw/assets/logo-31972393d4fb52fb065cab20c547f7a2.ico">
+  <!-- Included CSS Files (Uncompressed) -->
+  <%= stylesheet_link_tag "newindex" %>
+  <%= csrf_meta_tags %>
+  
+  <!-- Included CSS Files (Compressed) -->
+  <!--
+  <link rel="stylesheet" href="stylesheets/foundation.min.css">
+-->
+
+</head>
+<body>
+  <div id="fb-root"></div>
+ <script>(function(d, s, id) {
+   var js, fjs = d.getElementsByTagName(s)[0];
+   if (d.getElementById(id)) return;
+   js = d.createElement(s); js.id = id;
+   js.src = "//connect.facebook.net/zh_TW/all.js#xfbml=1&appId=319719498074982";
+   fjs.parentNode.insertBefore(js, fjs);
+ }(document, 'script', 'facebook-jssdk'));</script>
+  <!-- Header and Nav -->
+  
+  <div class="row header">
+    <div class="three columns">
+      <h1><a href="#"><img id="main_logo" src="http://dl.dropbox.com/u/15101202/images/LOGO/banner_logo_walkder.png" /></a></h1>
+    </div>
+    <div class="nine columns">
+      <ul class="nav-bar right">
+        <li><a href="#">註冊</a></li>
+        <li><a href="#">登入</a></li>
+      </ul>
+    </div>
+  </div>
+  
+  <!-- End Header and Nav -->
+  
+  
+  <!-- First Band (Image) -->
+    
+  <div class="row">
+    <div class="twelve columns">
+      <img src="https://dl.dropbox.com/u/15101202/images/banded-cover.png" />
+      
+      <hr />
+    </div>
+  </div>
+  <!-- Second Band (Image Left with Text) -->
+  
+  <div class="row">
+    <div class="twelve columns">
+      <div class="four columns">
+        <img src="https://dl.dropbox.com/u/15101202/images/url-1.jpeg" />
+      </div>
+      <div class="eight columns">
+        <h3>專注於旅行者的設計，寫下專屬於旅行的遊記</h3>
+        <h3 class="unbold">時間、地點、故事，缺一不可。</h3>
+          <p class="lead">WanderWorld地球漫遊是一個專為旅行者打造的雲端遊記服務，我們將「人、事、時、地」以獨特的介面整合在一起，幫助旅行者說故事，或者規劃下一趟旅程。</p>
+          <hr />
+      </div>
+    </div>
+  </div>
+  
+  
+
+
+  <!-- Third Band (Image Right with Text) -->
+  
+  <div class="row">
+    <div class="twelve columns">
+      <div class="eight columns">
+        <h3>用一張張旅行地圖，為美好的旅程留下紀錄</h3>
+        <h3 class="unbold">凡走過，必留下足跡；每個足跡都是傳奇。</h3>
+          <p class="lead">
+            沒有一個網誌或社群網站，能像地球漫遊一樣，將地理位置和旅行故事整合地如此緊密。我們相信，將地圖和遊記結合在一起，不僅能幫助旅行者撰寫，更能讓讀者身歷其境。</p>
+        <hr />
+      </div>
+        <div class="four columns">
+          <img src="https://dl.dropbox.com/u/15101202/images/0880040002%20%281%29.jpg" />
+        </div>
+    </div>
+  </div>
+  
+  
+  
+
+  <!-- Fourth Band (Image Left with Text) -->
+  
+  <div class="row" style="margin-bottom:105px;">
+    <div class="twelve columns">
+      <div class="four columns">
+        <img src="https://dl.dropbox.com/u/15101202/images/img3-DRAFT.png" />
+      </div>
+      <div class="eight columns">
+        <h3>直覺的時間軸架構；剛回家，還是正要出發？</h3>
+        <h3 class="unbold">不只幫助你回憶，還要幫你規劃旅行。</h3>
+          <p class="lead">
+          WanderWorld地球漫遊的時間軸將依照你輸入的旅行時間，自動顯示這趟旅行是已經出發，還是尚未啓程；除了寫遊記，你也可以規劃你的下一趟旅行。
+          </p>
+      </div>
+    </div>
+  </div>
+
+  
+
+  <!-- Call to Action Panel -->
+  <div class="row">
+    <div class="twelve columns">
+    
+      <div class="panel">
+        <div class="fb-like-box" data-href="http://www.facebook.com/WanderWorld" data-width="292" data-height="185" data-show-faces="true" data-stream="false" data-header="false" data-border-color="#f2f2f2" style="position:absolute; float:right; right:15px; margin-top:-20px;" ></div>
+        <h2>和我們聯絡！</h2>
+        <div class="row">
+          <div class="nine columns" >
+            <p>有任何疑問或建議，請讓我們知道</p>
+          </div>
+          <div class="three columns" id="contactUs" style="margin-right:85%;">
+            <a target="_blank" href="https://docs.google.com/spreadsheet/viewform?formkey=dDl4bDZHMWt0Qkd2WF82UkVKQXc4YXc6MQ" class="radius button right">聯絡我們</a>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+
+
+  <!-- Footer -->
+  
+  <footer class="row">
+    <div class="twelve columns">
+      <hr />
+      <div class="row">
+        <div class="six columns">
+          <p>&copy; Copyright no one at all. Go to town.</p>
+        </div>
+        <div class="six columns">
+          <ul class="link-list right">
+            <li><a href="#">關於地球漫遊</a></li>
+            <li><a href="http://wanderworld-ideaaxis.blogspot.tw/" target="blank">地球漫遊開發日誌</a></li>
+          </ul>
+        </div>
+      </div>
+    </div> 
+  </footer>
+
+  <!-- Included JS Files (Uncompressed) -->
+  <!--
+  
+  <script src="javascripts/jquery.js"></script>
+  
+  <script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
+  
+  <script src="javascripts/jquery.foundation.forms.js"></script>
+  
+  <script src="javascripts/jquery.foundation.reveal.js"></script>
+  
+  <script src="javascripts/jquery.foundation.orbit.js"></script>
+  
+  <script src="javascripts/jquery.foundation.navigation.js"></script>
+  
+  <script src="javascripts/jquery.foundation.buttons.js"></script>
+  
+  <script src="javascripts/jquery.foundation.tabs.js"></script>
+  
+  <script src="javascripts/jquery.foundation.tooltips.js"></script>
+  
+  <script src="javascripts/jquery.foundation.accordion.js"></script>
+  
+  <script src="javascripts/jquery.placeholder.js"></script>
+  
+  <script src="javascripts/jquery.foundation.alerts.js"></script>
+  
+  <script src="javascripts/jquery.foundation.topbar.js"></script>
+  
+  <script src="javascripts/jquery.foundation.joyride.js"></script>
+  
+  <script src="javascripts/jquery.foundation.clearing.js"></script>
+  
+  <script src="javascripts/jquery.foundation.magellan.js"></script>
+  
+  -->
+  
+  <!-- Included JS Files (Compressed) -->
+  <script src="javascripts/jquery.js"></script>
+  <script src="javascripts/foundation.min.js"></script>
+  
+  <!-- Initialize JS Plugins -->
+  <script src="javascripts/app.js"></script>
+   <div id="timeline-embed"></div>
+    <script type="text/javascript">
+        var timeline_config = {
+            width:              '100%',
+            height:             '600',
+            source:             'path_to_json/or_link_to_googlespreadsheet',
+            embed_id:           'timeline-embed',               //OPTIONAL USE A DIFFERENT DIV ID FOR EMBED
+            start_at_end:       false,                          //OPTIONAL START AT LATEST DATE
+            start_at_slide:     '4',                            //OPTIONAL START AT SPECIFIC SLIDE
+            start_zoom_adjust:  '3',                            //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
+            hash_bookmark:      true,                           //OPTIONAL LOCATION BAR HASHES
+            font:               'Bevan-PotanoSans',             //OPTIONAL FONT
+            debug:              true,                           //OPTIONAL DEBUG TO CONSOLE
+            lang:               'fr',                           //OPTIONAL LANGUAGE
+            maptype:            'watercolor',                   //OPTIONAL MAP STYLE
+            css:                'path_to_css/timeline.css',     //OPTIONAL PATH TO CSS
+            js:                 'path_to_js/timeline-min.js'    //OPTIONAL PATH TO JS
+        }
+    </script>
+    <script type="text/javascript" src="path_to_js/storyjs-embed.js"></script>
+</body>
+</html>

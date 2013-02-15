@@ -13,6 +13,9 @@ class IndexController < ApplicationController
 		end
 	end
 	
+	def banded
+	end	
+	
 	def lab
 		UserSession.find.username;
 	end
