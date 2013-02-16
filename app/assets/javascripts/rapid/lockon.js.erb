@@ -1,0 +1,286 @@
+var browserSupportFlag =  new Boolean();
+var map;
+var confirmWindow;
+var infowindow;
+//var pointData=new Array();
+var index=2;
+var user_id;
+var trip_id=-1;
+var trip_name;
+var trip_date;
+var deleteList=new Array();
+var lockmap=0;
+var zoom_s=true;
+var animateOn=true;
+var w_height;
+var editTarget_id;
+var edit_s=false;
+var edit_menu_id=-1;
+var tmpArray;
+var openPopUi=0;
+var back=true;
+var keyboard_s=false;
+
+var tripPointList;
+var tripPointEdit;
+var tripListbar;
+var contentBox;
+
+//初始化
+function initialize() {
+
+	//載入widget
+	tripPointList=new TripPointListbarModule('#trip_one');
+	
+	tripPointEdit = new TripPointEditModule('#add_new');
+	
+	tripListbar = new TripListbarModule('#trip_list');
+	
+	contentBox = new ContentBoxModule('#slidesContainer');
+	contentBox.init();
+	
+	$('#test div:eq(0)').append('<div>dynamic appended test</div>');
+	
+	//依照解析度調整布局
+	reLayout(); 
+	$(window).bind('resize',function(){
+		reLayout();
+	});
+
+	//初始化地圖
+	var latlng = new google.maps.LatLng(23.80, 121.500);
+  	var myOptions = {
+		mapTypeControl:false, 
+		streetViewControl:false,
+		zoom: 8,
+		minZoom: 2,
+		zoomControl:true,
+		zoomControlOptions:{	style: google.maps.ZoomControlStyle.DEFAULT ,
+								position:google.maps.ControlPosition.LEFT_TOP},
+		panControl:false, 
+		mapTypeControl:true,
+		mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DEFAULT ,
+								position: google.maps.ControlPosition.TOP_LEFT  },
+		mapTypeId: google.maps.MapTypeId.TERRAIN,
+		keyboardShortcuts: false
+	};
+	map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+	map.setCenter(latlng);
+		
+	
+
+	//初始環境變數
+	//resetEnv();		 
+	
+	$('#share').click(function(){
+		$('.popup #shareInput').val('http://www.wanderworld.com.tw/'+trip_id).select();
+	});
+	////////待整理//////////////////	
+	
+	
+	
+	// 文字編輯器初始化
+	CKEDITOR.on( 'instanceCreated', function( event ) {
+			var editor = event.editor,
+				element = editor.element;
+
+			// Customize editors for headers and tag list.
+			// These editors don't need features like smileys, templates, iframes etc.
+			if ( element.is( 'h1', 'h2', 'h3' ) || element.getAttribute( 'id' ) == 'taglist' ) {
+				// Customize the editor configurations on "configLoaded" event,
+				// which is  fired after the configuration file loading and
+				// execution. This makes it possible to change the
+				// configurations before the editor initialization takes place.
+				editor.on( 'configLoaded', function() {
+
+					// Remove unnecessary plugins to make the editor simpler.
+					editor.config.removePlugins = 'colorbutton,find,flash,font,' +
+						'forms,iframe,image,newpage,removeformat,' +
+						'smiley,specialchar,stylescombo,templates';
+
+					// Rearrange the layout of the toolbar.
+					editor.config.toolbarGroups = [
+						{ name: 'editing',		groups: [ 'basicstyles', 'links' ] },
+						{ name: 'undo' },
+						{ name: 'clipboard',	groups: [ 'selection', 'clipboard' ] },
+						{ name: 'about' }
+					];
+				});
+			}
+		});
+		
+
+
+	$( "#aboutme_editor" ).draggable({ containment: "#aboutme_all" ,handle:'#headDiv' });
+	$( "#aboutme_main" ).draggable({ containment: "#aboutme_all" });
+	$( "#tabs" ).tabs();
+	configAboutMe();
+	$( "#map_small" ).resizable({
+		handles: "nw",
+		aspectRatio: 260 / 200
+	});
+	
+	search_name();
+	
+	////////////////////////////////
+	
+	var opts,target,spinner;
+	opts = {
+		lines: 13, // The number of lines to draw
+		length: 7, // The length of each line
+		width: 4, // The line thickness
+		radius: 10, // The radius of the inner circle
+		rotate: 0, // The rotation offset
+		color: '#000', // #rgb or #rrggbb
+		speed: 1.6, // Rounds per second
+		trail: 60, // Afterglow percentage
+		shadow: false, // Whether to render a shadow
+		hwaccel: false, // Whether to use hardware acceleration
+		className: 'spinner', // The CSS class to assign to the spinner
+		zIndex: 2e9, // The z-index (defaults to 2000000000)
+		top: 'auto', // Top position relative to parent in px
+		left: 'auto' // Left position relative to parent in px
+	};
+	target = document.getElementById('foo');
+	spinner = new Spinner(opts).spin(target);	
+	opts = {
+		lines: 11, // The number of lines to draw
+		length: 3, // The length of each line
+		width: 2, // The line thickness
+		radius: 4, // The radius of the inner circle
+		rotate: 0, // The rotation offset
+		color: '#000', // #rgb or #rrggbb
+		speed: 2.0, // Rounds per second
+		trail: 100, // Afterglow percentage
+		shadow: false, // Whether to render a shadow
+		hwaccel: false, // Whether to use hardware acceleration
+		className: 'spinner', // The CSS class to assign to the spinner
+		zIndex: 2e9, // The z-index (defaults to 2000000000)
+		top: '12px', // Top position relative to parent in px
+		left: '11px' // Left position relative to parent in px
+	};
+	target = document.getElementById('newTripLoad');
+	spinner = new Spinner(opts).spin(target);	
+	
+}
+
+function loadTrip(id,callback){
+	tripListbar.UiControl.hide();
+	tripPointList.UiControl.show();
+	resetEnv();
+	Data.loadTrip(id,null,{
+		tripInfo:function(){
+			tripPointList.loadTripInfo();
+			if(callback)
+				callback();
+		},
+		tripPointList:function(){
+			tripPointList.loadTripPointList();
+			//contentBox.UiControl.showBounceButton();
+		}
+	});
+}
+
+function loadTripList(id,callback){
+	tripPointList.UiControl.hide();
+	tripListbar.UiControl.show();
+	resetEnv();
+	Data.loadTripList(id,function(){
+		tripListbar.loadTripList(id);
+		if(callback)
+			callback();
+	});
+}
+
+function createNewTrip(){
+	Data.createTrip(function(trip_id){
+		loadTrip(trip_id,tripPointList.editTripName);
+	});
+}
+
+
+//初始環境
+function resetEnv(){
+	DataStatus={};
+	DataStatus.tripPointList=[];
+	DataStatus.groupList=[];
+	
+	tripPointList.reset();
+	tripListbar.reset();
+	PathOnMap.updateMark();
+	
+/*	
+	index=0;
+	deleteList=new Array();
+	editTarget_id=-1;
+	closePost();
+*/
+}
+//因應解析度重新布局
+function reLayout(){
+	var main_h=$(window).height()-$('.header').height();	
+    $('.main_content').css('height', main_h);
+	$('#main_control').css('height', main_h-40);
+	$('#map_canvas').css('width',$(document).width()-130 );
+	$('#timeline').css('height', $('.list').height()-130);
+	//景點區高度
+	var other_h = ($('.trip_information').height()+30) + $('.add_group_title').height() + ($('#view_num').height()+30);
+	if(other_h+($('.trip_point_all').height()+50) > $('.list').height()){
+		$('.scroll-pane').css('height', $('.list').height()-other_h-50);
+	}
+	else{
+		$('.scroll-pane').css('height', $('.trip_point_all').height());
+	}
+	
+	contentBox.UiControl.reLayout();
+		
+	
+	if(map_flag==true)
+		computeMap();
+	
+/*	//lookingAround
+	var wrap_h;
+	if($(window).height()-$('.header').height() < $('.main_block').height()+20){
+			wrap_h=$('.main_block').height()+20;
+	}else{
+			wrap_h=$(window).height()-$('.header').height();
+	}
+	$('.wrap').css('height', wrap_h);
+	$('.friend_block').css('height',$(window).height()-$('.header').height()-68 );
+	$('.friend_all').css('height',$(window).height()-$('.header').height()-102 );
+*/
+
+}
+
+//*/
+
+//檢測位置
+function detectLocation(){
+
+  if(navigator.geolocation) {
+    browserSupportFlag = true;
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+      map.setCenter(initialLocation);
+       
+	marker=new google.maps.Marker({
+		position: initialLocation,
+		map: map
+	});
+	marker.setMap(map);
+    }, function() {
+      handleNoGeolocation(browserSupportFlag);
+    });
+  }else {
+    browserSupportFlag = false;
+    handleNoGeolocation(browserSupportFlag);
+  }
+  
+  function handleNoGeolocation(errorFlag) {
+    if (errorFlag == true) {
+      alert("Geolocation service failed.");
+    } else {
+      alert("Your browser doesn't support geolocation. We've placed you in Siberia.");
+    }
+  }
+}

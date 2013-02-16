@@ -1,0 +1,334 @@
+var bounce_s=false;
+var editing=false;
+var hide_c=true;
+/*header********************************************************************************/
+
+//點擊帳戶清單(click)
+function showAccountList(){
+	if($('#account_ul').css('display')!='block'){
+		$('#account_ul').show();
+		setTimeout("$(window).bind('click',function(){setTimeout(\"$(window).unbind('click');$('#account_ul').hide();\",50);});",50);
+	}       
+}
+
+/*左邊列表********************************************************************************/
+
+//切換到關於我
+function showAboutMe(){
+	$('.main_content').hide();
+	$('#about_me').show();
+}
+//切換到漫遊日誌
+function showTravelJournal(){
+	tripPointList.showTravelJournal();
+	
+}
+
+/*旅行列表********************************************************************************/
+
+
+//時間軸到最頂端(click)
+function toTop(){
+	$("#dates").animate({'top':'-600px'},400);
+}
+//時間軸到最底端(click)
+function toBottom(){
+	$("#dates").animate({'top': -600+$("#timeline").height()-$("#dates").height()},400);
+}
+//編輯旅行(click)
+function editTrip(num){
+	$('#trip_list_'+num+' .trip_edit').css('display','block');
+	if($('#trip_list_'+num+' .trip_edit_menu').css('display')!='block'){
+		$('#trip_list_'+num+' .trip_edit_menu').show();
+		setTimeout("$(window).bind('click',function(){$('.trip_edit_menu').hide();$('.trip_edit').css('display','');setTimeout(\"$(window).unbind('click');\",50);});",50);
+	}
+}
+
+/*群組********************************************************************************/
+
+
+
+
+/*景點********************************************************************************/
+
+var newTripFlag=0;
+
+
+//按下刪除景點
+function removeTripPoint(event){
+	if (window.confirm('您確定要刪除此景點？') == true) { 
+		var i=$(event.target).parent().parent().parent().parent().val();
+		edit_menu_id=pointData[i].tripPoint_id;
+		deleteTripPoint(edit_menu_id);
+		
+		//if(edit_menu_id==editTarget_id)
+		//	closePost();
+		ui_removeTripPoint(i);
+		reIndex();
+	} 
+}
+
+//按下群組名稱
+function clickGroupTitle(group_id){
+	contentBox.UiControl.showContent(group_id);
+}
+
+//按下景點名稱
+
+function clickPointTitle(group_id,id){
+	if(contentBox.isEditing()){
+		contentBox.UiControl.setEditFocus(id);
+	}else{
+		contentBox.UiControl.showContent(group_id,id);
+	}
+	console.log(id);
+	//if(pointData[editTarget_id]&&editing)
+	//	if(pointData[item_id].group_id!=pointData[editTarget_id].group_id){
+	//		if (window.confirm('您尚未儲存,是否要放棄編輯？') == false)
+	//			return;
+	//		cancelEdit();
+	//	}
+	//editTarget_id=item_id;
+	//ui_adjustPointToCenter(item_id);
+	//ui_selectList(item_id);
+	//ui_showMarkDetail(item_id);	
+		
+	//log(item_id);
+	//if(editing)
+	//	ui_setEditFocus(item_id);
+	//else{
+	//	ui_showPost(item_id);
+	//	ui_loadHTripPointSwitchControl();
+		//ui_setViewFocus(item_id-$('#trip_point_group_'+pointData[item_id].group_id+' li:first').val());
+	//}
+	
+}
+
+//按下景點名稱
+function showTripPoint(event){
+	/*if(editing)
+		if (window.confirm('您尚未儲存,是否要放棄編輯？') == false)
+			return; 
+	editing=false;*/
+
+/*	var item_id;
+	if(/^[0-9]*$/.test(event))
+		item_id=event;
+	else
+		item_id=$(event.target).parent().parent().val();
+	editTarget_id=item_id;
+	//$('.TripPointName').text(pointData[editTarget_id].title);
+	//因應無刷新跳轉  做的上一頁紀錄
+	/*var state={
+		title:document.title,
+		url:window.href,
+		trip_id:trip_id
+	}
+	//無刷新跳轉改變url
+	window.history.pushState(state,document.title,'/'+trip_id+'/'+pointData[item_id].tripPoint_id);
+*/
+	//addCommentsAndLike();	
+
+/*	ui_adjustPointToCenter(item_id);
+	ui_showPost(item_id);
+	ui_showMarkDetail(item_id);
+	ui_selectList(item_id);
+
+	ui_unloadTripPointSwitchControl(false);
+	if(!bounce_s){
+		ui_loadTripPointSwitchControl();
+	}else{
+		ui_loadHTripPointSwitchControl();
+	}*/	
+	
+}
+
+/*遊記********************************************************************************/
+
+//在內容框按下編輯
+function editPost_c(){
+	edit_menu_id=editTarget_id;
+	editPost();
+}
+
+
+//按下完成編輯遊記
+function finishPost(){
+	if(editTarget_id==-1)
+		return ;
+	if(!pointData[editTarget_id])
+		return;
+	editing=false;
+	$('#editPostDiv').hide();
+	var str=CKEDITOR.instances.editPost.getData().replace(/.*<span style="display: none;">&nbsp;<\/span><\/div>/,'').split(/<div style="page-break-after: always;">/);;
+	var points=$('#trip_point_group_'+pointData[editTarget_id].group_id+' li');
+	for(var i=0;i<points.length;i++){
+		if(str[i]){
+			pointData[points[i].value].post_simple=str[i];
+			savePost(points[i].value);
+		}
+		
+	}
+	//pointData[editTarget_id].post_simple=str[0];
+	//pointData[editTarget_id].post_entire=str[1];
+	//savePost(editTarget_id);
+	//if(str[1]){
+	//	saveFullPost(editTarget_id,function(){
+	//		isFullPostExist(editTarget_id,function(){
+	//			ui_showPost(editTarget_id);	
+	//		});
+	//	});
+	//}else{	
+	//	pointData[editTarget_id].post_entire="";
+	//	saveFullPost(editTarget_id,function(){
+	//		pointData[editTarget_id].fullPost=false;
+	//		ui_showPost(editTarget_id);	
+	//	});
+	//}
+/*	if($('#postToFB input').attr('checked')){
+		FB.ui({method:'feed',link:'http://wanderworld.com.tw/'+trip_id+'/'+pointData[editTarget_id].tripPoint_id,name:trip_name+'-'+pointData[editTarget_id].title,description:pointData[editTarget_id].post_simple,picture:"<%='http://wanderworld.com.tw'+asset_path('LOGO-06.png')%>"});
+	}*/
+	ui_closeEditPost();
+	ui_loadTripPointSwitchControl();
+	ui_showPost(editTarget_id);	
+	showTripPoint(editTarget_id);
+}
+//按下完成發布遊記
+function releasePost(){
+	if(editTarget_id==-1)
+		return ;
+	if(!pointData[editTarget_id])
+		return;
+	editing=false;
+	$('#editPostDiv').hide();
+	var str=CKEDITOR.instances.editPost.getData().replace(/.*<span style="display: none;">&nbsp;<\/span><\/div>/,'').split(/<div style="page-break-after: always;">/);;
+	var points=$('#trip_point_group_'+pointData[editTarget_id].group_id+' li');
+	for(var i=0;i<points.length;i++){
+		if(str[i]){
+			pointData[points[i].value].post_simple=str[i];
+			savePost(points[i].value);
+		}
+		
+	}
+	setGroupRelease(pointData[editTarget_id].group_id);
+
+	if($('#postToFB input').attr('checked')!=null){
+		FB.ui({method:'feed',link:'http://wanderworld.com.tw/'+trip_id+'/'+pointData[editTarget_id].tripPoint_id,name:trip_name+'-'+$('#trip_point_group_'+pointData[editTarget_id].group_id+' .trip_point_title a').text(),description:pointData[editTarget_id].post_simple,picture:"<%='http://wanderworld.com.tw'+asset_path('view_all.png')%>"});
+	}
+	ui_closeEditPost();
+	ui_loadTripPointSwitchControl();
+	ui_showPost(editTarget_id);	
+	showTripPoint(editTarget_id);
+}
+//按下略過編輯
+function cancelEdit(){
+	if(editTarget_id==-1)
+		return ;
+	editing=false;
+	ui_closeEditPost();
+	ui_showPost(editTarget_id);
+	ui_loadTripPointSwitchControl();
+}
+//按下關閉瀏覽遊記
+function closePost(){
+	editing=false;
+	ui_closePost();
+	ui_closeMarkDetail();
+	tripPointList.ui_unselectList();
+	ui_unloadTripPointSwitchControl(false);
+}
+//點擊發布到FB的按鈕
+function checkbox(){
+	if($('#postToFB input').attr('checked')=='checked')
+		$('#postToFB input').attr('checked',null);
+	else
+		$('#postToFB input').attr('checked','checked');
+}
+
+//隱藏遊記框
+function hideContainer(){
+	if(hide_c==true){
+		$('#slidesContainer').hide('slow').queue(function(next){
+			$(this).appendTo($('#hide_block'));
+			next();
+		});	
+		$('#slidesContainer_s').show();
+		hide_c=false;
+	}else{
+		$('#slidesContainer').queue(function(next){
+			$(this).appendTo($('#travel_journal'));
+			next();
+		}).show('slow');
+		$('#slidesContainer_s').hide();
+		hide_c=true;
+	}
+}
+
+function showContainer(){
+	if(!hide_c){
+		$('#slidesContainer').queue(function(next){
+			$(this).appendTo($('#travel_journal'));
+			next();
+		}).show('slow');
+		$('#slidesContainer_s').hide();
+		hide_c=true;
+	}
+}
+
+/*鍵盤控制********************************************************************************/
+
+//鍵盤控制瀏覽景點
+function tripPointSwitchControl(event){
+	if(event.keyCode==39){
+		shiftRight();
+	}else if(event.keyCode==37){
+		shiftLeft();
+	}else if(event.keyCode==38){
+		clickBounce();
+	}else if(event.keyCode==40){
+		clickCollapse();
+	}
+}
+//
+function htripPointSwitchControl(event){
+	if(event.keyCode==39){
+			shiftRight();
+	}else if(event.keyCode==37){
+			shiftLeft();
+	}else if(event.keyCode==27){
+			clickCollapse();
+	}
+}
+//換到到下一個景點
+function shiftRight(){
+    var i;
+	if(editing)
+	if (window.confirm('您尚未儲存,是否要放棄編輯？') == false)
+		return; 
+	for(i=parseInt(editTarget_id)+1;i<pointData.length&&!pointData[i];i++);
+	if(pointData[i]){
+	editing=false;
+		editTarget_id=i;
+		zoom_s=false;
+		clickPointTitle(i);
+		zoom_s=true;
+	}
+	//$('.slide').scrollTop(0);
+}
+//換到到上一個景點
+function shiftLeft(){
+    var i;
+	if(editing)
+	if (window.confirm('您尚未儲存,是否要放棄編輯？') == false)
+		return; 
+	for(i=editTarget_id-1;i>=0&&!pointData[i];i--);
+	if(pointData[i]){
+		editing=false;
+		editTarget_id=i;
+		zoom_s=false;
+		clickPointTitle(i);
+		zoom_s=true;
+	}
+	//$('.slide').scrollTop(0);
+}
+
