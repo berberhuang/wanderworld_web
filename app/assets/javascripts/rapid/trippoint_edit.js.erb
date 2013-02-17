@@ -418,7 +418,15 @@ var TripPointEditModule = function(item){
 				closeConfirmBox();
 				closeMarkDetail();
 				
-				setTimeout('$("#newTripPoint input").bind("clickoutside",function(){$("#newTripPoint").remove();$("#newTripPoint input").unbind("clickoutside");});',50);
+				var group_id=newTripPointData.group_id;
+				//失去焦點則刪掉新增景點輸入框
+				setTimeout(function(){
+					newTripPointInput.bind("clickoutside",function(){
+							newTripPointInput.unbind("clickoutside");
+							newTripPointInput.remove();
+							tripPointList.UiControl.enableAddTripPoint(group_id);
+					});
+				},50);
 			},
 			
 			//按下新增地點的搜尋框按鈕
@@ -504,7 +512,7 @@ var TripPointEditModule = function(item){
 			//取消新增手動地點
 			cancelSetNewManPos:function(){
 				target.hide();
-				tripPointEdit.UiListener.confirmCancel();
+				moduleInstance.UiListener.confirmCancel();
 			}
 		}
 		

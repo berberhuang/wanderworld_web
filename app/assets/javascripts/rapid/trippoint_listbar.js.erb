@@ -521,7 +521,7 @@ var TripPointListbarModule = function(obj){
 										UiListener.enterTripPoint(event,group_id,$(this));
 									})
 						//.focus(ui_unloadTripPointSwitchControl((editTarget_id==-1)?false:true))
-								.blur(UiListener.blurAddPoint)
+								.blur(function(event){UiListener.blurAddPoint(event,group_id);})
 								.focus().end();
 				reLayout();	
 				
@@ -551,9 +551,15 @@ var TripPointListbarModule = function(obj){
 				}
 			},
 			//增加景點input框 失去焦點
-			blurAddPoint:function(){
-				if(keyboard_s)
-					ui_loadTripPointSwitchControl();
+			blurAddPoint:function(event,group_id){
+				//if(keyboard_s)
+				//	ui_loadTripPointSwitchControl();
+				var item=$(event.target);
+				if(item.val()!="")
+					return;
+				item.unbind("clickoutside");
+				item.remove();
+				moduleInstance.UiControl.enableAddTripPoint(group_id);
 			},
 			//移除景點
 			removePoint:function(item_id){
