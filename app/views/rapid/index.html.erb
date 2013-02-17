@@ -185,14 +185,12 @@
 	</div>
 	<!--旅行列表-->
 	<div id="trip_list" class="list" style="display:none;">
-		<div id="trip_logo">
-			<img src='<%=asset_path("logo_walker.png")%>'></img>
-		</div>
+		<div id="trip_logo"></div>
 		<div id="trip_title">
 			<h2 class="information">旅行列表</h2>
 		</div>
 		<div id="trip_create" style="display:none;">
-			<button id="trip_create_button" class="create_button" title="新增一個旅行">新增</button>
+			<button id="trip_create_button" class="create_button" title="新增一個旅行">新增旅行</button>
 		</div>
 		<div id="prev" onclick="toTop()" title="至頂端"></div>
 			<div id="timeline">
@@ -241,7 +239,7 @@
 		<div id="trip_point_list">
 		</div>
 		<div class="add_group_title">
-			<button id="group_create_button" class="create_button" title="新增一篇遊記">新增</button>
+			<button id="group_create_button" class="create_button" title="新增一篇遊記">新增遊記</button>
 		</div>
 		<!--瀏覽人次-->
 		<div id="view_num">
@@ -264,7 +262,8 @@
 	<div id="slidesContainer" style="display:none">
 		<div class="bounceDiv">
 			<div id="like"></div>
-			<div id="notpublic" title="在編輯模式按下發布才能公開這篇遊記" style="display:none">尚未發布</div>
+			<div id="notpublic" title="請至編輯模式公開這篇遊記" style="display:none">未公開 只有你能看到</div>
+			<div id="public" style="display:none">已公開</div>
 			<div class="editTool">
 				<img src='<%=asset_path("edit.png")%>' title="編輯遊記">
 			</div>
@@ -277,7 +276,8 @@
 				<input type="checkbox" id="check" onclick="checkbox()"  />
 				<img src='<%=asset_path("Facebook_icon.png")%>' style="height:25px" />
 			</div>
-			<button id="releasePost">發布</button>
+			<button id="releasePost">公開</button>
+			&nbsp&nbsp
 			<button id="finishPost">儲存</button>
 			<button id="cancelEdit" style="width: 80px;">取消編輯</button>
 		</div>

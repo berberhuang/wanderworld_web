@@ -1,8 +1,8 @@
 /*避免反白狀況*/
-#postContent ::selection {
+#postContent img::selection {
     background:rgba(0,0,0,0);
 }
-#postContent ::-moz-selection {
+#postContent img ::-moz-selection {
     background:rgba(0,0,0,0);
 }
 

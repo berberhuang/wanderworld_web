@@ -90,7 +90,8 @@ var ContentBoxModule = function(item){
 									[ 'Link','Unlink' ],
 									//'/' , 
 									[ 'Image' , 'HorizontalRule' ,'Maximize']
-								]
+								],
+						forcePasteAsPlainText:true
 					});
 				}());
 			}
@@ -349,6 +350,10 @@ var ContentBoxModule = function(item){
 					
 					if(DataStatus.isPublic[group_id] || !DataStatus.isOwner){
 						target.find('#notpublic').hide();
+						var t=target.find('#public').hide();
+						if(DataStatus.isOwner){
+							t.show();
+						}
 					}else{
 						target.find('#notpublic').show();
 					}

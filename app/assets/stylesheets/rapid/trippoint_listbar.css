@@ -230,30 +230,11 @@ ul.trip_point li:hover  .point_edit {
 	border-color:white;
 	border-bottom-width:thin;
 }
-#trip_logo {
-	width:40px;
-	float:left;
-	margin: 15px 15px 0 15px;
-}
-#trip_logo img {
-	width:40px;
-}
-#trip_title {
-	width: auto;
-	margin: 15px 0 0 0;
-	float: left;
-}
-#trip_title h2 {
-	line-height:40px;
-}
-#trip_create {
-	float: left;
-	margin: 20px 0 0 25px;
-}
+
 .create_button {
 	border-radius:3px;
 	border: 1px solid rgba(255, 162, 63, 0.8);
-	width:60px;
+	width:70px;
 	height:30px;
 	background-color:rgba(255, 162, 63, 0.8);
 }
@@ -383,25 +364,7 @@ ul.trip_point li:hover  .point_edit {
 	color: #ffcc00;
 }
 
-.trip_list_info {
-	width:160px;
-	font-family: 微軟正黑體;
-	font-size: 14px;
-	float: left;
-	margin-bottom: 10px;
-	margin-left: 20px;
-	border: 1px solid #AAA;
-	padding: 5px;
-}
-.trip_list_info:hover .trip_edit {
-        display: inline;
-}
-.now_info {
-	float: left;
-	width: 260px;
-	margin-bottom: 10px;
-	font-family: 微軟正黑體;
-}
+
 .trip_edit {
 	display:none;
 	position: relative;
