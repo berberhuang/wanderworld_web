@@ -5,7 +5,7 @@ class UserController < ApplicationController
 
         def create
                 @user=User.new params[:user]
-                if @user.save
+                if @user.password.length>=6 && @user.password.length<=20 && @user.save
 			flash[:notice]='sucessful'
 			
 			@user_session=UserSession.new params[:user]
@@ -21,7 +21,8 @@ class UserController < ApplicationController
 				flash[:loginfail]=true
 			end
                 else
-                        render :text=>'fail'
+			flash[:signupfail]=true
+			redirect
                 end
         end
 	
@@ -36,5 +37,13 @@ class UserController < ApplicationController
 		else
 			render :json=>false
 		end	
+	end
+	
+	def redirect
+		if session[:url]
+			redirect_to session[:url]
+		else
+			redirect_to '/'
+		end
 	end
 end

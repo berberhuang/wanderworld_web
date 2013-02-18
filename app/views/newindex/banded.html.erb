@@ -78,7 +78,7 @@
     <div class="nine columns">
       <ul class="nav-bar right">
 		  <li class="floatingss" style="background-color:#000000;border-color:#000000;">
-			<div class="fb-login-button" id="custom_fb_login" style="width:400px;display:inline" autologoutlink="false" onlogin="onLogin()">以facebook登入</div>
+			<div class="fb-login-button" id="custom_fb_login" style="width:400px;display:inline" autologoutlink="false" onlogin="onLogin()">以FB登入</div>
 		</li>
         <li><a href="#" data-reveal-id="register">註冊</a></li>
 		    <li><a href="#" data-reveal-id="login">登入</a></li>
@@ -88,14 +88,23 @@
   
 
   <div id="register" class="reveal-modal">
+<%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
      <h1>註冊</h1>
      <h6>電子郵件</h6>
-     <input type="text" placeholder="請輸入您註冊WanderWorld地球漫遊的電子郵件地址">
+     <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
+     <h6>名稱</h6>
+     <%=f.text_field :username,:placeholder=>"您在網站中的名稱"%>
      <h6>密碼</h6>
-     <input type="text" placeholder="請輸入6~20字半形英數密碼">
-     <input type="submit" class="button medium" value="免費註冊">
+     <%=f.password_field :password, :placeholder=>'請輸入6~20字半形英數密碼'%>
+     <h6>確認密碼</h6>
+     <%=f.password_field :password_confirmation, :placeholder=>"請輸入第二次密碼"%>
+     <%=f.submit '免費註冊',:class=>"button medium"%>
+     <%if(flash[:signupfail])%>
+      <p class="loginfail">註冊失敗</p>
+     <%end%>
      <p>點擊「註冊」的同時，表示你同意了我們的使用條款，並且你也詳讀和完全暸解我們的資料使用政策，包括了 Cookie 的使用。</p>
     <a class="close-reveal-modal">&#215;</a>
+<%end%>  
   </div>
 
 
@@ -103,10 +112,10 @@
     <%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
      <h1>登入</h1>
      <h6>電子郵件</h6>
-     <input type="text" placeholder="請輸入您註冊WanderWorld地球漫遊的電子郵件地址">
+     <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
      <h6>密碼</h6>
-     <input type="text" placeholder="請輸入6~20字半形英數密碼">
-     <input type="submit" class="button medium expand" value="登入">
+     <%=f.password_field :password, :placeholder=>"請輸入6~20字半形英數密碼"%>
+     <%=f.submit '登入' , :class=>'button medium expand'%>
      <!--<input type="submit" class="alert button medium" value="忘記密碼">-->
      <a class="close-reveal-modal">&#215;</a>
      <%if(flash[:loginfail])%>
