@@ -646,14 +646,15 @@ var TripPointListbarModule = function(obj){
 					computeMap(tmp);
 					
 				}
-				PathOnMap.showMarkInfo(id);
+				
 				if(contentBox.isShow()&&showingGroup==group_id){
+					PathOnMap.showMarkInfo(id);
 					contentBox.UiControl.showContent(group_id,id);					
 				}else{
 					contentBox.UiControl.hide();
 					contentBox.reset();
 				}	
-
+				PathOnMap.showMarkInfo(id);
 				showingGroup=group_id;
 			},
 			
