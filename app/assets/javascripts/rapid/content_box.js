@@ -40,8 +40,10 @@ var ContentBoxModule = function(item){
 				return;	
 			}
 			bounce_s=true;
+			PathOnMap.closeInfoWindow();
 			target.animate({width:$(document).width()-390+'px'},500);
 			moduleInstance.UiControl.hideBounceButton();
+			
 		},
 		//收合遊記
 		clickCollapse:function(){
@@ -50,6 +52,11 @@ var ContentBoxModule = function(item){
 			}
 			bounce_s=false;
 			moduleInstance.UiControl.showBounceButton();
+			
+			if(show_id!=null){
+				PathOnMap.showMarkInfo(show_id);
+			}
+			
 			target.animate({width:'0px'},500);
 		},
 		//按下編輯遊記
@@ -285,14 +292,14 @@ var ContentBoxModule = function(item){
 					UiListener.clickBounce();
 					if(id){
 						var t=$('#tp_box_'+id);
-						$('#journal').animate({scrollTop:t.position().top-$('#postContent>div:eq(0)').position().top},500,
+						$('#journal').animate({scrollTop:t.position().top-$('#postContent>div:eq(0)').position().top},100,
 							function(){
 								tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
 							}
 						);
 						PathOnMap.centerOnTripPoint(id);
 					}else{
-						$('#journal').animate({scrollTop:0},500);
+						$('#journal').animate({scrollTop:0},100);
 					}
 					PathOnMap.closeInfoWindow();
 					moduleInstance.ownerModeSwitch();
@@ -604,6 +611,11 @@ var ContentBoxModule = function(item){
 				}
 				
 			}
+		},
+		isShow:function(){
+			if(show_group_id!=null)
+				return true;
+			return false;
 		}
 	};
 };

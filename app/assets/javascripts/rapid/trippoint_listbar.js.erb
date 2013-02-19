@@ -21,6 +21,8 @@ var TripPointListbarModule = function(obj){
 	
 	var moduleInstance;
 	
+	var showingGroup=null;
+	
 	var finishEditTripName=function(){
 		var a=target.find('#trip_name a:eq(0)');
 		var input=target.find('#trip_name input');
@@ -32,8 +34,6 @@ var TripPointListbarModule = function(obj){
 		
 		input.hide();
 		
-		//if(keyboard_s)
-		//	ui_loadTripPointSwitchControl();
 		$('#trip_name input').unbind('clickoutside');
 		Data.saveTripName();
 	};
@@ -630,6 +630,55 @@ var TripPointListbarModule = function(obj){
 					map.setZoom(8);
 				});
 			},
+			
+			//按下景點名稱
+
+			clickPointTitle:function(group_id,id){
+				if(showingGroup!=group_id){
+					var tmp=[];
+					var tpList=DataStatus.tripPointList;
+					for(var i=0; i<tpList.length;i++){
+						if(tpList[i].group_id==group_id){
+							tmp.push(tpList[i]);
+						}
+					}
+					
+					computeMap(tmp);
+					
+				}
+				PathOnMap.showMarkInfo(id);
+				if(contentBox.isShow()&&showingGroup==group_id){
+					contentBox.UiControl.showContent(group_id,id);					
+				}else{
+					contentBox.UiControl.hide();
+					contentBox.reset();
+				}	
+
+				showingGroup=group_id;
+			},
+			
+			//按下群組名稱
+			clickGroupTitle:function(group_id){
+				if(showingGroup!=group_id){
+					var tmp=[];
+					var tpList=DataStatus.tripPointList;
+					for(var i=0; i<tpList.length;i++){
+						if(tpList[i].group_id==group_id){
+							tmp.push(tpList[i]);
+						}
+					}
+					
+					computeMap(tmp);
+				}
+				if(contentBox.isShow()&&showingGroup==group_id){
+					contentBox.UiControl.showContent(group_id);					
+				}else{
+					contentBox.UiControl.hide();
+					contentBox.reset();
+					PathOnMap.closeInfoWindow();
+				}
+				showingGroup=group_id;
+			}
 		};
 	
 	return {
@@ -699,6 +748,7 @@ var TripPointListbarModule = function(obj){
 		},
 		reset:function(){
 			target.find('.trip_point_group').remove();
+			showingGroup=null;
 		},
 		//載入旅行資訊
 		loadTripInfo:function(){
@@ -723,8 +773,8 @@ var TripPointListbarModule = function(obj){
 			
 			PathOnMap.updateMark();		
 			PathOnMap.redrawLine();
-				
-			computeMap();
+			
+			
 			reLayout();		
 		},
 		//設定當前所在 旅行名稱
@@ -797,7 +847,7 @@ var TripPointListbarModule = function(obj){
 					.find('.trip_point_title input').keydown(UiListener.keydownEditGroupName).end()
 					.find('.trip_point_title').click(function(event){
 						contentBox.cancelEditWarning(group_id,function(){
-							clickGroupTitle(group_id);
+							UiListener.clickGroupTitle(group_id);
 							var item=$(event.target);
 							moduleInstance.UiControl.unselectTripPoint();
 							moduleInstance.UiControl.selectGroup(item);
@@ -833,8 +883,8 @@ var TripPointListbarModule = function(obj){
 							contentBox.cancelEditWarning(group_id,function(){
 								var item=$(event.target);
 								var id=item.parents('li').val();
-								//moduleInstance.UiControl.selectTripPoint(item);
-								clickPointTitle(item.parents('.trip_point_group').attr('id').split('_group_')[1],id);
+								setTimeout(function(){moduleInstance.UiControl.selectTripPoint(item);},110);
+								UiListener.clickPointTitle(item.parents('.trip_point_group').attr('id').split('_group_')[1],id);
 							});
 						}).end();
 				if(DataStatus.isOwner){
@@ -910,18 +960,6 @@ var TripPointListbarModule = function(obj){
 
 		/*景點********************************************************************************/
 
-	/*	
 		
-		//點選景點得視覺效果
-		ui_selectList:function(item_id){
-			ui_unselectList();
-			$('.trip_point_all li[value='+item_id+'] a:eq(0)').css('background','rgba(0, 149, 255, 0.45)');
-		},
-
-		//取消鎖定景點的效果
-		ui_unselectList:function(){
-			$('.trip_point_all li a').css('background','none');
-		}
-	*/
 	};
 };

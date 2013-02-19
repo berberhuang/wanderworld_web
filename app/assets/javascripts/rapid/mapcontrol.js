@@ -1,10 +1,9 @@
 var zoom_w,cen_x,cen_y;
 var map_flag=false;
-function computeMap()
+function computeMap(tripPointList)
 {
-
 	//找最邊邊的點
-	var pointData=DataStatus.tripPointList;
+	var pointData=tripPointList;
 	var array_lat = new Array();
 	var array_lng = new Array();
 	for(var i in pointData){
@@ -110,14 +109,14 @@ function computeMap()
 					zoom_w=15;
 	}	
 	
-	MapAdjust();
+	MapAdjust(tripPointList);
 	map_flag=true;
 
 		
 }
 //調整地圖的縮放及中心
-function MapAdjust() {
-	var pointData=DataStatus.tripPointList;
+function MapAdjust(tripPointList) {
+	var pointData=tripPointList;
 	if(pointData.length==0){	//沒有景點
 		map.setCenter(new google.maps.LatLng(23.80, 121.500));
 		map.setZoom(8);		

@@ -57,118 +57,12 @@
 		<div style="clear: both;display: block"></div>	
 	</div>
 	<div id="other_button" >
-		<div id="button_aboutme" class="items" onclick="showAboutMe()"> 關於我 </div>
 		<div id="button_traveljournal" class="items" onclick="showTravelJournal()"> 旅行列表 </div>
 		<!--<div class="items"> 好友動態 </div>
 		<div class="items"> 相簿 </div>-->
 	</div>
 	<div class="book" ></div>
 </div>
-
-
-<!--關於我-->
-<div id="about_me" class="main_content" style="display:none">
-	<div id="aboutme_all" class="mid_block">
-		<!--背景-->
-		<img id="aboutme_background" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg">
-		<!--內容-->
-		<div id="aboutme_main" class="aboutme_block" >
-			<div id="aboutme_move" ></div>
-			<div id="aboutme_title" ></div>
-			<div id="aboutme_content" ></div>
-			<div style="clear: both;display: block"></div>	
-		</div>
-		<div id="config">編輯</div>	
-		<!--編輯器-->
-		<div id="aboutme_editor" style="display:none">
-			<div id="headDiv">
-				<div id="close"><img src='<%=asset_path("closelabel.png") %>' style="width:10px"></img></div>
-			</div>
-			<div id="tabs">
-				<ul>
-					<li><a href="#tabs-1">背景</a></li>
-					<li><a href="#tabs-2">內容</a></li>
-				</ul>
-				<div id="tabs-1">
-					<div >從網址：(請在圖片上按右鍵"複製影像網址")</div>
-					<div>
-						<input id="about_bg" type="text" value="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" />
-					</div>
-					<div >	
-						<div class="float_item">大小</div>
-						<input id="about_bg_width" type="text" value="100" />
-						<div class="float_item">%</div>
-						<div id="slider-range-min"></div>
-						<div style="clear: both;display: block"> </div>
-					</div>
-					<div id="filter_slider">
-						<div id="filter_none">
-							<img style="-webkit-filter : none;" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
-							<center><span>原圖</span></center>
-						</div>
-						<div>
-							<img style="-webkit-filter : blur(2px);" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
-							<center><span>模糊</span></center>
-						</div>
-						<div>
-							<img style="-webkit-filter : grayscale(0.5)" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
-							<center><span>50%灰度</span></center>
-						</div>
-						<div>
-							<img style="-webkit-filter : grayscale(1)" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
-							<center><span>100%灰度</span></center>
-						</div>
-						<div>
-							<img style="-webkit-filter : sepia(0.5)" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
-							<center><span>50%褐色</span></center>
-						</div>
-						<div>
-							<img style="-webkit-filter : sepia(1)" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
-							<center><span>100%褐色</span></center>
-						</div>
-						<div>
-							<img style="-webkit-filter : brightness(5)" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
-							<center><span>50%亮度</span></center>
-						</div>
-						<div>
-							<img style="-webkit-filter : hue-rotate(180deg)" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
-							<center><span>色相</span></center>
-						</div>
-						<div>
-							<img style="-webkit-filter : saturate(5)" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
-							<center><span>飽和度</span></center>
-						</div>
-						<div>
-							<img style="-webkit-filter : contrast(1.4)" src="https://fbcdn-sphotos-a.akamaihd.net/hphotos-ak-ash4/337409_289537764393506_100000118531993_1353619_1350476760_o.jpg" alt="picture">
-							<center><span>對比度</span></center>
-						</div>
-					</div>	
-				</div>
-				<div id="tabs-2">
-					<div>
-						<div class="float_item">標題</div>
-						<select id="about_fontfamily" name="about_fontfamily" class="float_right" style="display: none; ">
-							<option value="新細明體">新細明體</option>
-							<option value="標楷體">標楷體</option>
-							<option value="微軟正黑體" selected="selected">微軟正黑體</option>
-						</select>
-						<div id="" class="float_right">
-							<button id="about_fontsize" >40</button>
-							<div id="about_fontsize_drop" style="display:none;"><div id="about_fontsize_bar"></div></div>
-						</div>
-						<div id="colorSelector2" class="float_right"><div style="background-color: #4d62b3"></div></div>
-						<div id="dialog_color" title="色彩編輯器"><div id="colorpickerHolder2"></div></div>						
-					</div>
-					<div ><input id="about_title" type="text" value="來去旅行吧!!!" /></div>
-					<div style="line-height: 30px;" >自我介紹</div>
-					<textarea id="about_editor"  style="width:100%"></textarea>	
-					<div style="clear: both;display: block"> </div>
-				</div>
-			</div>
-		</div>			
-	</div>
-</div>
-
 
 <!--漫遊日誌-->
 <div id="travel_journal" class="main_content" >

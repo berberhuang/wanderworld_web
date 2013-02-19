@@ -70,39 +70,20 @@ function removeTripPoint(event){
 
 //按下群組名稱
 function clickGroupTitle(group_id){
-	contentBox.UiControl.showContent(group_id);
-}
-
-//按下景點名稱
-
-function clickPointTitle(group_id,id){
-	if(contentBox.isEditing()){
-		contentBox.UiControl.setEditFocus(id);
-	}else{
-		contentBox.UiControl.showContent(group_id,id);
-	}
-	console.log(id);
-	//if(pointData[editTarget_id]&&editing)
-	//	if(pointData[item_id].group_id!=pointData[editTarget_id].group_id){
-	//		if (window.confirm('您尚未儲存,是否要放棄編輯？') == false)
-	//			return;
-	//		cancelEdit();
-	//	}
-	//editTarget_id=item_id;
-	//ui_adjustPointToCenter(item_id);
-	//ui_selectList(item_id);
-	//ui_showMarkDetail(item_id);	
-		
-	//log(item_id);
-	//if(editing)
-	//	ui_setEditFocus(item_id);
-	//else{
-	//	ui_showPost(item_id);
-	//	ui_loadHTripPointSwitchControl();
-		//ui_setViewFocus(item_id-$('#trip_point_group_'+pointData[item_id].group_id+' li:first').val());
-	//}
+	//contentBox.UiControl.showContent(group_id);
 	
+	var tmp=[];
+	var tpList=DataStatus.tripPointList;
+	for(var i=0; i<tpList.length;i++){
+		if(tpList[i].group_id==group_id){
+			tmp.push(tpList[i]);
+		}
+	}
+	
+	computeMap(tmp);
 }
+
+
 
 //按下景點名稱
 function showTripPoint(event){

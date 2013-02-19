@@ -8,7 +8,11 @@ var PathOnMap=function(){
 		if(infowindow)
 			infowindow.close();
 		infowindow=new google.maps.InfoWindow({
-			content: pointData[item_id].title+'<div><a href="javascript:contentBox.UiControl.showContent('+pointData[item_id].group_id+','+item_id+')">閱讀遊記</a></div>'
+			content: '<div style="font-weight:bold;font-size:16px">'+pointData[item_id].title+'</div>'
+					+'<div style="height:20px"></div>'
+					+'<a href="javascript:contentBox.UiControl.showContent('+pointData[item_id].group_id+','+item_id+')">'
+					+'<div><button id="trip_create_button" class="button" style="left:115px;border-radius:1000px;">閱讀遊記</button>'
+					+'</a></div>'
 		});
 		infowindow.open(map,pointData[item_id]);
 		google.maps.event.addListener(infowindow,'closeclick',function(){
@@ -156,6 +160,9 @@ var PathOnMap=function(){
 		},
 		centerOnTripPoint:function(id){
 			map.setCenter(pointData[id].getPosition());
+		},
+		showMarkInfo:function(tripPoint_id){
+			showMarkDetail(tripPoint_id);
 		}
 	};
 }();
