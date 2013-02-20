@@ -238,6 +238,7 @@ var ContentBoxModule = function(item){
 			Data.setGroupRelease(edit_group_id);
 			DataStatus.isPublic[edit_group_id]=true;
 			target.find('#notpublic').hide();
+			target.find('#public').show();
 			
 			UiListener.clickCancelEdit();
 		}
@@ -367,6 +368,7 @@ var ContentBoxModule = function(item){
 						}
 					}else{
 						target.find('#notpublic').show();
+						target.find('#public').hide();
 					}
 					
 					moduleInstance.UiControl.showContent(show_group_id,show_id,callback);	
