@@ -641,17 +641,18 @@ var TripPointListbarModule = function(obj){
 					computeMap(tmp);
 					
 				}
-				
+
 				if(contentBox.isShow()&&showingGroup==group_id){
 					//PathOnMap.showMarkInfo(id);
 					contentBox.UiControl.showContent(group_id,id);					
 				}else{
-					contentBox.UiControl.hide();
+					contentBox.UiControl.hide(true);
 					contentBox.reset();
-					PathOnMap.showMarkInfo(id);
-					
+										
 					document.title='WanderWorld地球漫遊 - '+DataStatus.trip_name;
 					window.history.pushState(null,document.title,'/'+trip_id);
+					
+					PathOnMap.showMarkInfo(id);
 				}
 				
 				tripPointEdit.UiListener.confirmCancel();
@@ -818,10 +819,10 @@ var TripPointListbarModule = function(obj){
 		
 		UiControl:{
 			show:function(){
-				$(target).show(1000);
+				$(target).show();
 			},
 			hide:function(){
-				$(target).hide(1000);
+				$(target).hide();
 			},
 			
 			//插入群組 (會照順序於畫面中往下新增)
@@ -891,7 +892,7 @@ var TripPointListbarModule = function(obj){
 								var id=item.parents('li').val();
 								
 								moduleInstance.UiControl.selectTripPoint(item);
-								
+
 								UiListener.clickPointTitle(item.parents('.trip_point_group').attr('id').split('_group_')[1],id);
 								showingGroup=group_id;
 							});

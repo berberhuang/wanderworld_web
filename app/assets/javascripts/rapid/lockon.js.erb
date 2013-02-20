@@ -116,7 +116,7 @@ function initialize() {
 	};
 	target = document.getElementById('newTripLoad');
 	spinner = new Spinner(opts).spin(target);	
-	
+
 }
 
 function loadTrip(id,callback){
@@ -162,6 +162,7 @@ function loadJournal(trip_id,journal_id){
 			//contentBox.UiControl.showBounceButton();
 			tripPointList.UiControl.selectGroup($('#trip_point_group_'+journal_id));
 			tripPointList.showJournal(journal_id);
+			
 		}
 	});
 };

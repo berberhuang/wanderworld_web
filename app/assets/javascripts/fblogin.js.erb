@@ -12,14 +12,16 @@ function fb_init(callback){
 	    fb_ui_init();
 	    if(callback)
      		callback();
-	
+		
         };
+		
         (function(d){
            var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
            js = d.createElement('script'); js.id = id; js.async = true;
            js.src = "//connect.facebook.net/zh_TW/all.js";
            d.getElementsByTagName('head')[0].appendChild(js);
          }(document));
+	
 
 
 	if(navigator.appName=="Microsoft Internet Explorer"){
@@ -33,7 +35,7 @@ function fb_ui_init(){
 			$('.fb-login-button').show();
 		}else{
 		}	
-	});
+	});	
 }
 
 function onLogin(){

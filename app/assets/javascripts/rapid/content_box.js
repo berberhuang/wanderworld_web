@@ -41,19 +41,19 @@ var ContentBoxModule = function(item){
 			}
 			bounce_s=true;
 			PathOnMap.closeInfoWindow();
-			target.animate({width:$(document).width()-390+'px'},500);
+			target.animate({width:$(document).width()-390},500);
 			moduleInstance.UiControl.hideBounceButton();
 			
 		},
 		//收合遊記
-		clickCollapse:function(){
+		clickCollapse:function(stopShow){
 			if(!bounce_s){
 				return;
 			}
 			bounce_s=false;
 			moduleInstance.UiControl.showBounceButton();
 			
-			if(show_id!=null){
+			if(show_id!=null && stopShow!=true){
 				PathOnMap.showMarkInfo(show_id);
 			}
 			
@@ -273,8 +273,8 @@ var ContentBoxModule = function(item){
 			return false;
 		},
 		UiControl:{
-			hide:function(){
-				UiListener.clickCollapse();
+			hide:function(stopShow){
+				UiListener.clickCollapse(stopShow);
 				bounce.hide(500);
 			},
 			showBounceButton:function(){
@@ -306,6 +306,7 @@ var ContentBoxModule = function(item){
 					}
 					PathOnMap.closeInfoWindow();
 					moduleInstance.ownerModeSwitch();
+					contentBox.UiControl.reLayout();
 					if(callback)
 						callback();
 					return ;
@@ -392,9 +393,9 @@ var ContentBoxModule = function(item){
 					//$('#slidesContainer').css('height',$(document).height()-$('.header').height());
 					//$('#slide_main').css('height',$(document).height()-$('.header').height()-40);
 					//$('.cke_editor').css('height',$(document).height()-$('.header').height()-40-15);
-					
 					target.width($(document).width()-390);
 				}
+
 				$('.control').css('line-height', $(document).height()-$('.header').height()-40 +'px');
 				$('#foo').css('top',$('#journal').height()/2+30);
 				//遊記框位置
