@@ -68,22 +68,6 @@ function removeTripPoint(event){
 	} 
 }
 
-//按下群組名稱
-function clickGroupTitle(group_id){
-	//contentBox.UiControl.showContent(group_id);
-	
-	var tmp=[];
-	var tpList=DataStatus.tripPointList;
-	for(var i=0; i<tpList.length;i++){
-		if(tpList[i].group_id==group_id){
-			tmp.push(tpList[i]);
-		}
-	}
-	
-	computeMap(tmp);
-}
-
-
 
 //按下景點名稱
 function showTripPoint(event){

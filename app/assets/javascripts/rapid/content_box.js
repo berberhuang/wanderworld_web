@@ -295,6 +295,8 @@ var ContentBoxModule = function(item){
 						$('#journal').animate({scrollTop:t.position().top-$('#postContent>div:eq(0)').position().top},100,
 							function(){
 								tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
+								if(edit_id!=null)
+									editor[id].focus();
 							}
 						);
 						PathOnMap.centerOnTripPoint(id);
@@ -445,7 +447,9 @@ var ContentBoxModule = function(item){
 		insertNewPoint:function(group_id){
 			if(edit_group_id&&edit_group_id==group_id){
 				$('.noPointMsg').remove();
-				var point=$('#trip_point_group_'+group_id+' .trip_point li:last');
+				var tpList=$('#trip_point_group_'+group_id+' .trip_point li');
+				var i=tpList.length-1;
+				var point=tpList.last();
 				var id=point.val();
 				DataStatus.contentList[id]='';
 				

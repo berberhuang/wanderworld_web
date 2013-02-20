@@ -16,13 +16,7 @@ var PathOnMap=function(){
 		});
 		infowindow.open(map,pointData[item_id]);
 		google.maps.event.addListener(infowindow,'closeclick',function(){
-			//closePost();
-			//var state={
-			//	title:document.title,
-			//	url:'/',
-			//	trip_id:trip_id
-			//}
-			//window.history.pushState(state,document.title,'/'+trip_id);
+			tripPointList.UiControl.unselectTripPoint();
 		});
 	};
 	

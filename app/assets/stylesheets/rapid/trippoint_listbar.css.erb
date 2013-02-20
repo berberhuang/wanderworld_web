@@ -52,12 +52,12 @@
 	padding-left:1%;
 	width: 99%;
 	padding-bottom: 10px;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
 }
 .trip_point_group:hover  .trip_point_add {
-	display: inline;
+	/*display: inline;*/
 }
 .trip_point_group:hover  .trip_point_edit {
         display: inline;
@@ -69,15 +69,44 @@
         display: none;
 }
 
+.trip_point_group_selected{
+	-moz-box-shadow:inset 2px -1px 6px #000000;
+	-webkit-box-shadow:inset 2px -1px 6px #000000;
+	box-shadow:inset 2px -1px 6px #000000;
+
+	background: -moz-linear-gradient(left,  rgba(86,86,86,1) 0%, rgba(40,52,59,0) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(86,86,86,1)), color-stop(100%,rgba(40,52,59,0))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left,  rgba(86,86,86,1) 0%,rgba(40,52,59,0) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left,  rgba(86,86,86,1) 0%,rgba(40,52,59,0) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left,  rgba(86,86,86,1) 0%,rgba(40,52,59,0) 100%); /* IE10+ */
+	background: linear-gradient(to right,  rgba(86,86,86,1) 0%,rgba(40,52,59,0) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#565656', endColorstr='#0028343b',GradientType=1 ); /* IE6-9 */
+}
+
 .trip_point_selected{
 	background-color:rgba(0, 149, 255, 0.45);
 }
 
-.trip_point_title {
+
+.trip_point_title {	
 	float: left;
 	width: 80%;
+	margin:5px;
+	padding:3px;
 	cursor:pointer;
 }
+
+.trip_point_title_selected{
+	background: -moz-linear-gradient(left,  rgba(100,100,100,0) 0%, rgba(100,100,100,0.68) 7%, rgba(100,100,100,1) 49%, rgba(100,100,100,0.68) 94%, rgba(100,100,100,0) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(100,100,100,0)), color-stop(7%,rgba(100,100,100,0.68)), color-stop(49%,rgba(100,100,100,1)), color-stop(94%,rgba(100,100,100,0.68)), color-stop(100%,rgba(100,100,100,0))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left,  rgba(100,100,100,0) 0%,rgba(100,100,100,0.68) 7%,rgba(100,100,100,1) 49%,rgba(100,100,100,0.68) 94%,rgba(100,100,100,0) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left,  rgba(100,100,100,0) 0%,rgba(100,100,100,0.68) 7%,rgba(100,100,100,1) 49%,rgba(100,100,100,0.68) 94%,rgba(100,100,100,0) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left,  rgba(100,100,100,0) 0%,rgba(100,100,100,0.68) 7%,rgba(100,100,100,1) 49%,rgba(100,100,100,0.68) 94%,rgba(100,100,100,0) 100%); /* IE10+ */
+	background: linear-gradient(to right,  rgba(100,100,100,0) 0%,rgba(100,100,100,0.68) 7%,rgba(100,100,100,1) 49%,rgba(100,100,100,0.68) 94%,rgba(100,100,100,0) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00646464', endColorstr='#00646464',GradientType=1 ); /* IE6-9 */
+
+}
+
 .trip_point_title input {
 	width: 100%;
 }
@@ -85,7 +114,7 @@
 	display:none;
 	cursor:pointer;
 	float:left;
-	width:140px;
+	width:150px;
 	height:20px;
 	overflow:hidden;
 	background-color:rgba(0,0,0,0.2);
@@ -116,7 +145,7 @@
 .trip_point {
 	list-style-type:none;
 	margin:0;
-	padding:10px 0px 0px 0px;
+	padding:2px 0px 0px 0px;
 	float: left;
 	width: 100%;
 }

@@ -200,7 +200,9 @@ var TripPointEditModule = function(item){
 			 s_new:false
 		});
 		confirmWindow.open(map,PathOnMap.getTmpMark());	
-			google.maps.event.addListener(confirmWindow,'closeclick',function(){confirmCancel();});
+			google.maps.event.addListener(confirmWindow,'closeclick',function(){tripPointEdit.UiListener.confirmCancel()});
+		
+		PathOnMap.closeInfoWindow();
 	};
 
 		//show確認新增地點對話框
@@ -225,6 +227,7 @@ var TripPointEditModule = function(item){
 		});
 		confirmWindow.open(map,PathOnMap.getTmpMark());
 			google.maps.event.addListener(confirmWindow,'closeclick',function(){tripPointEdit.UiListener.confirmCancel();});
+		PathOnMap.closeInfoWindow();
 	};
 
 	
@@ -335,7 +338,6 @@ var TripPointEditModule = function(item){
 				
 				Data.saveTripPoint(-1,place_id,sort_id,group_id,function(tp){
 					tripPointEdit.UiListener.confirmCancel();
-					item.remove();
 					
 					tp.place={
 						id:place_id,
@@ -345,7 +347,7 @@ var TripPointEditModule = function(item){
 					}
 					
 					DataStatus.tripPointList.push(tp);
-					
+
 					tripPointList.UiControl.enableAddTripPoint(group_id);
 					tripPointList.UiControl.insertTripPoint(tp.id,group_id,name);
 					tripPointList.UiControl.updateMark();
@@ -355,7 +357,7 @@ var TripPointEditModule = function(item){
 					PathOnMap.redrawLine();
 					
 					contentBox.insertNewPoint(group_id);
-					
+					tripPointList.reActSortable();
 					reLayout();
 					
 				});
@@ -380,7 +382,6 @@ var TripPointEditModule = function(item){
 						Data.saveTripPoint(-1,place_id,sort_id,group_id,function(tp){
 							tripPointEdit.UiListener.confirmCancel();
 							//PathOnMap.deleteTmpMark();
-							item.remove();
 							
 							tp.place={
 								id:place_id,
@@ -401,6 +402,8 @@ var TripPointEditModule = function(item){
 							
 							contentBox.insertNewPoint(group_id);
 							
+							tripPointList.reActSortable();
+							
 							reLayout();
 							
 						});
@@ -412,21 +415,26 @@ var TripPointEditModule = function(item){
 				
 			//取消確認對話框
 			confirmCancel:function(){
-				newTripPointInput.val("");
 				PathOnMap.deleteTmpMark();
 				
 				closeConfirmBox();
 				closeMarkDetail();
 				
-				var group_id=newTripPointData.group_id;
+				//var group_id=newTripPointData.group_id;
+				
+				if(newTripPointInput){
+					newTripPointInput.val("");
+					newTripPointInput.focus();
+				}
+				
 				//失去焦點則刪掉新增景點輸入框
-				setTimeout(function(){
+				/*setTimeout(function(){
 					newTripPointInput.bind("clickoutside",function(){
 							newTripPointInput.unbind("clickoutside");
-							newTripPointInput.remove();
 							tripPointList.UiControl.enableAddTripPoint(group_id);
 					});
 				},50);
+				*/
 			},
 			
 			//按下新增地點的搜尋框按鈕
@@ -459,7 +467,7 @@ var TripPointEditModule = function(item){
 
 							Data.saveTripPoint(-1,place_id,newTripPointData.sort_id,newTripPointData.group_id,function(tp){
 								PathOnMap.deleteTmpMark();
-								newTripPointInput.remove();
+								newTripPointInput.val('');
 								
 								tp.place={
 									id:place_id,
