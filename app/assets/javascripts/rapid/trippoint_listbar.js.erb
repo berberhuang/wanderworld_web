@@ -305,6 +305,7 @@ var TripPointListbarModule = function(obj){
 			keydownEditTripName:function(event){
 				if(event.keyCode==13){
 					finishEditTripName();
+					reLayout();
 				}
 			},
 			//按下編輯旅行日期(click)
@@ -762,7 +763,7 @@ var TripPointListbarModule = function(obj){
 			this.setTripName(DataStatus.trip_name);
 			this.setTripDate(DataStatus.trip_date);
 			this.setTripStatus(DataStatus.trip_status);	
-			this.UiControl.ownerModeSwitch(DataStatus.isOwner);	
+			this.UiControl.tripInfo_ownerModeSwitch(DataStatus.isOwner);	
 		},
 		//載入景點清單
 		loadTripPointList:function(){
@@ -773,7 +774,7 @@ var TripPointListbarModule = function(obj){
 			this.setTripPointList(DataStatus.tripPointList);
 			
 			this.UiControl.updateMark();
-			this.UiControl.ownerModeSwitch(DataStatus.isOwner);			
+			this.UiControl.tripPointList_ownerModeSwitch(DataStatus.isOwner);			
 			
 			PathOnMap.updateMark();		
 			PathOnMap.redrawLine();
@@ -939,22 +940,27 @@ var TripPointListbarModule = function(obj){
 				}
 			},
 			//依照權限切換ui
-			ownerModeSwitch:function(t){
+			tripInfo_ownerModeSwitch:function(t){
 				if(t){		
 					target.find('#trip_name div').unbind('click').click(function(){UiListener.clickEditTripName();});
 					target.find('#trip_name div').css('cursor','pointer');
 					target.find('#trip_date div').unbind('click').click(function(){UiListener.clickEditTripDate();});
 					target.find('#trip_date div').css('cursor','pointer');
-					//$('#trip_friend_add').show();
-					target.find('#group_create_button').show();		
-					target.find('.editTool').show();
-					//$('#add').show();		
+					//$('#trip_friend_add').show();	
 				}else{		
 					target.find('#trip_name div').unbind('click');
 					target.find('#trip_name div').css('cursor','auto');
 					target.find('#trip_date div').unbind('click');
 					target.find('#trip_date div').css('cursor','auto');
 					//$('#trip_friend_add').hide();
+				}
+			},
+			tripPointList_ownerModeSwitch:function(t){
+				if(t){		
+					target.find('#group_create_button').show();		
+					target.find('.editTool').show();
+					//$('#add').show();		
+				}else{		
 					target.find('#group_create_button').hide();	
 					target.find('.editTool').hide();	
 					//$('#add').hide();

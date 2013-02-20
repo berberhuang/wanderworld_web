@@ -122,6 +122,7 @@ function initialize() {
 function loadTrip(id,callback){
 	tripListbar.UiControl.hide();
 	tripPointList.UiControl.show();
+	$('#group_create_button').hide();
 	resetEnv();
 	Data.loadTrip(id,null,{
 		tripInfo:function(){
@@ -184,15 +185,24 @@ function reLayout(){
     $('.main_content').css('height', main_h);
 	$('#main_control').css('height', main_h-40);
 	$('#map_canvas').css('width',$(document).width()-130 );
-	$('#timeline').css('height', $('.list').height()-130);
+	$('#timeline').css('height', $(document).height()-175);
 	//景點區高度
 	var other_h = ($('.trip_information').height()+30) + $('.add_group_title').height() + ($('#view_num').height()+30);
-	if(other_h+($('.trip_point_all').height()+50) > $('.list').height()){
-		$('.scroll-pane').css('height', $('.list').height()-other_h-50);
+	var trip_name_height=$('#trip_name').height();
+	
+	if(trip_name_height==0){
+		$('.scroll-pane').css('height', $(document).height()-300);
+	}else{
+		$('.scroll-pane').css('height', $(document).height()-trip_name_height-230);
 	}
-	else{
-		$('.scroll-pane').css('height', $('.trip_point_all').height());
-	}
+	
+	
+	//if(other_h+($('.trip_point_all').height()+50) > $('.list').height()){
+	//	$('.scroll-pane').css('height', $(document).height()-trip_name_height-230);
+	//}
+	//else{
+	//	$('.scroll-pane').css('height', $('.trip_point_all').height());
+	//}
 	
 	contentBox.UiControl.reLayout();
 		

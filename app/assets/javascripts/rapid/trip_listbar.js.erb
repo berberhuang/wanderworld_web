@@ -79,10 +79,12 @@ var TripListbarModule = function(obj){
 					
 					tripcard+='<div id="trip_list_'+tripList[i].id+'" class="trip_list_info" >';
 					tripcard+='<div class="trip_edit" title="編輯">';
-					
+										
 					tripcard+='</div>';
-					tripcard+='<div class="trip_list_date" onclick="loadTrip('+tripList[i].id+')">'+tripList[i].start_date+'</div>';
-					tripcard+='<div class="trip_list_name" onclick="loadTrip('+tripList[i].id+')">'+tripList[i].name+'</div>';
+					tripcard+='<div onclick="loadTrip('+tripList[i].id+')">';
+					tripcard+='<div class="trip_list_date">'+tripList[i].start_date+'</div>';
+					tripcard+='<div class="trip_list_name">'+tripList[i].name+'</div>';
+					tripcard+='</div>';
 					tripcard+='</div>';
 							
 					$('#year_label_'+tripList[i].year).before(tripcard);
