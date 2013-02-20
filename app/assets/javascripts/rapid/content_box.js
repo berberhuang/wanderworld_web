@@ -35,13 +35,15 @@ var ContentBoxModule = function(item){
 	
 	var UiListener={
 		//展開遊記
-		clickBounce:function(){
+		clickBounce:function(callback){
 			if(bounce_s){
+				if(callback)
+					callback();
 				return;	
 			}
 			bounce_s=true;
 			PathOnMap.closeInfoWindow();
-			target.animate({width:$(document).width()-390},500);
+			target.animate({width:$(document).width()-390},500,callback);
 			moduleInstance.UiControl.hideBounceButton();
 			
 		},
@@ -290,20 +292,21 @@ var ContentBoxModule = function(item){
 			showContent:function(group_id,id,callback){
 				show_id=id;
 				if(group_id==show_group_id){
-					UiListener.clickBounce();
-					if(id){
-						var t=$('#tp_box_'+id);
-						$('#journal').scrollTop(t.position().top-$('#postContent>div:eq(0)').position().top);
-						setTimeout(function(){
-						tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
-						},10);
-						if(edit_id!=null)
-							editor[id].focus();
-							
-						PathOnMap.centerOnTripPoint(id);
-					}else{
-						$('#journal').scrollTop(0);
-					}
+					UiListener.clickBounce(function(){
+						if(id){
+							var t=$('#tp_box_'+id);
+							$('#journal').scrollTop(t.position().top-$('#postContent>div:eq(0)').position().top);
+							setTimeout(function(){
+							tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
+							},10);
+							if(edit_id!=null)
+								editor[id].focus();
+								
+							PathOnMap.centerOnTripPoint(id);
+						}else{
+							$('#journal').scrollTop(0);
+						}
+					});
 					PathOnMap.closeInfoWindow();
 					moduleInstance.ownerModeSwitch();
 					contentBox.UiControl.reLayout();
