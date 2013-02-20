@@ -41,8 +41,8 @@ var ContentBoxModule = function(item){
 			}
 			bounce_s=true;
 			PathOnMap.closeInfoWindow();
-			target.animate({width:$(document).width()-390},15);
-			//target.css({width:$(document).width()-390});
+			//target.animate({width:$(document).width()-390},15);
+			target.css({width:$(document).width()-390});
 			moduleInstance.UiControl.hideBounceButton();
 			
 		},
@@ -482,18 +482,26 @@ var ContentBoxModule = function(item){
 						focus:function(){
 							editor[id].setReadOnly(false);
 							tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
+							
+							contentPanel.find('img').unbind('click').click(install_resize);
+							$('.tp_box').attr('title','');
+						
 						}
 					},
+										// Remove unnecessary plugins to make the editor simpler.
+					removePlugins: 'find,flash,' +
+									'forms,iframe,newpage,' +
+									'smiley,specialchar,stylescombo,templates',
 					height : '100%',
 					toolbar : [	[ 'Undo','Redo' ],
-								[ 'Bold','Italic','Underline', '-' ,'JustifyLeft','JustifyCenter','JustifyRight', '-' ,'NumberedList','BulletedList', 'RemoveFormat'  ] ,
+								[ 'Bold','Italic','Underline', 'RemoveFormat' ] ,
+								[ 'TextColor','BGColor','Font','FontSize'],
 								[ 'Link','Unlink' ],
 								//'/' , 
-								[ 'Font','FontSize', 'Templates' ],
-								[ 'TextColor' , 'BGColor' ],
 								[ 'Image' , 'HorizontalRule' ,'Maximize']
-							]
-				});			
+							],
+					forcePasteAsPlainText:true
+				});		
 				
 			}else if(show_group_id==group_id){
 				var point=$('#trip_point_group_'+group_id+' .trip_point li:last');
@@ -569,17 +577,25 @@ var ContentBoxModule = function(item){
 											focus:function(){
 												editor[id].setReadOnly(false);
 												tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
+												
+												contentPanel.find('img').unbind('click').click(install_resize);
+												$('.tp_box').attr('title','');
+											
 											}
 										},
+															// Remove unnecessary plugins to make the editor simpler.
+										removePlugins: 'find,flash,' +
+														'forms,iframe,newpage,' +
+														'smiley,specialchar,stylescombo,templates',
 										height : '100%',
 										toolbar : [	[ 'Undo','Redo' ],
-													[ 'Bold','Italic','Underline', '-' ,'JustifyLeft','JustifyCenter','JustifyRight', '-' ,'NumberedList','BulletedList', 'RemoveFormat'  ] ,
+													[ 'Bold','Italic','Underline', 'RemoveFormat' ] ,
+													[ 'TextColor','BGColor','Font','FontSize'],
 													[ 'Link','Unlink' ],
 													//'/' , 
-													[ 'Font','FontSize', 'Templates' ],
-													[ 'TextColor' , 'BGColor' ],
 													[ 'Image' , 'HorizontalRule' ,'Maximize']
-												]
+												],
+										forcePasteAsPlainText:true
 									});		
 								}
 								
