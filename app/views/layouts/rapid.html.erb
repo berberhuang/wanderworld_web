@@ -15,36 +15,6 @@
 <%= yield :css %>
 <%= csrf_meta_tags %>
 <meta property="fb:app_id" content="369699423051845" />
-<%if @trip_id%>
-	<%if @tt=Trip.find_by_id(@trip_id)%>
-		<%if @tt_user=@tt.user%>
-			<%if @tt_user.fbid%>
-				<meta property="fb:admins" content="<%=@tt_user.fbid%>" />
-			<%end%>
-			<meta property="wanderworld:author" content="<%=@tt_user.username%>" />
-		<%end%>
-	<%end%>
-	<%if @tp_id%>
-		<meta property="og:url" content="http://www.wanderworld.com.tw/<%=@trip_id%>/<%=@tp_id%>" />
-		<% @tmp=TripPoint.find_by_id(@tp_id)	%>
-		<% if @tmp%>
-			<meta property="og:type" content="wanderworld:journal" />
-			<meta property="og:title" content="<%=@tmp.group.title%>-<%=@tmp.place.name%>" />
-			<% if (@tpost=@tmp.micropost)&&@tpost.article%>
-				<meta property="og:description" content="<%=@tmp.micropost.article.gsub(/<[^>]*>/,'')%>" />
-			<%end%>
-		<%end%>
-	<%else%>
-		<%if @tk=Trip.find_by_id(@trip_id)%>
-			<meta property="og:type" content="wanderworld:trip" />
-			<meta property="og:url" content="http://www.wanderworld.com.tw/<%=@trip_id%>" />
-			<meta property="og:title" content="<%=@tk.name%>" />
-		<%end%>
-	<%end%>
-<%else%>
-	<meta property="og:title" content="WanderWorld地球漫遊" />
-<%end%>
-<meta property="og:image" content="http://www.wanderworld.com.tw/assets/LOGO%E9%BB%91%E9%AB%94%E7%9B%B4%E8%A1%8C-06-3aff113131bb39ef88f07522473feccb.png" />
 
 <script type="text/javascript">
 

@@ -648,6 +648,8 @@ var TripPointListbarModule = function(obj){
 					contentBox.UiControl.hide();
 					contentBox.reset();
 					PathOnMap.showMarkInfo(id);
+					
+					document.title='WanderWorld地球漫遊 - '+DataStatus.trip_name;
 					window.history.pushState(null,document.title,'/'+trip_id);
 				}
 				
@@ -658,7 +660,9 @@ var TripPointListbarModule = function(obj){
 			
 			//按下群組名稱
 			clickGroupTitle:function(group_id){
-				window.history.pushState(null,document.title,'/'+trip_id);	
+				document.title='WanderWorld地球漫遊 - '+DataStatus.trip_name;
+				window.history.pushState(null,document.title,'/'+trip_id);
+								
 				if(showingGroup!=group_id){
 					var tmp=[];
 					var tpList=DataStatus.tripPointList;

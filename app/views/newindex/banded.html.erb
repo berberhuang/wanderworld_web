@@ -13,6 +13,7 @@
 
   <title>WanderWorld地球漫遊</title>
   <link rel="shortcut icon" href="http://www.wanderworld.com.tw/assets/logo-31972393d4fb52fb065cab20c547f7a2.ico">
+  <%= javascript_include_tag "newindex" %>
   <!-- Included CSS Files (Uncompressed) -->
   <%= stylesheet_link_tag "newindex" %>
   <%= csrf_meta_tags %>
@@ -49,15 +50,15 @@
   <div id="fb-root"></div>
   <script>
     $(function(){
-	fb_init(function(){
-                FB.getLoginStatus(function(){
-                        if(login_s&&fid){
-				<%=yield :fb_init_yes %>
-                        }
-                });
-                });
+		fb_init(function(){
+			FB.getLoginStatus(function(){
+				if(login_s&&fid){
+					<%=yield :fb_init_yes %>
+				}
+            });
+        });
     	if(!login_s||!fid){	
-		<%=yield :fb_init_no %>
+			<%=yield :fb_init_no %>
     	}
     });
 </script>

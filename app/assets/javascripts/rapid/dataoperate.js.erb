@@ -63,6 +63,7 @@ var Data=(function(){
 					//無刷新跳轉改變url
 					window.history.pushState(state,document.title,'/'+trip_id);	
 					document.title='WanderWorld地球漫遊 - '+result[0].name;
+					DataStatus.trip_name=result[0].name;
 					
 					//設定頭像名字
 					if(result[2]){
@@ -169,8 +170,9 @@ var Data=(function(){
 		//儲存旅行名稱
 		saveTripName:function(){
 			log('saveTripName');
-
-			$.get('/trip/editTripName/'+trip_id,{new_name:$('#trip_name a').text()},null);			
+			var name = $('#trip_namd a').text();
+			$.get('/trip/editTripName/'+trip_id,{new_name:name},null);
+			DataStatus.trip_name=name;
 		},
 		//儲存旅行日期
 		saveTripDate:function(){
@@ -353,12 +355,20 @@ var Data=(function(){
 			//	log('loadPost: '+group_id);
 				$.get('/micropost/getPost',{group_id:group_id},function(result){
 					if(result[0]){
+						for(var i in DataStatus.groupList){
+							if(DataStatus.groupList[i].id==group_id){
+								document.title='WanderWorld地球漫遊 - '+DataStatus.groupList[i].title;
+								return;
+							}
+						}
+						
 						var state={
 							title:document.title,
 							url:'/'+trip_id+'/'+group_id,
 							trip_id:trip_id
 						}
 						window.history.pushState(state,document.title,'/'+trip_id+'/'+group_id);
+						
 						
 						var ids=result[0];
 						var points=result[1];

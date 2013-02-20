@@ -13,6 +13,7 @@ var DataStatus={
 	isOwner:false,
 	owner_user_id:null,
 	trip_id:null,
+	trip_name:null,
 	groupList:null,
 	contentList:null,
 	tripPointList:null,
