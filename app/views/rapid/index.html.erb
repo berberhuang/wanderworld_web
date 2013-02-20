@@ -23,8 +23,8 @@
 
 	$(function(){
 		initialize();
-		<% if @trip_point_id %>
-			tripPointList.loadTripPoint(<%=@trip_point_id%>);
+		<% if @journal_id %>
+			loadJournal(<%=@trip_id%>,<%=@journal_id%>);
 		<% elsif @trip_id %>
 			loadTrip(<%=@trip_id%>);
 		<% elsif @user_id %>

@@ -648,6 +648,7 @@ var TripPointListbarModule = function(obj){
 					contentBox.UiControl.hide();
 					contentBox.reset();
 					PathOnMap.showMarkInfo(id);
+					window.history.pushState(null,document.title,'/'+trip_id);
 				}
 				
 				tripPointEdit.UiListener.confirmCancel();
@@ -657,6 +658,7 @@ var TripPointListbarModule = function(obj){
 			
 			//按下群組名稱
 			clickGroupTitle:function(group_id){
+				window.history.pushState(null,document.title,'/'+trip_id);	
 				if(showingGroup!=group_id){
 					var tmp=[];
 					var tpList=DataStatus.tripPointList;
@@ -882,7 +884,9 @@ var TripPointListbarModule = function(obj){
 							contentBox.cancelEditWarning(group_id,function(){
 								var item=$(event.target);
 								var id=item.parents('li').val();
-								setTimeout(function(){moduleInstance.UiControl.selectTripPoint(item);},110);
+								if(!contentBox.isShow()){
+									moduleInstance.UiControl.selectTripPoint(item);
+								}
 								UiListener.clickPointTitle(item.parents('.trip_point_group').attr('id').split('_group_')[1],id);
 								showingGroup=group_id;
 							});
@@ -966,6 +970,22 @@ var TripPointListbarModule = function(obj){
 		},
 		showTravelJournal:function(){
 			UiListener.returnTripList();
+		},
+		showJournal:function(group_id){				
+			if(showingGroup!=group_id){
+				var tmp=[];
+				var tpList=DataStatus.tripPointList;
+				for(var i=0; i<tpList.length;i++){
+					if(tpList[i].group_id==group_id){
+						tmp.push(tpList[i]);
+					}
+				}
+				
+				computeMap(tmp);
+			}		
+			contentBox.UiControl.showContent(group_id);					
+			
+			showingGroup=group_id;
 		},
 		reActSortable:function(){
 			reSortable(false);

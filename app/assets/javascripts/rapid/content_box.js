@@ -292,7 +292,7 @@ var ContentBoxModule = function(item){
 					UiListener.clickBounce();
 					if(id){
 						var t=$('#tp_box_'+id);
-						$('#journal').animate({scrollTop:t.position().top-$('#postContent>div:eq(0)').position().top},100,
+						$('#journal').animate({scrollTop:t.position().top-$('#postContent>div:eq(0)').position().top},500,
 							function(){
 								tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
 								if(edit_id!=null)
@@ -354,7 +354,9 @@ var ContentBoxModule = function(item){
 								id=list.eq(i).attr('id').split('_box_')[1];
 							}
 						}
-						tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));						
+						if(edit_group_id==null){
+							tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));						
+						}
 					});
 					
 					if(DataStatus.isPublic[group_id] || !DataStatus.isOwner){

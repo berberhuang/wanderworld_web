@@ -123,7 +123,9 @@ function MapAdjust(tripPointList) {
 	}else if(pointData.length==1){	//只有一個點
 		cen_x=pointData[0].place.longitude;
 		cen_y=pointData[0].place.latitude;
-		zoom_w=8;
+		zoom_w=12;
+		map.setZoom(zoom_w);
+		map.setCenter(new google.maps.LatLng(cen_y, cen_x));
 	}else{
 		//向下調整16px(因為標誌在實際點的上方),向左調整list的寬度
 		map.setCenter(new google.maps.LatLng(cen_y+PixelToLat(16,zoom_w) , cen_x+PixelToLng($('.list').width()/2,zoom_w)));

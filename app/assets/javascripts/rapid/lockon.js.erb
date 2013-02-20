@@ -147,6 +147,13 @@ function loadTripList(id,callback){
 	});
 }
 
+function loadJournal(trip_id,journal_id){
+	loadTrip(trip_id,function(){
+		tripPointList.UiControl.selectGroup($('#trip_point_group_'+journal_id+' li:first'));
+		tripPointList.showJournal(journal_id);
+	});
+};
+
 function createNewTrip(){
 	Data.createTrip(function(trip_id){
 		loadTrip(trip_id,tripPointList.editTripName);

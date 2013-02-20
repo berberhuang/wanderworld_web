@@ -353,6 +353,13 @@ var Data=(function(){
 			//	log('loadPost: '+group_id);
 				$.get('/micropost/getPost',{group_id:group_id},function(result){
 					if(result[0]){
+						var state={
+							title:document.title,
+							url:'/'+trip_id+'/'+group_id,
+							trip_id:trip_id
+						}
+						window.history.pushState(state,document.title,'/'+trip_id+'/'+group_id);
+						
 						var ids=result[0];
 						var points=result[1];
 						if(!DataStatus.contentList){

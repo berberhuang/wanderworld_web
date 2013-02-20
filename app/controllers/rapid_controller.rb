@@ -4,7 +4,7 @@ class RapidController < ApplicationController
 		@user_session=UserSession.new
 				
 		@trip_id=params[:id]
-		@trip_point_id=params[:tp_id]	
+		@journal_id=params[:tp_id]	
 		
 		#從處理要求triplist要求
 		@user_id = params[:user_id]
@@ -12,17 +12,17 @@ class RapidController < ApplicationController
 		#如果id不正常或不存在 忽略指定參數
 		if @trip_id && @trip_id.to_i.to_s!=@trip_id || !Trip.select('id').find_by_id(@trip_id.to_i)
 			@trip_id = nil
-			@trip_point_id = nil
+			@journal_id = nil
 		end
 		
-		if @trip_point_id && @trip_point_id.to_i.to_s!=@trip_point_id || !TripPoint.select('id').find_by_id(@trip_point_id.to_i)
-			@trip_point_id = nil
+		if @journal_id && @journal_id.to_i.to_s!=@journal_id || !Group.select('id').find_by_id(@journal_id.to_i)
+			@journal_id = nil
 		end
 		
 		#檢查完畢
 		
-		if @trip_id && @trip_point_id
-			@url= '/'+@trip_id+'/'+@trip_point_id
+		if @trip_id && @journal_id
+			@url= '/'+@trip_id+'/'+@journal_id
 			logSrcURL @url
 		elsif @trip_id
 			@url= '/'+@trip_id
