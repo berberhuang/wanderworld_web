@@ -293,16 +293,16 @@ var ContentBoxModule = function(item){
 					UiListener.clickBounce();
 					if(id){
 						var t=$('#tp_box_'+id);
-						$('#journal').animate({scrollTop:t.position().top-$('#postContent>div:eq(0)').position().top},500,
-							function(){
-								tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
-								if(edit_id!=null)
-									editor[id].focus();
-							}
-						);
+						$('#journal').scrollTop(t.position().top-$('#postContent>div:eq(0)').position().top);
+						setTimeout(function(){
+						tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
+						},10);
+						if(edit_id!=null)
+							editor[id].focus();
+							
 						PathOnMap.centerOnTripPoint(id);
 					}else{
-						$('#journal').animate({scrollTop:0},100);
+						$('#journal').scrollTop(0);
 					}
 					PathOnMap.closeInfoWindow();
 					moduleInstance.ownerModeSwitch();
@@ -319,13 +319,14 @@ var ContentBoxModule = function(item){
 				editTool.unbind('click').click(function(){UiListener.clickEditPost(group_id,id);});
 				
 				$('#foo').show();
-
+				contentPanel.empty();
 				Data.loadPost(group_id,function(result){
 					$('#foo').hide();
 					contentPanel.show();
-					contentPanel.empty();
+					
 					var tpList=DataStatus.tripPointList;
 					var str='';
+					
 					for(var i in DataStatus.groupList){
 						if(DataStatus.groupList[i].id==group_id){
 							str+='<div class="postTitle">'+DataStatus.groupList[i].title+'</div>';
@@ -347,8 +348,10 @@ var ContentBoxModule = function(item){
 
 						var id;
 						var list=contentPanel.find('.tp_box');
-						var posBase=list.eq(0).position().top;
+						var posBase=0;
 						for(var i=0;i<list.length;i++){
+							if(i==0)
+								posBase=list.eq(0).position().top;
 							if(list.eq(i).position().top-posBase>pos){
 								break;
 							}else{

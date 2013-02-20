@@ -5,8 +5,7 @@ var PathOnMap=function(){
 	var infowindow;
 	
 	var showMarkDetail=function(item_id){
-		if(infowindow)
-			infowindow.close();
+		
 		infowindow=new google.maps.InfoWindow({
 			content: '<div style="font-weight:bold;font-size:16px">'+pointData[item_id].title+'</div>'
 					+'<div style="height:20px"></div>'
@@ -34,6 +33,8 @@ var PathOnMap=function(){
 			});
 			google.maps.event.addListener(item, 'click', 
 				function(){
+					if(infowindow)
+						infowindow.close();
 					showMarkDetail(item_id);
 				}
 			);
@@ -156,6 +157,8 @@ var PathOnMap=function(){
 			map.setCenter(pointData[id].getPosition());
 		},
 		showMarkInfo:function(tripPoint_id){
+			if(infowindow)
+				infowindow.close();
 			showMarkDetail(tripPoint_id);
 		}
 	};

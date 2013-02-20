@@ -127,8 +127,8 @@ function loadTrip(id,callback){
 	Data.loadTrip(id,null,{
 		tripInfo:function(){
 			tripPointList.loadTripInfo();
-			if(callback)
-				callback();
+			//if(callback)
+			//	callback();
 		},
 		tripPointList:function(){
 			tripPointList.loadTripPointList();
@@ -149,9 +149,20 @@ function loadTripList(id,callback){
 }
 
 function loadJournal(trip_id,journal_id){
-	loadTrip(trip_id,function(){
-		tripPointList.UiControl.selectGroup($('#trip_point_group_'+journal_id+' li:first'));
-		tripPointList.showJournal(journal_id);
+	tripListbar.UiControl.hide();
+	tripPointList.UiControl.show();
+	$('#group_create_button').hide();
+	resetEnv();
+	Data.loadTrip(trip_id,null,{
+		tripInfo:function(){
+			tripPointList.loadTripInfo();
+		},
+		tripPointList:function(){
+			tripPointList.loadTripPointList();
+			//contentBox.UiControl.showBounceButton();
+			tripPointList.UiControl.selectGroup($('#trip_point_group_'+journal_id));
+			tripPointList.showJournal(journal_id);
+		}
 	});
 };
 

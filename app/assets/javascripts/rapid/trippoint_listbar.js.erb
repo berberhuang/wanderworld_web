@@ -855,7 +855,7 @@ var TripPointListbarModule = function(obj){
 							UiListener.clickGroupTitle(group_id);
 							var item=$(event.target);
 							moduleInstance.UiControl.unselectTripPoint();
-							moduleInstance.UiControl.selectGroup(item);
+							moduleInstance.UiControl.selectGroup(item.parents('.trip_point_group'));
 						});
 					}).end();
 				if(DataStatus.isOwner){
@@ -889,9 +889,9 @@ var TripPointListbarModule = function(obj){
 							contentBox.cancelEditWarning(group_id,function(){
 								var item=$(event.target);
 								var id=item.parents('li').val();
-								if(!contentBox.isShow()){
-									moduleInstance.UiControl.selectTripPoint(item);
-								}
+								
+								moduleInstance.UiControl.selectTripPoint(item);
+								
 								UiListener.clickPointTitle(item.parents('.trip_point_group').attr('id').split('_group_')[1],id);
 								showingGroup=group_id;
 							});
@@ -903,7 +903,7 @@ var TripPointListbarModule = function(obj){
 			//點選景點得視覺效果
 			selectTripPoint:function(item){
 				moduleInstance.UiControl.unselectTripPoint();
-				moduleInstance.UiControl.selectGroup(item);
+				moduleInstance.UiControl.selectGroup(item.parents('.trip_point_group'));
 				item.parent().addClass('trip_point_selected');
 			},
 			//取消鎖定景點的效果
@@ -913,7 +913,7 @@ var TripPointListbarModule = function(obj){
 			},
 			selectGroup:function(item){
 				moduleInstance.UiControl.unselectGroup();
-				item.parents('.trip_point_group').addClass('trip_point_group_selected')
+				item.addClass('trip_point_group_selected')
 					.find('.trip_point_title').addClass('trip_point_title_selected');
 			},
 			unselectGroup:function(){

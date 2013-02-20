@@ -40,6 +40,46 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', end
 
 	box-shadow:-2px 3px 10px #000000;
 }
+
+.trip_edit {
+	display:none;
+	position: relative;
+	top: 0px;
+	right: 0px;
+	float: right;
+	cursor: pointer;
+}
+.trip_edit_menu {
+	display:none;
+	position: absolute;
+	width: 60px;
+	right: 0px;
+	background:lightGrey;
+	border-radius: 3px;
+	color: blue;
+	text-align: center;
+}
+.trip_edit_menu img {
+	float: left;
+        margin: 1px 5px 1px 0;
+	width: 16px;
+}
+.trip_edit_menu div {
+        padding:3px 5px;
+        cursor:pointer;
+}
+.trip_edit_menu div:hover {
+        background-color:#F8CB9C;
+}
+.trip_list_date {
+	cursor:pointer;
+	width:90%;
+}
+.trip_list_name {
+	word-break: break-all;
+    cursor:pointer;
+}
+
 .trip_list_info:hover .trip_edit {
         display: inline;
 }
