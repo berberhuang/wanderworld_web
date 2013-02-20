@@ -105,6 +105,7 @@
 .floatingss {
         margin: 9px 10px 9px 0;
         float:left;
+		overflow:hidden;
 }
 #account_list {
         margin: 14px 0 14px 5px;

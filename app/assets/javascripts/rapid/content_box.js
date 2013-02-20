@@ -35,15 +35,14 @@ var ContentBoxModule = function(item){
 	
 	var UiListener={
 		//展開遊記
-		clickBounce:function(callback){
+		clickBounce:function(){
 			if(bounce_s){
-				if(callback)
-					callback();
 				return;	
 			}
 			bounce_s=true;
 			PathOnMap.closeInfoWindow();
-			target.animate({width:$(document).width()-390},500,callback);
+			target.animate({width:$(document).width()-390},15);
+			//target.css({width:$(document).width()-390});
 			moduleInstance.UiControl.hideBounceButton();
 			
 		},
@@ -54,11 +53,7 @@ var ContentBoxModule = function(item){
 			}
 			bounce_s=false;
 			moduleInstance.UiControl.showBounceButton();
-			
-			if(show_id!=null && stopShow!=true){
-				PathOnMap.showMarkInfo(show_id);
-			}
-			
+						
 			target.animate({width:'0px'},500);
 		},
 		//按下編輯遊記
@@ -248,7 +243,11 @@ var ContentBoxModule = function(item){
 	
 	
 	bounce.click(UiListener.clickBounce);
-	collapse.click(UiListener.clickCollapse);
+	collapse.click(function(){
+		UiListener.clickCollapse();
+		PathOnMap.showMarkInfo(show_id);
+	});
+	
 	
 	finishPost.click(UiListener.clickFinishPost);
 	releasePost.click(UiListener.clickReleasePost);
@@ -275,8 +274,8 @@ var ContentBoxModule = function(item){
 			return false;
 		},
 		UiControl:{
-			hide:function(stopShow){
-				UiListener.clickCollapse(stopShow);
+			hide:function(){
+				UiListener.clickCollapse();
 				bounce.hide(500);
 			},
 			showBounceButton:function(){
@@ -292,21 +291,22 @@ var ContentBoxModule = function(item){
 			showContent:function(group_id,id,callback){
 				show_id=id;
 				if(group_id==show_group_id){
-					UiListener.clickBounce(function(){
-						if(id){
-							var t=$('#tp_box_'+id);
+					UiListener.clickBounce();
+					if(id){
+						var t=$('#tp_box_'+id);
+						
+						setTimeout(function(){
 							$('#journal').scrollTop(t.position().top-$('#postContent>div:eq(0)').position().top);
-							setTimeout(function(){
 							tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
-							},10);
-							if(edit_id!=null)
-								editor[id].focus();
-								
-							PathOnMap.centerOnTripPoint(id);
-						}else{
-							$('#journal').scrollTop(0);
-						}
-					});
+						},16);
+						if(edit_id!=null)
+							editor[id].focus();
+							
+						PathOnMap.centerOnTripPoint(id);
+					}else{
+						$('#journal').scrollTop(0);
+					}
+					
 					PathOnMap.closeInfoWindow();
 					moduleInstance.ownerModeSwitch();
 					contentBox.UiControl.reLayout();
