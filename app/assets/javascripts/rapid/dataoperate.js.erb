@@ -170,7 +170,7 @@ var Data=(function(){
 		//儲存旅行名稱
 		saveTripName:function(){
 			log('saveTripName');
-			var name = $('#trip_namd a').text();
+			var name = $('#trip_name a').text();
 			$.get('/trip/editTripName/'+trip_id,{new_name:name},null);
 			DataStatus.trip_name=name;
 		},
