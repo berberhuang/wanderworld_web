@@ -163,6 +163,7 @@ var PathOnMap=(function(){
 		clickReadJournal:function(group_id,id){
 			contentBox.UiControl.showContent(group_id,id);
 			tripPointList.setShowingGroup(group_id);
+			tripPointList.scrollToListItem(id); 
 		}
 	};
 }());

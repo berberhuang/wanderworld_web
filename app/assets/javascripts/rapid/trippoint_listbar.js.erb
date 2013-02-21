@@ -995,8 +995,14 @@ var TripPointListbarModule = function(obj){
 				computeMap(tmp);
 			}		
 			contentBox.UiControl.showContent(group_id);					
+			this.scrollToListItem(target.find('#trip_point_group_'+group_id+' li:first').val());
 			
 			showingGroup=group_id;
+		},
+		scrollToListItem:function(tp_id){
+			var item=$('.list li[value='+tp_id+']');
+			var list=$('#trip_point_list');
+			list.scrollTop(item.position().top-$('.trip_point_group:first').position().top-list.height()/2,500);
 		},
 		setShowingGroup:function(group_id){
 			showingGroup=group_id;

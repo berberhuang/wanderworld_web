@@ -189,9 +189,9 @@
 #CSPhotoSelector .CSPhotoSelector_dialog .CSPhotoSelector_footer #CSPhotoSelector_pageNext {
 	float: left;
 	height: 21px;
-	width: 22px;
+	width: 50px;
 	overflow: hidden;
-	text-indent: -999em;
+	text-indent: 0.2em;
 	background: transparent url(csphotoselector/csphotoselector-pagination.png) no-repeat 0 0;
 }
 #CSPhotoSelector .CSPhotoSelector_dialog .CSPhotoSelector_footer #CSPhotoSelector_pagePrev {

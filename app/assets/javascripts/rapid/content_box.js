@@ -295,10 +295,12 @@ var ContentBoxModule = function(item){
 					if(id){
 						var t=$('#tp_box_'+id);
 						
-						setTimeout(function(){
-							$('#journal').scrollTop(t.position().top-$('#postContent>div:eq(0)').position().top);
-							tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
-						},16);
+						$('#journal').scrollTop(t.position().top-$('#postContent').position().top,100);
+						//data都load完後才能估算正確的目標scrollTop
+						$('#postContent img').load(function(){
+							 $('#journal').scrollTop(t.position().top-$('#postContent').position().top,100);				  
+						});
+						
 						if(edit_id!=null)
 							editor[id].focus();
 							
@@ -397,8 +399,8 @@ var ContentBoxModule = function(item){
 					//$('#slide_main').css('height',$(document).height()-$('.header').height()-40);
 					//$('.cke_editor').css('height',$(document).height()-$('.header').height()-40-15);
 					target.width($(document).width()-390);
+					
 				}
-
 				$('.control').css('line-height', $(document).height()-$('.header').height()-40 +'px');
 				$('#foo').css('top',$('#journal').height()/2+30);
 				//遊記框位置
