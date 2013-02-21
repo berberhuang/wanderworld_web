@@ -95,7 +95,7 @@ class UserSessionController < ApplicationController
 		session[:user_id]=nil
 		session[:avatar_src]=nil
 		session[:fbid]=nil
-		redirect_to :back
+		redirect_to '/'
 	end
 
 	def redirect
