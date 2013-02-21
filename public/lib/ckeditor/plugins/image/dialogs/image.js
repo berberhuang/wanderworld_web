@@ -601,8 +601,11 @@
 								'<div class="ImagePreviewBox"><table><tr><td>' +
 									'<img id="' + previewImageId + '" style="max-width:100%;max-height:95%;width:auto;height:auto" />' +
 								'</td></tr></table></div></div>'
-							}
-							
+						},
+							{
+									type:'html',
+									html:'<div style="font-size:0.9em;color:rgb(60,60,60)">若圖片無法顯示，可能是圖片位址改變，請重設圖片URL</div>'
+						}							
 						]
 					}
 					]

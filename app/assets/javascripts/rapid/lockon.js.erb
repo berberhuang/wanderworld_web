@@ -127,8 +127,8 @@ function loadTrip(id,callback){
 	Data.loadTrip(id,null,{
 		tripInfo:function(){
 			tripPointList.loadTripInfo();
-			//if(callback)
-			//	callback();
+			if(callback)
+				callback();
 		},
 		tripPointList:function(){
 			tripPointList.loadTripPointList();
