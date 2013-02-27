@@ -14,12 +14,11 @@
   <title>WanderWorld地球漫遊</title>
   <link rel="shortcut icon" href="http://www.wanderworld.com.tw/assets/logo-31972393d4fb52fb065cab20c547f7a2.ico">
   <!-- Included CSS Files (Uncompressed) -->
-  <%= javascript_include_tag "newindex" %>
   <%= stylesheet_link_tag "newindex" %>
   <%= csrf_meta_tags %>
 
-
 	<script type="text/javascript">
+
 
 		var _gaq = _gaq || [];
 		_gaq.push(['_setAccount', 'UA-30218831-1']);
@@ -30,15 +29,6 @@
 			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 		})();
-
-		jQuery(document).ready(function($) {
-			$('a[rel*=facebox]').facebox({
-				loadingImage : "<%=asset_path('loading.gif')%>",
-				closeImage   : "<%=asset_path('closelabel.png')%>"
-			});
-			$.facebox.settings.opacity = 0.7;
-
-		});
 
 		<%if session[:username]%>
 			var login_s=true;
@@ -71,6 +61,14 @@
     	}
     });
 </script>
+<div id="fb-root"></div>
+ <script>(function(d, s, id) {
+   var js, fjs = d.getElementsByTagName(s)[0];
+   if (d.getElementById(id)) return;
+   js = d.createElement(s); js.id = id;
+   js.src = "//connect.facebook.net/zh_TW/all.js#xfbml=1&appId=319719498074982";
+   fjs.parentNode.insertBefore(js, fjs);
+ }(document, 'script', 'facebook-jssdk'));</script>
 <!-- Header and Nav -->
   
   <div class="row header">
@@ -82,12 +80,41 @@
 		<li class="floatingss" style="background-color:#000000;border-color:#000000;">
 			<div class="fb-login-button" id="custom_fb_login" style="width:400px;display:inline" autologoutlink="false" onlogin="onLogin()">登入</div>
 		</li>
-		<li class="floatingss"><a href="#rigister" rel="facebox.rigistercss">註冊</a></li>
-		<li class="floatingss"><a href="#login" rel="facebox.rigistercss">登入</a></li>
+		<li><a href="#" data-reveal-id="register">註冊</a></li>
+		<li><a href="#" data-reveal-id="login">登入</a></li>
       </ul>
     </div>
   </div>
   
+
+  <div id="register" class="reveal-modal">
+     <h1>註冊</h1>
+     <h6>電子郵件</h6>
+     <input type="text" placeholder="請輸入您註冊WanderWorld地球漫遊的電子郵件地址">
+     <h6>密碼</h6>
+     <input type="text" placeholder="請輸入6~20字半形英數密碼">
+     <input type="submit" class="button medium" value="免費註冊">
+     <p>點擊「註冊」的同時，表示你同意了我們的使用條款，並且你也詳讀和完全暸解我們的資料使用政策，包括了 Cookie 的使用。</p>
+    <a class="close-reveal-modal">&#215;</a>
+  </div>
+
+
+  <div id="login" class="reveal-modal">
+    <%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
+     <h1>登入</h1>
+     <h6>電子郵件</h6>
+     <input type="text" placeholder="請輸入您註冊WanderWorld地球漫遊的電子郵件地址">
+
+     <h6>密碼</h6>
+     <input type="text" placeholder="請輸入6~20字半形英數密碼">
+     <input type="submit" class="button medium" value="登入">
+     <input type="submit" class="alert button medium" value="忘記密碼">
+     <a class="close-reveal-modal">&#215;</a>
+     <%if(flash[:loginfail])%>
+      <p class="loginfail">您輸入的帳號或密碼有誤</p>
+    <%end%>
+    <br />
+  </div>
   <!-- End Header and Nav -->
   
   
@@ -141,7 +168,7 @@
 
   <!-- Fourth Band (Image Left with Text) -->
   
-  <div class="row" style="margin-bottom:105px;">
+  <div class="row" style="margin-bottom:60px;">
     <div class="twelve columns">
       <div class="four columns">
         <img src="https://dl.dropbox.com/u/15101202/images/img3-DRAFT.png" />
@@ -156,25 +183,28 @@
     </div>
   </div>
 
+  <div class="row" style="margin-bottom:60px;">
+    <div class="twelve columns">
+      <div class="eight columns centered">
+      <a class="button expand large round" href="#">閱讀遊記</a>
+      </div>
+    </div>
+  </div>
   
 
   <!-- Call to Action Panel -->
   <div class="row">
-    <div class="twelve columns">
-    
-      <div class="panel">
-        <div class="fb-like-box" data-href="http://www.facebook.com/WanderWorld" data-width="292" data-height="185" data-show-faces="true" data-stream="false" data-header="false" data-border-color="#f2f2f2" style="position:absolute; float:right; right:15px; margin-top:-20px;" ></div>
-        <h2>和我們聯絡！</h2>
-        <div class="row">
-          <div class="nine columns" >
-            <p>有任何疑問或建議，請讓我們知道</p>
+    <div class="twelve columns panel">
+        <div class="twelve columns">
+          <div class="four columns">
+            <h2>和我們聯絡！</h2>
+            <p>有任何疑問或建議，請讓我們知道</p> 
+            <a target="_blank" href="http://goo.gl/mnxVi" class="button large">聯絡我們</a>
+            </a>
           </div>
-          <div class="three columns" id="contactUs" style="margin-right:85%;">
-            <a target="_blank" href="https://docs.google.com/spreadsheet/viewform?formkey=dDl4bDZHMWt0Qkd2WF82UkVKQXc4YXc6MQ" class="radius button right">聯絡我們</a>
+          <div class="four columns offset-by-four fb-like-box" data-href="http://www.facebook.com/WanderWorld" data-width="292" data-height="185" data-show-faces="true" data-stream="false" data-header="false" data-border-color="#f2f2f2">
           </div>
         </div>
-      </div>
-      
     </div>
   </div>
 
@@ -200,70 +230,10 @@
   </footer>
 
   <!-- Included JS Files (Uncompressed) -->
-  <!--
-  
-  <script src="javascripts/jquery.js"></script>
-  
-  <script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
-  
-  <script src="javascripts/jquery.foundation.forms.js"></script>
-  
-  <script src="javascripts/jquery.foundation.reveal.js"></script>
-  
-  <script src="javascripts/jquery.foundation.orbit.js"></script>
-  
-  <script src="javascripts/jquery.foundation.navigation.js"></script>
-  
-  <script src="javascripts/jquery.foundation.buttons.js"></script>
-  
-  <script src="javascripts/jquery.foundation.tabs.js"></script>
-  
-  <script src="javascripts/jquery.foundation.tooltips.js"></script>
-  
-  <script src="javascripts/jquery.foundation.accordion.js"></script>
-  
-  <script src="javascripts/jquery.placeholder.js"></script>
-  
-  <script src="javascripts/jquery.foundation.alerts.js"></script>
-  
-  <script src="javascripts/jquery.foundation.topbar.js"></script>
-  
-  <script src="javascripts/jquery.foundation.joyride.js"></script>
-  
-  <script src="javascripts/jquery.foundation.clearing.js"></script>
-  
-  <script src="javascripts/jquery.foundation.magellan.js"></script>
-  
-  -->
-  
-  <!-- Included JS Files (Compressed) -->
-  <script src="javascripts/jquery.js"></script>
-  <script src="javascripts/foundation.min.js"></script>
-  
-  <!-- Initialize JS Plugins -->
-  <script src="javascripts/app.js"></script>
-   <div id="timeline-embed"></div>
-    <script type="text/javascript">
-        var timeline_config = {
-            width:              '100%',
-            height:             '600',
-            source:             'path_to_json/or_link_to_googlespreadsheet',
-            embed_id:           'timeline-embed',               //OPTIONAL USE A DIFFERENT DIV ID FOR EMBED
-            start_at_end:       false,                          //OPTIONAL START AT LATEST DATE
-            start_at_slide:     '4',                            //OPTIONAL START AT SPECIFIC SLIDE
-            start_zoom_adjust:  '3',                            //OPTIONAL TWEAK THE DEFAULT ZOOM LEVEL
-            hash_bookmark:      true,                           //OPTIONAL LOCATION BAR HASHES
-            font:               'Bevan-PotanoSans',             //OPTIONAL FONT
-            debug:              true,                           //OPTIONAL DEBUG TO CONSOLE
-            lang:               'fr',                           //OPTIONAL LANGUAGE
-            maptype:            'watercolor',                   //OPTIONAL MAP STYLE
-            css:                'path_to_css/timeline.css',     //OPTIONAL PATH TO CSS
-            js:                 'path_to_js/timeline-min.js'    //OPTIONAL PATH TO JS
-        }
-    </script>
-    <script type="text/javascript" src="path_to_js/storyjs-embed.js"></script>
 
-	<!--登入-->
+  <%= javascript_include_tag "newindex" %>
+
+	<!--登入
 	<div id="login" style="display:none">
 		<%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
 		<table width="300px" border="0">
@@ -282,15 +252,12 @@
 		<br />
 		<%=f.submit '登入' , :id=>"login_button"%>
 		<%end%>
-	</div>
+	</div>-->
 
-	<!--註冊-->
+	<!--註冊
 	<div id="rigister" style="display:none">
-		<%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
-		<h1>開始使用<!--<img class="logo" src="<%=asset_path('banner_logo_walker.png')%>" />--></h1><br/>
-		<h3><span class="introduction">WanderWorld地球漫遊是幫助人們紀錄旅行的服務；我們喜歡旅行，相信網路世界應該要有比Blog和facebook更有個性的旅行紀錄方式。</span>
-		<span class="introduction">在地球漫遊，你可以輕易的將去過的地方和照片定在地圖上，做成一張獨一無二的個人旅行地圖。</span></h3>
-		<table width="300px" border="0">
+		
+		<h1>開始使用</h1><br/>
 			<tr>
 				<th scope="col">E-mail</th>
 				<th scope="col"><%=f.email_field :email,:class=>"fill",:placeholder=>"您將來登入用的帳號"%></th>
@@ -310,6 +277,6 @@
 		</table>
 		<%=f.submit '開始使用',:id=>"rigister_button"%>
 		<%end%>
-	</div>
+	</div>-->
 </body>
 </html>
