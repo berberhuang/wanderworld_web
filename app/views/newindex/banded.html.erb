@@ -77,11 +77,11 @@
     </div>
     <div class="nine columns">
       <ul class="nav-bar right">
-		<li class="floatingss" style="background-color:#000000;border-color:#000000;">
-			<div class="fb-login-button" id="custom_fb_login" style="width:400px;display:inline" autologoutlink="false" onlogin="onLogin()">登入</div>
+		  <li class="floatingss" style="background-color:#000000;border-color:#000000;">
+			<div class="fb-login-button" id="custom_fb_login" style="width:400px;display:inline" autologoutlink="false" onlogin="onLogin()">以facebook登入</div>
 		</li>
-		<li><a href="#" data-reveal-id="register">註冊</a></li>
-		<li><a href="#" data-reveal-id="login">登入</a></li>
+        <li><a href="#" data-reveal-id="register">註冊</a></li>
+		    <li><a href="#" data-reveal-id="login">登入</a></li>
       </ul>
     </div>
   </div>
@@ -104,11 +104,10 @@
      <h1>登入</h1>
      <h6>電子郵件</h6>
      <input type="text" placeholder="請輸入您註冊WanderWorld地球漫遊的電子郵件地址">
-
      <h6>密碼</h6>
      <input type="text" placeholder="請輸入6~20字半形英數密碼">
-     <input type="submit" class="button medium" value="登入">
-     <input type="submit" class="alert button medium" value="忘記密碼">
+     <input type="submit" class="button medium expand" value="登入">
+     <!--<input type="submit" class="alert button medium" value="忘記密碼">-->
      <a class="close-reveal-modal">&#215;</a>
      <%if(flash[:loginfail])%>
       <p class="loginfail">您輸入的帳號或密碼有誤</p>
@@ -168,7 +167,7 @@
 
   <!-- Fourth Band (Image Left with Text) -->
   
-  <div class="row" style="margin-bottom:60px;">
+  <div class="row" style="margin-bottom:100px;">
     <div class="twelve columns">
       <div class="four columns">
         <img src="https://dl.dropbox.com/u/15101202/images/img3-DRAFT.png" />
@@ -183,13 +182,14 @@
     </div>
   </div>
 
-  <div class="row" style="margin-bottom:60px;">
+  <!--<div class="row" style="margin-bottom:60px;">
     <div class="twelve columns">
-      <div class="eight columns centered">
-      <a class="button expand large round" href="#">閱讀遊記</a>
+      <div class="four columns right offset-by-eight">
+      <h1><a href="#">閱讀遊記→</a></h1>
       </div>
     </div>
   </div>
+-->
   
 
   <!-- Call to Action Panel -->
