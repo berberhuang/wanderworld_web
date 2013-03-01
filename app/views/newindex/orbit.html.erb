@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8" />
+
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width" />
+
+  <title>WanderWorld地球漫遊</title>
+  <link rel="shortcut icon" href="http://www.wanderworld.com.tw/assets/logo-31972393d4fb52fb065cab20c547f7a2.ico">
+  <!-- Included CSS Files (Uncompressed) -->
+
+  
+  <!-- Included CSS Files (Compressed) -->
+  <!--
+  <link rel="stylesheet" href="stylesheets/foundation.min.css">
+  -->
+  <%= stylesheet_link_tag "newindex" %>
+
+  <script type="text/javascript">
+
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-30218831-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+    <%if session[:username]%>
+      var login_s=true;
+    <%else%>
+      var login_s=false;
+    <%end%>
+
+    <%if session[:fbid]%>
+      var fid=<%=session[:fbid]%>;
+    <%else%>
+      var fid=null;
+    <%end%>
+
+  </script>
+
+  
+</head>
+<body>
+ <div id="fb-root"></div>
+  <script>
+    $(function(){
+  fb_init(function(){
+                FB.getLoginStatus(function(){
+                        if(login_s&&fid){
+        <%=yield :fb_init_yes %>
+                        }
+                });
+                });
+      if(!login_s||!fid){ 
+    <%=yield :fb_init_no %>
+      }
+    });
+</script>
+ <div id="fb-root"></div>
+ <script>(function(d, s, id) {
+   var js, fjs = d.getElementsByTagName(s)[0];
+   if (d.getElementById(id)) return;
+   js = d.createElement(s); js.id = id;
+   js.src = "//connect.facebook.net/zh_TW/all.js#xfbml=1&appId=319719498074982";
+   fjs.parentNode.insertBefore(js, fjs);
+ }(document, 'script', 'facebook-jssdk'));</script>
+  <!-- Header and Nav -->
+  
+  <div class="row header">
+    <div class="three columns">
+      <h1><a href="#"><img id="main_logo" src="http://dl.dropbox.com/u/15101202/images/LOGO/banner_logo_walkder.png" /></a></h1>
+    </div>
+    <div class="nine columns">
+      <ul class="nav-bar right">
+        <li class="floatingss" style="background-color:#000000;border-color:#000000;">
+      <div class="fb-login-button" id="custom_fb_login" style="width:400px;display:inline" autologoutlink="false" onlogin="onLogin()">以FB登入</div>
+    </li>
+        <li><a data-reveal-id="register" >註冊</a></li>
+        <li><a data-reveal-id="login">登入</a></li>
+      </ul>
+    </div>
+  </div>
+  
+  <div id="register" class="reveal-modal">
+     <h1>註冊</h1>
+     <h6>電子郵件</h6>
+     <input type="text" placeholder="請輸入您註冊WanderWorld地球漫遊的電子郵件地址">
+     <h6>密碼</h6>
+     <input type="text" class="inlined" placeholder="請輸入6~20字半形英數密碼">
+     <input type="submit" class="button medium" value="免費註冊">
+     <p>點擊「註冊」的同時，表示你同意了我們的使用條款，並且你也詳讀和完全暸解我們的資料使用政策，包括了 Cookie 的使用。</p>
+    <a class="close-reveal-modal">&#215;</a>
+  </div>
+
+
+  <div id="login" class="reveal-modal">
+     <h1>登入</h1>
+     <h6>電子郵件</h6>
+     <input type="text" placeholder="請輸入您註冊WanderWorld地球漫遊的電子郵件地址">
+     <h6>密碼</h6>
+     <input type="text" placeholder="請輸入6~20字半形英數密碼">
+     <input type="submit" class="button medium expand" value="登入">
+     <!--<input type="submit" class="alert button medium" value="忘記密碼">-->
+     <a class="close-reveal-modal">&#215;</a>
+  </div>
+  
+  <!-- End Header and Nav -->
+  
+  
+  <!-- First Band (Slider) -->
+  <!-- The Orbit slider is initialized at the bottom of the page by calling .orbit() on #slider -->
+    
+  <div class="row">
+    <div class="twelve columns" >
+      <div class="four columns">
+        <h1>精選遊記</h1>
+      </div>
+      <div class="three columns offset-by-five">
+        <ul class="button-group even two-up " >
+          <!--<li><h4><a href="#">地區分類</a></h4></li>-->
+          <li style="margin-top:30px">
+              <a href="#" class="button small round" style="border-radius:1000px 0px 0px 1000px;">精選遊記</a>
+          </li>
+          <li style="margin-top:30px">
+            <a href="#" class="button small round" style="border-radius:0px 1000px 1000px 0px;">焦點旅人</a>
+          </li>
+          <!--<dd><h4><a href="#">分類景點</a></h4></li>-->
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+        <div class="twelve columns" >
+          <div id="slider"> 
+            <img src="http://placehold.it/1000x400&text=[img 1]" />
+            <img src="http://placehold.it/1000x400&text=[img 2]" />
+            <img src="http://placehold.it/1000x400&text=[img 3]" />
+          </div>
+      </div>
+      <hr />
+  </div>
+  
+  
+  <!-- Three-up Content Blocks -->
+  
+  <div class="row">
+    <div class="four columns">
+      <img src="https://dl.dropbox.com/u/15101202/images/url-1.jpeg" />
+      <h4>Journal</h4>
+      <p>Content</p>
+      <a href="#" class="right">閱讀遊記</a>
+    </div>
+
+    <div class="four columns">
+      <img src="https://dl.dropbox.com/u/15101202/images/0880040002%20%281%29.jpg" />
+      <h4>Journal 2</h4>
+      <p>Content</p>
+      <a href="#" class="right">閱讀遊記</a>
+    </div>
+
+
+    <div class="four columns" style="margin-bottom:45px;">
+      <img src="https://dl.dropbox.com/u/15101202/images/img3-DRAFT.png" />
+      <h4>Journal 3</h4>
+      <p>Content</p>
+      <a href="#" class="right">閱讀遊記</a>
+    </div>  
+  </div>
+  
+  
+  <!-- Call to Action Panel -->
+  <div class="row">
+    <div class="twelve columns panel">
+        <div class="twelve columns">
+          <div class="four columns">
+            <h2>和我們聯絡！</h2>
+            <p>有任何疑問或建議，請讓我們知道</p> 
+            <a target="_blank" href="http://goo.gl/mnxVi" class="button large">聯絡我們</a>
+            </a>
+          </div>
+          <div class="four columns offset-by-four fb-like-box" data-href="http://www.facebook.com/WanderWorld" data-width="292" data-height="185" data-show-faces="true" data-stream="false" data-header="false" data-border-color="#f2f2f2">
+          </div>
+        </div>
+    </div>
+  </div>
+  
+  
+  <!-- Footer -->
+  
+  <footer class="row">
+    <div class="twelve columns">
+      <hr />
+      <div class="row">
+        <div class="six columns">
+          <p>&copy; Copyright no one at all. Go to town.</p>
+        </div>
+        <div class="six columns">
+          <ul class="link-list right">
+            <li><a href="#">關於地球漫遊</a></li>
+            <li><a href="http://wanderworld-ideaaxis.blogspot.tw/" target="blank">地球漫遊開發日誌</a></li>
+            <!--
+            <li><a href="#">Link 3</a></li>
+            <li><a href="#">Link 4</a></li>-->
+          </ul>
+        </div>
+      </div>
+    </div> 
+  </footer>
+  
+  <!-- Included JS Files (Uncompressed) -->
+  <!--
+  
+  <script src="javascripts/jquery.js"></script>
+  
+  <script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
+  
+  <script src="javascripts/jquery.foundation.forms.js"></script>
+  
+  <script src="javascripts/jquery.foundation.reveal.js"></script>
+  
+  <script src="javascripts/jquery.foundation.orbit.js"></script>
+  
+  <script src="javascripts/jquery.foundation.navigation.js"></script>
+  
+  <script src="javascripts/jquery.foundation.buttons.js"></script>
+  
+  <script src="javascripts/jquery.foundation.tabs.js"></script>
+  
+  <script src="javascripts/jquery.foundation.tooltips.js"></script>
+  
+  <script src="javascripts/jquery.foundation.accordion.js"></script>
+  
+  <script src="javascripts/jquery.placeholder.js"></script>
+  
+  <script src="javascripts/jquery.foundation.alerts.js"></script>
+  
+  <script src="javascripts/jquery.foundation.topbar.js"></script>
+  
+  <script src="javascripts/jquery.foundation.joyride.js"></script>
+  
+  <script src="javascripts/jquery.foundation.clearing.js"></script>
+  
+  <script src="javascripts/jquery.foundation.magellan.js"></script>
+  
+  -->
+  
+  <!-- Included JS Files (Compressed) -->
+<%= javascript_include_tag "newindex" %>
+  
+  <!-- Initialize JS Plugins -->
+  <script src="javascripts/app.js"></script>
+
+  <script type="text/javascript">
+     $(window).load(function() {
+         $('#slider').orbit();
+     });
+  </script>
+  
+</body>
+</html>
