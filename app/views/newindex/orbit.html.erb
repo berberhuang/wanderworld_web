@@ -93,6 +93,23 @@
   </div>
   
   <div id="register" class="reveal-modal">
+    <%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
+     <h1>註冊</h1>
+     <h6>電子郵件</h6>
+     <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
+     <h6>名稱</h6>
+     <%=f.text_field :username,:placeholder=>"您在網站中的名稱"%>
+     <h6>密碼</h6>
+     <%=f.password_field :password, :placeholder=>'請輸入6~20字半形英數密碼'%>
+     <h6>確認密碼</h6>
+     <%=f.password_field :password_confirmation, :placeholder=>"請輸入第二次密碼"%>
+     <%=f.submit '免費註冊',:class=>"button medium"%>
+     <%if(flash[:signupfail])%>
+      <p class="loginfail">註冊失敗</p>
+     <%end%>
+    <a class="close-reveal-modal">&#215;</a>
+<%end%>
+    <!--
      <h1>註冊</h1>
      <h6>電子郵件</h6>
      <input type="text" placeholder="請輸入您註冊WanderWorld地球漫遊的電子郵件地址">
@@ -100,19 +117,31 @@
      <input type="text" class="inlined" placeholder="請輸入6~20字半形英數密碼">
      <input type="submit" class="button medium" value="免費註冊">
      <p>點擊「註冊」的同時，表示你同意了我們的使用條款，並且你也詳讀和完全暸解我們的資料使用政策，包括了 Cookie 的使用。</p>
-    <a class="close-reveal-modal">&#215;</a>
+    <a class="close-reveal-modal">&#215;</a>-->
   </div>
 
 
   <div id="login" class="reveal-modal">
+    <%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
      <h1>登入</h1>
+     <h6>電子郵件</h6>
+     <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
+     <h6>密碼</h6>
+     <%=f.password_field :password, :placeholder=>"請輸入6~20字半形英數密碼"%>
+     <%=f.submit '登入' , :class=>'button medium expand'%>
+     <a class="close-reveal-modal">&#215;</a>
+     <%if(flash[:loginfail])%>
+      <p class="loginfail">您輸入的帳號或密碼有誤</p>
+    <%end%>
+    <br />
+     <!--<h1>登入</h1>
      <h6>電子郵件</h6>
      <input type="text" placeholder="請輸入您註冊WanderWorld地球漫遊的電子郵件地址">
      <h6>密碼</h6>
      <input type="text" placeholder="請輸入6~20字半形英數密碼">
      <input type="submit" class="button medium expand" value="登入">
-     <!--<input type="submit" class="alert button medium" value="忘記密碼">-->
-     <a class="close-reveal-modal">&#215;</a>
+     <!--<input type="submit" class="alert button medium" value="忘記密碼">
+     <a class="close-reveal-modal">&#215;</a>-->
   </div>
   
   <!-- End Header and Nav -->
@@ -218,50 +247,14 @@
     </div> 
   </footer>
   
-  <!-- Included JS Files (Uncompressed) -->
-  <!--
-  
-  <script src="javascripts/jquery.js"></script>
-  
-  <script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script>
-  
-  <script src="javascripts/jquery.foundation.forms.js"></script>
-  
-  <script src="javascripts/jquery.foundation.reveal.js"></script>
-  
-  <script src="javascripts/jquery.foundation.orbit.js"></script>
-  
-  <script src="javascripts/jquery.foundation.navigation.js"></script>
-  
-  <script src="javascripts/jquery.foundation.buttons.js"></script>
-  
-  <script src="javascripts/jquery.foundation.tabs.js"></script>
-  
-  <script src="javascripts/jquery.foundation.tooltips.js"></script>
-  
-  <script src="javascripts/jquery.foundation.accordion.js"></script>
-  
-  <script src="javascripts/jquery.placeholder.js"></script>
-  
-  <script src="javascripts/jquery.foundation.alerts.js"></script>
-  
-  <script src="javascripts/jquery.foundation.topbar.js"></script>
-  
-  <script src="javascripts/jquery.foundation.joyride.js"></script>
-  
-  <script src="javascripts/jquery.foundation.clearing.js"></script>
-  
-  <script src="javascripts/jquery.foundation.magellan.js"></script>
-  
-  -->
-  
+
   <!-- Included JS Files (Compressed) -->
 <%= javascript_include_tag "newindex" %>
   
+  <%end%>
   <!-- Initialize JS Plugins -->
   <script src="javascripts/app.js"></script>
-
-  <script type="text/javascript">
+<script type="text/javascript">
      $(window).load(function() {
          $('#slider').orbit();
      });
@@ -269,3 +262,4 @@
   
 </body>
 </html>
+
