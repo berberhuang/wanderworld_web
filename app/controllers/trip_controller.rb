@@ -1,3 +1,4 @@
+require 'open-uri'
 class TripController < ApplicationController
 
 	def tripList
@@ -113,6 +114,33 @@ class TripController < ApplicationController
 		if @g&&@g.trip.user.id==session[:user_id]
 			@g.public=true
 			@g.save
+			
+			if Rails.env == "production"			
+				if !bucket
+					s3=AWS::S3.new
+					bucket=s3.buckets['wanderworld']
+				end
+				
+				@o=bucket.objects['journal_staticmap'+group_id+'.jpg']									
+				
+				@place=[]
+				@g.trip_points.each do |t| 
+					@place.push(t.place)
+				end
+				
+				if @place.size >=8 
+					@place.slice!(1,7)
+				end
+				
+				@pos_str=''
+				@place.each do |p|
+					@pos_str+='%7C'+p.latitude.to_s+'%2C'+p.longitude.to_s
+				end
+				
+				@url='http://maps.googleapis.com/maps/api/staticmap?maptype=terrain&size=200x300&markers=color%3Ablue'+@pos_str+'&sensor=false'
+				
+				@o.write(URI(@url).open)
+			end
 		end
 		render :json=>nil
 	end
@@ -189,6 +217,7 @@ class TripController < ApplicationController
 				@g=Group.find_by_id(params[:group_id])
 				if @g
 					@g.sort_id=params[:new_sort_id]
+									
 					@g.save
 				else
 					render :json=>nil
