@@ -237,7 +237,7 @@
     <div class="twelve columns" >
 	  <ul id="myContent">
 	  <%
-		@groups=Group.joins(:trip).where(:public=>true).order('groups.updated_at DESC').select('name,groups.id,trip_id,title').limit(20).offset(@offset)
+		@groups=Group.joins(:trip).where(:public=>true).order('groups.updated_at DESC').select('name,groups.id,trip_id,title').limit(@offset+',20')
 		@groups.each do |g|
 			@places=Place.joins(:trip_points).where(:trip_points=>{:group_id=>g.id}).order('sort_id ASC').select('name')
 	  %>
