@@ -90,7 +90,21 @@
 		
 	}
 	
+	.user_avatar{
+		float:left;
+		max-height:40px;
+		max-width:40px;
+		height:auto;
+		width:auto;
+	}
+	
+	.user_name{
+		color:black;
+	}
+	
 	.trip_name{
+		overflow:hidden;
+		height:22px;
 		font-weight:bolder;
 		color:#666666;
 	}
@@ -270,8 +284,9 @@
 		end
 	  %>
 	  <%
-		@groups=Group.joins(:trip).where(:public=>true).order(@order_str).select('name,groups.id,trip_id,title').limit(@offset.to_s+',20')
+		@groups=Group.joins(:trip,:user).where(:public=>true).order(@order_str).select('username,fbid,name,groups.id,groups.user_id,trip_id,title').limit(@offset.to_s+',20')
 		@groups.each do |g|
+			
 			@places=Place.joins(:trip_points).where(:trip_points=>{:group_id=>g.id}).order('sort_id ASC').select('name,latitude,longitude')
 
 			@pos_str=''
@@ -290,7 +305,19 @@
 	  <a class="journal_title" target="_blank" href="<%='/'+g.trip_id.to_s+'/'+g.id.to_s %>"><img src="<%=@url%>" />
 	  <p><span><%=g.title%></span></p>
 	  </a>
-	  <div class="trip_name"><%=g.name%></div>
+	  <div class="trip_info">
+	    <a href="/rapid/triplist/<%=g.user_id%>" target="_blank">
+	    <% if g.fbid %>
+			<img class="user_avatar" src='https://graph.facebook.com/<%=g.fbid%>/picture' />
+		<%else%>
+			<img class="user_avatar" src='<%=asset_path("user_avatar.png")%>' />
+		<%end%>
+		</a>
+		<div class="trip_name"><%=g.name%></div>
+		<a href="/rapid/triplist/<%=g.user_id%>" target="_blank">
+		<div class="user_name"><%=g.username%></div>
+		</a>
+	  </div>
 	  <div class="trip_points">
 		<% @places.each do |p| %>
 			<div><%=p.name%></div>

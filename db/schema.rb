@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130125144233) do
+ActiveRecord::Schema.define(:version => 20130323221410) do
 
   create_table "checkin_points", :force => true do |t|
     t.integer  "user_id"
@@ -31,14 +31,8 @@ ActiveRecord::Schema.define(:version => 20130125144233) do
     t.datetime "updated_at"
   end
 
-  create_table "groups", :force => true do |t|
-    t.string   "title"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "trip_id"
-    t.boolean  "public"
-    t.float    "sort_id"
-  end
+# Could not dump table "groups" because of following StandardError
+#   Unknown type 'reference' for column 'user_id'
 
   create_table "journeys", :force => true do |t|
     t.integer  "user_id"
@@ -88,20 +82,7 @@ ActiveRecord::Schema.define(:version => 20130125144233) do
     t.integer  "count",      :default => 0
   end
 
-  create_table "users", :force => true do |t|
-    t.string   "email",                              :null => false
-    t.string   "crypted_password",                   :null => false
-    t.string   "password_salt",                      :null => false
-    t.string   "persistence_token",                  :null => false
-    t.string   "single_access_token",                :null => false
-    t.string   "perishable_token",                   :null => false
-    t.string   "username",                           :null => false
-    t.integer  "login_count",         :default => 0, :null => false
-    t.datetime "current_login_at"
-    t.datetime "last_login_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "fbid"
-  end
+# Could not dump table "users" because of following StandardError
+#   Unknown type 'reference' for column 'user_id'
 
 end
