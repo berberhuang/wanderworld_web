@@ -29,13 +29,14 @@ class NewindexController < ApplicationController
 	
 	def browse
 		@offset=params[:p]
+		@type=params[:type]
 		if !@offset
 			@offset=0
-		end
+		end	
 		
-		if params[:id]
-			redirect_to '/rapid/index/'+params[:id]
-		end		
+		if !@type
+			@type='pop'
+		end
 
 		if UserSession.find
 			redirect_to '/rapid/index'

@@ -230,6 +230,29 @@
   </div>
   <!-- End Header and Nav -->
   
+  <div class="row">
+    <div class="twelve columns" >
+      <div class="four columns">
+	  <% if @type =='pop' %>
+        <h1>人氣遊記</h1>
+	  <%elsif @type =='new'%>
+		<h1>最新遊記</h1>
+	  <%end%>
+      </div>
+      <div class="three columns offset-by-five">
+        <ul class="button-group even two-up " >
+          <!--<li><h4><a href="#">地區分類</a></h4></li>-->
+          <li style="margin-top:30px">
+              <a href="/newindex/browse?type=pop" class="button small round" style="border-radius:1000px 0px 0px 1000px;">人氣遊記</a>
+          </li>
+          <li style="margin-top:30px">
+            <a href="/newindex/browse?type=new" class="button small round" style="border-radius:0px 1000px 1000px 0px;">最新遊記</a>
+          </li>
+          <!--<dd><h4><a href="#">分類景點</a></h4></li>-->
+        </ul>
+      </div>
+    </div>
+  </div>
   
   <!-- First Band (Image) -->
   
@@ -237,13 +260,23 @@
     <div class="twelve columns" >
 	  <ul id="myContent">
 	  <%
-		@groups=Group.joins(:trip).where(:public=>true).order('groups.updated_at DESC').select('name,groups.id,trip_id,title').limit(@offset+',20')
+		@order_str=''
+		if @type=='pop'
+			@order_str='trips.count DESC'
+		elsif @type=='new'
+			@order_str='groups.updated_at DESC'
+		else
+			@order_str='trip.count DESC'
+		end
+	  %>
+	  <%
+		@groups=Group.joins(:trip).where(:public=>true).order(@order_str).select('name,groups.id,trip_id,title').limit(@offset.to_s+',20')
 		@groups.each do |g|
 			@places=Place.joins(:trip_points).where(:trip_points=>{:group_id=>g.id}).order('sort_id ASC').select('name')
 	  %>
 	  
       <li class="journal_card">
-	  <a class="journal_title" href="<%='/'+g.trip_id.to_s+'/'+g.id.to_s %>"><img src="https://s3-ap-northeast-1.amazonaws.com/wanderworld/journal_staticmap<%=g.id%>.jpg" />
+	  <a class="journal_title" target="_blank" href="<%='/'+g.trip_id.to_s+'/'+g.id.to_s %>"><img src="https://s3-ap-northeast-1.amazonaws.com/wanderworld/journal_staticmap<%=g.id%>.jpg" />
 	  <p><span><%=g.title%></span></p>
 	  </a>
 	  <div class="trip_name"><%=g.name%></div>
