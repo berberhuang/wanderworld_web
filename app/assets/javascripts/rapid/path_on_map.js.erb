@@ -84,7 +84,7 @@ var PathOnMap=(function(){
 				title: title,
 				icon: getMarkURL('P',getGroupColor(group_id,DataStatus.groupList)),
 				animation: google.maps.Animation.DROP,
-				draggable: false,
+				draggable: true,
 				group_id:group_id
 			});
 			//google.maps.event.addListener(item, 'click', function(){toggleBounce(item);});

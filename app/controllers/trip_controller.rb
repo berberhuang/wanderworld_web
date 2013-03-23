@@ -115,7 +115,7 @@ class TripController < ApplicationController
 			@g.public=true
 			@g.save
 			
-			if Rails.env == "production"			
+			if Rails.env == "production" && false			
 				
 				@s3=AWS::S3.new
 				@bucket=@s3.buckets['wanderworld']

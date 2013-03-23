@@ -39,7 +39,10 @@ class NewindexController < ApplicationController
 		end
 
 		if UserSession.find
-			redirect_to '/rapid/index'
+			#redirect_to '/rapid/index'
+			logPosition '/'
+			@newuser=User.new
+			@user_session=UserSession.new
 		else		
 			logPosition '/'
 			@newuser=User.new
