@@ -121,7 +121,7 @@ class TripController < ApplicationController
 					bucket=s3.buckets['wanderworld']
 				end
 				
-				@o=bucket.objects['journal_staticmap'+group_id+'.jpg']									
+				@o=bucket.objects['journal_staticmap'+@g.id.to_s+'.jpg']									
 				
 				@place=[]
 				@g.trip_points.each do |t| 

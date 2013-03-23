@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8" />
+
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width" />
+
+  <title>WanderWorld地球漫遊</title>
+  <link rel="shortcut icon" href="http://www.wanderworld.com.tw/assets/logo-31972393d4fb52fb065cab20c547f7a2.ico">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <%= javascript_include_tag "newindex" %>
+  <!-- Included CSS Files (Uncompressed) -->
+  <%= stylesheet_link_tag "newindex" %>
+  <%= csrf_meta_tags %>
+
+  <style>
+	body{
+		background-color: #e9e9e9;
+	}
+	
+	#myContent{
+		position:relative;
+		
+	}
+	
+	.journal_card{
+		border-width:5px;
+		padding:4px;
+		background-color:#ffffff;
+		width:210px;
+		overflow-x:hidden;
+	}
+	.journal_title{
+		overflow:hidden;
+		height:305px;
+	}
+	
+	.journal_title:hover span{
+		font-size:50px;
+		line-height:48px;
+	}
+	
+	.journal_title:hover p{
+		background:rgba(0,0,0,0.7);
+	}
+	
+	.journal_title img{
+		width:auto;
+		max-width:1000%;
+		height:300px;
+	}
+	.journal_title p{
+		width:75%;
+		padding:0px;
+		top:5px;
+		left:5px;
+		position:absolute;
+		
+		background: -moz-linear-gradient(left,  rgba(132,132,132,0.65) 0%, rgba(0,0,0,0) 100%);
+		background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(132,132,132,0.65)), color-stop(100%,rgba(0,0,0,0)));
+		background: -webkit-linear-gradient(left,  rgba(132,132,132,0.65) 0%,rgba(0,0,0,0) 100%);
+		background: -o-linear-gradient(left,  rgba(132,132,132,0.65) 0%,rgba(0,0,0,0) 100%);
+		background: -ms-linear-gradient(left,  rgba(132,132,132,0.65) 0%,rgba(0,0,0,0) 100%);
+		background: linear-gradient(to right,  rgba(132,132,132,0.65) 0%,rgba(0,0,0,0) 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6848484', endColorstr='#00000000',GradientType=1 );
+	
+		transition: background-color 1s linear;
+		-moz-transition: background-color 1s linear; /* Firefox 4 */
+		-webkit-transition: background-color 1s linear; /* Safari and Chrome */
+		-o-transition: background-color 1s linear; /* Opera */
+	}
+	
+	.journal_title span{
+		font-size:32px;
+		/*background:rgba(0,0,0,0.5);*/
+		font-weight:bold;
+		line-height:36px;
+		color:white;		
+		transition: all 0.6s ease;
+		-moz-transition: all 0.6s ease; /* Firefox 4 */
+		-webkit-transition: all 0.6s ease; /* Safari and Chrome */
+		-o-transition: all 0.6s ease; /* Opera */
+		
+		
+	}
+	
+	.trip_name{
+		font-weight:bolder;
+		color:#666666;
+	}
+	
+	.trip_points{
+		background:#FFFFCC;
+	}
+	
+	.trip_points div{
+		margin:2px;
+		background:rgba(256,256,256,0.7);
+		padding-left:10px;
+		-moz-box-shadow: 1px 1px 3px #2e2e2e;
+		-webkit-box-shadow: 1px 1px 3px #2e2e2e;
+		box-shadow: 1px 1px 3px #2e2e2e;
+
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		border-radius: 4px;
+	}
+  </style>
+	<script type="text/javascript">
+
+
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-30218831-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+
+		<%if session[:username]%>
+			var login_s=true;
+		<%else%>
+			var login_s=false;
+		<%end%>
+
+		<%if session[:fbid]%>
+			var fid=<%=session[:fbid]%>;
+		<%else%>
+			var fid=null;
+		<%end%>
+		
+	</script>
+
+</head>
+<body>
+  <div id="fb-root"></div>
+  <script>
+    $(function(){
+		var options = {
+			autoResize: true, // This will auto-update the layout when the browser window is resized.
+			container: $('#myContent'), // Optional, used for some extra CSS styling
+			offset: 3, // Optional, the distance between grid items
+			itemWidth: 210 // Optional, the width of a grid item
+        };
+		
+		$('#myContent>li').wookmark(options);
+		
+		fb_init(function(){
+			FB.getLoginStatus(function(){
+				if(login_s&&fid){
+					<%=yield :fb_init_yes %>
+				}
+            });
+        });
+    	if(!login_s||!fid){	
+			<%=yield :fb_init_no %>
+    	}
+		
+		
+    });
+</script>
+<div id="fb-root"></div>
+ <script>(function(d, s, id) {
+   var js, fjs = d.getElementsByTagName(s)[0];
+   if (d.getElementById(id)) return;
+   js = d.createElement(s); js.id = id;
+   js.src = "//connect.facebook.net/zh_TW/all.js#xfbml=1&appId=319719498074982";
+   fjs.parentNode.insertBefore(js, fjs);
+ }(document, 'script', 'facebook-jssdk'));</script>
+<!-- Header and Nav -->
+  
+  <div class="row header">
+    <div class="three columns">
+      <h1><a href="#"><img id="main_logo" src="http://dl.dropbox.com/u/15101202/images/LOGO/banner_logo_walkder.png" /></a></h1>
+    </div>
+    <div class="nine columns">
+      <ul class="nav-bar right">
+		  <li class="floatingss" style="background-color:#000000;border-color:#000000;">
+			<div class="fb-login-button" id="custom_fb_login" style="width:400px;display:inline" autologoutlink="false" onlogin="onLogin()">以FB登入</div>
+		</li>
+        <li><a href="#" data-reveal-id="register">註冊</a></li>
+		    <li><a href="#" data-reveal-id="login">登入</a></li>
+      </ul>
+    </div>
+  </div>
+  
+
+  <div id="register" class="reveal-modal">
+<%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
+     <h1>註冊</h1>
+     <h6>電子郵件</h6>
+     <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
+     <h6>名稱</h6>
+     <%=f.text_field :username,:placeholder=>"您在網站中的名稱"%>
+     <h6>密碼</h6>
+     <%=f.password_field :password, :placeholder=>'請輸入6~20字半形英數密碼'%>
+     <h6>確認密碼</h6>
+     <%=f.password_field :password_confirmation, :placeholder=>"請輸入第二次密碼"%>
+     <%=f.submit '免費註冊',:class=>"button medium"%>
+     <%if(flash[:signupfail])%>
+      <p class="loginfail">註冊失敗</p>
+     <%end%>
+    <a class="close-reveal-modal">&#215;</a>
+<%end%>  
+  </div>
+
+
+  <div id="login" class="reveal-modal">
+    <%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
+     <h1>登入</h1>
+     <h6>電子郵件</h6>
+     <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
+     <h6>密碼</h6>
+     <%=f.password_field :password, :placeholder=>"請輸入6~20字半形英數密碼"%>
+     <%=f.submit '登入' , :class=>'button medium expand'%>
+     <!--<input type="submit" class="alert button medium" value="忘記密碼">-->
+     <a class="close-reveal-modal">&#215;</a>
+     <%if(flash[:loginfail])%>
+      <p class="loginfail">您輸入的帳號或密碼有誤</p>
+    <%end%>
+    <br />
+  </div>
+  <!-- End Header and Nav -->
+  
+  
+  <!-- First Band (Image) -->
+  
+  <div class="row" >
+    <div class="twelve columns" >
+	  <ul id="myContent">
+	  <%
+		@groups=Group.joins(:trip).where(:public=>true).order('groups.updated_at DESC').select('name,groups.id,trip_id,title').limit(20).offset(@offset)
+		@groups.each do |g|
+			@places=Place.joins(:trip_points).where(:trip_points=>{:group_id=>g.id}).order('sort_id ASC').select('name')
+	  %>
+	  
+      <li class="journal_card">
+	  <a class="journal_title" href="<%='/'+g.trip_id.to_s+'/'+g.id.to_s %>"><img src="https://s3-ap-northeast-1.amazonaws.com/wanderworld/journal_staticmap<%=g.id%>.jpg" />
+	  <p><span><%=g.title%></span></p>
+	  </a>
+	  <div class="trip_name"><%=g.name%></div>
+	  <div class="trip_points">
+		<% @places.each do |p| %>
+			<div><%=p.name%></div>
+		<%end%>
+	  </div>
+	  </li>
+	  
+	  <%end%>
+      </ul>
+    </div>
+</div>
+ 
+<div class="row" style="text-align:center">
+	<% if @offset.to_i<=0 %>
+		prev
+	<%else%>
+		<a href="/newindex/browse?p=<%=@offset.to_i-20%>">prev</a>
+	<%end%>
+	
+	&nbsp|&nbsp
+	
+	<%if @groups.size==20 %>
+		<a href="/newindex/browse?p=<%=@offset.to_i+20%>">next</a>
+	<%else%>
+		next
+	<%end%>
+</div>
+
+  <!-- Footer -->
+  
+  <footer class="row">
+    <div class="twelve columns">
+      <hr />
+      <div class="row">
+        <div class="six columns">
+          <p>&copy; Copyright no one at all. Go to town.</p>
+        </div>
+        <div class="six columns">
+          <ul class="link-list right">
+            <li><a href="#">關於地球漫遊</a></li>
+            <li><a href="http://wanderworld-ideaaxis.blogspot.tw/" target="blank">地球漫遊開發日誌</a></li>
+          </ul>
+        </div>
+      </div>
+    </div> 
+  </footer>
+
+  <!-- Included JS Files (Uncompressed) -->
+
+  <%= javascript_include_tag "newindex" %>
+
+	<!--登入
+	<div id="login" style="display:none">
+		<%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
+		<table width="300px" border="0">
+			<tr>
+				<th scope="col">E-mail</th>
+				<th scope="col"><%=f.email_field :email, :class=>"fill", :placeholder=>"請輸入您的E-mail"%></th>
+			</tr>
+			<tr>
+				<th scope="row">密碼</th>
+				<td><%=f.password_field :password,:class=>"fill", :placeholder=>"請輸入您的密碼"%></td>
+			</tr>
+		</table>
+		<%if(flash[:loginfail])%>
+			<p class="loginfail">您輸入的帳號或密碼有誤</p>
+		<%end%>
+		<br />
+		<%=f.submit '登入' , :id=>"login_button"%>
+		<%end%>
+	</div>-->
+
+	<!--註冊
+	<div id="rigister" style="display:none">
+		
+		<h1>開始使用</h1><br/>
+			<tr>
+				<th scope="col">E-mail</th>
+				<th scope="col"><%=f.email_field :email,:class=>"fill",:placeholder=>"您將來登入用的帳號"%></th>
+			</tr>
+			<tr>
+				<th scope="row">名稱</th>
+				<td><%=f.text_field :username,:class=>"fill",:placeholder=>"您在網站中的名稱"%></td>
+			</tr>
+			<tr>
+				<th scope="row">密碼</th>
+				<td><%=f.password_field :password, :class=>'fill', :placeholder=>'請輸入8~12字的密碼'%></td>
+			</tr>
+			<tr>
+				<th scope="row">再次輸入密碼</th>
+				<td><%=f.password_field :password_confirmation,:class=>"fill", :placeholder=>"請輸入8~12字的密碼"%></td>
+			</tr>
+		</table>
+		<%=f.submit '開始使用',:id=>"rigister_button"%>
+		<%end%>
+	</div>-->
+</body>
+</html>

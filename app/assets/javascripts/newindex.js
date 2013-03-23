@@ -8,3 +8,4 @@
 //= require jquery_ujs
 //= require fblogin
 //= require_tree ./foundation 
+//= require_tree ./browse
