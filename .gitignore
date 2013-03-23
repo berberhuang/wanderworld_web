@@ -4,3 +4,4 @@ tmp/*
 log/*
 public/assets/*
 db/*.sqlite3
+Gemfile.lock
