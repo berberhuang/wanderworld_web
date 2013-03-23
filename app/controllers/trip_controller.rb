@@ -116,12 +116,12 @@ class TripController < ApplicationController
 			@g.save
 			
 			if Rails.env == "production"			
-				if !bucket
-					s3=AWS::S3.new
-					bucket=s3.buckets['wanderworld']
-				end
 				
-				@o=bucket.objects['journal_staticmap'+@g.id.to_s+'.jpg']									
+				@s3=AWS::S3.new
+				@bucket=@s3.buckets['wanderworld']
+				
+				
+				@o=@bucket.objects['journal_staticmap'+@g.id.to_s+'.jpg']									
 				
 				@place=[]
 				@g.trip_points.each do |t| 
@@ -137,8 +137,12 @@ class TripController < ApplicationController
 					@pos_str+='%7C'+p.latitude.to_s+'%2C'+p.longitude.to_s
 				end
 				
-				@url='http://maps.googleapis.com/maps/api/staticmap?maptype=terrain&size=200x300&markers=color%3Ablue'+@pos_str+'&sensor=false'
-				
+				@url=''
+				if @place.size == 1
+					@url='http://maps.googleapis.com/maps/api/staticmap?maptype=terrain&zoom=7&size=200x300&markers=color%3Ablue'+@pos_str+'&sensor=false'
+				else
+					@url='http://maps.googleapis.com/maps/api/staticmap?maptype=terrain&size=200x300&markers=color%3Ablue'+@pos_str+'&sensor=false'
+				end
 				@o.write(URI(@url).open)
 			end
 		end
