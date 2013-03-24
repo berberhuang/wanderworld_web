@@ -32,6 +32,8 @@ class MicropostController < ApplicationController
 		@public=@t.public
 		if @t.trip.user.id==session[:user_id]||@public
 			#已經發布公開
+			@t.count=@t.count+1
+			@t.save
 			if @t=@t.trip_points.sort!{|a,b| a.sort_id<=>b.sort_id}
 				ids=[]
 				article=[]

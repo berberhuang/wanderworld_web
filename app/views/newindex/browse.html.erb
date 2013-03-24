@@ -37,7 +37,9 @@
 		overflow-x:hidden;
 	}
 	.journal_title{
+		display:block;
 		overflow:hidden;
+		width:200px;
 		height:305px;
 	}
 	
@@ -51,11 +53,13 @@
 	}
 	
 	.journal_title img{
+		text-align:center;
 		width:auto;
 		max-width:1000%;
 		height:300px;
 	}
 	.journal_title p{
+		z-index:100000;
 		width:75%;
 		padding:0px;
 		top:5px;
@@ -168,7 +172,15 @@
         };
 		
 		$('#myContent>li').wookmark(options);
-		
+		$('.journal_title_img').each(
+			function(k,v){
+				$(v).cycle({
+					fx: 'fade',
+					timeout:2000+Math.floor((Math.random()*1000)+1)
+				});;
+			}
+		)
+	
 		fb_init(function(){
 			FB.getLoginStatus(function(){
 				if(login_s&&fid){
@@ -286,7 +298,7 @@
 		end
 	  %>
 	  <%
-		@groups=Group.joins(:trip,:user).where(:public=>true).order(@order_str).select('username,fbid,name,groups.id,groups.user_id,trip_id,title').limit(@offset.to_s+',20')
+		@groups=Group.joins(:trip,:user).where(:public=>true).order(@order_str).select('username,fbid,name,groups.id,groups.user_id,photo,trip_id,title').limit(@offset.to_s+',20')
 		@groups.each do |g|
 			
 			@places=Place.joins(:trip_points).where(:trip_points=>{:group_id=>g.id}).order('sort_id ASC').select('name,latitude,longitude')
@@ -304,7 +316,17 @@
 		%>
 	  
       <li class="journal_card">
-	  <a class="journal_title" target="_blank" href="<%='/'+g.trip_id.to_s+'/'+g.id.to_s %>"><img src="<%=@url%>" />
+	  <a class="journal_title" target="_blank" href="<%='/'+g.trip_id.to_s+'/'+g.id.to_s %>">
+		<% if g.photo %>
+			<div class="journal_title_img">
+			<img class="journal_photo" src="<%=g.photo%>" />
+		<% end %>
+		
+		<img src="<%=@url%>" />
+		
+		<% if g.photo %>	
+			</div>
+		<%end%>
 	  <p><span><%=g.title%></span></p>
 	  </a>
 	  <div class="trip_info">

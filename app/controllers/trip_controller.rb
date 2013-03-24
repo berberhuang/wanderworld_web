@@ -113,6 +113,21 @@ class TripController < ApplicationController
 		@g=Group.find_by_id(params[:id])
 		if @g&&@g.trip.user.id==session[:user_id]
 			@g.public=true
+			
+			@g.trip_points.order('sort_id ASC').each do |t|
+				@m=t.micropost
+				if @m
+					@str=@m.article[/<img [^>]*src="[^"]*"/]
+					if @str
+						@str=@str[/src="[^"]*"/].split('"')[1]
+						@g.photo=@str
+						break
+					end
+				end
+			end
+			
+				
+			
 			@g.save
 			
 			if Rails.env == "production" && false			
@@ -181,10 +196,12 @@ class TripController < ApplicationController
 				else
 					@sort_id=0
 				end
+				@g.user_id=@trip.user_id
 				@g.title=params[:title]
 				@g.trip_id=@trip.id
 				@g.public=false;
 				@g.sort_id=@sort_id
+				@g.count=0
 				@g.save
 				render :json=>@g.id
 				return

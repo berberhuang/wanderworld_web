@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130323221410) do
+ActiveRecord::Schema.define(:version => 20130324001749) do
 
   create_table "checkin_points", :force => true do |t|
     t.integer  "user_id"
