@@ -55,6 +55,7 @@
 	
 	.journal_title img{
 		text-align:center;
+		position:absolute;
 		width:auto;
 		max-width:1000%;
 		height:300px;
@@ -180,16 +181,17 @@
 		
 		$('.journal_photo').load(
 			function(e){
-				var tmp=$(e.target).parent().cycle({
+				var tmp=$(e.target);
+				/*tmp.parent().cycle({
 					fx: 'fade',
 					timeout:2000+Math.floor((Math.random()*1000)+1)
-				}).end();
+				});
+				*/
 				
-				tmp.css('left',(200-tmp.width())/2);
+				if(tmp.width()>250)
+					tmp.animate({'left':(200-tmp.width())/2},1000);
 			}
-		).error(function(e){
-			$(e.target).remove();
-		});
+		);
 	
 		fb_init(function(){
 			FB.getLoginStatus(function(){
@@ -383,8 +385,7 @@
 	  <a class="journal_title" target="_blank" href="<%='/'+g.trip_id.to_s+'/'+g.id.to_s %>">
 		<% if g.photo %>
 			<div class="journal_title_img">
-			<img src="<%=@url%>" />
-			<img class="journal_photo" src="<%=g.photo%>" />
+			<img class="journal_photo" src="<%=g.photo%>" onerror="this.src='<%=@url%>';" />
 		<% else %>
 			<img src="<%=@url%>" />
 		<% end %>
@@ -423,13 +424,13 @@
 	<% if @offset.to_i<=0 %>
 		prev
 	<%else%>
-		<a href="/newindex/browse?p=<%=@offset.to_i-20%>">prev</a>
+		<a href="/newindex/browse?p=<%=@offset.to_i-20%>&type=<%=@type%>">prev</a>
 	<%end%>
 	
 	&nbsp|&nbsp
 	
 	<%if @groups.size==20 %>
-		<a href="/newindex/browse?p=<%=@offset.to_i+20%>">next</a>
+		<a href="/newindex/browse?p=<%=@offset.to_i+20%>&type=<%=@type%>">next</a>
 	<%else%>
 		next
 	<%end%>
