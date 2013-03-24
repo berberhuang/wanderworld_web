@@ -1,4 +1,5 @@
 require 'open-uri'
+require 'erb'
 class TripController < ApplicationController
 
 	def tripList
@@ -49,6 +50,11 @@ class TripController < ApplicationController
 				@triplist=@user.trips.find(:all,:order=>'start_date DESC')
 			end
 		end
+		
+		@triplist.each do |t|
+			t.name=ERB::Util.html_escape(t.name)
+			t.start_date=ERB::Util.html_escape(t.start_date)
+		end
 		render :json=>[@triplist,@user]
 	end
 	
@@ -71,6 +77,12 @@ class TripController < ApplicationController
 			#	@group_title[g.id]=g.title
 			#end
 			#render :json=>[@tp,@place,@group_title]
+			@group_list.each do |g|
+				g.title=ERB::Util.html_escape(g.title)
+			end
+			@place.each do |p|
+				p.name=ERB::Util.html_escape(p.name)
+			end
 			render :json=>[@group_list,@tp,@place]
 		else
 			render :json=>nil
