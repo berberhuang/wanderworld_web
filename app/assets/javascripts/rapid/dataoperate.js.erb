@@ -325,6 +325,15 @@ var Data=(function(){
 				}
 			});
 		},
+		updateGroupPhoto:function(group_id){
+			$.post('/trip/updateGroupPhoto',{group_id:group_id},function(result){
+				if(result){
+					log('updatePhotoYes');
+				}else{
+					log('updatePhotoYes');
+				}
+			});
+		},
 		//發布遊記
 		setGroupRelease:function(group_id){
 			$.get('/trip/setGroupPublic',{id:group_id});

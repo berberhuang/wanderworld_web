@@ -8,4 +8,5 @@
 //= require jquery_ujs
 //= require facebox
 //= require fblogin
+//= require_tree ./foundation
 //= require_tree ./browse

@@ -60,7 +60,7 @@
 		height:300px;
 	}
 	.journal_title p{
-		z-index:100000;
+		z-index:10;
 		width:75%;
 		padding:0px;
 		top:5px;
@@ -130,7 +130,11 @@
 
 		-webkit-border-radius: 4px;
 		-moz-border-radius: 4px;
-		border-radius: 4px;
+		border-radius: 4px;	
+	}
+	
+	body{
+		
 	}
   </style>
 	<script type="text/javascript">
@@ -210,22 +214,76 @@
    fjs.parentNode.insertBefore(js, fjs);
  }(document, 'script', 'facebook-jssdk'));</script>
 <!-- Header and Nav -->
-  
-  <div class="row header">
-    <div class="three columns">
-      <h1><a href="#"><img id="main_logo" src="http://dl.dropbox.com/u/15101202/images/LOGO/banner_logo_walkder.png" /></a></h1>
-    </div>
-    <div class="nine columns">
-      <ul class="nav-bar right">
-		  <li class="floatingss" style="background-color:#000000;border-color:#000000;">
-			<div class="fb-login-button" id="custom_fb_login" style="width:400px;display:inline" autologoutlink="false" onlogin="onLogin()">以FB登入</div>
-		</li>
-        <li><a href="#" data-reveal-id="register">註冊</a></li>
-		    <li><a href="#" data-reveal-id="login">登入</a></li>
-      </ul>
-    </div>
-  </div>
-  
+
+<%if UserSession.find%>
+<link href="<%=asset_path('rapid/header.css')%>" media="screen" rel="stylesheet" type="text/css" />
+<style>
+	#account_ul a{
+		line-height:30px;
+	}
+	
+	#account_ul{
+		width:160px;
+	}
+	.header{
+		position:fixed;
+	}
+</style>
+<script type="text/javascript" src="<%=asset_path('rapid/uievent.js')%>"></script>
+<div class="header"> 
+	<a href="/"><img class="logo" src="<%=asset_path('banner_logo_walker.png')%>" /></a>
+	<!--<div id="search">	
+		<input id="searching" type="text" placeholder="搜尋" />	
+		<button id="search_button"><img src='<%=asset_path('toolbar_find.png')%>' style="width:20px"></img></button>
+	</div>-->
+	<div id="main_list">	
+		<a href="/rapid/index">
+			<div id="account" class="item_out">
+				<div id="user_heads" class="item_left">
+					<% if session[:avatar_src]%><img src='<%=session[:avatar_src]%>'></img><% end %>
+				</div>
+				<div id="user_names" class="item_right"><%=session[:username]%></div>
+			</div>
+		</a>
+		<div id="account_list" class="hovering" onclick="showAccountList()">
+			<img style="width:18px;height:12px;" src="<%=asset_path('down_triangle.png')%>" />
+		</div>
+		<ul id="account_ul">
+			<li><h2 class="floating"><a href="/rapid/index">個人遊記</a></h2></li>
+			<%if session[:fbid]%>
+				<li><h2 class="floating"><a id="logout_a" href="javascript:onLogout()">登出Facebook</a></h2></li>
+				<li><h2 class="floating"><a id="logout_a" href="/user_session/logout">登出</a></h2></li>
+			<%else%>
+				<li><h2 class="floating"><a id="logout_a" href="/user_session/logout">登出</a></h2></li>
+			<%end%>
+			<li><div style="height:10px"></div></li>
+			<li><h2 class="floating"><a href="http://goo.gl/JeAZ2" target="_blank">問題回報</a></h2></li>
+		</ul>		
+	
+	</div>
+</div>
+
+<div class="row">
+		<br /><br /><br />
+</div>
+
+<%else%>
+	<div class="row header">
+		<div class="three columns">
+		  <h1><a href="#"><img id="main_logo" src="http://dl.dropbox.com/u/15101202/images/LOGO/banner_logo_walkder.png" /></a></h1>
+		</div>
+		<div class="nine columns">
+		  <ul class="nav-bar right">
+			  <li class="floatingss" style="background-color:#000000;border-color:#000000;">
+				<div class="fb-login-button" id="custom_fb_login" style="width:400px;display:inline" autologoutlink="false" onlogin="onLogin()">以FB登入</div>
+			</li>
+			<li><a href="#" data-reveal-id="register">註冊</a></li>
+				<li><a href="#" data-reveal-id="login">登入</a></li>
+		  </ul>
+		</div>
+	</div>
+<%end%>
+
 
   <div id="register" class="reveal-modal">
 <%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
@@ -246,7 +304,7 @@
 <%end%>  
   </div>
 
-
+  
   <div id="login" class="reveal-modal">
     <%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
      <h1>登入</h1>
@@ -263,7 +321,7 @@
     <br />
   </div>
   <!-- End Header and Nav -->
-  
+
   <div class="row">
     <div class="twelve columns" >
       <div class="four columns">
@@ -296,11 +354,11 @@
 	  <%
 		@order_str=''
 		if @type=='pop'
-			@order_str='trips.count DESC'
+			@order_str='groups.count DESC'
 		elsif @type=='new'
 			@order_str='groups.updated_at DESC'
 		else
-			@order_str='trip.count DESC'
+			@order_str='groups.count DESC'
 		end
 	  %>
 	  <%
@@ -325,10 +383,11 @@
 	  <a class="journal_title" target="_blank" href="<%='/'+g.trip_id.to_s+'/'+g.id.to_s %>">
 		<% if g.photo %>
 			<div class="journal_title_img">
+			<img src="<%=@url%>" />
 			<img class="journal_photo" src="<%=g.photo%>" />
+		<% else %>
+			<img src="<%=@url%>" />
 		<% end %>
-		
-		<img src="<%=@url%>" />
 		
 		<% if g.photo %>	
 			</div>

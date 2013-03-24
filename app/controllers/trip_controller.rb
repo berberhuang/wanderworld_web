@@ -109,6 +109,28 @@ class TripController < ApplicationController
 		end
 	end
 
+	def updateGroupPhoto
+		@g=Group.find_by_id(params[:group_id])
+		if @g&&@g.trip.user.id==session[:user_id]		
+			@g.trip_points.order('sort_id ASC').each do |t|
+				@m=t.micropost
+				if @m
+					@str=@m.article[/<img [^>]*src="[^"]*"/]
+					if @str
+						@str=@str[/src="[^"]*"/].split('"')[1]
+						@g.photo=@str
+						break
+					end
+				end
+			end				
+			
+			@g.save
+			render :json=>true
+		else
+			render :json=>false
+		end
+	end
+	
 	def setGroupPublic
 		@g=Group.find_by_id(params[:id])
 		if @g&&@g.trip.user.id==session[:user_id]

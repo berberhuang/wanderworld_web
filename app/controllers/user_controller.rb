@@ -4,26 +4,28 @@ class UserController < ApplicationController
         end
 
         def create
-                @user=User.new params[:user]
-                if @user.password.length>=6 && @user.password.length<=20 && @user.save
-			flash[:notice]='sucessful'
+			@user=User.new params[:user]
+			if @user.password.length>=6 && @user.password.length<=20 && @user.save
+				flash[:notice]='sucessful'
 			
-			@user_session=UserSession.new params[:user]
-			if @user_session.save
-				flash[:notice]='login successful'
-				@curr_user=UserSession.find
-				user=User.find_by_email(@user_session.email)
-				session[:username]=user.username
-				session[:user_id]=user.id
-				session[:fbid]=user.fbid
-				redirect_to '/'
+				@user_session=UserSession.new params[:user]
+				if @user_session.save
+					flash[:notice]='login successful'
+					flash[:login]=true
+					@curr_user=UserSession.find
+					user=User.find_by_email(@user_session.email)
+					session[:username]=user.username
+					session[:user_id]=user.id
+					session[:fbid]=user.fbid
+				
+					redirect_to '/'
+				else
+					flash[:loginfail]=true
+				end
 			else
-				flash[:loginfail]=true
+				flash[:signupfail]=true
+				redirect
 			end
-                else
-			flash[:signupfail]=true
-			redirect
-                end
         end
 	
 	def fblogin

@@ -208,7 +208,9 @@ var ContentBoxModule = function(item){
 				if(str){
 					Data.savePost(id);
 				}
-			}			
+			}
+			
+			Data.updateGroupPhoto(edit_group_id);
 				
 			UiListener.clickCancelEdit();
 			

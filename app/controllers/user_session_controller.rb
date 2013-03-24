@@ -9,6 +9,7 @@ class UserSessionController < ApplicationController
 		@user_session=UserSession.new(params[:user_session])
 		if @user_session.save
 			flash[:notice]='login successful'
+			flash[:login]=true
 			@curr_user=UserSession.find
 			user=User.find_by_email(@user_session.email)
 			session[:username]=user.username
@@ -51,6 +52,7 @@ class UserSessionController < ApplicationController
 				@user_session=UserSession.new :email=>username_id,:password=>password
 				if @user_session.save
 					flash[:notice]='login successful'
+					flash[:login]=true
 					session[:username]=user['name']
 					session[:user_id]=@user.id
 					session[:fbid]=@user.fbid
@@ -69,6 +71,7 @@ class UserSessionController < ApplicationController
 					@user_session=UserSession.new :email=>username_id,:password=>password
 					if @user_session.save
 						flash[:notice]='login successful'
+						flash[:login]=true
 						session[:username]=user['name']
 						session[:user_id]=@user.id
 						session[:fbid]=@user.fbid
