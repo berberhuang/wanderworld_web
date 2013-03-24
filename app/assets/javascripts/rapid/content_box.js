@@ -240,6 +240,34 @@ var ContentBoxModule = function(item){
 			target.find('#public').show();
 			
 			UiListener.clickCancelEdit();
+		},
+		clickPermissionSetting:function(){
+			var t=target.find('.permission_menu');
+			t.show().unbind('clickoutside');
+			setTimeout(function(){t.bind('clickoutside',function(){
+					t.hide();
+			})},100);
+		},
+		clickSetPublic:function(){
+			Data.setGroupRelease(show_group_id,function(result){
+				target.find('.permission_menu').hide();
+				if(result){
+					target.find('#public').show();
+					target.find('#notpublic').hide();
+					DataStatus.isPublic[show_group_id]=true;
+				}
+			});
+			
+		},
+		clickSetPrivate:function(){	
+			Data.setGroupPrivate(show_group_id,function(result){
+				target.find('.permission_menu').hide();	
+				if(result){	
+					target.find('#public').hide();
+					target.find('#notpublic').show();
+					DataStatus.isPublic[show_group_id]=false;
+				}
+			});
 		}
 	};
 	
@@ -250,10 +278,13 @@ var ContentBoxModule = function(item){
 		PathOnMap.showMarkInfo(show_id);
 	});
 	
-	
 	finishPost.click(UiListener.clickFinishPost);
 	releasePost.click(UiListener.clickReleasePost);
 	cancelEdit.click(UiListener.clickCancelEdit);
+	
+	target.find('.permission').click(UiListener.clickPermissionSetting);
+	target.find('.public_button').click(UiListener.clickSetPublic);
+	target.find('.private_button').click(UiListener.clickSetPrivate);
 	
 	return{
 		init:function(){

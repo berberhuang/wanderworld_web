@@ -156,8 +156,14 @@
 	<div id="slidesContainer" style="display:none">
 		<div class="bounceDiv">
 			<div id="like"></div>
-			<div id="notpublic" title="請至編輯模式公開這篇遊記" style="display:none">未公開 只有你能看到</div>
+			<a class="permission" href="#">
+			<div id="notpublic" style="display:none">未公開 只有你能看到</div>
 			<div id="public" style="display:none">已公開</div>
+			</a>
+			<div class="permission_menu">
+				<div class="private_button">私人</div></a>
+				<div class="public_button">公開</div></a>
+			</div>
 			<div class="editTool">
 				<img src='<%=asset_path("edit.png")%>' title="編輯遊記">
 			</div>

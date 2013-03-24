@@ -335,8 +335,11 @@ var Data=(function(){
 			});
 		},
 		//發布遊記
-		setGroupRelease:function(group_id){
-			$.get('/trip/setGroupPublic',{id:group_id});
+		setGroupRelease:function(group_id,callback){
+			$.get('/trip/setGroupPublic',{id:group_id},callback);
+		},
+		setGroupPrivate:function(group_id,callback){
+			$.get('/trip/setGroupPrivate',{id:group_id},callback);
 		},
 		//是否為public?
 		isGroupPublic:function(group_id,callback){

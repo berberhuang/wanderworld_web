@@ -111,6 +111,7 @@ class TripController < ApplicationController
 
 	def updateGroupPhoto
 		@g=Group.find_by_id(params[:group_id])
+		@g.photo=nil
 		if @g&&@g.trip.user.id==session[:user_id]		
 			@g.trip_points.order('sort_id ASC').each do |t|
 				@m=t.micropost
@@ -182,10 +183,23 @@ class TripController < ApplicationController
 				end
 				@o.write(URI(@url).open)
 			end
+			render :json=>true
+		else
+			render :json=>false
 		end
-		render :json=>nil
 	end
 
+	def setGroupPrivate
+		@g=Group.find_by_id(params[:id])
+		if @g&&@g.trip.user.id==session[:user_id]
+			@g.public=false		
+			@g.save!
+			render :json=>true
+		else
+			render :json=>false
+		end
+	end
+	
 	def getGroupTitle
 		@g=Group.find_by_id(params[:id])
 		if @g
@@ -473,6 +487,7 @@ class TripController < ApplicationController
 	def getPostDescription article
 		return article.gsub(/<[^>]*>/,'').gsub(/&nbsp;/,' ').slice(0,80)+'...'
 	end
+	
 	def hasPermission
 		if permissionCheck (isTripExist(params[:id]))
 			render :json=>true
