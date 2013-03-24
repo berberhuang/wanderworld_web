@@ -30,6 +30,7 @@
 	}
 	
 	.journal_card{
+		display:none;
 		border-width:5px;
 		padding:4px;
 		background-color:#ffffff;
@@ -172,14 +173,19 @@
         };
 		
 		$('#myContent>li').wookmark(options);
-		$('.journal_title_img').each(
-			function(k,v){
-				$(v).cycle({
+		
+		$('.journal_photo').load(
+			function(e){
+				var tmp=$(e.target).parent().cycle({
 					fx: 'fade',
 					timeout:2000+Math.floor((Math.random()*1000)+1)
-				});;
+				}).end();
+				
+				tmp.css('left',(200-tmp.width())/2);
 			}
-		)
+		).error(function(e){
+			$(e.target).remove();
+		});
 	
 		fb_init(function(){
 			FB.getLoginStatus(function(){
