@@ -49,6 +49,7 @@ var CommentModule = function(item){
 	
 	var replyClick=function(e,cg_id){
 		var item=$(e.target);
+		item.prop('disabled',true);
 		var panel=item.parents('.entity').find('.content_panel');
 		var entity=item.parent();
 		var content=entity.find('textarea').val();
@@ -65,6 +66,7 @@ var CommentModule = function(item){
 									group_id:DataStatus.group_id,
 									commentGroup_id:cg_id,
 									user_id:UserData.user_id,
+									owner_user_id:DataStatus.owner_user_id,
 									content:content
 									},
 									function(resp){
@@ -76,7 +78,10 @@ var CommentModule = function(item){
 													var id=resp[0];
 													return function(e){deleteClick(e,id)};
 												}()));
+										}else{
+											alert('伺服器連線問題');
 										}
+										item.prop('disabled',false);
 									});			
 	};
 	
@@ -97,7 +102,9 @@ var CommentModule = function(item){
 	
 	target.hide();
 	//new comment entity function
-	target.find('.comment_input .submit').click(function(){
+	target.find('.comment_input .submit').click(function(e){
+		var button=$(e.target);
+		button.prop('disabled',true);
 		var role;
 		if(UserData.user_id==DataStatus.owner_user_id){
 			role="p2";
@@ -108,7 +115,7 @@ var CommentModule = function(item){
 		if(content.replace(/[\s]*/,"").length==0){
 			return;
 		}
-		$.post('/comment/newEntity',{user_id:UserData.user_id,group_id:DataStatus.group_id,content:content},function(r){
+		$.post('/comment/newEntity',{user_id:UserData.user_id,owner_user_id:DataStatus.owner_user_id,group_id:DataStatus.group_id,content:content},function(r){
 			if(r){
 				var time=convertGMTtoLocaleString(r[3]);
 				commentScope.append( createCommentEntity( createCommentStr(role,content,UserData.user_id,r[2],time)));
@@ -129,6 +136,7 @@ var CommentModule = function(item){
 			}else{
 				alert('伺服器連線問題');
 			}
+			button.prop('disabled',false);
 		});
 		
 	});

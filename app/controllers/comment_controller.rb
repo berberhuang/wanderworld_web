@@ -25,6 +25,9 @@ class CommentController < ApplicationController
 			@r=@comment.save
 		end
 		if @r
+			if params[:owner_user_id].to_i != params[:user_id].to_i
+				CommentMailer.notify(@comment.id).deliver
+			end
 			render :json=>[@comment.id,@comment.commentGroup_id,@comment.user.username,@comment.created_at.strftime("%m %d,%Y %H:%M:%S")]
 		else
 			render :json=>false
@@ -41,6 +44,9 @@ class CommentController < ApplicationController
 		@comment.group_id=params[:group_id]
 		@comment.commentGroup_id=params[:commentGroup_id]
 		if @comment.save
+			if params[:owner_user_id].to_i != params[:user_id].to_i
+				CommentMailer.notify(@comment.id).deliver
+			end
 			render :json=>[@comment.id,@comment.user.username,@comment.created_at.strftime("%m %d,%Y %H:%M:%S")]
 		else
 			render :json=>false
