@@ -161,6 +161,8 @@ var PathOnMap=(function(){
 			showMarkDetail(tripPoint_id);
 		},
 		clickReadJournal:function(group_id,id){
+			console.log('loadComments '+group_id);
+			commentBox.loadComments(group_id);
 			contentBox.UiControl.showContent(group_id,id);
 			tripPointList.setShowingGroup(group_id);
 			tripPointList.scrollToListItem(id); 

@@ -72,11 +72,6 @@
 	<div id="map_adjust" title="調整地圖"  onclick="computeMap();">
 		<img src='<%=asset_path("view_all.png")%>'></img>
 	</div>
-	<!--留言框-->
-	<div id="commentScope">
-		<h2 class="TripPointName"> </h2>
-		<div id="comment"></div>
-	</div>
 	<!--旅行列表-->
 	<div id="trip_list" class="list" style="display:none;">
 		<div id="trip_logo"></div>
@@ -183,8 +178,71 @@
 		</div>
 		<div id="journal">
 			<div id="foo"><div class="foo_load">載入中</div></div>			
-			<div id="postContent"></div>				
+			<div id="postContent"></div>	
+			<hr />
+			<div id="comment">
+				<h3>留言</h3>
+				<div class="comment_scope">
+				<div class="entity">
+					<div class="content_panel">
+						<div class="p1">
+							<div class="content">寫的好棒</div>
+							<div class="footer">
+								<a class="username">cindy</a> 
+								<span>2013/5/13 13:05</span>
+								<div><a class="button" id="delete">刪除</a></div>
+							</div>
+						</div>
+						<div class="p2">
+							<div class="content">謝謝</div>
+							<div class="footer">
+								<a class="username">BertHuang</a>  
+								<span>2013/5/13 13:15</span>
+								<div><a class="button" id="delete">刪除</a></div>
+							</div>	
+						</div>
+					</div>
+					<div class="reply_input" style="margin-top:20px">
+						<textarea placeholder="回覆‧‧‧‧"></textarea>
+						<input class="submit" type="button" value="回覆"></input>
+					</div>
+				</div>
+				<div style="height:10px"></div>
+				<div class="entity">
+					<div class="content_panel">
+						<div class="p1">
+							<div class="content">寫的好棒</div>
+							<div class="footer">
+								<a class="username">cindy</a> 
+								<span>2013/5/13 13:05</span>
+								<div><a class="button" id="delete" href="#">刪除</a></div>
+							</div>
+						</div>
+						<div class="p2">
+							<div class="content">謝謝</div>
+							<div class="footer">
+								<a class="username">BertHuang</a>  
+								<span>2013/5/13 13:15</span>
+								<div><a class="button" id="delete" href="#">刪除</a></div>					
+							</div>
+						</div>
+					</div>
+					<div class="reply_input" style="margin-top:20px">
+						<textarea placeholder="回覆‧‧‧‧"></textarea>
+						<input class="submit" type="button" value="回覆"></input>
+					</div>
+				</div>
+				<div style="height:10px"></div>
+				</div>
+				<div class="comment_input" style="margin-top:20px">
+					<textarea placeholder="留言‧‧‧‧"></textarea>
+					<input class="submit" type="button" value="留言"></input>
+				</div>
+				<div class="nologin">請先登入才能夠留言或回覆</div>
+			</div>
+			
 		</div>
+		
 	</div>
 </div>
 

@@ -25,6 +25,7 @@ var tripPointList;
 var tripPointEdit;
 var tripListbar;
 var contentBox;
+var commentBox;
 
 //初始化
 function initialize() {
@@ -38,6 +39,8 @@ function initialize() {
 	
 	contentBox = new ContentBoxModule('#slidesContainer');
 	contentBox.init();
+	
+	commentBox = new CommentModule('#comment');
 	
 	$('#test div:eq(0)').append('<div>dynamic appended test</div>');
 	
@@ -164,6 +167,7 @@ function loadJournal(trip_id,journal_id){
 			if(item){
 				tripPointList.UiControl.selectGroup(item);
 				tripPointList.showJournal(journal_id);
+				commentBox.loadComments(journal_id);
 			}
 		}
 	});

@@ -398,6 +398,7 @@ var Data=(function(){
 							DataStatus.isPublic=[];
 						}
 						DataStatus.isPublic[group_id]=result[2];
+						DataStatus.group_id=group_id;
 					}else{
 						log('您可能斷線了,或是我們伺服器出現某些問題,無法讀取文章');
 					}

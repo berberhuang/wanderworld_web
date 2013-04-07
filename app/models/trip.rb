@@ -10,6 +10,7 @@ class Trip < ActiveRecord::Base
 
 	validates :user, :presence=>true
 	
+	
 	def insert_trip_point(place)
 		if(p=Place.find_by_name(place))
 			trip_points.create(:place_id=>p.id,:person_id=>person_id)

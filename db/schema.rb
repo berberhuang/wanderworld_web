@@ -11,13 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130324001749) do
+ActiveRecord::Schema.define(:version => 20130325034723) do
 
   create_table "checkin_points", :force => true do |t|
     t.integer  "user_id"
     t.integer  "trip_id"
     t.integer  "trip_point_id"
     t.string   "label"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "comments", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "group_id"
+    t.integer  "commentGroup_id"
+    t.text     "content"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
