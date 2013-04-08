@@ -280,7 +280,7 @@
 <%else%>
 	<div class="row header">
 		<div class="three columns">
-		  <h1><a href="#"><img id="main_logo" src="http://dl.dropbox.com/u/15101202/images/LOGO/banner_logo_walkder.png" /></a></h1>
+		  <h1><a href="#"><img id="main_logo" src="<%=asset_path('banner_logo_walker.png')%>" /></a></h1>
 		</div>
 		<div class="nine columns">
 		  <ul class="nav-bar right">
@@ -298,41 +298,6 @@
 		<br /><br /><br />
 </div>
 
-<div id="register" class="reveal-modal">
-<%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
-     <h1>註冊</h1>
-     <h6>電子郵件</h6>
-     <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
-     <h6>名稱</h6>
-     <%=f.text_field :username,:placeholder=>"您在網站中的名稱"%>
-     <h6>密碼</h6>
-     <%=f.password_field :password, :placeholder=>'請輸入6~20字半形英數密碼'%>
-     <h6>確認密碼</h6>
-     <%=f.password_field :password_confirmation, :placeholder=>"請輸入第二次密碼"%>
-     <%=f.submit '免費註冊',:class=>"button medium"%>
-     <%if(flash[:signupfail])%>
-      <p class="loginfail">註冊失敗</p>
-     <%end%>
-    <a class="close-reveal-modal">&#215;</a>
-<%end%>  
-  </div>
-
-  
-  <div id="login" class="reveal-modal">
-    <%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
-     <h1>登入</h1>
-     <h6>電子郵件</h6>
-     <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
-     <h6>密碼</h6>
-     <%=f.password_field :password, :placeholder=>"請輸入6~20字半形英數密碼"%>
-     <%=f.submit '登入' , :class=>'button medium expand'%>
-     <!--<input type="submit" class="alert button medium" value="忘記密碼">-->
-     <a class="close-reveal-modal">&#215;</a>
-     <%if(flash[:loginfail])%>
-      <p class="loginfail">您輸入的帳號或密碼有誤</p>
-    <%end%>
-    <br />
-  </div>
   <!-- End Header and Nav -->
 
   <div class="row">
@@ -466,54 +431,41 @@
     </div> 
   </footer>
 
-  <!-- Included JS Files (Uncompressed) -->
+<div id="register" class="reveal-modal">
+<%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
+     <h1>註冊</h1>
+     <h6>電子郵件</h6>
+     <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
+     <h6>名稱</h6>
+     <%=f.text_field :username,:placeholder=>"您在網站中的名稱"%>
+     <h6>密碼</h6>
+     <%=f.password_field :password, :placeholder=>'請輸入6~20字半形英數密碼'%>
+     <h6>確認密碼</h6>
+     <%=f.password_field :password_confirmation, :placeholder=>"請輸入第二次密碼"%>
+     <%=f.submit '免費註冊',:class=>"button medium"%>
+     <%if(flash[:signupfail])%>
+      <p class="loginfail">註冊失敗</p>
+     <%end%>
+    <a class="close-reveal-modal">&#215;</a>
+<%end%>  
+  </div>
 
-  <%= javascript_include_tag "newindex" %>
-
-	<!--登入
-	<div id="login" style="display:none">
-		<%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
-		<table width="300px" border="0">
-			<tr>
-				<th scope="col">E-mail</th>
-				<th scope="col"><%=f.email_field :email, :class=>"fill", :placeholder=>"請輸入您的E-mail"%></th>
-			</tr>
-			<tr>
-				<th scope="row">密碼</th>
-				<td><%=f.password_field :password,:class=>"fill", :placeholder=>"請輸入您的密碼"%></td>
-			</tr>
-		</table>
-		<%if(flash[:loginfail])%>
-			<p class="loginfail">您輸入的帳號或密碼有誤</p>
-		<%end%>
-		<br />
-		<%=f.submit '登入' , :id=>"login_button"%>
-		<%end%>
-	</div>-->
-
-	<!--註冊
-	<div id="rigister" style="display:none">
-		
-		<h1>開始使用</h1><br/>
-			<tr>
-				<th scope="col">E-mail</th>
-				<th scope="col"><%=f.email_field :email,:class=>"fill",:placeholder=>"您將來登入用的帳號"%></th>
-			</tr>
-			<tr>
-				<th scope="row">名稱</th>
-				<td><%=f.text_field :username,:class=>"fill",:placeholder=>"您在網站中的名稱"%></td>
-			</tr>
-			<tr>
-				<th scope="row">密碼</th>
-				<td><%=f.password_field :password, :class=>'fill', :placeholder=>'請輸入8~12字的密碼'%></td>
-			</tr>
-			<tr>
-				<th scope="row">再次輸入密碼</th>
-				<td><%=f.password_field :password_confirmation,:class=>"fill", :placeholder=>"請輸入8~12字的密碼"%></td>
-			</tr>
-		</table>
-		<%=f.submit '開始使用',:id=>"rigister_button"%>
-		<%end%>
-	</div>-->
+  
+  <div id="login" class="reveal-modal">
+    <%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
+     <h1>登入</h1>
+     <h6>電子郵件</h6>
+     <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
+     <h6>密碼</h6>
+     <%=f.password_field :password, :placeholder=>"請輸入6~20字半形英數密碼"%>
+     <%=f.submit '登入' , :class=>'button medium expand'%>
+     <!--<input type="submit" class="alert button medium" value="忘記密碼">-->
+     <a class="close-reveal-modal">&#215;</a>
+     <%if(flash[:loginfail])%>
+      <p class="loginfail">您輸入的帳號或密碼有誤</p>
+    <%end%>
+    <br />
+  </div>
+<%end%>
 </body>
 </html>
