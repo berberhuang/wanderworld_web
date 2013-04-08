@@ -11,7 +11,14 @@
   <!-- Set the viewport width to device width for mobile -->
   <meta name="viewport" content="width=device-width" />
 
-  <title>WanderWorld地球漫遊</title>
+  <% if @type=='pop' 
+	@subtitle='人氣遊記'
+     else
+        @subtitle='最新遊記'
+     end
+  %>
+  <title><%=@subtitle%>-WanderWorld地球漫遊</title>
+  <meta name="description" lang="zh-Hant-TW" content="WanderWorld地球漫遊是一個專為旅行者打造的雲端遊記服務，我們將「人、事、時、地」以獨特的介面整合在一起，幫助旅行者說故事，或者規劃下一趟旅程。" />
   <link rel="shortcut icon" href="http://www.wanderworld.com.tw/assets/logo-31972393d4fb52fb065cab20c547f7a2.ico">
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <%= javascript_include_tag "newindex" %>
@@ -30,7 +37,6 @@
 	}
 	
 	.journal_card{
-		display:none;
 		border-width:5px;
 		padding:4px;
 		background-color:#ffffff;
@@ -38,6 +44,7 @@
 		overflow-x:hidden;
 	}
 	.journal_title{
+		position:relative;
 		display:block;
 		overflow:hidden;
 		width:200px;
@@ -59,6 +66,7 @@
 		width:auto;
 		max-width:1000%;
 		height:300px;
+		overflow:hide;
 	}
 	.journal_title p{
 		z-index:2;
@@ -169,7 +177,8 @@
 <body>
   <div id="fb-root"></div>
   <script>
-    $(function(){
+    $(function(){		
+		$('#journal_card').hide();
 		var options = {
 			autoResize: true, // This will auto-update the layout when the browser window is resized.
 			container: $('#myContent'), // Optional, used for some extra CSS styling
@@ -217,6 +226,7 @@
  }(document, 'script', 'facebook-jssdk'));</script>
 <!-- Header and Nav -->
 
+<div class="header"> 
 <%if UserSession.find%>
 <link href="<%=asset_path('rapid/header.css')%>" media="screen" rel="stylesheet" type="text/css" />
 <style>
@@ -232,7 +242,6 @@
 	}
 </style>
 <script type="text/javascript" src="<%=asset_path('rapid/uievent.js')%>"></script>
-<div class="header"> 
 	<a href="/"><img class="logo" src="<%=asset_path('banner_logo_walker.png')%>" /></a>
 	<!--<div id="search">	
 		<input id="searching" type="text" placeholder="搜尋" />	
@@ -263,12 +272,6 @@
 		</ul>		
 	
 	</div>
-</div>
-
-<div class="row">
-		<br /><br /><br />
-</div>
-
 <%else%>
 	<div class="row header">
 		<div class="three columns">
@@ -285,9 +288,12 @@
 		</div>
 	</div>
 <%end%>
+</div>
+<div class="row">
+		<br /><br /><br />
+</div>
 
-
-  <div id="register" class="reveal-modal">
+<div id="register" class="reveal-modal">
 <%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
      <h1>註冊</h1>
      <h6>電子郵件</h6>
