@@ -23,7 +23,8 @@
   <meta property="og:title" content="<%=@subtitle%>-WanderWorld地球漫遊"/>
   <meta property="og:description" content="WanderWorld地球漫遊是一個>專為旅行者打造的雲端遊記服務，我們將「人、事、時、地」以獨特的介面整合在一起，幫
 助旅行者說故事，或者規劃下一趟旅程。" />
-  <meta property="og:image" content="http://www.wanderworld.com.tw/assets/banner_logo_walker.png"/>
+  <meta property="og:image" content="http://www.wanderworld.com.tw/assets/banded-cover.jpg"/>
+  
   <link rel="canonical" href="http://www.wanderworld.com.tw/newindex/browse" />
   <link rel="shortcut icon" href="http://www.wanderworld.com.tw/assets/logo-31972393d4fb52fb065cab20c547f7a2.ico">
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
@@ -333,11 +334,11 @@
 	  <%
 		@order_str=''
 		if @type=='pop'
-			@order_str='groups.count DESC'
+			@order_str='groups.count+groups.created_at/1000 DESC'
 		elsif @type=='new'
 			@order_str='groups.updated_at DESC'
 		else
-			@order_str='groups.count DESC'
+			@order_str='groups.count+groups.created_at/1000 DESC'
 		end
 	  %>
 	  <%

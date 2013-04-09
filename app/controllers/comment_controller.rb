@@ -17,6 +17,7 @@ class CommentController < ApplicationController
 		if @comment.user_id==nil || @comment.user_id!=session[:user_id]
 			render :json=>false
 		end
+		@sender_username=session[:username]
 		@comment.content=params[:content]
 		@comment.group_id=params[:group_id]
 		@r
@@ -24,11 +25,13 @@ class CommentController < ApplicationController
 			@comment.commentGroup_id=@comment.id
 			@r=@comment.save
 		end
+
 		if @r
+			@receiver=Group.select('groups.title,groups.trip_id,username,fbid,trips.user_id,email').joins(:user,:trip).find_by_id(@comment.group_id)
 			if params[:owner_user_id].to_i != params[:user_id].to_i
-				CommentMailer.notify(@comment.id).deliver
+				CommentMailer.notify(@receiver.trip_id,@comment.group_id,@sender_username,@receiver.title,@comment.content,@receiver).deliver
 			end
-			render :json=>[@comment.id,@comment.commentGroup_id,@comment.user.username,@comment.created_at.strftime("%m %d,%Y %H:%M:%S")]
+			render :json=>[@comment.id,@comment.commentGroup_id,@sender_username,@comment.created_at.strftime("%m %d,%Y %H:%M:%S")]
 		else
 			render :json=>false
 		end
@@ -40,14 +43,19 @@ class CommentController < ApplicationController
 		if @comment.user_id==nil || @comment.user_id!=session[:user_id]
 			render :json=>false
 		end
+                @sender_username=session[:username]
 		@comment.content=params[:content]
 		@comment.group_id=params[:group_id]
 		@comment.commentGroup_id=params[:commentGroup_id]
 		if @comment.save
-			if params[:owner_user_id].to_i != params[:user_id].to_i
-				CommentMailer.notify(@comment.id).deliver
+			@receiver=Comment.select('Distinct comments.user_id,groups.title,groups.trip_id,username,fbid,email').joins(:user,:group).where(:commentGroup_id=>@comment.commentGroup_id)
+			@receiver.each do |r|
+				if r.user_id!=@comment.user_id
+					CommentMailer.notifyreply(r.trip_id,@comment.group_id,@sender_username,r.title,@comment.content,r).deliver
+				end
 			end
-			render :json=>[@comment.id,@comment.user.username,@comment.created_at.strftime("%m %d,%Y %H:%M:%S")]
+			
+			render :json=>[@comment.id,@sender_username,@comment.created_at.strftime("%m %d,%Y %H:%M:%S")]
 		else
 			render :json=>false
 		end

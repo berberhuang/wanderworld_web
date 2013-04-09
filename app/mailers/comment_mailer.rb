@@ -7,9 +7,28 @@ class CommentMailer < ActionMailer::Base
   #
   #   en.comment_mailer.notify.subject
   #
-  def notify comment_id
-    @c=Comment.joins(:user,:group).select('title,content,group_id,trip_id,username').find_by_id(comment_id)
-    @receiver=Group.joins(:user).select('username,email,fbid').find_by_id(@c.group_id)
+  def notify trip_id,group_id,sender_username,title,content,receiver
+   @trip_id=trip_id
+   @group_id=group_id
+   @sender_username=sender_username
+   @title=title
+   @content=content
+   @receiver=receiver
+    if @receiver.fbid
+    	@email=@receiver.email.slice(8,@receiver.email.size-1)
+    else
+	@email=@receiver.email
+    end
+    mail :to=>@email, :subject=>"WanderWorld-留言通知"
+  end
+  
+  def notifyreply trip_id,group_id,sender_username,title,content,receiver
+   @trip_id=trip_id
+   @group_id=group_id
+   @sender_username=sender_username
+   @title=title
+   @content=content
+   @receiver=receiver
     if @receiver.fbid
     	@email=@receiver.email.slice(8,@receiver.email.size-1)
     else
