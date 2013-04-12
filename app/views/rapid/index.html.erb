@@ -18,7 +18,7 @@
 	<%if session[:fbid]%>
 		UserData.facebook_id=<%=session[:fbid]%>;
 	<%else%>
-		UserData.facebook_id=false;
+		UserData.facebook_id=null;
 	<%end%>
 
 	$(function(){

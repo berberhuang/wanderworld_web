@@ -5,7 +5,7 @@ var EnvData={
 };
 
 var UserData={
-	facebook_id:false,
+	facebook_id:null,
 	user_id:null,
 };
 
