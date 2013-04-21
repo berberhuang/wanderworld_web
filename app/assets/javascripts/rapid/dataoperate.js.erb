@@ -13,7 +13,7 @@ var Data=(function(){
 			var state={
 				title:document.title,
 				url:'/rapid/triplist/'+user_id,
-				trip_id:trip_id
+				trip_id:DataStatus.trip_id
 			}
 			window.history.pushState(state,document.title,'/rapid/triplist/'+user_id);
 			//取得權限
@@ -46,25 +46,26 @@ var Data=(function(){
 			//因應無刷新跳轉  做的上一頁紀錄
 			var state={
 				title:document.title,
-				url:'/'+trip_id,
-				trip_id:trip_id
+				url:'/'+id,
+				trip_id:id
 			}
-			trip_id=id;
-			DataStatus.trip_id=id;
+			//trip_id=id;
 			resetEnv();
+			DataStatus.trip_id=id;
+			
 			
 			//讀取此旅行權限
-			$.get("/trip/hasPermission/"+trip_id,null,function(owner){
+			$.get("/trip/hasPermission/"+DataStatus.trip_id,null,function(owner){
 				DataStatus.isOwner=owner;
 				//取得旅行資訊
-				$.get("/trip/getTrip/"+trip_id,null,function(result){
+				$.get("/trip/getTrip/"+DataStatus.trip_id,null,function(result){
 					//旅行不存在 導回首頁
 					if(!result)
 						window.location="/";
 						
 					//無刷新跳轉改變url
-					window.history.pushState(state,document.title,'/'+trip_id);	
-					document.title='WanderWorld地球漫遊 - '+result[0].name;
+					window.history.pushState(state,document.title,'/'+DataStatus.trip_id);	
+					document.title=result[0].name+' - WanderWorld地球漫遊';
 					DataStatus.trip_name=result[0].name;
 					
 					//設定頭像名字
@@ -110,7 +111,7 @@ var Data=(function(){
 						callback.tripInfo();
 					}
 					//設定瀏覽次數
-					$.get('/trip/getTripCount',{id:trip_id},function(r){
+					$.get('/trip/getTripCount',{id:DataStatus.trip_id},function(r){
 						$('#count').text(r);
 					});			
 				});		
@@ -175,7 +176,7 @@ var Data=(function(){
 		saveTripName:function(){
 			log('saveTripName');
 			var name = $('#trip_name a').text();
-			$.get('/trip/editTripName/'+trip_id,{new_name:name},null);
+			$.get('/trip/editTripName/'+DataStatus.trip_id,{new_name:name},null);
 			DataStatus.trip_name=name;
 		},
 		//儲存旅行日期
@@ -183,9 +184,9 @@ var Data=(function(){
 			log('saveTripDate');
 			
 			if($("#trip_date a").text().split('-')[1])
-				$.get('/trip/editTripDate/'+trip_id,{start_date:$("#trip_date a").text().split('-')[0], end_date:$("#trip_date a").text().split('-')[1]},null);
+				$.get('/trip/editTripDate/'+DataStatus.trip_id,{start_date:$("#trip_date a").text().split('-')[0], end_date:$("#trip_date a").text().split('-')[1]},null);
 			else
-				$.get('/trip/editTripDate/'+trip_id,{start_date:$("#trip_date a").text().split('-')[0], end_date:$("#trip_date a").text().split('-')[0]},null);
+				$.get('/trip/editTripDate/'+DataStatus.trip_id,{start_date:$("#trip_date a").text().split('-')[0], end_date:$("#trip_date a").text().split('-')[0]},null);
 			
 		},
 
@@ -194,7 +195,7 @@ var Data=(function(){
 		//建立群組
 		createGroup:function(title,callback){
 			log('createGroup');
-			$.post('/trip/createGroup',{title:title,trip_id:trip_id},function(result){if(callback)callback(result);});
+			$.post('/trip/createGroup',{title:title,trip_id:DataStatus.trip_id},function(result){if(callback)callback(result);});
 		},
 		//儲存群組名稱
 		saveGroupName:function(id){	
@@ -215,7 +216,7 @@ var Data=(function(){
 		//改變旅行順序
 		changeGroupOrder:function(group_id,new_sort_id){
 			log('changGroupOrder');
-			$.get('/trip/changeGroupOrder',{trip_id:trip_id,group_id:group_id,new_sort_id:new_sort_id},function(result){});
+			$.get('/trip/changeGroupOrder',{trip_id:DataStatus.trip_id,group_id:group_id,new_sort_id:new_sort_id},function(result){});
 		},
 
 		/*景點********************************************************************************/
@@ -223,7 +224,7 @@ var Data=(function(){
 		//儲存景點
 		saveTripPoint:function(tripPoint_id,place_id,sort_id,group_id,callback){
 			log('saveTripPoint');
-			$.post("/trip/insertPointById/"+trip_id
+			$.post("/trip/insertPointById/"+DataStatus.trip_id
 				,{tripPoint_id:tripPoint_id,trip_point:{place_id:place_id,sort_id:sort_id,group_id:group_id}}
 				,function(result){
 				
@@ -247,7 +248,7 @@ var Data=(function(){
 		//改變旅行景點順序
 		changeTripPointOrder:function(tripPoint_id,new_sort_id,new_group_id){
 			log('changeTripPointOrder');
-			$.get('/trip/changeTripPointOrder',{trip_id:trip_id,tripPoint_id:tripPoint_id,new_sort_id:new_sort_id,new_group_id:new_group_id},function(result){});
+			$.get('/trip/changeTripPointOrder',{trip_id:DataStatus.trip_id,tripPoint_id:tripPoint_id,new_sort_id:new_sort_id,new_group_id:new_group_id},function(result){});
 		},
 
 		//刪除旅行景點
@@ -316,7 +317,7 @@ var Data=(function(){
 		//儲存遊記
 		savePost:function(item_id){
 			log('savePost:'+item_id);
-			$.post('/micropost/savePost',{tripPoint_id:item_id,trip_id:trip_id,content:DataStatus.contentList[item_id]},function(result){
+			$.post('/micropost/savePost',{tripPoint_id:item_id,trip_id:DataStatus.trip_id,content:DataStatus.contentList[item_id]},function(result){
 				if(result){
 					log('write successful');	
 							
@@ -352,7 +353,7 @@ var Data=(function(){
 		//儲存遊記全內容
 		saveFullPost:function(item_id,callback){
 			log('saveFullPost:'+item_id);
-			$.post('/fullpost/savePost',{tripPoint_id:pointData[item_id].tripPoint_id,trip_id:trip_id,content:pointData[item_id].post_entire},function(result){
+			$.post('/fullpost/savePost',{tripPoint_id:pointData[item_id].tripPoint_id,trip_id:DataStatus.trip_id,content:pointData[item_id].post_entire},function(result){
 				if(result){
 					log('write successful');
 					if(callback)
@@ -365,10 +366,7 @@ var Data=(function(){
 
 
 		loadPost:function (group_id,callback){
-			
-			//var first_item_id=$('#trip_point_group_'+group_id+' li:first').attr('value');
-			//if(pointData[first_item_id]){
-			//	log('loadPost: '+group_id);
+				
 				$.get('/micropost/getPost',{group_id:group_id},function(result){
 					if(result[0]){
 						for(var i in DataStatus.groupList){
@@ -380,10 +378,10 @@ var Data=(function(){
 						
 						var state={
 							title:document.title,
-							url:'/'+trip_id+'/'+group_id,
-							trip_id:trip_id
+							url:'/'+DataStatus.trip_id+'/'+group_id,
+							trip_id:DataStatus.trip_id
 						}
-						window.history.pushState(state,document.title,'/'+trip_id+'/'+group_id);
+						window.history.pushState(state,document.title,'/'+DataStatus.trip_id+'/'+group_id);
 						
 						
 						var ids=result[0];
@@ -407,50 +405,6 @@ var Data=(function(){
 						callback();
 				});			
 			//}
-		},
-		loadOnePost:function(id,callback){
-			$.get('/micropost/getOnePost',{tripPoint_id:id},function(result){
-				if(result[0]){
-					if(!DataStatus.contentList){
-						DataStatus.contentList=[];
-					}
-					DataStatus.contentList[id]=result[0];	
-				}else{
-					log('您可能斷線了,或是我們伺服器出現某些問題,無法讀取文章');
-				}
-				
-				if(callback)
-					callback();
-			});			
-			//}
-		},
-
-
-		isFullPostExist:function(item_id,callback){
-			if(pointData[item_id]){
-				$.get('/fullpost/isExist',{item_id:item_id,tripPoint_id:pointData[item_id].tripPoint_id},function(result){
-					pointData[result[0]].fullPost=result[1];
-					if(callback)
-						callback();
-				});
-			}
-		},
-
-		loadFullPost:function(item_id,callback){
-			if(pointData[item_id]){
-						if(!pointData[item_id].post_entire){
-					log('loadFullPost: '+item_id);
-								$.get('/fullpost/getPost',{item_id:item_id,tripPoint_id:pointData[item_id].tripPoint_id},function(result){
-								if(result){
-										pointData[result[0]].post_entire=(result[1]!=null)?result[1]:"";
-						if(callback)
-							callback();
-								}else{
-						log('你可能斷線了,或是我們伺服器出現問題,無法入文章');
-					}
-								});
-						}
-				}
 		}
 	};
 }());

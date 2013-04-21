@@ -650,7 +650,7 @@ var TripPointListbarModule = function(obj){
 					contentBox.reset();
 										
 					document.title='WanderWorld地球漫遊 - '+DataStatus.trip_name;
-					window.history.pushState(null,document.title,'/'+trip_id);
+					window.history.pushState(null,document.title,'/'+DataStatus.trip_id);
 					
 					PathOnMap.showMarkInfo(id);
 				}
@@ -663,7 +663,7 @@ var TripPointListbarModule = function(obj){
 			//按下群組名稱
 			clickGroupTitle:function(group_id){
 				document.title='WanderWorld地球漫遊 - '+DataStatus.trip_name;
-				window.history.pushState(null,document.title,'/'+trip_id);
+				window.history.pushState(null,document.title,'/'+DataStatus.trip_id);
 								
 				if(showingGroup!=group_id){
 					var tmp=[];
@@ -694,16 +694,20 @@ var TripPointListbarModule = function(obj){
 			//裝載旅行名稱及輸入框enter鍵listener
 			
 			var tripNameDOM=target.find('#trip_name');
-			$(tripNameDiv).appendTo(tripNameDOM);
+			if(tripNameDOM.find('div').length==0)
+				$(tripNameDiv).appendTo(tripNameDOM);
 			$(tripNameInput).appendTo(tripNameDOM).keydown(UiListener.keydownEditTripName);
 			
 			//旅行時間及輸入框enter鍵listener
 			var tripDateDOM=target.find('#trip_date');
-			$(tripDateDiv).appendTo(tripDateDOM);
+			if(tripDateDOM.find('div').length==0)
+				$(tripDateDiv).appendTo(tripDateDOM);
 			$(tripDateInput).appendTo(tripDateDOM).keydown(UiListener.keydownEditTripDate);
 			
 			//裝載tripPointList
-			target.find('#trip_point_list').addClass('scroll-pane').append(tripPointList);
+			var t=target.find('#trip_point_list').addClass('scroll-pane')
+			if(t.find('.trip_point_all').length==0)
+				t.append(tripPointList);
 			
 			//裝載create button listener
 			target.find('#group_create_button').click(UiListener.clickAddGroup);

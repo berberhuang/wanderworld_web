@@ -42,8 +42,6 @@ function initialize() {
 	
 	commentBox = new CommentModule('#comment');
 	
-	$('#test div:eq(0)').append('<div>dynamic appended test</div>');
-	
 	//依照解析度調整布局
 	reLayout(); 
 	$(window).bind('resize',function(){

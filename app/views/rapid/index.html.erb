@@ -26,9 +26,94 @@
 		<% if @journal_id %>
 			loadJournal(<%=@trip_id%>,<%=@journal_id%>);
 		<% elsif @trip_id %>
-			loadTrip(<%=@trip_id%>);
+			resetEnv();
+			<%
+			@trip_info=Trip.find(@trip_id)
+			@trip_info.count+=1
+			@trip_info.save!
+			@groups=Group.order('sort_id ASC').where(:trip_id=>@trip_id)
+			@tripPoints=TripPoint.select('trip_points.id,group_id,sort_id,name,longitude,latitude').order('group_id,sort_id ASC').joins(:place).where(:trip_id=>@trip_id)
+			%>
+			DataStatus.owner_user_id=<%=@trip_info.user_id%>;
+			<% if @trip_info.user_id.to_s==session[:user_id].to_s%>
+				DataStatus.isOwner=true;
+			<%end%>
+			document.title='<%=@trip_info.name%> - WanderWorld地球漫遊';
+			DataStatus.trip_id=<%=@trip_id%>;
+			DataStatus.trip_name='<%=@trip_info.name%>';
+			DataStatus.owner_user_id=<%=@trip_info.user_id%>;
+			<%@user = @trip_info.user%>
+			
+			<%if @user.fbid %>
+				$('#person_avatar img').attr('src','https://graph.facebook.com/<%=user.fbid%>/picture');
+			<%else%>
+				$('#person_avatar img').attr('src','<%=asset_path("user_avatar.png")%>');
+			<%end%>
+			
+			
+			<% if @trip_info.start_date==@trip_info.end_date %>
+				DataStatus.trip_date='<%=@trip_info.start_date%>';
+			<%else%>
+				DataStatus.trip_date='<%=@trip_info.start_date%> - <%=@trip_info.end_date%>';
+			<%end%>
+			
+			DataStatus.groupList=<%=@groups.to_json.html_safe%>;
+			DataStatus.tripPointList=<%=@tripPoints.to_json.html_safe%>;
+
+			for(var i=0; i<DataStatus.tripPointList.length;i++){
+				DataStatus.tripPointList[i].place={longitude:DataStatus.tripPointList[i].longitude,
+												   latitude:DataStatus.tripPointList[i].latitude,
+													name:DataStatus.tripPointList[i].name
+												};
+			}
+			
+			<% today=Date.current%>
+			<% if today<@trip_info.start_date %>
+				DataStatus.trip_status='倒數<%=(@trip_info.start_date-today).to_s%>天';
+			<%elsif today>=@trip_info.start_date && today<=@trip_info.end_date%>
+				DataStatus.trip_status='正在旅行';
+			<%else%>
+				DataStatus.trip_status='';
+			<%end%>
+			
+			tripPointList.loadTripInfo();
+			tripPointList.loadTripPointList();
+			reLayout();
+			
+	//		loadTrip(<%=@trip_id%>);
 		<% elsif @user_id %>
-			loadTripList(<%=@user_id%>);
+			<%@trips=Trip.order('start_date DESC').where(:user_id=>@user_id)%>		
+	
+			DataStatus.owner_user_id=<%=@user_id%>;
+			
+			<%@user = User.find(@user_id)%>
+			
+			<%if @user.fbid %>
+				$('#person_avatar img').attr('src','https://graph.facebook.com/<%=user.fbid%>/picture');
+			<%else%>
+				$('#person_avatar img').attr('src','<%=asset_path("user_avatar.png")%>');
+			<%end%>
+			
+			<% if @user_id==session[:user_id].to_s%>
+				DataStatus.isOwner=true;
+			<%end%>
+
+			DataStatus.tripList=[
+				<%@trips.each do |t|%>
+				{
+					<%t.attributes.each do |a_name,a_val|%>
+						<%=a_name%>:"<%=a_val%>",
+					<%end%>
+					t:null
+				},
+				<%end%>
+				{}
+			];
+			DataStatus.tripList.pop();		
+
+			tripListbar.init_trip_listbar();
+			tripListbar.ownerModeSwitch();
+	//		loadTripList(<%=@user_id%>);
 		<%end%>
 		
 	});
@@ -53,7 +138,7 @@
 				<img src='<%=asset_path("user_avatar.png")%>'></img>
 			<% end %>
 		</div>
-		<div id="person_name"></div>
+		<div id="person_name"><%=@user.username if !@journal_id%></div>
 		<div style="clear: both;display: block"></div>	
 	</div>
 	<div id="other_button" >
@@ -73,7 +158,7 @@
 		<img src='<%=asset_path("view_all.png")%>'></img>
 	</div>
 	<!--旅行列表-->
-	<div id="trip_list" class="list" style="display:none;">
+	<div id="trip_list" class="list" style="<%='display:none' if !@user_id %>">
 		<div id="trip_logo"></div>
 		<div id="trip_title">
 			<h2 class="information">旅行列表</h2>
@@ -91,23 +176,29 @@
 				<div id="block_4" class="barlittle"></div>
 				<div id="block_5" class="barlittle"></div>
 			</div>
-		<ul id="dates"></ul>
+			<ul id="dates">
+			<%=tripList_gen(@trips) if @trips%>
+			</ul>
 		</div>
 		<div id="next" onclick="toBottom()" title="至底端"></div>
 	</div>
 	<!--旅行-->
-	<div id="trip_one" class="list" style="display:none;">	
+	<div id="trip_one" class="list" style="<%='display:none;' if !@trip_id && !@journal_id%>">	
 		<!--旅行資訊-->
 		<div class="trip_information">
 			<div class="trip_names">
 				<h1 class="information" >
-					<div id="trip_name" ></div>
+					<div id="trip_name" >
+						<%=tripName_gen(@trip_info) if @trip_info%>
+					</div>
 				</h1>
 				<div id="return_triplist" >
 					<img style="height:23px" src='<%=asset_path("undo_blue.png")%>' title="返回旅行列表"/>
 				</div>
 			</div>
-			<div id="trip_date"></div>
+			<div id="trip_date">
+				<%=tripDate_gen(@trip_info) if @trip_info%>
+			</div>
 			<div id="trip_status" style="display:none;">
 				<div style="float:left">狀態：</div>
 				<div style="float:left;color:#FB9B35"><a></a></div>
@@ -126,13 +217,14 @@
 		</div>
 		<!--景點列表-->
 		<div id="trip_point_list">
+			<%=tripPointList_gen(@groups,@tripPoints) if @groups&&@tripPoints%>
 		</div>
 		<div class="add_group_title">
 			<button id="group_create_button" class="button" style="background-color: #e9e9e9; color: #1d1d1d; border: 1px solid #c3c3c3;" title="新增一篇遊記">新增遊記</button>
 		</div>
 		<!--瀏覽人次-->
 		<div id="view_num">
-			<span>瀏覽人次：<span id="count"></span></span>
+			<span>瀏覽人次：<span id="count"><%=@trip_info.count.to_s if @trip_info%></span></span>
 			</div>
 		<!--分享-->
 		<div id="sharetoFB">
@@ -148,7 +240,7 @@
 	</div>
 
 	<!--內容框-->
-	<div id="slidesContainer" style="display:none">
+	<div id="slidesContainer" style="<%='display:none' if !@journal_id%>">
 		<div class="bounceDiv">
 			<div id="like"></div>
 			<a class="permission" href="#">
@@ -183,56 +275,6 @@
 			<div id="comment">
 				<h3>留言</h3>
 				<div class="comment_scope">
-				<div class="entity">
-					<div class="content_panel">
-						<div class="p1">
-							<div class="content">寫的好棒</div>
-							<div class="footer">
-								<a class="username">cindy</a> 
-								<span>2013/5/13 13:05</span>
-								<div><a class="button" id="delete">刪除</a></div>
-							</div>
-						</div>
-						<div class="p2">
-							<div class="content">謝謝</div>
-							<div class="footer">
-								<a class="username">BertHuang</a>  
-								<span>2013/5/13 13:15</span>
-								<div><a class="button" id="delete">刪除</a></div>
-							</div>	
-						</div>
-					</div>
-					<div class="reply_input" style="margin-top:20px">
-						<textarea placeholder="回覆‧‧‧‧"></textarea>
-						<input class="submit" type="button" value="回覆"></input>
-					</div>
-				</div>
-				<div style="height:10px"></div>
-				<div class="entity">
-					<div class="content_panel">
-						<div class="p1">
-							<div class="content">寫的好棒</div>
-							<div class="footer">
-								<a class="username">cindy</a> 
-								<span>2013/5/13 13:05</span>
-								<div><a class="button" id="delete" href="#">刪除</a></div>
-							</div>
-						</div>
-						<div class="p2">
-							<div class="content">謝謝</div>
-							<div class="footer">
-								<a class="username">BertHuang</a>  
-								<span>2013/5/13 13:15</span>
-								<div><a class="button" id="delete" href="#">刪除</a></div>					
-							</div>
-						</div>
-					</div>
-					<div class="reply_input" style="margin-top:20px">
-						<textarea placeholder="回覆‧‧‧‧"></textarea>
-						<input class="submit" type="button" value="回覆"></input>
-					</div>
-				</div>
-				<div style="height:10px"></div>
 				</div>
 				<div class="comment_input" style="margin-top:20px">
 					<textarea placeholder="留言‧‧‧‧"></textarea>
@@ -261,8 +303,6 @@
 		<!--<img src='<%=asset_path("LOGO黑體直行-06.png")%>' style="height:145px;"/> -->
 	</div>
 </div>
-
-
 <!--手動輸入-->
 <div id="add_new" style="display:none">
     	糟了，找不到你想標記的地點，試試看手動輸入吧!
