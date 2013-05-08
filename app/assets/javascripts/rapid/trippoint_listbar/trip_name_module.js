@@ -12,7 +12,7 @@ var TripNameModule = function(obj){
 		//按下編輯旅行名稱(click)
 		var clickEditTripName=function(){
 			trip_name=$('#trip_name a:eq(0)').text();
-			$('#trip_name div').hide().parent().find('input').show().focus().val(trip_name);
+			$('#trip_name').find('div').hide().end().find('input').show().focus().val(trip_name);
 			
 			setClickOutsideEvent(tripNameInput,finishEditTripName);
 		};
