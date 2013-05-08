@@ -359,6 +359,7 @@ var ContentBoxModule = function(item){
 				
 				$('#foo').show();
 				contentPanel.empty();
+				console.log("group_id:"+group_id);
 				Data.loadPost(group_id,function(result){
 					$('#foo').hide();
 					contentPanel.show();
@@ -372,7 +373,6 @@ var ContentBoxModule = function(item){
 							break;
 						}
 					}
-
 					for(var i=0; i<tpList.length;i++){
 						if(tpList[i].group_id==group_id){
 							str+='<div class="tp_box" id="tp_box_'+tpList[i].id+'">';

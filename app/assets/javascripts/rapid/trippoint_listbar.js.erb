@@ -5,755 +5,89 @@
 	#trip_status
 	
 */
-var TripPointListbarModule = function(obj){
-	var tripNameDiv='<div><a></a></div>';
-	var tripNameInput='<input id="trip_name_input" style="display:none;" placeholder="輸入旅行名稱" />';
-	
-	var tripDateDiv='<div><a></a></div>';
-	var tripDateInput='<input id="date_picker" type="text" readonly="readonly" style="display:none;" />';
-	
-	var tripPointList= '<div class="trip_point_all">\
+var TripPointListbarModule = function(obj){		
+	var tripPointListStr= '<div class="trip_point_all">\
 						<div id="group_bottom" style="clear: both;display: block"></div>\
 						</div>';
+	
 	var target=$(obj);
 	
+	var tripNameInstance= new TripNameModule(target);
+	var tripDateInstance= new TripDateModule(target);
+	
+	var groupItemManager = new GroupItemModule(target);
+	var tripPointItemManager = new TrippointItemModule(target);
+	
+	var listSequenceInstance = new ListSequenceModule();
+		
 	var editingGroupNameInput;
 	
 	var moduleInstance;
 	
-	var showingGroup=null;
-	
-	var finishEditTripName=function(){
-		var a=target.find('#trip_name a:eq(0)');
-		var input=target.find('#trip_name input');
-		if(a.text().replace(/[\s]*/,"").length==0 && input.val().replace(/[\s]*/,"").length==0) 
-			a.text("請輸入旅行名稱");
-		else
-			a.text((input.val().replace(/[\s]*/,"").length!=0)?input.val():a.text());
-		target.find('#trip_name div').show();
-		
-		input.hide();
-		
-		$('#trip_name input').unbind('clickoutside');
-		Data.saveTripName();
-	};
-	
-	var finishEditTripDate=function(){
-		var a=target.find('#trip_date a:eq(0)');
-		var input=target.find('#trip_date input');
-		a.text((input.val().replace(/[\s]*/,"").length!=0)?input.val():a.text());
-		target.find('#trip_date div').show();		
-		var startdate = input.val().split("-")[0].replace(/\//g,'-').replace(/\ /,'');
-		if(input.val().split("-")[1])
-			var enddate = input.val().split("-")[1].replace(/\//g,'-').replace(/\ /,'');
-		else
-			var enddate = startdate;
-		if( getdate() < startdate ){
-			target.find('#trip_status').show()
-			.find('a').text('倒數 '+getDateDiff(startdate,getdate())+' 天');
-		}else if(getdate() >= startdate && getdate() <= enddate){
-			target.find('#trip_status').show()
-			.find('a').text('正在旅行');
-		}else if( getdate() > enddate ){
-			target.find('#trip_status').hide()
-			.find('a').text('');
-		}		
-		input.hide();
-		target.find('#trip_date input').unbind('clickoutside');
-		
-		Data.saveTripDate();
-	};
 
-	//完成編輯群組名稱
-	var finishEditGroupName=function(id){
-		var a=target.find('#trip_point_group_'+id+' .trip_point_title a:eq(0)');
-		var input=target.find('#trip_point_group_'+id+' .trip_point_title input');
-		var str=(input.val().replace(/[\s]*/,"").length!=0)?input.val():a.text();
-		a.text(str).show();
-		input.hide();
-		
-		for(var i in DataStatus.groupList){
-			if(DataStatus.groupList[i].id==id){
-				DataStatus.groupList[i].title=str;
-				break;
-			}
-		}
-		contentBox.setGroupTitle(str);
-		
-		Data.saveGroupName(id);
-		reLayout();
+	groupItemManager.setTripPointItemManager(tripPointItemManager);
+	tripPointItemManager.setGroupItemManager(groupItemManager);
+	
+	tripPointEdit.setTripPointItemManager(tripPointItemManager);
+	tripPointEdit.setGroupItemManager(groupItemManager);
+	
+	//依照權限切換ui
+	var tripInfo_ownerModeSwitch=function(t){
+		tripNameInstance.ownerModeSwitch(t);
+		tripDateInstance.ownerModeSwitch(t);
 	};
 	
-	//完成新增群組名稱
-	var finishNewGroupName=function(groupName){
-		target.find('#trip_point_group_0').unbind('clickoutside').remove();
-
-		var sort_id=null;
-		for(var i=0;i<DataStatus.groupList.length;i++){
-			if((!sort_id)||(DataStatus.groupList[i].sort_id>sort_id)){
-				sort_id=DataStatus.groupList[i].sort_id;
-			}
+	var tripPointList_ownerModeSwitch=function(t){
+		groupItemManager.ownerModeSwitch(t);
+		listSequenceInstance.ownerModeSwitch(t);
+		
+		if(t){		
+			target.find('.editTool').show();
+		}else{		
+			target.find('.editTool').hide();	
 		}
-		sort_id+=1;
-		Data.createGroup(groupName,function(gid){
-			DataStatus.groupList.push({id:gid,title:groupName,sort_id:sort_id});
-			moduleInstance.UiControl.insertGroup(gid,groupName);
-			reLayout();
-			$('.scroll-pane').animate({scrollTop:$(document).height()}, 'slow');	
-		});
+		
 	};
-	
-	//改變tripPoint順序時的反應
-	var editPointOrder=function(ui){
-		var orig=ui.item.val();
-		var new_group_id=ui.item.parents('.trip_point_group').attr('id').split('_group_')[1];
-		var lowbound;
-		var highbound;
-		var new_sort_id;
-		var tpList=DataStatus.tripPointList;
-		
-		var t=ui.item.next().val();
-		if(t){
-			for(var i=0;i<tpList.length;i++){
-				if(t==tpList[i].id){
-					highbound=tpList[i].sort_id;
-				}
-			}
-			
-		}
-		t=ui.item.prev().val();
-		if(t){
-			for(var i=0;i<tpList.length;i++){
-				if(t==tpList[i].id){
-					lowbound=tpList[i].sort_id;
-				}
-			}
-		}
-		
-		if(highbound==null && lowbound==null){
-			new_sort_id=0;
-		}else if(highbound==null){
-			new_sort_id=lowbound+1;
-		}else if(lowbound==null){
-			new_sort_id=highbound-1;
-		}else{
-			new_sort_id=(lowbound+highbound)/2;
-		}
-		
-		var group_id;
-		var movedItem;
-		for(var i=0;i<tpList.length;i++){
-			if(tpList[i].id==orig){
-				group_id=tpList[i].group_id;
-				tpList[i].sort_id=new_sort_id;
-				tpList[i].group_id=new_group_id;
-				movedItem=tpList[i];
-				tpList[i]=null;
-				break;
-			}
-		}
-		
-		Data.changeTripPointOrder(orig,new_sort_id,new_group_id);
-		
-		DataStatus.tripPointList=[];
-		for(var i=0; i<tpList.length; i++){
-			if(tpList[i]){
-				if(movedItem && tpList[i].sort_id > movedItem.sort_id){
-					DataStatus.tripPointList.push(movedItem);
-					movedItem=null;
-				}
-				DataStatus.tripPointList.push(tpList[i]);
-			}
-		}
-		if(movedItem){
-			DataStatus.tripPointList.push(movedItem);
-		}
-		ui.item.find('.point_name').unbind('click').click(function(event){
-			contentBox.cancelEditWarning(new_group_id,function(){
-				var item=$(event.target);
-				var id=item.parents('li').val();
-				//moduleInstance.UiControl.selectTripPoint(item);
-				UiListener.clickPointTitle(item.parents('.trip_point_group').attr('id').split('_group_')[1],id);
-			});
-		}).removeClass('red_box').removeClass('green_box').end();
-		
-		
-		contentBox.changeTripPointOrder(group_id,new_group_id);
-		
-		moduleInstance.UiControl.updateMark();
-		PathOnMap.updateMark();
-		
-		PathOnMap.redrawLine();
-		reLayout();
-	};
-	
-	//改變遊記的順序	
-	var editGroupOrder=function(ui){
-		var orig=ui.item.attr('id').split('_group_')[1];
-		var lowbound;
-		var highbound;
-		var new_sort_id;
-		var groupList=DataStatus.groupList;
-		
-		var t=ui.item.next().attr('id');
-		if(t){
-			t=t.split('_group_')[1];
-			for(var i=0;i<groupList.length;i++){
-				if(t==groupList[i].id){
-					highbound=groupList[i].sort_id;
-				}
-			}
-			
-		}
-		t=ui.item.prev().attr('id');
-		if(t){
-			t=t.split('_group_')[1];
-			for(var i=0;i<groupList.length;i++){
-				if(t==groupList[i].id){
-					lowbound=groupList[i].sort_id;
-				}
-			}
-		}
-		
-		if(highbound==null && lowbound==null){
-			new_sort_id=0;
-		}else if(highbound==null){
-			new_sort_id=lowbound+1;
-		}else if(lowbound==null){
-			new_sort_id=highbound-1;
-		}else{
-			new_sort_id=(lowbound+highbound)/2;
-		}
-		
-		
-		var movedItem;
-		for(var i=0;i<groupList.length;i++){
-			if(groupList[i].id==orig){
-				groupList[i].sort_id=new_sort_id;
-				movedItem=groupList[i];
-				groupList[i]=null;
-				break;
-			}
-		}
-		
-		Data.changeGroupOrder(orig,new_sort_id);
-		
-		DataStatus.groupList=[];
-		for(var i=0; i<groupList.length; i++){
-			if(groupList[i]){
-				if(movedItem && groupList[i].sort_id > movedItem.sort_id){
-					DataStatus.groupList.push(movedItem);
-					movedItem=null;
-				}
-				DataStatus.groupList.push(groupList[i]);
-			}
-		}
-		if(movedItem){
-			DataStatus.groupList.push(movedItem);
-		}
-		
-		moduleInstance.UiControl.updateMark();
-		PathOnMap.updateMark();
-		
-		PathOnMap.redrawLine();
-		reLayout();
-	}
-	
-	//起動調換順序事件
-	var reSortable=function(permission){
-		if(permission){
-			$('.trip_point').sortable({
-				disabled: false,
-				connectWith: "ul",
-				axis: 'y',
-				placeholder: "trippoint_placeholder",
-				stop:function(event,ui){editPointOrder(ui);}
-			});	
-			$('.trip_point_all').sortable({
-				disabled: false,
-				axis: 'y',
-				tolerance: 'pointer',
-				placeholder: "trippoint_placeholder",
-				stop:function(event,ui){editGroupOrder(ui);}
-			});
-		}
-		else{
-			$('.trip_point').sortable({
-				disabled: true
-			});	
-			$('.trip_point_all').sortable({
-				disabled: true
-			});
-		}
-
-	};
-	
 
 	//控鍵Listener
-	var	UiListener={
-			//按下編輯旅行名稱(click)
-			clickEditTripName:function(){
-				trip_name=$('#trip_name a:eq(0)').text();
-				$('#trip_name div').hide().parent().find('input').show().focus().val(trip_name);
-				
-				//ui_unloadTripPointSwitchControl(true);
-				setTimeout(function(){
-						$("#trip_name input").bind("clickoutside",finishEditTripName);
-				},50);
-			},
-			//完成編輯旅行名稱按下enter(keydown)
-			keydownEditTripName:function(event){
-				if(event.keyCode==13){
-					finishEditTripName();
-					reLayout();
-				}
-			},
-			//按下編輯旅行日期(click)
-			clickEditTripDate:function(){
-				var trip_date=target.find('#trip_date a:eq(0)').text();
-				target.find('#trip_date div').hide().parent().find('input').show().focus().val(trip_date);	
-
-				//ui_unloadTripPointSwitchControl(true);
-				setTimeout(function(){
-							$("#trip_date input").bind("clickoutside",finishEditTripDate).click();
-				},50);
-			},
-			//編輯日期按下完成(click)
-			keydownEditTripDate:function(){
-				finishEditTripDate();
-			},
-			//新增群組按鈕(click)
-			clickAddGroup:function(){
-				var item;
-				var str='';
-				str+='<div id="trip_point_group_0" class="trip_point_group">';
-				str+='<input value="" placeholder="輸入遊記名稱" />';
-				str+='</div>';
-				
-				item=$(str).appendTo(target.find('.trip_point_all'))
-				.find('input').keydown(UiListener.keydownEditGroupName).focus().end();
-				
-				$('.scroll-pane').animate({scrollTop:$(document).height()}, 'slow');
-				reLayout();
-				
-				setTimeout(function(){
-					item.bind('clickoutside',function(){
-						var name = item.find('input').val().replace(/[\s]*/,"");
-						if(name.length!=0){
-							finishNewGroupName(name);
-						}else{
-							item.unbind('clickoutside').remove();
-							reLayout();
-							$('.scroll-pane').animate({scrollTop:$(document).height()}, 'slow');
-						}
-						
-					});
-				},50);
-			},
-
-			//編輯景點(click)menu
-			editPoint:function(event){	
-				var item=$(event.target).parents('li');
-				var id=item.val();
-				var group_id=item.parents('.trip_point_group').attr('id').split('_group_')[1];
-				edit_menu_id=id;
-				var x=item.offset().left;
-				var y=item.offset().top;
-				//var menu=item.parent().css('display','block').find('.point_edit_menu').show();	
-				
-				var str='';
-				str+='<div class="point_edit_menu">';
-				str+='<div id="editPostContent"><img src="<%=asset_path('pencil.png')%>">編輯遊記</div>';
-				str+='<div id="removeTripPoint"><img src="<%=asset_path('delete1.png')%>">刪除景點</div>';
-				str+='</div>';	
-				
-				var menu=$(str).appendTo('#trip_one').show().css('position','absolute').offset({left:x+115,top:y+20});
-				
-				menu.find('#removeTripPoint').click(function(){
-							UiListener.removePoint(id);
-							menu.unbind('clickoutside');
-							menu.unbind('mouseleave');
-							menu.remove();
-						}).end()
-					.find('#editPostContent').click(function(){
-							contentBox.cancelEditWarning(group_id,function(){
-								contentBox.clickEditPost(group_id,id);	
-								showingGroup=group_id;
-							});
-							menu.unbind('clickoutside');
-							menu.unbind('mouseleave');
-							menu.remove();
-						}).end();
-				
-				setTimeout(function(){
-					menu.bind('clickoutside',function(){
-						menu.unbind('clickoutside');
-						menu.unbind('mouseleave');
-						menu.remove();
-					});
-					menu.bind('mouseleave',function(){
-						menu.unbind('clickoutside').css('display','');
-						menu.unbind('mouseleave');
-						menu.remove();
-					});
-				},50);
-					
-				/*var scrollpane=$('.scroll-pane');
-				
-				var goal=item.parents('li').offset().top - $('.trip_point li:first').offset().top + menu.height()-40;
-				var current=scrollpane.scrollTop();
-				console.log(goal);
-				if(goal>current){
-					scrollpane.animate({scrollTop:goal}, 'slow');
-				}*/
-				
-			},
-			
-			//更改群組名稱(click)
-			clickEditGroupName:function(id){
-				var item = target.find('#trip_point_group_'+id+' .trip_point_title');
-				
-				var a=item.find('a').hide();
-				var input=item.find('input').val(a.text()).show().focus();
-							
-				setTimeout(function(){
-						input.bind('clickoutside',function(){
-							finishEditGroupName(id);
-							input.unbind('clickoutside');
-						});
-				},50);
-				
-				reLayout();
-				
-			},
-			//編輯群組完成按enter(keydown)
-			keydownEditGroupName:function(event){
-				if(event.keyCode==13){
-					var id=$(this).parents('.trip_point_group').attr('id').split('_group_')[1];
-					if(id!=0){
-						//change group name
-						finishEditGroupName(id);
-					}else{
-						//new group
-						var name=event.target.value.replace(/[\s]*/,"");
-						if(name.length!=0){
-							finishNewGroupName(name);
-						}
-						
-						
-						
-					}
-				}
-			},
-			
-			//編輯群組(按那隻筆)(click)
-			showEditGroupMenu:function(event){
-				var item=$(event.target).parents('.trip_point_group');
-				var group_id=item.attr('id').split('_group_')[1];
-				var x=item.offset().left;
-				var y=item.offset().top;
-				
-				
-				
-				var str='';
-				str+='<div class="group_edit_menu">';
-				str+='<div id="edit_name"><img src="<%=asset_path('doc_edit.png')%>">更改遊記名稱</div>';
-				str+='<div id="edit_post"><img src="<%=asset_path('pencil.png')%>">編輯遊記</div>';
-				str+='<div id="delete_group"><img src="<%=asset_path('delete1.png')%>">刪除遊記</div>';
-				str+='</div>';				
-				
-				var menu=$(str).appendTo('#trip_one').show().css('position','absolute').offset({left:x+105,top:y+18});
-				
-				menu.find('#edit_name').click(function(){
-						UiListener.clickEditGroupName(group_id);
-						
-						menu.unbind('clickoutside');
-						menu.unbind('mouseleave');
-						menu.remove();
-					}).end()
-					.find('#delete_group').click(function(){
-						UiListener.clickDeleteGroup(group_id);
-						
-						menu.unbind('clickoutside');
-						menu.unbind('mouseleave');
-						menu.remove();
-					}).end()
-					.find('#edit_post').click(function(){
-						contentBox.cancelEditWarning(group_id,function(){
-							contentBox.clickEditPost(group_id,target.find('#trip_point_group_'+group_id+' li:first').val());	
-							showingGroup=group_id;
-						});
-						menu.unbind('clickoutside');
-						menu.unbind('mouseleave');
-						menu.remove();
-					});
+	var	UiListener={					
+		//按下返回旅行列表(click)
+		returnTripList:function(){
+			//resetEnv();		
+			contentBox.cancelEditWarning(-1,function(){
+				target.hide();
+				contentBox.UiControl.hide();
+				contentBox.reset();
+				$('#trip_list').show();
+				loadTripList(DataStatus.owner_user_id);
+				toTop();
+				map.setCenter(new google.maps.LatLng(23.80, 121.500));
+				map.setZoom(8);
+			});
+		}		
 		
-				
-				setTimeout(function(){
-					menu.bind('clickoutside',function(){						
-						menu.unbind('clickoutside');
-						menu.unbind('mouseleave');
-						menu.remove();
-					});
-					menu.bind('mouseleave',function(){						
-						menu.unbind('clickoutside');
-						menu.unbind('mouseleave');
-						menu.remove();
-					});
-				},50);
-				
-				/*
-				var goal=$(event.target).parents('.trip_point_group').position().top-$('.trip_point_group').eq(0).position().top;
-				var current=$('.scroll-pane').scrollTop();
-				if(goal>current){
-					$('.scroll-pane').animate({scrollTop:goal}, 'slow');
-				}
-				*/
-			},
-			
-			//按下增加景點(click)
-			addPoint:function(group_id){
-				var str='';
-				str+='<div id="newTripPoint" value="'+group_id+'">';
-				str+='<input class="place" type="text" size="20" placeholder="輸入景點名稱" />';
-				str+='</div>';	
-				
-				var item=$(str).appendTo(target.find('#trip_point_group_'+group_id ))
-								.find('input')
-								.keydown(function(event){
-										UiListener.enterTripPoint(event,group_id,$(this))
-									})
-								.blur(function(event){UiListener.blurAddPoint(event,group_id);})
-								.focus().end();
-				reLayout();
-				/*
-				//失去焦點則刪掉新增景點輸入框
-				setTimeout(function(){
-					item.bind("clickoutside",function(){
-							item.unbind("clickoutside");
-							item.remove();
-							moduleInstance.UiControl.enableAddTripPoint(group_id);
-					});
-				},50);
-				*/
-				$('.place').autocomplete({
-					source:'/place/search',
-					position: { my: "right top", at: "right bottom", collision: "none" }		
-				});
-				
-			},
-			//在增加景點框按enter(keydown)
-			enterTripPoint:function(event,group_id,item){
-				target.find("#newTripPoint").unbind("clickoutside");
-				if(event.keyCode==13||event.type=='click'){
-					var item_id=$(event.target).parent().val();
-					tripPointEdit.addItem(group_id,item);
-					
-					contentBox.UiControl.hideContent();					
-				}
-			},
-			//增加景點input框 失去焦點
-			blurAddPoint:function(event,group_id){
-				moduleInstance.UiControl.enableAddTripPoint(group_id);
-			},
-			//移除景點
-			removePoint:function(item_id){
-				$('.trip_point_all li[value='+item_id+']').remove();
-				//PathOnMap.deleteMark(item_id);
-				Data.deleteTripPoint(item_id);
-				var tpList=DataStatus.tripPointList;
-				for(var i=0; i<tpList.length; i++){
-					if(tpList[i].id==item_id){
-						contentBox.deleteTripPoint(tpList[i].group_id,item_id);
-						tpList[i]=null;
-						break;
-					}
-				}
-				
-				DataStatus.tripPointList=[];
-				for(var i=0; i<tpList.length; i++){
-					if(tpList[i]){
-						DataStatus.tripPointList.push(tpList[i]);
-					}
-				}
-				
-				moduleInstance.UiControl.updateMark();
-				
-				PathOnMap.updateMark();
-				PathOnMap.redrawLine();
-								
-				
-				reLayout();
-			},
-			//移除group
-			clickDeleteGroup:function(id){
-				if(!Data.deleteGroup(id)){
-					return;
-				}
-				var groupList=DataStatus.groupList;
-				var tpList=DataStatus.tripPointList;
-				DataStatus.groupList=[];
-				for(var i=0; i<groupList.length; i++){
-					if(groupList[i].id!=id){
-						DataStatus.groupList.push(groupList[i]);
-					}
-				}
-				target.find('#trip_point_group_'+id).empty().remove();
-				moduleInstance.UiControl.updateMark();
-				contentBox.deleteGroup(id);
-				
-				PathOnMap.updateMark();
-				PathOnMap.redrawLine();
-				
-				reLayout();
-
-			},
-			//按下返回旅行列表(click)
-			returnTripList:function(){
-				//resetEnv();		
-				contentBox.cancelEditWarning(-1,function(){
-					target.hide();
-					contentBox.UiControl.hide();
-					contentBox.reset();
-					//contentBox.UiControl.hideBounceButton();
-					//$('#trip_one').hide();
-					$('#trip_list').show();
-					//$('#dates').empty();
-					loadTripList(DataStatus.owner_user_id);
-					toTop();
-					map.setCenter(new google.maps.LatLng(23.80, 121.500));
-					map.setZoom(8);
-				});
-			},
-			
-			//按下景點名稱
-
-			clickPointTitle:function(group_id,id){
-				if(showingGroup!=group_id){
-					var tmp=[];
-					var tpList=DataStatus.tripPointList;
-					for(var i=0; i<tpList.length;i++){
-						if(tpList[i].group_id==group_id){
-							tmp.push(tpList[i]);
-						}
-					}
-					
-					computeMap(tmp);
-					
-				}
-
-				if(contentBox.isShow()&&showingGroup==group_id){
-					//PathOnMap.showMarkInfo(id);
-					contentBox.UiControl.showContent(group_id,id);
-				}else{
-					contentBox.UiControl.hide(true);
-					contentBox.reset();
-										
-					document.title='WanderWorld地球漫遊 - '+DataStatus.trip_name;
-					window.history.pushState(null,document.title,'/'+trip_id);
-					
-					PathOnMap.showMarkInfo(id);
-				}
-				
-				tripPointEdit.UiListener.confirmCancel();
-				
-				showingGroup=group_id;
-			},
-			
-			//按下群組名稱
-			clickGroupTitle:function(group_id){
-				document.title='WanderWorld地球漫遊 - '+DataStatus.trip_name;
-				window.history.pushState(null,document.title,'/'+trip_id);
-								
-				if(showingGroup!=group_id){
-					var tmp=[];
-					var tpList=DataStatus.tripPointList;
-					for(var i=0; i<tpList.length;i++){
-						if(tpList[i].group_id==group_id){
-							tmp.push(tpList[i]);
-						}
-					}
-					
-					computeMap(tmp);
-				}
-				if(contentBox.isShow()&&showingGroup==group_id){
-					contentBox.UiControl.showContent(group_id);					
-				}else{
-					contentBox.UiControl.hide();
-					contentBox.reset();
-					PathOnMap.closeInfoWindow();
-				}
-				showingGroup=group_id;
-			}
-		};
+	};
 	
 	return {
 		//初始化
 		init_trippoint_listbar : function (){
+			console.log('init_trippoint_listbar');
 			moduleInstance=this;
 			//裝載旅行名稱及輸入框enter鍵listener
+
+			tripNameInstance.init();		
+			tripDateInstance.init();
+			groupItemManager.init();
+			tripPointItemManager.init();
 			
-			var tripNameDOM=target.find('#trip_name');
-			$(tripNameDiv).appendTo(tripNameDOM);
-			$(tripNameInput).appendTo(tripNameDOM).keydown(UiListener.keydownEditTripName);
-			
-			//旅行時間及輸入框enter鍵listener
-			var tripDateDOM=target.find('#trip_date');
-			$(tripDateDiv).appendTo(tripDateDOM);
-			$(tripDateInput).appendTo(tripDateDOM).keydown(UiListener.keydownEditTripDate);
-			
-			//裝載tripPointList
-			target.find('#trip_point_list').addClass('scroll-pane').append(tripPointList);
-			
-			//裝載create button listener
-			target.find('#group_create_button').click(UiListener.clickAddGroup);
+			listSequenceInstance.setTripPointItemManager( tripPointItemManager );
+		
 			target.find('#return_triplist').click(UiListener.returnTripList);
-			
-			//裝載景點輸入框 自動建議
-			target.find('.place').autocomplete({source:'/place/search'});
-			
-			//初始化日曆
-			target.find('#date_picker').daterangepicker({		
-				presetRanges: [{text: '今天', dateStart: 'today', dateEnd: 'today' }],
-				presets: {
-					specificDate: '選擇一日', 
-					dateRange: '日期區間'
-				},		 
-				posX: null,
-				posY: null,
-				arrows: false, 
-				dateFormat: 'yy/mm/dd',
-				rangeSplitter: '-',
-				rangeStartTitle:'開始日期',
-				rangeEndTitle:'結束日期',
-				doneButtonText:'完成',
-				closeOnSelect:false,
-				onOpen: function(){
-					var input=$('#trip_date input');	
-					if(input.val().split("-")[1])
-						$('.ui-daterangepicker-dateRange').click();			
-					else if(input.val().split("-")[0].replace(/\//g,'-').replace(/\ /,'')!=getdate())
-						$('.ui-daterangepicker-specificDate').click();
-				},
-				datepickerOptions: {
-					changeYear: true,
-					changeMonth: true,
-					prevText:  '上月' ,  
-					nextText:  '下月' , 
-					monthNames: [ '1月' , '2月' , '3月' , '4月' , '5月' , '6月' ,'7月' , '8月' , '9月' , '10月' , '11月' , '12月' ],  
-					monthNamesShort: [ '1月' , '2月' , '3月' , '4月' , '5月' , '6月' , '7月' , '8月' , '9月' , '10月' , '11月' , '12月' ], 
-					dayNames: [ '星期日' , '星期一' , '星期二' , '星期三' , '星期四' , '星期五' , '星期六' ],  
-					dayNamesShort: [ '週日' , '週一' , '週二' , '週三' , '週四' , '週五' , '週六' ], 
-					dayNamesMin: [ '日' , '一' , '二' , '三' , '四' , '五' , '六' ], 
-					//yearSuffix:  '年',
-					showMonthAfterYear:  true 
-				}		
-			});
 			
 			EnvData.isTripPointListLoaded=true;
 		},
 		reset:function(){
-			target.find('.trip_point_group').remove();
+			groupItemManager.reset();
 			showingGroup=null;
 		},
 		//載入旅行資訊
@@ -761,224 +95,49 @@ var TripPointListbarModule = function(obj){
 			if(!EnvData.isTripPointListLoaded){
 				this.init_trippoint_listbar();
 			}
-			this.setTripName(DataStatus.trip_name);
-			this.setTripDate(DataStatus.trip_date);
-			this.setTripStatus(DataStatus.trip_status);	
-			this.UiControl.tripInfo_ownerModeSwitch(DataStatus.isOwner);	
+			tripNameInstance.refresh();
+			tripDateInstance.refresh();
+			//tripStatusInstance.refresh();
+			
+			tripInfo_ownerModeSwitch(DataStatus.isOwner);	
 		},
 		//載入景點清單
-		loadTripPointList:function(){
+		loadTripPointList:function(groupList){
+			console.log('loadTripPointList');
 			if(!EnvData.isTripPointListLoaded){
 				this.init_trippoint_listbar();
 			}
-			this.setGroupList(DataStatus.groupList);		
-			this.setTripPointList(DataStatus.tripPointList);
-			
-			this.UiControl.updateMark();
-			this.UiControl.tripPointList_ownerModeSwitch(DataStatus.isOwner);			
+			groupItemManager.refresh(groupList);
+			tripPointItemManager.refresh();
+						
+			tripPointList_ownerModeSwitch(DataStatus.isOwner);			
 			
 			PathOnMap.updateMark();		
 			PathOnMap.redrawLine();
 			
-			
 			reLayout();		
 		},
-		//設定當前所在 旅行名稱
-		setTripName:function(tripName){
-			var tmp=target.find('#trip_name')
-			tmp.find('a:eq(0)').text(tripName);
-			tmp.find('input').val(tripName);
-		},
-		//設定當前所在 旅行時間
-		setTripDate:function(tripDate){
-			target.find('#trip_date a').text(tripDate);
-		},
-		//設定當前所在 旅行狀態
-		setTripStatus:function(tripStatus){
-			if(!tripStatus&&tripStatus!='')
-				target.find('#trip_status').show().find('a').text(tripStatus);
-			else{
-				target.find('#trip_status').hide();
-			}	
-		},
-		//設定當前所在 遊記列表
-		setGroupList:function(groupList){
-			this.groupList_size=groupList.length;
-			
-			for(i=0;i<groupList.length;i++){
-				this.UiControl.insertGroup(groupList[i].id, groupList[i].title);
-			}
-		},
-		//設定當前所在 景點列表
-		setTripPointList:function(tpList){
-			for(i=0;i<tpList.length;i++){
-				this.UiControl.insertTripPoint(tpList[i].id,tpList[i].group_id,tpList[i].place.name);
-			}
-		},
-		
-		
+	
+				
 		UiControl:{
 			show:function(){
 				$(target).show();
 			},
 			hide:function(){
 				$(target).hide();
-			},
-			
-			//插入群組 (會照順序於畫面中往下新增)
-			insertGroup: function(group_id,title){
-				var str='';
-				str+='<div id="trip_point_group_'+group_id+'" class="trip_point_group">';
-				str+='<div class="trip_point_title"><a>'+title+'</a>'
-					+'<input placeholder="輸入遊記名稱" style="display:none;"></div>';                                            
-				str+='  <div class="trip_point_edit">';
-
-				if(DataStatus.isOwner){                                                     
-					str+='<img src="<%=asset_path('edit2.png')%>" title="編輯"></img>';          
-				}
-				
-				str+='  </div>';	
-				str+='  <ul class="trip_point">';			
-				str+='	</ul>';
-				if(DataStatus.isOwner){  
-					//<img src="<%=asset_path('button_plus_blue.png')%>"></img>	
-					str+='	<div class="add_trip_point">新增景點</div>';
-					str+='	<div class="add_trip_point_space"></div>';
-				}
-				str+='  <div style="clear: both;display: block"></div>';
-				str+='</div>';
-				
-				var t=$(str).appendTo(target.find('.trip_point_all'))
-					.find('.trip_point_edit').click(UiListener.showEditGroupMenu).end()
-					.find('.trip_point_title input').keydown(UiListener.keydownEditGroupName).end()
-					.find('.trip_point_title').click(function(event){
-						contentBox.cancelEditWarning(group_id,function(){
-							UiListener.clickGroupTitle(group_id);
-							var item=$(event.target);
-							moduleInstance.UiControl.unselectTripPoint();
-							moduleInstance.UiControl.selectGroup(item.parents('.trip_point_group'));
-						});
-					}).end();
-				if(DataStatus.isOwner){
-					t.find('.add_trip_point').click(function(event){
-													$(event.target).addClass('hidden').removeClass('add_trip_point')
-													.next().css('position','absolute');
-													UiListener.addPoint(group_id);
-													event.stopPropagation();
-												}).end()
-				}
-			},
-			//加入景點
-			insertTripPoint:function(i,group_id,title){
-				str='';
-				str+='<li value="'+i+'">'
-				str+='<div class="point">';						
-				str+='<img class="point_mark" />';
-				str+='<a class="point_name">'+title+'</a>';
-				str+='<div class="point_edit">';
-				if(DataStatus.isOwner){		
-					str+='<img src="<%=asset_path('settings.png')%>" title="編輯"></img>';
-					
-				}
-				str+='</div>';
-				str+='<div style="clear: both;display: block"></div>';
-				str+='</div>';
-				str+='</li>';
-				
-				var item=$(str).appendTo(target.find('#trip_point_group_'+group_id+' ul'))
-						.find('.point_name').click(function(event){
-							contentBox.cancelEditWarning(group_id,function(){
-								var item=$(event.target);
-								var id=item.parents('li').val();
-								
-								moduleInstance.UiControl.selectTripPoint(item);
-
-								UiListener.clickPointTitle(item.parents('.trip_point_group').attr('id').split('_group_')[1],id);
-								showingGroup=group_id;
-							});
-						}).end();
-				if(DataStatus.isOwner){
-					item.find('.point_edit img').click(UiListener.editPoint);
-				}
-			},
-			//點選景點得視覺效果
-			selectTripPoint:function(item){
-				moduleInstance.UiControl.unselectTripPoint();
-				moduleInstance.UiControl.selectGroup(item.parents('.trip_point_group'));
-				item.parent().addClass('trip_point_selected');
-			},
-			//取消鎖定景點的效果
-			unselectTripPoint:function(){
-				show_id=null
-				target.find('.trip_point_selected').removeClass('trip_point_selected');
-			},
-			selectGroup:function(item){
-				moduleInstance.UiControl.unselectGroup();
-				item.addClass('trip_point_group_selected')
-					.find('.trip_point_title').addClass('trip_point_title_selected');
-			},
-			unselectGroup:function(){
-				target.find('.trip_point_group').removeClass('trip_point_group_selected')
-					.find('.trip_point_title').removeClass('trip_point_title_selected');
-			},
-			enableAddTripPoint:function(group_id){
-				var item=$('#trip_point_group_'+group_id +' .place')
-				if(item.val()!="")
-					return;
-				
-			
-				item=item.parent();
-				
-				item.parents('.trip_point_group').find('.hidden').addClass('add_trip_point').removeClass('hidden').next().css('position','static');
-				item.remove();
-			},
-			updateMark:function(){
-				var groupList=DataStatus.groupList;
-				var plist = target.find('.point_mark');
-				for(var i=0; i<plist.length; i++){
-					var t=plist.eq(i);
-					t.attr('src',getMarkURL(i+1,getGroupColor(t.parents('.trip_point_group').attr('id').split('_group_')[1],groupList)));
-				}
-			},
-			//依照權限切換ui
-			tripInfo_ownerModeSwitch:function(t){
-				if(t){		
-					target.find('#trip_name div').unbind('click').click(function(){UiListener.clickEditTripName();});
-					target.find('#trip_name div').css('cursor','pointer');
-					target.find('#trip_date div').unbind('click').click(function(){UiListener.clickEditTripDate();});
-					target.find('#trip_date div').css('cursor','pointer');
-					//$('#trip_friend_add').show();	
-				}else{		
-					target.find('#trip_name div').unbind('click');
-					target.find('#trip_name div').css('cursor','auto');
-					target.find('#trip_date div').unbind('click');
-					target.find('#trip_date div').css('cursor','auto');
-					//$('#trip_friend_add').hide();
-				}
-			},
-			tripPointList_ownerModeSwitch:function(t){
-				if(t){		
-					target.find('#group_create_button').show();		
-					target.find('.editTool').show();
-					//$('#add').show();		
-				}else{		
-					target.find('#group_create_button').hide();	
-					target.find('.editTool').hide();	
-					//$('#add').hide();
-				}
-				reSortable(t);
-			}
-			
+			}			
 		},
+		
 		//給dateplugin開的口
 		finishEditTripDate:function(){
-			UiListener.keydownEditTripDate();
+			tripDateInstance.finishEditTripDate();
 		},
 		//給newTrip開的口
 		editTripName:function(){
 			UiListener.clickEditTripName();
 			target.find('#trip_name_input').select();
 		},
+		
 		showTravelJournal:function(){
 			UiListener.returnTripList();
 		},
@@ -1006,10 +165,6 @@ var TripPointListbarModule = function(obj){
 		},
 		setShowingGroup:function(group_id){
 			showingGroup=group_id;
-		},
-		reActSortable:function(){
-			reSortable(false);
-			reSortable(DataStatus.isOwner);
 		}
 	};
 };

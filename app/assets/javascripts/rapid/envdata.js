@@ -5,7 +5,7 @@ var EnvData={
 };
 
 var UserData={
-	facebook_id:false,
+	facebook_id:null,
 	user_id:null,
 };
 
@@ -15,7 +15,6 @@ var DataStatus={
 	trip_id:null,
 	trip_name:null,
 	group_id:null,
-	groupList:null,
 	contentList:null,
 	tripPointList:null,
 	tripList:null

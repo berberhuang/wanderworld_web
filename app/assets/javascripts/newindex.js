@@ -6,7 +6,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require facebox
 //= require fblogin
-//= require foundation.js
 //= require_tree ./foundation
 //= require_tree ./browse

@@ -109,7 +109,7 @@ var CSPhotoSelector = (function(module, $) {
 		var i, len;
 		id = id.toString();
 		for (i = 0, len = albums.length; i < len; i += 1) {
-			if (albums[i].id === id) {
+			if (albums[i].id.toString() === id) {
 				return albums[i];
 			}
 		}
@@ -536,8 +536,12 @@ var CSPhotoSelector = (function(module, $) {
 			if (response.status === 'connected') {
 				var accessToken = response.authResponse.accessToken;
 				// Load Facebook photos
-				FB.api('/'+ id +'/albums', function(response) {
+				//FB.api('/'+ id +'/albums', function(response) {
+				FB.api('fql',{q:'SELECT name,object_id FROM album WHERE owner='+id+' order by created DESC limit 500'}, function(response) {
 					if (response.data.length) {
+						for(i=0; i<response.data.length;i++){
+							response.data[i].id=response.data[i].object_id;
+						}
 						setAlbums(response.data);
 						// Build the markup
 						buildMarkup(accessToken);
@@ -589,7 +593,7 @@ var CSPhotoSelector = (function(module, $) {
 		var buildSecondMarkup, buildPhotoMarkup;
 		log("buildPhotoSelector");
 		
-		FB.api('/'+ albumId +'/photos?fields=id,picture,source,height,width&limit=500', function(response) {
+		FB.api('/'+ albumId +'/photos?fields=id,picture,source,height,width&limit=1500', function(response) {
 			if (response.data) {
 				setPhotos(response.data);
 				// Build the markup

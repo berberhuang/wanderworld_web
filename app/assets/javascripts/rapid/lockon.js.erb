@@ -31,9 +31,9 @@ var commentBox;
 function initialize() {
 
 	//載入widget
-	tripPointList=new TripPointListbarModule('#trip_one');
-	
 	tripPointEdit = new TripPointEditModule('#add_new');
+	
+	tripPointList=new TripPointListbarModule('#trip_one');
 	
 	tripListbar = new TripListbarModule('#trip_list');
 	
@@ -41,8 +41,6 @@ function initialize() {
 	contentBox.init();
 	
 	commentBox = new CommentModule('#comment');
-	
-	$('#test div:eq(0)').append('<div>dynamic appended test</div>');
 	
 	//依照解析度調整布局
 	reLayout(); 
@@ -133,8 +131,8 @@ function loadTrip(id,callback){
 			if(callback)
 				callback();
 		},
-		tripPointList:function(){
-			tripPointList.loadTripPointList();
+		tripPointList:function(groupList){
+			tripPointList.loadTripPointList(groupList);
 			//contentBox.UiControl.showBounceButton();
 		}
 	});

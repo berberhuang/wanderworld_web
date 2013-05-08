@@ -15,7 +15,19 @@ $(document).ready(function () {
 	
 	fbphotoSelect = function(id,afterSubmit) {
 		// if no user/friend id is sent, default to current user
-		if (!id) id = 'me';
+		if (!id){
+			if(UserData.facebook_id){
+				id=UserData.facebook_id;
+			}else{ 
+				FB.api('me',function(r){
+					id =r.id
+				
+					// reset and show album selector
+					selector.reset();
+					selector.showAlbumSelector(id);
+				});
+			}
+		}
 		
 		
 		callbackAlbumSelected = function(albumId) {
@@ -68,9 +80,12 @@ $(document).ready(function () {
 			autoDeselection			: true
 		});
 
-		// reset and show album selector
-		selector.reset();
-		selector.showAlbumSelector(id);
+		if(UserData.facebook_id){
+			// reset and show album selector
+			selector.reset();
+			selector.showAlbumSelector(id);
+		}
+
 	}
 	
 	
