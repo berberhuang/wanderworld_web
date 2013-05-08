@@ -22,6 +22,7 @@ module RapidHelper
 			end
 			
 			t.name=ERB::Util.html_escape(t.name)
+			str+='<li>'
 			str+='<div id="trip_list_'+t.id.to_s+'" class="trip_list_info">'
 			
 			str+='<div class="trip_edit" title="編輯"></div>'
@@ -30,6 +31,7 @@ module RapidHelper
 			str+='<div class="trip_list_name">'+t.name+'</div>'
 			str+='</div>'	
 			str+='</div>'
+			str+='</li>'
 		end
 		str+='<li><a>'+iter_date.to_s+'</a></li>'	
 		return str.html_safe
