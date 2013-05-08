@@ -29,8 +29,8 @@
 		<% if @journal_id %>
 			//loadJournal(<%=@trip_id%>,<%=@journal_id%>);
 		<% elsif @trip_id %>
-			//resetEnv();
 			<%
+			@trip_selected=true
 			@trip_info=Trip.find(@trip_id)
 			@author_id=@trip_info.user_id
 			@trip_info.count+=1
@@ -61,15 +61,15 @@
 				DataStatus.trip_date='<%=@trip_info.start_date.to_s.gsub('-','/')%> - <%=@trip_info.end_date.to_s.gsub('-','/')%>';
 			<%end%>
 			
-			DataStatus.groupList=<%=@groups.to_json.html_safe%>;
-			DataStatus.tripPointList=<%=@tripPoints.to_json.html_safe%>;
+			//DataStatus.groupList=<%=@groups.to_json.html_safe%>;
+			//DataStatus.tripPointList=<%=@tripPoints.to_json.html_safe%>;
 
-			for(var i=0; i<DataStatus.tripPointList.length;i++){
-				DataStatus.tripPointList[i].place={longitude:DataStatus.tripPointList[i].longitude,
-												   latitude:DataStatus.tripPointList[i].latitude,
-													name:DataStatus.tripPointList[i].name
-												};
-			}
+			//for(var i=0; i<DataStatus.tripPointList.length;i++){
+			//	DataStatus.tripPointList[i].place={longitude:DataStatus.tripPointList[i].longitude,
+			//									   latitude:DataStatus.tripPointList[i].latitude,
+			//										name:DataStatus.tripPointList[i].name
+			//									};
+			//}
 			
 			<% today=Date.current%>
 			<% if today<@trip_info.start_date %>
@@ -79,10 +79,11 @@
 			<%else%>
 				DataStatus.trip_status='';
 			<%end%>
-			
-			tripPointList.loadTripInfo();
-			tripPointList.loadTripPointList();
-			reLayout();
+			tripPointList.initJavascript();
+	
+	//		tripPointList.loadTripInfo();
+	//		tripPointList.loadTripPointList();
+	//		reLayout();
 			
 	//		loadTrip(<%=@trip_id%>);
 		<% elsif @user_id %>

@@ -37,7 +37,7 @@ module RapidHelper
 
 	def tripName_gen(trip_info)
 		str='<div style="cursor:pointer;">'
-		str+='<a style="color:white;">'+ERB::Util.html_escape(trip_info.name)+'</a>'
+		str+='<a >'+ERB::Util.html_escape(trip_info.name)+'</a>'
 		str+='</div>'
 		return str.html_safe
 	end
@@ -45,9 +45,9 @@ module RapidHelper
 	def tripDate_gen(trip_info)
 		str='<div style="cursor:pointer;">'
 		if trip_info.start_date == trip_info.end_date
-			str+='<a style="color:white;">'+trip_info.start_date.to_s.gsub('-','/')+'</a>'
+			str+='<a>'+trip_info.start_date.to_s.gsub('-','/')+'</a>'
 		else
-			str+='<a style="color:white;">'+trip_info.start_date.to_s.gsub('-','/')+' - '+trip_info.end_date.to_s.gsub('-','/')+'</a>'
+			str+='<a>'+trip_info.start_date.to_s.gsub('-','/')+' - '+trip_info.end_date.to_s.gsub('-','/')+'</a>'
 		end
 		str+='</div>'
 		return str.html_safe
@@ -59,7 +59,7 @@ module RapidHelper
 		groups.each do |g|
 			str+='<div id="trip_point_group_'+g.id.to_s+'" class="trip_point_group" data-id="'+g.id.to_s+'" data-sortid="'+g.sort_id.to_s+'">'
 			str+='<div class="trip_point_title"><a>'+g.title+'</a></div>'
-
+			str+='<div class="trip_point_edit"></div>'
 			str+='<ul class="trip_point">'
 			
 			iter=0
@@ -67,10 +67,11 @@ module RapidHelper
 				iter+=1
 			end
 			while tripPoints[iter]&&tripPoints[iter].group_id==g.id do
-				str+='<li value="'+tripPoints[iter].id.to_s+'">'
+				str+='<li data-id="'+tripPoints[iter].id.to_s+'" data-sort_id="'+tripPoints[iter].sort_id.to_s+'">'
 				str+='<div class="point">'
 				str+='<img class="point_mark" alt="'+seq_num.to_s+'" \>'
 				str+='<a class="point_name">'+tripPoints[iter].name+'</a>'
+				str+='<div class="point_edit"></div>'
 				str+='</div>'
 				str+='</li>'
 				iter=iter+1
@@ -78,7 +79,7 @@ module RapidHelper
 			end
 			
 			str+='</ul>'			
-
+			str+='<div id="add_trip_point_div"></div>'
 			str+='</div>'
 		end
 		return str.html_safe

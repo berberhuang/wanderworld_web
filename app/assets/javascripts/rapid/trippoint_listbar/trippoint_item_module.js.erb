@@ -17,31 +17,33 @@ var TrippointItemModule=function(obj){
 		str+='<div class="point">';						
 		str+='<img class="point_mark" />';
 		str+='<a class="point_name">'+title+'</a>';
-		str+='<div class="point_edit">';
-		if(DataStatus.isOwner){		
-			str+='<img src="/assets/settings.png" title="編輯"></img>';
-			
-		}
-		str+='</div>';
+		str+='<div class="point_edit"></div>';
 		str+='<div style="clear: both;display: block"></div>';
 		str+='</div>';
 		str+='</li>';
 		
-		var item=$(str).appendTo(target.find('#trip_point_group_'+group_id+' ul'))
-				.find('.point_name').click(function(event){
-					contentBox.cancelEditWarning(group_id,function(){
-						var item=$(event.target);
-						var id=item.parents('li').val();
+		var item=$(str).appendTo(target.find('#trip_point_group_'+group_id+' ul'));
+		//		.find('.point_name').click(function(event){
+		//			contentBox.cancelEditWarning(group_id,function(){
+		//				var item=$(event.target);
+		//				var id=item.parents('li').val();
 						
-						selectTripPointEffect(item);
+		//				selectTripPointEffect(item);
 
-						clickPointTitle(item.parents('.trip_point_group').attr('id').split('_group_')[1],id);
-						showingGroup=group_id;
-					});
-				}).end();
+		//				clickPointTitle(item.parents('.trip_point_group').attr('id').split('_group_')[1],id);
+		//				showingGroup=group_id;
+		//			});
+		//		}).end();
+		
 		if(DataStatus.isOwner){
-			item.find('.point_edit img').click(editPoint);
+			ownerModeEnable(item);
 		}
+	};
+	
+	var ownerModeEnable=function(item){
+		var str='<img src="/assets/settings.png" title="編輯"></img>';
+		item.find('.point_edit').append(str)
+			.find('img').click(editPoint);;
 	};
 
 	//按下景點名稱
@@ -227,6 +229,12 @@ var TrippointItemModule=function(obj){
 		init:function(){
 			console.log('裝載tripPointList');
 			var tripPointPane=target.find('#trip_point_list').addClass('scroll-pane')
+		},
+		initJavascript:function(){
+			var a=$('.point');
+			for(var i=0; i<a.length; i++){
+				ownerModeEnable(a.eq(i));
+			}
 		},
 		refresh:function(){
 			setTripPointList(DataStatus.tripPointList);

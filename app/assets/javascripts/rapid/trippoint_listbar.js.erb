@@ -74,7 +74,7 @@ var TripPointListbarModule = function(obj){
 			console.log('init_trippoint_listbar');
 			moduleInstance=this;
 			//裝載旅行名稱及輸入框enter鍵listener
-
+			
 			tripNameInstance.init();		
 			tripDateInstance.init();
 			groupItemManager.init();
@@ -85,6 +85,10 @@ var TripPointListbarModule = function(obj){
 			target.find('#return_triplist').click(UiListener.returnTripList);
 			
 			EnvData.isTripPointListLoaded=true;
+		},
+		initJavascript:function(){
+			groupItemManager.initJavascript();
+			tripPointItemManager.initJavascript();
 		},
 		reset:function(){
 			groupItemManager.reset();
@@ -114,8 +118,8 @@ var TripPointListbarModule = function(obj){
 			
 			PathOnMap.updateMark();		
 			PathOnMap.redrawLine();
+			reLayout();
 			
-			reLayout();		
 		},
 	
 				

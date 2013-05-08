@@ -138,7 +138,7 @@ var TripDateModule = function(obj){
 			
 			initTripDateLabel();
 			initTripDateInput();
-			initDatePickerPlugin();
+			//initDatePickerPlugin();
 		},
 		refresh:function(){
 			setTripDateLabel(DataStatus.trip_date);

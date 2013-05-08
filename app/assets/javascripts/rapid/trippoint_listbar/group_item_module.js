@@ -80,38 +80,40 @@ var GroupItemModule=function(obj){
 		str+='<div id="trip_point_group_'+group_id+'" class="trip_point_group" data-id="'+group_id+'" data-sortid="'+sort_id+'">';
 		str+='<div class="trip_point_title"><a>'+title+'</a>'
 			+'<input placeholder="輸入遊記名稱" style="display:none;"></div>';                                            
-		str+='  <div class="trip_point_edit">';
-		if(DataStatus.isOwner){                                                     
-			str+='<img src="/assets/edit2.png" title="編輯"></img>';          
-		}
-		str+='  </div>';	
-		str+='  <ul class="trip_point">';			
-		str+='	</ul>';
-		if(DataStatus.isOwner){  	
-			str+='	<div class="add_trip_point">新增景點</div>';
-			str+='	<div class="add_trip_point_space"></div>';
-		}
+		str+='  <div class="trip_point_edit"></div>';	
+		str+='  <ul class="trip_point"></ul>';
+		str+='  <div id="add_trip_point_div"></div>';
 		str+='  <div style="clear: both;display: block"></div>';
 		str+='</div>';
 		
-		var t=$(str).appendTo(target.find('.trip_point_all'))
-			.find('.trip_point_edit').click(showEditGroupMenu).end()
-			.find('.trip_point_title input').keydown(keydownEditGroupName).end()
-			.find('.trip_point_title').click(function(event){
-				contentBox.cancelEditWarning(group_id,function(){
-					clickGroupTitle(group_id);
-					var item=$(event.target);
+		var item=$(str).appendTo(target.find('.trip_point_all'));
+		//	.find('.trip_point_edit').click(showEditGroupMenu).end()
+		//	.find('.trip_point_title input').keydown(keydownEditGroupName).end()
+		//	.find('.trip_point_title').click(function(event){
+		//		contentBox.cancelEditWarning(group_id,function(){
+		//			clickGroupTitle(group_id);
+		//			var item=$(event.target);
 					//selectGroupEffect(item.parents('.trip_point_group'));
-				});
-			}).end();
+		//		});
+		//	}).end();
+
 		if(DataStatus.isOwner){
-			var addTripPointButton=t.find('.add_trip_point');
-			setAddPointButton(addTripPointButton,group_id);
+			ownerModeEnable(item);
 		}
 	};
 	
 		
-	
+	var ownerModeEnable=function(item){
+		var str='<img src="/assets/edit2.png" title="編輯"></img>';
+		item.find('#trip_point_edit').append(str);
+		
+		str='	<div class="add_trip_point">新增景點</div>';
+		str+='	<div class="add_trip_point_space"></div>';
+		item.find('#add_trip_point_div').append(str);
+		
+		var addTripPointButton=item.find('.add_trip_point');
+		//setAddPointButton(addTripPointButton,group_id);
+	};
 	
 	//按下群組名稱
 	var clickGroupTitle=function(group_id){
@@ -367,6 +369,12 @@ var GroupItemModule=function(obj){
 		init:function(){
 			target.find('#group_create_button').click(showAddGroupInput);
 		},
+		initJavascript:function(){
+			var a=$('.trip_point_group');
+			for(var i=0; i<a.length; i++){
+				ownerModeEnable(a.eq(i));
+			}
+		},
 		refresh:function(groupList){
 			setGroupList(groupList);
 		},
@@ -378,7 +386,7 @@ var GroupItemModule=function(obj){
 		},
 		ownerModeSwitch:function(permission){
 			if(permission){
-				target.find('#group_create_button').show();	
+				target.find('#group_create_button').show();
 			}else{
 				target.find('#group_create_button').hide();	
 			}
