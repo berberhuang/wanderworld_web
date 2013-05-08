@@ -41,8 +41,8 @@ var GroupItemModule=function(obj){
 		var sort_id = genNewGroupSortId();
 		
 		Data.createGroup(groupName,function(gid){
-			DataStatus.groupList.push({id:gid,title:groupName,sort_id:sort_id});
-			insertGroup(gid,groupName);
+			//DataStatus.groupList.push({id:gid,title:groupName,sort_id:sort_id});
+			insertGroup(gid,sort_id,groupName);
 			reLayout();
 			$('.scroll-pane').animate({scrollTop:$('.trip_point_all').height()}, 'slow');	
 		});
@@ -53,12 +53,12 @@ var GroupItemModule=function(obj){
 	};
 	
 	var genNewGroupSortId=function(){
-		var groupList = DataStatus.groupList;
+		var groupList = $('.trip_point_group');
 		var sort_id = null;
 		
 		for(var i=0; i < groupList.length; i++){
-			if( !sort_id || groupList[i].sort_id > sort_id ){
-				sort_id = groupList[i].sort_id;
+			if( !sort_id || groupList.eq(i).data('sort_id') > sort_id ){
+				sort_id = groupList.eq(i).data('sort_id');
 			}
 		}
 		return sort_id+1;
@@ -91,25 +91,28 @@ var GroupItemModule=function(obj){
 		str+='</div>';
 		
 		var item=$(str).appendTo(target.find('.trip_point_all'));
-		//	.find('.trip_point_edit').click(showEditGroupMenu).end()
-		//	.find('.trip_point_title input').keydown(keydownEditGroupName).end()
-		//	.find('.trip_point_title').click(function(event){
-		//		contentBox.cancelEditWarning(group_id,function(){
-		//			clickGroupTitle(group_id);
-		//			var item=$(event.target);
-					//selectGroupEffect(item.parents('.trip_point_group'));
-		//		});
-		//	}).end();
+		initEvent(item);
 
 		if(DataStatus.isOwner){
 			ownerModeEnable(item);
 		}
 	};
 	
+	var initEvent=function(item){
+		item.find('.trip_point_title input').keydown(keydownEditGroupName).end()
+			.find('.trip_point_title').click(function(event){
+				//contentBox.cancelEditWarning(group_id,function(){
+				//	clickGroupTitle(group_id);
+					//var item=$(event.target);
+					//selectGroupEffect(item.parents('.trip_point_group'));
+				//});
+			}).end();
+	};
+	
 		
 	var ownerModeEnable=function(item){
 		var str='<img src="/assets/edit2.png" title="編輯"></img>';
-		item.find('#trip_point_edit').append(str);
+		item.find('.trip_point_edit').append(str).click(showEditGroupMenu);
 		
 		str='	<div class="add_trip_point">新增景點</div>';
 		str+='	<div class="add_trip_point_space"></div>';
@@ -210,7 +213,7 @@ var GroupItemModule=function(obj){
 	};
 	
 	var clickEditGroupName=function(id){
-		var item = target.find('#trip_point_group_'+id+' .trip_point_title');
+		var item = target.find('.trip_point_group:[data-id='+id+'] .trip_point_title');
 		
 		var a=item.find('a').hide();
 		var input=item.find('input').val(a.text()).show().focus();
@@ -230,15 +233,10 @@ var GroupItemModule=function(obj){
 		if(!Data.deleteGroup(id)){
 			return;
 		}
-		var groupList=DataStatus.groupList;
-		var tpList=DataStatus.tripPointList;
-		DataStatus.groupList=[];
-		for(var i=0; i<groupList.length; i++){
-			if(groupList[i].id!=id){
-				DataStatus.groupList.push(groupList[i]);
-			}
-		}
-		target.find('#trip_point_group_'+id).empty().remove();
+		var groupList=$('.trip_point_group');
+		//var tpList=DataStatus.tripPointList;
+		
+		target.find('.trip_point_group:[data-id='+id+']').empty().remove();
 		tripPointItemManager.updateMark();
 		contentBox.deleteGroup(id);
 		
@@ -261,6 +259,7 @@ var GroupItemModule=function(obj){
 					finishNewGroupName(name);
 				}				
 			}
+			$(event.target).unbind('clickoutside');
 		}
 	};
 	
@@ -312,12 +311,12 @@ var GroupItemModule=function(obj){
 
 	var initGroupNameLabel=function(id){
 		if(!groupLabel[id])
-			groupLabel[id]=target.find('#trip_point_group_'+id+' .trip_point_title a:eq(0)');
+			groupLabel[id]=target.find('.trip_point_group:[data-id='+id+'] .trip_point_title a:eq(0)');
 	};
 	
 	var initGroupNameInput=function(id){
 		if(!groupInput[id])
-			groupInput[id]=target.find('#trip_point_group_'+id+' .trip_point_title input');
+			groupInput[id]=target.find('.trip_point_group:[data-id='+id+'] .trip_point_title input');
 	};
 
 	
@@ -360,7 +359,7 @@ var GroupItemModule=function(obj){
 	};
 	
 	var getNewPointInput=function(group_id){
-		return $('#trip_point_group_'+group_id +' .place');
+		return $('.trip_point_group:[data-id='+group_id +'] .place');
 	};
 	
 	var hideAddPointInput=function(item){
@@ -375,7 +374,9 @@ var GroupItemModule=function(obj){
 		},
 		initJavascript:function(){
 			var a=$('.trip_point_group');
+			
 			for(var i=0; i<a.length; i++){
+				initEvent(a.eq(i));
 				ownerModeEnable(a.eq(i));
 			}
 		},

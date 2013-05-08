@@ -100,9 +100,9 @@ var TrippointItemModule=function(obj){
 	
 	//編輯景點(click)menu
 	var editPoint=function(event){	
-		var item=$(event.target).parents('li');
-		var id=item.val();
-		var group_id=item.parents('.trip_point_group').attr('id').split('_group_')[1];
+		var item=$(event.target).parents('.point');
+		var id=item.data('id');
+		var group_id=item.parents('.trip_point_group').data('id');
 		edit_menu_id=id;
 		var x=item.offset().left;
 		var y=item.offset().top;
@@ -150,9 +150,10 @@ var TrippointItemModule=function(obj){
 	
 	//移除景點
 	var removePoint=function(item_id){
-		$('.trip_point_all li[value='+item_id+']').remove();
+		$('.point[data-id='+item_id+']').remove();
 		//PathOnMap.deleteMark(item_id);
 		Data.deleteTripPoint(item_id);
+		/*
 		var tpList=DataStatus.tripPointList;
 		for(var i=0; i<tpList.length; i++){
 			if(tpList[i].id==item_id){
@@ -168,6 +169,7 @@ var TrippointItemModule=function(obj){
 				DataStatus.tripPointList.push(tpList[i]);
 			}
 		}
+		*/
 		
 		updateMark();
 		
@@ -257,8 +259,8 @@ var TrippointItemModule=function(obj){
 		addNewTripPoint:function(event,group_id,item){
 			enterTripPoint(event,group_id,item);
 		},
-		insertTripPoint:function(i,group_id,title){
-			insertTripPoint(i,group_id,title);
+		insertTripPoint:function(i,group_id,sort_id,title,lat,lng){
+			insertTripPoint(i,group_id,sort_id,title,lat,lng);
 		}
 	};
 };

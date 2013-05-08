@@ -18,10 +18,10 @@ var ListSequenceModule=function(){
 	return {
 		//起動調換順序事件
 		ownerModeSwitch:function(permission){
-			if(permission)
-				enableSort();
-			else
-				disableSort();
+			//if(permission)
+			//	enableSort();
+			//else
+			//	disableSort();
 		},
 		setTripPointItemManager:function(tpim){
 			tripPointSorting.setTripPointItemManager(tpim);

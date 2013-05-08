@@ -281,8 +281,8 @@ var TripPointEditModule = function(item){
 		confirmWindow=null;	
 	}
 	
-	var insertTripPoint=function(id,group_id,title){
-		tripPointItemManager.insertTripPoint(id,group_id,title);
+	var insertTripPoint=function(id,group_id,sort_id,title,lat,lng){
+		tripPointItemManager.insertTripPoint(id,group_id,sort_id,title,lat,lng);
 	};
 	
 	var updateMark=function(){
@@ -378,10 +378,9 @@ var TripPointEditModule = function(item){
 						longitude:tmp_mark.position.lng()
 					}
 					
-					DataStatus.tripPointList.push(tp);
-
+					
 					//tripPointList.UiControl.enableAddTripPoint(group_id);
-					insertTripPoint(tp.id,group_id,name);
+					insertTripPoint(tp.id,group_id,sort_id,name,tmp_mark.position.lat(),tmp_mark.position.lng());
 					updateMark();
 					
 					
@@ -389,7 +388,6 @@ var TripPointEditModule = function(item){
 					PathOnMap.redrawLine();
 					
 					contentBox.insertNewPoint(group_id);
-					//tripPointList.reActSortable();
 					groupItemManager.hideAddPointInput(item);
 					reLayout();
 					
@@ -415,7 +413,7 @@ var TripPointEditModule = function(item){
 						Data.saveTripPoint(-1,place_id,sort_id,group_id,function(tp){
 							tripPointEdit.UiListener.confirmCancel();
 							//PathOnMap.deleteTmpMark();
-							
+							/*
 							tp.place={
 								id:place_id,
 								name:box[0],
@@ -424,10 +422,10 @@ var TripPointEditModule = function(item){
 							}
 							
 							DataStatus.tripPointList.push(tp);
-							
+							*/
 							//tripPointList.UiControl.enableAddTripPoint(group_id);
 							//tripPointList.UiControl.insertTripPoint(tp.id,group_id,box[0]);
-							insertTripPoint(tp.id,group_id,box[0]);
+							insertTripPoint(tp.id,group_id,sort_id,box[0],tmp_mark.position.lat(),tmp_mark.position.lng());
 							updateMark();
 							
 							
