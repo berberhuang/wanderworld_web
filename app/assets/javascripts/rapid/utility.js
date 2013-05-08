@@ -48,10 +48,11 @@ function getMarkURL(number,color){
 //取得群組顏色
 function getGroupColor(group_id){
 	var color=['rgba(63,169,245,1)','rgba(145,62,222,1)','rgba(201,50,50,1)','rgba(255,160,81,1)','rgba(68,201,100,1)'];
-	var groups=DataStatus.groupList;
-
+	//var groups=DataStatus.groupList;
+	var groups=$('.trip_point_group');
+	
 	for(var i=0;i<groups.length;i++){
-		if(groups[i].id==group_id){
+		if(groups.eq(i).data('id')==group_id){
 			i=i%5;
 			break;
 		}

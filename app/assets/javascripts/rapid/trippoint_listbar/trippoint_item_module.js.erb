@@ -221,7 +221,7 @@ var TrippointItemModule=function(obj){
 		var plist = target.find('.point_mark');
 		for(var i=0; i<plist.length; i++){
 			var t=plist.eq(i);
-			t.attr('src',getMarkURL(i+1,getGroupColor(t.parents('.trip_point_group').attr('id').split('_group_')[1],groupList)));
+			t.attr('src',getMarkURL(i+1,getGroupColor(t.parents('.trip_point_group').data('id'))));
 		}
 	};
 	
@@ -235,6 +235,7 @@ var TrippointItemModule=function(obj){
 			for(var i=0; i<a.length; i++){
 				ownerModeEnable(a.eq(i));
 			}
+			updateMark();
 		},
 		refresh:function(){
 			setTripPointList(DataStatus.tripPointList);
