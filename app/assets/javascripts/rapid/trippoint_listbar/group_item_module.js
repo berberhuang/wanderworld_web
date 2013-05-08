@@ -112,7 +112,7 @@ var GroupItemModule=function(obj){
 		item.find('#add_trip_point_div').append(str);
 		
 		var addTripPointButton=item.find('.add_trip_point');
-		//setAddPointButton(addTripPointButton,group_id);
+		setAddPointButton(addTripPointButton,item.data('id'));
 	};
 	
 	//按下群組名稱

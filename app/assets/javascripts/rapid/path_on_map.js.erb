@@ -109,9 +109,8 @@ var PathOnMap=(function(){
 		},
 		//改變順序動作時重新牽線(ui=jquery.event)
 		redrawLine:function(){
-			debug=pointData;
-			var groupList=DataStatus.groupList;
-			var tpList=DataStatus.tripPointList;
+			var groupList=$('.trip_point_group');
+			var tpList=$('.point');
 			var prev_tpid,next_tpid;
 			
 			

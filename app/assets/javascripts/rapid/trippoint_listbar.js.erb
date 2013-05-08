@@ -87,8 +87,16 @@ var TripPointListbarModule = function(obj){
 			EnvData.isTripPointListLoaded=true;
 		},
 		initJavascript:function(){
+			if(!EnvData.isTripPointListLoaded){
+				this.init_trippoint_listbar();
+			}
 			groupItemManager.initJavascript();
 			tripPointItemManager.initJavascript();
+			
+			tripInfo_ownerModeSwitch(DataStatus.isOwner);
+			
+			//PathOnMap.updateMark();		
+			//PathOnMap.redrawLine();
 		},
 		reset:function(){
 			groupItemManager.reset();

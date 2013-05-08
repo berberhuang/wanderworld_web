@@ -8,6 +8,8 @@
 //= require facebox
 //= require fblogin
 //= require spin
+//= require foundation
 //= require jquery.movingboxes
 //= require_tree ./rapid
 //= require_tree ./jquery_ui
+//= require_tree ./foundation
