@@ -46,10 +46,7 @@
         display: inline;
 }
 .trip_point_group:hover  .add_trip_point {
-        display: inline;
-}
-.trip_point_group:hover  .add_trip_point_space {
-        display: none;
+        visibility: visible;
 }
 
 .trip_point_group_selected{
@@ -85,7 +82,7 @@
 	width: 100%;
 }
 .add_trip_point{
-	display:none;
+	visibility:hidden;
 	cursor:pointer;
 	float:left;
 	width:100%;
@@ -96,11 +93,7 @@
 	border-width:2px;
 	border-color:rgba(255,255,255,0.8);
 }
-.add_trip_point_space{
-	float:left
-	width:135px;
-	height:24px;
-}
+
 .add_trip_point img {
 	width: 17px;
 }
@@ -212,7 +205,9 @@
 	float: left;
 }
 
-
+.hidden {
+	visibility:hidden;
+}
 
 
 

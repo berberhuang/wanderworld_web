@@ -91,21 +91,21 @@ var GroupItemModule=function(obj){
 		str+='</div>';
 		
 		var item=$(str).appendTo(target.find('.trip_point_all'));
-		initEvent(item);
+		initEvent(item,group_id);
 
 		if(DataStatus.isOwner){
 			ownerModeEnable(item);
 		}
 	};
 	
-	var initEvent=function(item){
+	var initEvent=function(item,group_id){
 		item.find('.trip_point_title input').keydown(keydownEditGroupName).end()
 			.find('.trip_point_title').click(function(event){
-				//contentBox.cancelEditWarning(group_id,function(){
-				//	clickGroupTitle(group_id);
-					//var item=$(event.target);
-					//selectGroupEffect(item.parents('.trip_point_group'));
-				//});
+				contentBox.cancelEditWarning(group_id,function(){
+					clickGroupTitle(group_id);
+					var item=$(event.target);
+					selectGroupEffect(item.parents('.trip_point_group'));
+				});
 			}).end();
 	};
 	
@@ -115,7 +115,6 @@ var GroupItemModule=function(obj){
 		item.find('.trip_point_edit').append(str).click(showEditGroupMenu);
 		
 		str='<div class="add_trip_point text-center"><i class="foundicon-plus"></i><i class="foundicon-location"> </i>新增景點</div>';
-		str+='<div class="add_trip_point_space"></div>';
 		item.find('#add_trip_point_div').append(str);
 		
 		var addTripPointButton=item.find('.add_trip_point');
@@ -128,15 +127,8 @@ var GroupItemModule=function(obj){
 		window.history.pushState(null,document.title,'/'+DataStatus.trip_id);
 						
 		if(showingGroup!=group_id){
-			var tmp=[];
-			var tpList=DataStatus.tripPointList;
-			for(var i=0; i<tpList.length;i++){
-				if(tpList[i].group_id==group_id){
-					tmp.push(tpList[i]);
-				}
-			}
-			
-			computeMap(tmp);
+			var tpList=$('.trip_point_group:[data-id='+group_id+'] .point');			
+			computeMap(tpList);
 		}
 		if(contentBox.isShow()&&showingGroup==group_id){
 			contentBox.UiControl.showContent(group_id);					
@@ -368,6 +360,10 @@ var GroupItemModule=function(obj){
 		item.parent().remove();
 	};
 	
+	var getSelectedGroupId=function(){
+		return $('.trip_point_group_selected').data(id);
+	};
+	
 	return {
 		init:function(){
 			target.find('#group_create_button').click(showAddGroupInput);
@@ -388,6 +384,12 @@ var GroupItemModule=function(obj){
 		},
 		setTripPointItemManager:function(tpim){
 			tripPointItemManager=tpim;
+		},
+		selectGroup:function(id){
+			selectGroupEffect($('.trip_point_group:[data-id='+id+']'));
+		},
+		getSelectGroupId:function(){
+			return getSelectGroupId();
 		},
 		ownerModeSwitch:function(permission){
 			if(permission){

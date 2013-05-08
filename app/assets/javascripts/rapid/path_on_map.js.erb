@@ -9,22 +9,23 @@ var PathOnMap=(function(){
 		if(infowindow!=null){
 			infowindow.close();
 		}
+
 		infowindow=new google.maps.InfoWindow({
-			content: '<div style="font-weight:bold;font-size:16px">'+pointData.eq(item_id).find('.point_name').text()+'</div>'
+			content: '<div style="font-weight:bold;font-size:16px">'+pointData[item_id].title+'</div>'
 					+'<div style="height:20px"></div>'
-					+'<a class="button round medium right" href="javascript:PathOnMap.clickReadJournal('+pointData.eq(item_id).parents('.trip_point_group').data('id')+','+item_id+')">'
+					+'<a class="button round medium right" href="javascript:PathOnMap.clickReadJournal('+pointData[item_id].group_id+','+item_id+')">'
 					+'閱讀遊記'
 					+'</a>'
 		});
 		infowindow.open(map,pointData[item_id]);
 		google.maps.event.addListener(infowindow,'closeclick',function(){
-			tripPointList.UiControl.unselectTripPoint();
+			//tripPointList.unselectTripPoint();
 		});
 	};
 	
 	return {
 		//建立標記
-		createMark:function(title,item_id,latlng,canvasURL){
+		createMark:function(title,item_id,group_id,latlng,canvasURL){
 			var item=new google.maps.Marker({
 				position: latlng,
 				map: map,
@@ -32,10 +33,13 @@ var PathOnMap=(function(){
 				icon: canvasURL,
 				//animation: google.maps.Animation.DROP,
 				draggable: false,
-				item_id:item_id
+				item_id:item_id,
+				group_id:group_id
 			});
 			google.maps.event.addListener(item, 'click', 
 				function(){
+					tripPointList.selectTripPoint(item_id);
+					tripPointList.selectGroup(group_id);
 					showMarkDetail(item_id);
 				}
 			);
@@ -69,9 +73,8 @@ var PathOnMap=(function(){
 				for(var tp_i=0; tp_i<tpList.length; tp_i++){
 					var id=tpList.eq(tp_i).data('id');
 					var latlng=new google.maps.LatLng(tpList.eq(tp_i).data('latitude'), tpList.eq(tp_i).data('longitude'), false);									
-					PathOnMap.createMark(tpList.eq(tp_i).find('.point_name').text(),id,latlng,getMarkURL(i++,mark_color));
+					PathOnMap.createMark(tpList.eq(tp_i).find('.point_name').text(),id,group_id,latlng,getMarkURL(i++,mark_color));
 					pointData[id].setDraggable(false);
-					pointData[id].group_id=group_id;				
 				}
 				
 			}

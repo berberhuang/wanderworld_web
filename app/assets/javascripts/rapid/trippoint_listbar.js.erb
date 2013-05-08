@@ -15,8 +15,8 @@ var TripPointListbarModule = function(obj){
 	var tripNameInstance= new TripNameModule(target);
 	var tripDateInstance= new TripDateModule(target);
 	
-	var groupItemManager = new GroupItemModule(target);
-	var tripPointItemManager = new TrippointItemModule(target);
+	var groupItemManager;
+	var tripPointItemManager;
 	
 	var listSequenceInstance = new ListSequenceModule();
 		
@@ -25,8 +25,7 @@ var TripPointListbarModule = function(obj){
 	var moduleInstance;
 	
 
-	groupItemManager.setTripPointItemManager(tripPointItemManager);
-	tripPointItemManager.setGroupItemManager(groupItemManager);
+	
 	
 	tripPointEdit.setTripPointItemManager(tripPointItemManager);
 	tripPointEdit.setGroupItemManager(groupItemManager);
@@ -74,6 +73,9 @@ var TripPointListbarModule = function(obj){
 			moduleInstance=this;
 			//裝載旅行名稱及輸入框enter鍵listener
 			
+			groupItemManager.setTripPointItemManager(tripPointItemManager);
+			tripPointItemManager.setGroupItemManager(groupItemManager);
+			
 			tripNameInstance.init();		
 			tripDateInstance.init();
 			groupItemManager.init();
@@ -97,6 +99,12 @@ var TripPointListbarModule = function(obj){
 			
 			PathOnMap.updateMark();		
 			PathOnMap.redrawLine();
+		},
+		setGroupItemManager:function(gim){
+			groupItemManager=gim;
+		},
+		setTripPointItemManager:function(tpm){
+			tripPointItemManager=tpm;
 		},
 		reset:function(){
 			groupItemManager.reset();
@@ -170,6 +178,12 @@ var TripPointListbarModule = function(obj){
 			this.scrollToListItem(target.find('#trip_point_group_'+group_id+' li:first').val());
 			
 			showingGroup=group_id;
+		},
+		selectTripPoint:function(id){
+			tripPointItemManager.selectTripPoint(id);
+		},
+		selectGroup:function(id){
+			groupItemManager.selectGroup(id);
 		},
 		scrollToListItem:function(tp_id){
 			var item=$('.list li[value='+tp_id+']');

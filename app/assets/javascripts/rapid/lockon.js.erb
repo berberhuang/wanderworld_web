@@ -22,6 +22,8 @@ var back=true;
 var keyboard_s=false;
 
 var tripPointList;
+var groupItemManager;
+var tripPointItemManager;
 var tripPointEdit;
 var tripListbar;
 var contentBox;
@@ -33,9 +35,16 @@ function initialize() {
 	//載入widget
 	tripPointEdit = new TripPointEditModule('#add_new');
 	
-	tripPointList=new TripPointListbarModule('#trip_one');
+	var tripPointListDOM=$('#trip_one');
+	tripPointList=new TripPointListbarModule(tripPointListDOM);
+	groupItemManager = new GroupItemModule(tripPointListDOM);
+	tripPointItemManager = new TrippointItemModule(tripPointListDOM);
 	
-	tripListbar = new TripListbarModule('#trip_list');
+	tripPointList.setGroupItemManager(groupItemManager);
+	tripPointList.setTripPointItemManager(tripPointItemManager);
+	
+	
+	tripListbar = new TripListbarModule('#trip_list');	
 	
 	contentBox = new ContentBoxModule('#slidesContainer');
 	contentBox.init();

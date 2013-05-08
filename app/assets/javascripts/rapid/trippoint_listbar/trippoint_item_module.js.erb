@@ -49,11 +49,12 @@ var TrippointItemModule=function(obj){
 	var initEvent=function(item,group_id){
 		item.find('.point_name').click(function(event){
 			contentBox.cancelEditWarning(group_id,function(){
-				var item=$(event.target);
-				var id=item.parents('li').val();
-						
+				var item=$(event.target).parents('.point');
+				var id=item.data('id');
+					
 				selectTripPointEffect(item);
-
+				tripPointList.selectGroup(group_id);
+				
 				clickPointTitle(item.parents('.trip_point_group').data('id'),id);
 				//showingGroup=group_id;
 			});
@@ -69,8 +70,6 @@ var TrippointItemModule=function(obj){
 	//按下景點名稱
 	var clickPointTitle=function(group_id,id){
 		//計算遊記內景點mark地圖縮放大小
-		console.log('abd');
-
 		//if(showingGroup!=group_id){
 			var tmp=[];
 			var tpList=$('.trip_point_group:[data-id='+group_id+'] .point');
@@ -99,7 +98,7 @@ var TrippointItemModule=function(obj){
 	var selectTripPointEffect=function(item){
 		unselectTripPointEffect();
 		//moduleInstance.UiControl.selectGroup(item.parents('.trip_point_group'));
-		item.parent().addClass('trip_point_selected');
+		item.addClass('trip_point_selected');
 	};
 	//取消鎖定景點的效果
 	var unselectTripPointEffect=function(){
@@ -252,7 +251,7 @@ var TrippointItemModule=function(obj){
 			var a=$('.point');
 			for(var i=0; i<a.length; i++){
 				var t=a.eq(i);
-				initEvent(t);
+				initEvent(t,t.data('id'));
 				ownerModeEnable(t);
 			}
 			updateMark();
@@ -266,6 +265,9 @@ var TrippointItemModule=function(obj){
 		},
 		setGroupItemManager:function(gim){
 			groupItemManager=gim;
+		},
+		selectTripPoint:function(id){
+			selectTripPointEffect($('.point:[data-id='+id+']'));
 		},
 		addNewTripPoint:function(event,group_id,item){
 			enterTripPoint(event,group_id,item);
