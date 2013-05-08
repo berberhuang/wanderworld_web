@@ -124,12 +124,12 @@ var Data=(function(){
 						trip_points[i].place=places[i];
 					}
 					
-					DataStatus.tripPointList=trip_points;
+					//DataStatus.tripPointList=trip_points;
 					
 					$('#load_point').hide();	
 					
 					if(callback.tripPointList){
-						callback.tripPointList(groups);
+						callback.tripPointList(groups,trip_points);
 					}
 				});						
 			});			

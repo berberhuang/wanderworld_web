@@ -82,7 +82,8 @@ var TripPointListbarModule = function(obj){
 			
 			listSequenceInstance.setTripPointItemManager( tripPointItemManager );
 		
-			target.find('#return_triplist').click(UiListener.returnTripList);
+			target.find('#return_triplist').click(UiListener.returnTripList).attr('href','#');
+			
 			
 			EnvData.isTripPointListLoaded=true;
 		},
@@ -95,8 +96,8 @@ var TripPointListbarModule = function(obj){
 			
 			tripInfo_ownerModeSwitch(DataStatus.isOwner);
 			
-			//PathOnMap.updateMark();		
-			//PathOnMap.redrawLine();
+			PathOnMap.updateMark();		
+			PathOnMap.redrawLine();
 		},
 		reset:function(){
 			groupItemManager.reset();
@@ -114,13 +115,13 @@ var TripPointListbarModule = function(obj){
 			tripInfo_ownerModeSwitch(DataStatus.isOwner);	
 		},
 		//載入景點清單
-		loadTripPointList:function(groupList){
+		loadTripPointList:function(groupList,pointList){
 			console.log('loadTripPointList');
 			if(!EnvData.isTripPointListLoaded){
 				this.init_trippoint_listbar();
 			}
 			groupItemManager.refresh(groupList);
-			tripPointItemManager.refresh();
+			tripPointItemManager.refresh(pointList);
 						
 			tripPointList_ownerModeSwitch(DataStatus.isOwner);			
 			

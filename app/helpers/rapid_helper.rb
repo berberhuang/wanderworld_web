@@ -69,8 +69,15 @@ module RapidHelper
 				iter+=1
 			end
 			while tripPoints[iter]&&tripPoints[iter].group_id==g.id do
-				str+='<li data-id="'+tripPoints[iter].id.to_s+'" data-sort_id="'+tripPoints[iter].sort_id.to_s+'">'
-				str+='<div class="point">'
+				str+='<li>'
+				
+				str+='<div class="point"' 
+				str+=' data-id="'+tripPoints[iter].id.to_s+'"'
+				str+=' data-sort_id="'+tripPoints[iter].sort_id.to_s+'"'
+				str+=' data-latitude="'+tripPoints[iter].latitude.to_s+'"'
+				str+=' data-longitude="'+tripPoints[iter].longitude.to_s+'"'
+				str+='>'
+				
 				str+='<img class="point_mark" alt="'+seq_num.to_s+'" \>'
 				str+='<a class="point_name">'+tripPoints[iter].name+'</a>'
 				str+='<div class="point_edit"></div>'

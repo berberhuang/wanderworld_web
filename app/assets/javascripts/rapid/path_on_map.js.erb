@@ -56,22 +56,24 @@ var PathOnMap=(function(){
 			}
 			pointData=[];
 			
-			var tpList = DataStatus.tripPointList;
-			var groupList = DataStatus.groupList;
+			
+			var groupList = $('.trip_point_group');
 			var i=1;
-			for(var g_i in groupList){
-				var group_id=groupList[g_i].id;
-				var mark_color=getGroupColor(groupList[g_i].id,groupList);
+			
+			
+			for(var g_i=0; g_i<groupList.length; g_i++){
+				var group_id=groupList.eq(g_i).data('id');
+				var mark_color=getGroupColor(group_id,groupList);
 				
-				for(var tp_i in tpList){
-					if(tpList[tp_i].group_id==group_id){
-						var id=tpList[tp_i].id;
-						var latlng=new google.maps.LatLng(tpList[tp_i].place.latitude, tpList[tp_i].place.longitude, false);									
-						PathOnMap.createMark(tpList[tp_i].place.name,id,latlng,getMarkURL(i++,mark_color));
-						pointData[id].setDraggable(false);
-						pointData[id].group_id=group_id;
-					}
+				var tpList = groupList.eq(g_i).find('.point');
+				for(var tp_i=0; tp_i<tpList.length; tp_i++){
+					var id=tpList.eq(tp_i).data('id');
+					var latlng=new google.maps.LatLng(tpList.eq(tp_i).data('latitude'), tpList.eq(tp_i).data('longitude'), false);									
+					PathOnMap.createMark(tpList.eq(tp_i).find('.point_name').text(),id,latlng,getMarkURL(i++,mark_color));
+					pointData[id].setDraggable(false);
+					pointData[id].group_id=group_id;				
 				}
+				
 			}
 		},
 		//建立未確認的暫時mark
@@ -110,7 +112,6 @@ var PathOnMap=(function(){
 		//改變順序動作時重新牽線(ui=jquery.event)
 		redrawLine:function(){
 			var groupList=$('.trip_point_group');
-			var tpList=$('.point');
 			var prev_tpid,next_tpid;
 			
 			
@@ -123,21 +124,21 @@ var PathOnMap=(function(){
 			
 			
 			for(var i=0; i<groupList.length;i++){
-				var gid=groupList[i].id;
+				var gid=groupList.eq(i).data('id');
+				
+				var tpList=groupList.eq(i).find('.point');
 				for(var j=0; j<tpList.length; j++){
-					if(tpList[j].group_id==gid){
-						prev_tpid=next_tpid;
-						next_tpid=tpList[j].id;
-						if(prev_tpid){
-							var path=pointData[prev_tpid].polyline=new google.maps.Polyline({
-								geodesic:true,
-								map:map,
-								strokeWeight:3,
-								strokeColor:getGroupColor(pointData[prev_tpid].group_id),
-								path:[pointData[prev_tpid].getPosition(),pointData[next_tpid].getPosition()]
-							});	
-							path.setMap(map);
-						}
+					prev_tpid=next_tpid;
+					next_tpid=tpList.eq(j).data('id');
+					if(prev_tpid){
+						var path=pointData[prev_tpid].polyline=new google.maps.Polyline({
+							geodesic:true,
+							map:map,
+							strokeWeight:3,
+							strokeColor:getGroupColor(pointData[prev_tpid].group_id),
+							path:[pointData[prev_tpid].getPosition(),pointData[next_tpid].getPosition()]
+						});	
+						path.setMap(map);
 					}
 				}
 			}

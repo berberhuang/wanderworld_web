@@ -77,7 +77,11 @@ var GroupItemModule=function(obj){
 	var insertGroup=function(group_id,sort_id,title){
 		
 		var str='';
-		str+='<div id="trip_point_group_'+group_id+'" class="trip_point_group" data-id="'+group_id+'" data-sortid="'+sort_id+'">';
+		str+='<div id="trip_point_group_'+group_id+'" class="trip_point_group"';
+		str+=' data-id="'+group_id+'"';
+		str+=' data-sortid="'+sort_id+'"';
+		str+='>';
+		
 		str+='<div class="trip_point_title"><a>'+title+'</a>'
 			+'<input placeholder="輸入遊記名稱" style="display:none;"></div>';                                            
 		str+='  <div class="trip_point_edit"></div>';	

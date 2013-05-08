@@ -6,15 +6,22 @@ var TrippointItemModule=function(obj){
 	//設定當前所在 景點列表
 	var setTripPointList=function(tpList){
 		for(i=0;i<tpList.length;i++){
-			insertTripPoint(tpList[i].id,tpList[i].group_id,tpList[i].place.name);
+			insertTripPoint(tpList[i].id,tpList[i].group_id,tpList[i].sort_id,tpList[i].place.name,tpList[i].place.latitude, tpList[i].place.longitude);
 		}
 	};
 	
 	//加入景點
-	var insertTripPoint=function(i,group_id,title){
+	var insertTripPoint=function(i,group_id, sort_id,title, lat, lng){
 		str='';
-		str+='<li value="'+i+'">'
-		str+='<div class="point">';						
+		str+='<li>'
+		
+		str+='<div class="point"';
+		str+=' data-id="'+i+'"';
+		str+=' data-sort_id"'+sort_id+'"';
+		str+=' data-latitude="'+lat+'"';
+		str+=' data-longitude="'+lng+'"';
+		str+='>';						
+		
 		str+='<img class="point_mark" />';
 		str+='<a class="point_name">'+title+'</a>';
 		str+='<div class="point_edit"></div>';
@@ -237,8 +244,8 @@ var TrippointItemModule=function(obj){
 			}
 			updateMark();
 		},
-		refresh:function(){
-			setTripPointList(DataStatus.tripPointList);
+		refresh:function(pointList){
+			setTripPointList(pointList);
 			updateMark();
 		},
 		updateMark:function(){
