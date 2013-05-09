@@ -316,7 +316,7 @@ var GroupItemModule=function(obj){
 	var setAddPointButton=function(item,group_id){
 		var addFunc=genFunctionBox(showAddPointInput,group_id)
 		item.click(function(event){
-			$(event.target).addClass('hidden').removeClass('add_trip_point')
+			$(event.target).parents('.trip_point_group').find('.add_trip_point').addClass('hidden').removeClass('add_trip_point')
 			.next().css('position','absolute');
 			addFunc();
 			reLayout();
