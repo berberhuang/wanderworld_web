@@ -398,20 +398,28 @@
     </div>
 </div>
  
-<div class="row" style="text-align:center">
+<div class="row">
+	<div class="two columns centered">
+	<ul class="pagination">
 	<% if @offset.to_i<=0 %>
-		prev
+		<li class="arrow unavailable">&laquo;上一頁</li>
 	<%else%>
-		<a href="/newindex/browse?p=<%=@offset.to_i-20%>&type=<%=@type%>">prev</a>
+		<li class="arrow"><a href="/newindex/browse?p=<%=@offset.to_i-20%>&type=<%=@type%>">&laquo;上一頁</a></li>
 	<%end%>
-	
-	&nbsp|&nbsp
-	
+	<!--li class="current"><a href="">1</a></li>
+	<li><a href="">2</a></li>
+  <li><a href="">3</a></li>
+  <li><a href="">4</a></li>
+  <li class="unavailable"><a href="">&hellip;</a></li>
+  <li><a href="">12</a></li>
+  <li><a href="">13</a></li-->
 	<%if @groups.size==20 %>
-		<a href="/newindex/browse?p=<%=@offset.to_i+20%>&type=<%=@type%>">next</a>
+		<li class="arrow" style="float:right;"><a href="/newindex/browse?p=<%=@offset.to_i+20%>&type=<%=@type%>">下一頁&raquo;</a></li>
 	<%else%>
-		next
+		 <li class="arrow unavailable" style="float:right;">下一頁&raquo;</li>
 	<%end%>
+	</ul>
+	</div>
 </div>
 
   <!-- Footer -->
