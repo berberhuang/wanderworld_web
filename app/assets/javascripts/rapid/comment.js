@@ -100,7 +100,7 @@ var CommentModule = function(item){
 		}
 	};
 	
-	//target.hide();
+	target.hide();
 	//new comment entity function
 	target.find('.comment_input .submit').click(function(e){
 		var button=$(e.target);
@@ -153,7 +153,6 @@ var CommentModule = function(item){
 	
 	return {
 		loadComments:function(group_id){
-			return ;
 			target.hide();
 			commentScope.empty();
 			commentModel=[];

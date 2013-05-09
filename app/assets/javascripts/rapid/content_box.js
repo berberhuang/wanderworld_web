@@ -2,7 +2,6 @@
 var ContentBoxModule = function(item){
 	var target=$(item);
 	var contentPanel=target.find('#postContent');
-	var editPanel=target.find('#editPostDiv');
 	var controlButton = target.find('.controlButton');
 	var editTool = target.find('.editTool');
 	var journalSwitchToggle = $('#bounce');	
@@ -17,7 +16,6 @@ var ContentBoxModule = function(item){
 	var show_id;
 	var show_group_id;
 	
-	var bounce_s=false;
 	
 	var moduleInstance;
 
@@ -32,16 +30,20 @@ var ContentBoxModule = function(item){
 		
 	};
 	
+	var isBounce=function(){
+		if(target.css('visibility')=='visible'){
+			return true;
+		}
+		return false;
+	};
+	
 	//展開遊記	
-	var bounce=function(){
-		bounce_s=true;		
+	var bounce=function(){		
 		target.css('visibility','visible');			
 	};
 	//收合遊記
-	var collapse=function(stopShow){
-		bounce_s=false;											
+	var collapse=function(stopShow){											
 		target.css('visibility','hidden');
-		//PathOnMap.showMarkInfo(show_id);
 	};
 
 	var hideJournalSwitchToggle=function(){
@@ -51,11 +53,27 @@ var ContentBoxModule = function(item){
 	var showJournalSwitchToggle=function(){
 		journalSwitchToggle.css('visibility','visible');
 	};
+	
+	var hideControlButton=function(){
+		controlButton.css('visibility','hidden');
+	};
+	
+	var showControlButton=function(){
+		controlButton.css('visibility','visible');
+	};
+	
+	var hideContentPanel=function(){
+		contentPanel.css('visibility','hidden');
+	};
+	
+	var showContentPanel=function(){
+		contentPanel.css('visibility','visible');
+	};
 
 	var UiListener={
 
 		clickJournalSwitchToggle:function(){
-			if(bounce_s){
+			if(isBounce()){
 				collapse();
 			}else{
 				bounce();
@@ -67,7 +85,7 @@ var ContentBoxModule = function(item){
 		clickEditPost:function(group_id,id){
 			edit_id=id;
 			edit_group_id=group_id;
-			controlButton.show();
+			showControlButton();
 			if(DataStatus.isPublic[group_id]){
 				releasePost.hide();
 			}else{
@@ -160,9 +178,8 @@ var ContentBoxModule = function(item){
 			//showContainer();
 		},
 		clickCancelEdit:function(){
-			editPanel.hide();
-			controlButton.hide();
-			contentPanel.show();
+			hideControlButton();
+			showContentPanel();
 			
 			var showingGroupItem=groupItemManager.getSelectedGroupItem();
 			var tpList=showingGroupItem.find('.point');
@@ -314,7 +331,7 @@ var ContentBoxModule = function(item){
 				hideJournalSwitchToggle();
 			},
 			hideContent:function(){
-				if(bounce_s)
+				if(isBounce())
 					collapse();
 			},
 			showJournalSwitchToggle:function(){
@@ -352,8 +369,7 @@ var ContentBoxModule = function(item){
 				show_group_id=group_id;
 				
 				bounce();
-				editPanel.hide();
-				controlButton.hide();
+				hideControlButton();
 				editTool.unbind('click').click(function(){UiListener.clickEditPost(group_id,id);});
 				
 				$('#foo').show();
@@ -361,15 +377,16 @@ var ContentBoxModule = function(item){
 				console.log("group_id:"+group_id);
 				Data.loadPost(group_id,function(result){
 					$('#foo').hide();
-					contentPanel.show();
+					showContentPanel();
 					
 					
 					var g_item=$('.trip_point_group:[data-id='+group_id+']');
 					var tpList=g_item.find('.point');
+					var journal_name=g_item.find('.journal_title a').text();					
 					var str='';
-										
-					str+='<div class="postTitle">'+g_item.find('.journal_name a').text()+'</div>';
-						
+					
+					$('#journal_name h3').text(journal_name);
+					
 					for(var i=0; i<tpList.length;i++){
 						str+='<div class="tp_box" id="tp_box_'+tpList.eq(i).data('id')+'">';
 						str+=DataStatus.contentList[tpList.eq(i).data('id')];

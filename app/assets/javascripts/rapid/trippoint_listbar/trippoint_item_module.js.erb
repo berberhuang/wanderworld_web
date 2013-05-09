@@ -74,13 +74,14 @@ var TrippointItemModule=function(obj){
 			var tpList=$('.trip_point_group:[data-id='+group_id+'] .point');
 			computeMap(tpList);
 		}
-
+		
+		contentBox.UiControl.showContent(group_id,id);
+		
+/*
 		if(contentBox.isShow()&&showingGroup==group_id){
-			console.log('a');
 			PathOnMap.showMarkInfo(id);
 			contentBox.UiControl.showContent(group_id,id);
 		}else{
-			console.log('b');
 			contentBox.UiControl.hideContent();
 			contentBox.reset();
 								
@@ -89,7 +90,7 @@ var TrippointItemModule=function(obj){
 			
 			PathOnMap.showMarkInfo(id);
 		}
-		
+*/		
 		tripPointEdit.UiListener.confirmCancel();
 	};
 	

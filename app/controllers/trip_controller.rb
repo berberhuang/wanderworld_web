@@ -410,6 +410,14 @@ class TripController < ApplicationController
 				@tpoint.user_id=session[:user_id]
 				@tpoint.trip_id=params[:id]
 				@tpoint.save
+				
+				@micropost=Micropost.new
+				@micropost.user_id=@tpoint.user_id
+				@micropost.trip_id=@tpoint.trip_id
+				@micropost.trip_point_id=@tpoint.id
+				@micropost.article=''
+				@micropost.save
+				
 				render :json=>@tpoint
 			else
 				render :json=>nil
