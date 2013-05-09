@@ -1,5 +1,6 @@
 var zoom_w,cen_x,cen_y;
 var map_flag=false;
+
 function computeMap(tripPointList)
 {
 	//找最邊邊的點
@@ -153,3 +154,4 @@ function PixelToLat(pixelY,zoom) {
 	var siny = (z- 1) / (z + 1);
 	return Math.asin(siny) * 180 / Math.PI;
 }
+

@@ -171,6 +171,14 @@
 
 				<!--↓社交元件↓-->
 				<div class="large-5 columns" id="social_toggle">
+					<a class="tiny permission button dropdown" href="#">
+						<div id="notpublic" style="display:none">草稿</div>
+						<div id="public" style="display:none">已發佈</div>
+					</a>
+					<div class="permission_menu">
+						<div class="private_button">草稿</div>
+						<div class="public_button">發佈</div>
+					</div>
 					<div class="button tiny radius" >
 						<i class="foundicon-social-facebook"></i>
 					</div>
@@ -183,26 +191,7 @@
 			<div class="row" id="journal_cc_2nd_stack">
 				<!--遊記編輯工具-->
 				<div class="large-8 columns" >
-					<div>
-						<ul class="button-group radius">
-							<li><a class="button secondary tiny"><i class="foundicon-left-arrow"></i></a></li>
-							<li><a class="button secondary tiny"><i class="foundicon-right-arrow"></i></a></li>
-							<li><a class="button secondary tiny"><i class="foundicon-photo"></i></a></li>
-							<li><a class="button secondary tiny"><i class="foundicon-minus"></i></a></li>
-							<li><a class="button secondary tiny">Link</a></li>
-							<li><a class="button secondary tiny">Unlink</a></li>
-						</ul>
-						<ul class="button-group radius">
-							<li><a class="button secondary tiny">B</a></li>
-							<li><a class="button secondary tiny">I</a></li>
-							<li><a class="button secondary tiny">U</a></li>
-							<li><a class="button secondary tiny"><i class="foundicon-remove"></i></a></li>
-							<li><a class="button secondary tiny dropdown">顏色</a></li>
-							<li><a class="button secondary tiny dropdown">字體</a></li>
-							<li><a class="button secondary tiny dropdown">Size</a></li>
-							
-						</ul>
-					</div>
+
 				</div>
 				<!--遊記狀態/權限區塊-->
 				<div class="large-4 columns">
@@ -221,17 +210,6 @@
 							<li><a class="button alert tiny" id="cancelEdit">放棄</a></li>
 						</ul>
 					</div>
-					<a class="tiny permission button dropdown" href="#">
-								<div id="notpublic" style="display:none">草稿</div>
-								<div id="public" style="display:none">已發佈</div>
-					</a>
-						<div class="permission_menu">
-
-							<div class="private_button">草稿</div>
-					</a>
-							<div class="public_button">發佈</div>
-					</a>
-						</div>
 				</div>
 			</div>
 			<hr/>
@@ -241,7 +219,7 @@
 				<div class="foo_load">請稍候</div>
 			</div>			
 			<div class="large-12 columns large-centered" id="postContent">
-				<% if @Journal_selected %>
+				<% if @journal_selected %>
 				<% for c in @contents %>
 				<div class="tp_box" id="tp_box_<%=c.id%>">
 					<%=sanitize c.article%>

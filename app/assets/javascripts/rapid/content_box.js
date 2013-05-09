@@ -31,7 +31,7 @@ var ContentBoxModule = function(item){
 	};
 	
 	var isBounce=function(){
-		if(target.css('visibility')=='visible'){
+		if(target.css('z-index')==0){
 			return true;
 		}
 		return false;
@@ -39,11 +39,11 @@ var ContentBoxModule = function(item){
 	
 	//展開遊記	
 	var bounce=function(){		
-		target.css('visibility','visible');			
+		target.css('z-index','0');			
 	};
 	//收合遊記
 	var collapse=function(stopShow){											
-		target.css('visibility','hidden');
+		target.css('z-index','-1');
 	};
 
 	var hideJournalSwitchToggle=function(){
@@ -114,11 +114,11 @@ var ContentBoxModule = function(item){
 										'smiley,specialchar,stylescombo,templates',
 						height : '100%',
 						toolbar : [	[ 'Undo','Redo' ],
-									[ 'Bold','Italic','Underline', 'RemoveFormat' ] ,
-									[ 'TextColor','BGColor','Font','FontSize'],
 									[ 'Link','Unlink' ],
-									//'/' , 
-									[ 'Image' , 'HorizontalRule' ,'Maximize']
+									[ 'Image' , 'HorizontalRule'],
+									['FontSize'],
+									'/' ,
+									[ 'Bold','Italic','Underline', 'RemoveFormat','TextColor','Font' ]
 								],
 						forcePasteAsPlainText:true
 					});
@@ -351,14 +351,13 @@ var ContentBoxModule = function(item){
 						});
 						
 						if(edit_id!=null)
-							editor[id].focus();
-							
+							editor[id].focus();	
 						PathOnMap.centerOnTripPoint(id);
 					}else{
 						$('#journal').scrollTop(0);
 					}
 					
-					PathOnMap.closeInfoWindow();
+					//PathOnMap.closeInfoWindow();
 					moduleInstance.ownerModeSwitch();
 					contentBox.UiControl.reLayout();
 					if(callback)

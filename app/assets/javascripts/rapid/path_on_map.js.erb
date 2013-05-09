@@ -5,7 +5,8 @@ var PathOnMap=(function(){
 	var infowindow=null;
 	
 	var showMarkDetail=function(item_id){
-
+		
+		
 		if(infowindow!=null){
 			infowindow.close();
 		}
@@ -16,11 +17,14 @@ var PathOnMap=(function(){
 					+'閱讀遊記'
 					+'</a>'
 		});
+
 		infowindow.open(map,pointData[item_id]);
 		google.maps.event.addListener(infowindow,'closeclick',function(){
 			//tripPointList.unselectTripPoint();
 		});
 	};
+	
+
 	
 	return {
 		//建立標記
@@ -157,7 +161,11 @@ var PathOnMap=(function(){
 				infowindow.close();
 		},
 		centerOnTripPoint:function(id){
-			map.setCenter(pointData[id].getPosition());
+			map.setZoom(18);
+			var origin_pos=pointData[id].position;
+			var new_pos=new google.maps.LatLng(origin_pos.lat()+0.007,origin_pos.lng()+0.0165);
+			map.setCenter(new_pos);
+			//map.setCenter(pointData[id].getPosition());
 		},
 		showMarkInfo:function(tripPoint_id){
 			showMarkDetail(tripPoint_id);
