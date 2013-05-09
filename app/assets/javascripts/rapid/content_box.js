@@ -5,6 +5,9 @@ var ContentBoxModule = function(item){
 	var controlButton = target.find('.controlButton');
 	var editTool = target.find('.editTool');
 	var journalSwitchToggle = $('#bounce');	
+	var draftButtons=target.find('#draftButtons');
+	var releaseButtons=target.find('#releaseButtons');
+	
 	var releasePost=target.find('#releasePost');
 	var finishPost=target.find('#finishPost');
 	var cancelEdit=target.find('#cancelEdit');
@@ -55,11 +58,7 @@ var ContentBoxModule = function(item){
 	};
 	
 	var hideControlButton=function(){
-		controlButton.css('visibility','hidden');
-	};
-	
-	var showControlButton=function(){
-		controlButton.css('visibility','visible');
+		controlButton.hide();
 	};
 	
 	var hideContentPanel=function(){
@@ -85,11 +84,12 @@ var ContentBoxModule = function(item){
 		clickEditPost:function(group_id,id){
 			edit_id=id;
 			edit_group_id=group_id;
-			showControlButton();
+
 			if(DataStatus.isPublic[group_id]){
-				releasePost.hide();
+				console.log(releaseButtons);
+				releaseButtons.show();
 			}else{
-				releasePost.show();
+				draftButtons.show();
 			}
 			
 			var list=target.find('.tp_box');
