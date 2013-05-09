@@ -81,6 +81,17 @@ var ContentBoxModule = function(item){
 		});
 	};
 	
+	var setPublic=function(){
+		Data.setGroupRelease(show_group_id,function(result){
+			target.find('.permission_menu').hide();
+			if(result){
+				target.find('#public').show();
+				target.find('#notpublic').hide();
+				DataStatus.isPublic[show_group_id]=true;
+			}
+		});
+	};
+	
 	var exitEditor=function(){
 		hideControlButton();
 		showContentPanel();
@@ -114,6 +125,23 @@ var ContentBoxModule = function(item){
 		edit_group_id=null;
 	};
 
+	var saveJournal=function(){
+		contentPanel.find('img').resize_by_drag('destroy').unbind('click');
+		for(var id in editor){
+			var str=editor[id].getData().replace(/.*<span style="display: none;">&nbsp;<\/span><\/div>/,'');
+			if(!DataStatus.contentList){
+				DataStatus.contentList=[];
+			}
+			DataStatus.contentList[id]=str;
+			if(str){
+				Data.savePost(id);
+			}
+		}
+		
+		Data.updateGroupPhoto(edit_group_id);
+		
+	};
+	
 	var UiListener={
 
 		clickJournalSwitchToggle:function(){
@@ -244,46 +272,17 @@ var ContentBoxModule = function(item){
 			exitEditor();
 		},
 		clickFinishPost:function(){
-			contentPanel.find('img').resize_by_drag('destroy').unbind('click');
-			for(var id in editor){
-				var str=editor[id].getData().replace(/.*<span style="display: none;">&nbsp;<\/span><\/div>/,'');
-				if(!DataStatus.contentList){
-					DataStatus.contentList=[];
-				}
-				DataStatus.contentList[id]=str;
-				if(str){
-					Data.savePost(id);
-				}
-			}
-			
-			Data.updateGroupPhoto(edit_group_id);
-				
-			UiListener.clickCancelEdit();
+			saveJournal();
+			exitEditor();
 		},
 		clickReleasePost:function(){
-			/*
-			contentPanel.find('img').resize_by_drag('destroy').unbind('click');
-			for(var id in editor){
-				var str=editor[id].getData().replace(/.*<span style="display: none;">&nbsp;<\/span><\/div>/,'');
-				if(!DataStatus.contentList){
-					DataStatus.contentList=[];
-				}
-				DataStatus.contentList[id]=str;
-				if(str){
-					Data.savePost(id);
-				}
-			}			
-			
-			Data.setGroupRelease(edit_group_id);
-			DataStatus.isPublic[edit_group_id]=true;
-			target.find('#notpublic').hide();
-			target.find('#public').show();
-			
-			UiListener.clickCancelEdit();
-			*/
+			setPublic();
+			saveJournal();
+			exitEditor();
 		},
 		clickConvertToDraft:function(){
 			setPrivate();
+			saveJournal();
 			exitEditor();
 		},
 		clickPermissionSetting:function(){
@@ -294,15 +293,7 @@ var ContentBoxModule = function(item){
 			})},100);
 		},
 		clickSetPublic:function(){
-			Data.setGroupRelease(show_group_id,function(result){
-				target.find('.permission_menu').hide();
-				if(result){
-					target.find('#public').show();
-					target.find('#notpublic').hide();
-					DataStatus.isPublic[show_group_id]=true;
-				}
-			});
-			
+			setPublic();			
 		},
 		clickSetPrivate:function(){	
 			setPrivate();

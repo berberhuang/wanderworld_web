@@ -177,8 +177,8 @@
 					<div class="row">
 						<div class="large-6 columns">
 							<a class="tiny permission button dropdown" href="#">
-								<div id="notpublic" style="display:none">草稿</div>
-								<div id="public" style="display:none">已發佈</div>
+								<div id="notpublic" style="<%='display:none' if @public%>">草稿</div>
+								<div id="public" style="<%='display:none' if !@public%>">已發佈</div>
 							</a>
 							<div class="permission_menu">
 								<div class="private_button">草稿</div>
