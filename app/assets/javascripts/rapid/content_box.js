@@ -423,15 +423,18 @@ var ContentBoxModule = function(item){
 						}
 					});
 					
-					if(DataStatus.isPublic[group_id] || !DataStatus.isOwner){
-						target.find('#notpublic').hide();
-						var t=target.find('#public').hide();
-						if(DataStatus.isOwner){
-							t.show();
+					if(DataStatus.isOwner){
+						target.find('#release_status').css('visibility','visible');
+						if(DataStatus.isPublic[group_id]){
+							target.find('#notpublic').hide();
+							target.find('#public').show();
+						}else{
+							target.find('#notpublic').show();
+							target.find('#public').hide();
 						}
+						
 					}else{
-						target.find('#notpublic').show();
-						target.find('#public').hide();
+						target.find('#release_status').css('visibility','hidden');
 					}
 					
 					moduleInstance.UiControl.showContent(show_group_id,show_id,callback);	
@@ -688,6 +691,10 @@ var ContentBoxModule = function(item){
 			if(show_group_id!=null)
 				return true;
 			return false;
+		},
+		setShowGroupId:function(id,isPublic){
+			show_group_id=id;
+			DataStatus.isPublic[show_group_id]=isPublic;
 		}
 	};
 };

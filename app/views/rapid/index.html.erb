@@ -65,6 +65,7 @@
 			%>
 			<% if @journal_selected%>
 				readJournal_s=true;
+				contentBox.setShowGroupId(<%=@journal_id%>,<%=@public%>);
 			<%end%>
 			
 			document.title='<%=@trip_info.name%> - WanderWorld地球漫遊';
@@ -175,7 +176,7 @@
 				<!--↓社交元件↓-->
 				<div class="large-5 columns" id="social_toggle">
 					<div class="row">
-						<div class="large-6 columns">
+						<div id="release_status" class="large-6 columns" style="<%='visibility:hidden' if !@isOwner%>">
 							<a class="tiny permission button dropdown" href="#">
 								<div id="notpublic" style="<%='display:none' if @public%>">草稿</div>
 								<div id="public" style="<%='display:none' if !@public%>">已發佈</div>
