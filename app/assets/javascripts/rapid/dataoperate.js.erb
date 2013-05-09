@@ -265,7 +265,7 @@ var Data=(function(){
 				createTrip(function(){
 					$.post("/trip/insertPointById/"+trip_id,{tripPoint_id:-1,trip_point:{sort_id:pointData[item_id].sort_id,place_id:pointData[item_id].place_id,group_id:????}},function(result){
 				//完成  
-						if(result==null)
+					if(result==null)
 						pointData[result[1]].tripPoint_id=-1;
 					else if(result[0]>=0&&result[1]>=0)
 						pointData[result[1]].tripPoint_id=result[0];

@@ -9,10 +9,10 @@ var TripPointEditModule = function(item){
 	var name;
 	var city;
 	
-	//target.find('.finish').click(function(){tripPointEdit.UiListener.finishSetNewManPos();});
+	target.find('.finish').click(function(){tripPointEdit.UiListener.finishSetNewManPos();});
 	
 	
-	var searchOnGoogle=function(search_str){
+	var searchOnGoogle=function(search_str,callback){
 		var gcoder=new google.maps.Geocoder();
 		gcoder.geocode({'address':search_str,'region':'TW'},function(results,status){
 			if(status==google.maps.GeocoderStatus.OK){
@@ -37,9 +37,10 @@ var TripPointEditModule = function(item){
 					city="";
 				newTripPointData.city=city;
 				newTripPointData.pos=results[0].geometry.location;
-				findPlaceInDB()					
+				if(callback&&callback.success)
+					callback.success();				
 			}else{
-				searchInMyDBByName(search_str);
+				searchInDBByName(search_str);
 			}
 		});
 	};
@@ -137,7 +138,7 @@ var TripPointEditModule = function(item){
 			if(result.length){
 				findPlaceInDB();					
 			}else{
-				findNewPlaceFailed(group_id,name);
+				findNewPlaceFailed();
 			}
 		});
 	};
@@ -170,6 +171,17 @@ var TripPointEditModule = function(item){
 			tripPointEdit.UiListener.confirmCancel();
 		});
 	}
+
+
+	//按關鍵字尋找景點位置
+	var findPlaceByName=function(group_id,str){
+		searchOnGoogle(str,{success:genNewTmpMark});
+	};
+	
+	var genNewTmpMark=function(){
+		PathOnMap.createTmpMark(newTripPointData.name,newTripPointData.group_id,newTripPointData.pos);
+	};
+	
 	
 	
 	
@@ -222,6 +234,7 @@ var TripPointEditModule = function(item){
 			PathOnMap.setTmpMark_place_id(result[0]);
 
 			Data.saveTripPoint(-1,place_id,newTripPointData.sort_id,newTripPointData.group_id,function(tp){
+				var tmp_mark=PathOnMap.getTmpMark();
 				PathOnMap.deleteTmpMark();
 				newTripPointInput.val('');
 				
@@ -231,145 +244,25 @@ var TripPointEditModule = function(item){
 					latitude:tmp_mark.position.lat(),
 					longitude:tmp_mark.position.lng()
 				}
+											
+				insertTripPoint(tp.id,group_id,sort_id,name,tmp_mark.position.lat(),tmp_mark.position.lng());
 				
-				DataStatus.tripPointList.push(tp);
-				
-				//tripPointList.UiControl.enableAddTripPoint(group_id);
-				tripPointList.UiControl.insertTripPoint(tp.id,group_id,name);
-				updateMark();
-				
+				updateMark();	
+					
 				PathOnMap.updateMark();
 				PathOnMap.redrawLine();
+					
+				contentBox.insertNewPoint(group_id);
+				PathOnMap.showBeforeReadBubble(tp.id);
+				PathOnMap.centerTripPointOnAllMap(tp.id);
+				groupItemManager.hideAddPointInput(newTripPointInput);
+					
 				reLayout();
 			});
 									
 		});
 	};
 	
-	var findPlaceByNameAndZone=function(group_id,name,zone,ok_callback,new_callback,fail_callback){		
-		if(!name)
-			return;
-		if(!zone){
-			zone="";
-			findPlaceWithoutZone(group_id,name,name,ok_callback,new_callback,fail_callback);
-			return;
-		}
-		console.log('b');
-		var str=name+" "+zone;
-		$.get("/trip/findPlace",{p_name:name,p_city:zone},function(result){
-			if(result){
-				var tmpPoint=new google.maps.LatLng(result[2],result[3],false);
-				findPlaceSuccess(group_id,result[0],name,result[1],tmpPoint);
-			}else{
-				findPlaceWithoutZone(group_id,name,str,ok_callback,new_callback,fail_callback);
-			}
-		});
-	};
-	
-	var findPlaceWithoutZone=function(group_id,name,search_str,ok_callback,new_callback,fail_callback){
-		var gcoder=new google.maps.Geocoder();
-		gcoder.geocode({'address':search_str,'region':'TW'},function(results,status){
-			if(status==google.maps.GeocoderStatus.OK){
-				var i;
-				var city;
-				for(i=0;i<results[0].address_components.length;i++){
-					if(results[0].address_components[i].types[0]==='administrative_area_level_3'){
-						city=results[0].address_components[i].long_name;
-						break;
-					}else if(results[0].address_components[i].types[0]==='administrative_area_level_2'){
-						city=results[0].address_components[i].long_name;
-						break;
-					}else if(results[0].address_components[i].types[0]==='administrative_area_level_1'){
-						city=results[0].address_components[i].long_name;
-						break;
-					}else if(results[0].address_components[i].types[0]==='country'){
-						city=results[0].address_components[i].long_name;
-						break;
-					}
-				}
-				if(!city)
-					city="";
-				
-				$.get("/trip/findPlace",{p_name:name,p_city:city},function(result){
-					if(result){
-						var t=new google.maps.LatLng(result[2],result[3],false);
-						findPlaceSuccess(group_id,result[0],name,result[1],t);
-						//if(ok_callback)
-							//ok_callback();
-					}else{
-						findNewPlaceNotInDB(group_id,name,city,results[0].geometry.location);
-						//if(new_callback)
-						//	new_callback(group_id,name,city,results[0].geometry.location);
-					}
-				});
-			}else{
-				$.get("/place/search",{term:name},function(result){
-					if(result.length){
-						
-						$.get("/trip/findPlace",{p_name:result[0].split(",")[0],p_city:result[0].split(",")[1]},function(result){
-							if(result){
-								var t=new google.maps.LatLng(result[2],result[3],false);
-							
-									$('#newTripPoint .place').val(result[4]+','+result[1]);
-									findPlaceSuccess(group_id,result[0],name,result[1],t);
-									//ok_callback(group_id,result[0],result[4],result[1],t);
-							}else{
-								findNewPlaceFailed(group_id,name);
-								//if(fail_callback)
-								//	fail_callback(group_id,name);
-							}
-						});
-						
-							
-					}else{
-						findNewPlaceFailed(group_id,name);
-						//if(fail_callback)
-						//	fail_callback(group_id,name);
-					}
-				});
-			}
-		});
-
-	}
-		
-	
-	
-	//按關鍵字尋找景點位置
-	var findPlaceByName=function(group_id,str){
-		findPlaceByNameAndZone(group_id,str,'',
-		function(group_id,place_id,name,city,pos){
-			var str= newTripPointData.name;
-			newTripPointData.name=str;
-			newTripPointData.city=city;
-			newTripPointData.pos=pos;
-			newTripPointData.place_id=place_id;
-			
-			PathOnMap.createTmpMark(str,group_id,pos);
-			
-			newTripPointInput.val(str+','+city);
-			PathOnMap.getTmpMark().setDraggable(true);
-		},
-		function(group_id,name,city,pos){
-			var str= newTripPointData.name;
-			newTripPointData.name=str;
-			newTripPointData.city=city;
-			newTripPointData.pos=pos;
-			
-			PathOnMap.createTmpMark(str,group_id,pos);
-			
-			newTripPointInput.val(str+','+city);
-			PathOnMap.getTmpMark().setDraggable(true);		
-		},null);
-	};
-	
-	
-
-	
-
-	
-
-	
-
 	//關閉描點的資訊框
 	var closeMarkDetail=function(){
 		if(infowindow)
@@ -381,7 +274,7 @@ var TripPointEditModule = function(item){
 			confirmWindow.close();
 		confirmWindow=null;	
 	}
-	
+		
 	var insertTripPoint=function(id,group_id,sort_id,title,lat,lng){
 		tripPointItemManager.insertTripPoint(id,group_id,sort_id,title,lat,lng);
 	};
@@ -391,15 +284,13 @@ var TripPointEditModule = function(item){
 	};
 	
 	
-	var findNewPlaceFailed=function(group_id,name){
-		newTripPointData.name=name;
+	var findNewPlaceFailed=function(){
+		var name=newTripPointData.name;
+		var group_id=newTripPointData.group_id;
 		//提供給使用者移動標示新地點用
 		$('#pointTarget').attr('src',getMarkURL('P',getGroupColor(group_id)))
 		setNewManPos();
 	};
-	
-	
-
 	
 	return {
 		setTripPointItemManager:function(tpim){
@@ -419,24 +310,8 @@ var TripPointEditModule = function(item){
 			if(city&&city.length>0){
 				findPlaceInDB();
 			}else{
-				searchOnGoogle(name);
+				searchOnGoogle(name,{success:findPlaceInDB});
 			}
-			
-			/*
-			findPlaceByNameAndZone(group_id,name,city,
-			//ok_callback
-			function(){
-				findPlaceSuccess(group_id,place_id,name,city,pos);
-			},
-			//new pos callback
-			function(){
-				findNewPlaceNotInDB(group_id,name,city,pos);
-			},
-			//unknown pos callback
-			function(){
-				findNewPlaceFailed(group_id,name);
-			});
-			*/
 		},
 		
 		
@@ -454,7 +329,6 @@ var TripPointEditModule = function(item){
 				
 				Data.saveTripPoint(-1,place_id,sort_id,group_id,function(tp){
 					tripPointEdit.UiListener.confirmCancel();
-					
 					tp.place={
 						id:place_id,
 						name:name,
@@ -471,6 +345,8 @@ var TripPointEditModule = function(item){
 					PathOnMap.updateMark();
 					PathOnMap.redrawLine();
 					
+					PathOnMap.showBeforeReadBubble(tp.id);
+					PathOnMap.centerTripPointOnAllMap(tp.id);
 					contentBox.insertNewPoint(group_id);
 					groupItemManager.hideAddPointInput(item);
 					reLayout();
@@ -496,19 +372,7 @@ var TripPointEditModule = function(item){
 
 						Data.saveTripPoint(-1,place_id,sort_id,group_id,function(tp){
 							tripPointEdit.UiListener.confirmCancel();
-							//PathOnMap.deleteTmpMark();
-							/*
-							tp.place={
-								id:place_id,
-								name:box[0],
-								latitude:tmp_mark.position.lat(),
-								longitude:tmp_mark.position.lng()
-							}
 							
-							DataStatus.tripPointList.push(tp);
-							*/
-							//tripPointList.UiControl.enableAddTripPoint(group_id);
-							//tripPointList.UiControl.insertTripPoint(tp.id,group_id,box[0]);
 							insertTripPoint(tp.id,group_id,sort_id,box[0],tmp_mark.position.lat(),tmp_mark.position.lng());
 							updateMark();
 							
@@ -517,8 +381,8 @@ var TripPointEditModule = function(item){
 							PathOnMap.redrawLine();
 							
 							contentBox.insertNewPoint(group_id);
-							PathOnMap.showBeforeReadBubble(tp.id)
-							//tripPointList.reActSortable();
+							PathOnMap.showBeforeReadBubble(tp.id);
+							PathOnMap.centerTripPointOnAllMap(tp.id);
 							groupItemManager.hideAddPointInput(item);
 							
 							reLayout();

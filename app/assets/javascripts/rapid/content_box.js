@@ -546,16 +546,15 @@ var ContentBoxModule = function(item){
 					forcePasteAsPlainText:true
 				});		
 				
-			}
-			/*
-			else if(show_group_id==group_id){
+			}else if(show_group_id==group_id){
 				var point=$('.trip_point_group:[data-id='+group_id+'] .newTripPoint input');
 				var id=point.val();
+				
 				DataStatus.contentList[id]='';
 				var str='<div class="tp_box" id="tp_box_'+id+'"></div>';
 				contentPanel.append(str);
 			}
-			*/
+			
 		},
 		deleteGroup:function(group_id){
 			if(show_group_id==group_id){
