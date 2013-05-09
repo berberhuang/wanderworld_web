@@ -11,6 +11,7 @@ var ContentBoxModule = function(item){
 	var releasePost=target.find('#releasePost');
 	var finishPost=target.find('#finishPost');
 	var cancelEdit=target.find('#cancelEdit');
+	var toDraft=target.find('#toDraft');
 	
 	var editor=[];	
 	
@@ -68,15 +69,77 @@ var ContentBoxModule = function(item){
 	var showContentPanel=function(){
 		contentPanel.css('visibility','visible');
 	};
+	
+	var setPrivate=function(){
+		Data.setGroupPrivate(show_group_id,function(result){
+			target.find('.permission_menu').hide();	
+			if(result){	
+				target.find('#public').hide();
+				target.find('#notpublic').show();
+				DataStatus.isPublic[show_group_id]=false;
+			}
+		});
+	};
+	
+	var exitEditor=function(){
+		hideControlButton();
+		showContentPanel();
+		
+		var showingGroupItem=groupItemManager.getSelectedGroupItem();
+		var tpList=showingGroupItem.find('.point');
+		
+		for(var i in editor){
+			editor[i].setReadOnly(true);
+			editor[i].destroy();
+		}
+		var list = $('#postContent .tp_box');
+		for(var i in list){
+			list.eq(i).attr('contenteditable',null);
+		}
+		editor=[];
+		
+
+		var str='';
+		
+		for(var i=0; i<tpList.length;i++){
+			var id=tpList.eq(i).data('id')
+			str+='<div class="tp_box" id="tp_box_'+id+'">';
+			str+=DataStatus.contentList[id];
+			str+='</div>';
+		}
+						
+		contentPanel.empty().append(str);
+				
+		edit_id=null;
+		edit_group_id=null;
+	};
 
 	var UiListener={
 
 		clickJournalSwitchToggle:function(){
 			if(isBounce()){
+				readJournal_s=false;
 				collapse();
+				var id=tripPointItemManager.getSelectedTripPointId();
+				if(id){
+					PathOnMap.centerTripPointOnAllMap(id);
+					PathOnMap.showBeforeReadBubble(id);
+				}else{
+					var group_id=groupItemManager.getSelectedGroupId();
+					PathOnMap.centerGroupOnMap();
+				}
 			}else{
+				readJournal_s=true;
 				bounce();
-				PathOnMap.closeInfoWindow();
+				var id=tripPointItemManager.getSelectedTripPointId();
+				if(id){
+					PathOnMap.centerTripPointOnLeftMap(id);
+				}else{
+					var group=groupItemManager.getSelectedGroupItem();
+					id=group.find('.point:first').data('id');
+					PathOnMap.centerTripPointOnLeftMap(id);
+				}
+				PathOnMap.showTripPointInfo(id);
 			}
 		},
 		
@@ -178,50 +241,7 @@ var ContentBoxModule = function(item){
 			//showContainer();
 		},
 		clickCancelEdit:function(){
-			hideControlButton();
-			showContentPanel();
-			
-			var showingGroupItem=groupItemManager.getSelectedGroupItem();
-			var tpList=showingGroupItem.find('.point');
-			
-			for(var i in editor){
-				editor[i].setReadOnly(true);
-				editor[i].destroy();
-			}
-			var list = $('#postContent .tp_box');
-			for(var i in list){
-				list.eq(i).attr('contenteditable',null);
-			}
-			editor=[];
-			
-
-			var str='';
-			for(var i in DataStatus.groupList){
-				if(DataStatus.groupList[i].id==show_group_id){
-					str+='<div class="postTitle">'+DataStatus.groupList[i].title+'</div>';
-					break;
-				}
-			}
-			
-			for(var i=0; i<tpList.length;i++){
-				var id=tpList.eq(i).data('id')
-				str+='<div class="tp_box" id="tp_box_'+id+'">';
-				str+=DataStatus.contentList[id];
-				str+='</div>';
-			}
-					
-			
-			contentPanel.empty().append(str);
-			
-			var pointList=$('#trip_point_group_'+edit_group_id+' .point_name');
-			for(var i=0; i < pointList.length; i++){
-				pointList.eq(i).removeClass('red_box');
-				pointList.eq(i).removeClass('green_box');
-			}
-
-			
-			edit_id=null;
-			edit_group_id=null;
+			exitEditor();
 		},
 		clickFinishPost:function(){
 			contentPanel.find('img').resize_by_drag('destroy').unbind('click');
@@ -239,15 +259,9 @@ var ContentBoxModule = function(item){
 			Data.updateGroupPhoto(edit_group_id);
 				
 			UiListener.clickCancelEdit();
-			
-			
-			//setGroupRelease(pointData[editTarget_id].group_id);
-
-			//if($('#postToFB input').attr('checked')!=null){
-			//	FB.ui({method:'feed',link:'http://wanderworld.com.tw/'+trip_id+'/'+pointData[editTarget_id].tripPoint_id,name:trip_name+'-'+$('#trip_point_group_'+pointData[editTarget_id].group_id+' .trip_point_title a').text(),description:pointData[editTarget_id].post_simple,picture:"<%='http://wanderworld.com.tw'+asset_path('view_all.png')%>"});
-			//}
 		},
 		clickReleasePost:function(){
+			/*
 			contentPanel.find('img').resize_by_drag('destroy').unbind('click');
 			for(var id in editor){
 				var str=editor[id].getData().replace(/.*<span style="display: none;">&nbsp;<\/span><\/div>/,'');
@@ -266,6 +280,11 @@ var ContentBoxModule = function(item){
 			target.find('#public').show();
 			
 			UiListener.clickCancelEdit();
+			*/
+		},
+		clickConvertToDraft:function(){
+			setPrivate();
+			exitEditor();
 		},
 		clickPermissionSetting:function(){
 			var t=target.find('.permission_menu');
@@ -286,14 +305,7 @@ var ContentBoxModule = function(item){
 			
 		},
 		clickSetPrivate:function(){	
-			Data.setGroupPrivate(show_group_id,function(result){
-				target.find('.permission_menu').hide();	
-				if(result){	
-					target.find('#public').hide();
-					target.find('#notpublic').show();
-					DataStatus.isPublic[show_group_id]=false;
-				}
-			});
+			setPrivate();
 		}
 	};
 	
@@ -303,6 +315,7 @@ var ContentBoxModule = function(item){
 	finishPost.click(UiListener.clickFinishPost);
 	releasePost.click(UiListener.clickReleasePost);
 	cancelEdit.click(UiListener.clickCancelEdit);
+	toDraft.click(UiListener.clickConvertToDraft);
 	
 	target.find('.permission').click(UiListener.clickPermissionSetting);
 	target.find('.public_button').click(UiListener.clickSetPublic);
@@ -341,6 +354,12 @@ var ContentBoxModule = function(item){
 				show_id=id;
 				if(group_id==show_group_id){
 					bounce();
+					
+					$('.editTool').unbind('click').click(function(){
+						contentBox.clickEditPost(group_id,target.find('#trip_point_group_'+group_id+' li:first').val());	
+						showingGroup=group_id;
+					});
+					
 					if(id){
 						var t=$('#tp_box_'+id);
 						
@@ -352,7 +371,7 @@ var ContentBoxModule = function(item){
 						
 						if(edit_id!=null)
 							editor[id].focus();	
-						PathOnMap.centerOnTripPoint(id);
+						
 					}else{
 						$('#journal').scrollTop(0);
 					}
@@ -409,7 +428,7 @@ var ContentBoxModule = function(item){
 							}
 						}
 						if(edit_group_id==null){
-							tripPointList.UiControl.selectTripPoint($('.point:[data-id='+id+'] .point_name'));						
+							tripPointList.selectTripPoint(id);						
 						}
 					});
 					

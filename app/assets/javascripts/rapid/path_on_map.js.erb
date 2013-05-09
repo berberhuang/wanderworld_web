@@ -4,9 +4,7 @@ var PathOnMap=(function(){
 	
 	var infowindow=null;
 	
-	var showMarkDetail=function(item_id){
-		
-		
+	var showBeforeReadBubble=function(item_id){	
 		if(infowindow!=null){
 			infowindow.close();
 		}
@@ -24,6 +22,20 @@ var PathOnMap=(function(){
 		});
 	};
 	
+	var showTripPointInfo=function(item_id){	
+		if(infowindow!=null){
+			infowindow.close();
+		}
+
+		infowindow=new google.maps.InfoWindow({
+			content: '<div><h5>'+pointData[item_id].title+'</h5></div>',
+		});
+
+		infowindow.open(map,pointData[item_id]);
+		google.maps.event.addListener(infowindow,'closeclick',function(){
+			//tripPointList.unselectTripPoint();
+		});
+	};
 
 	
 	return {
@@ -41,7 +53,7 @@ var PathOnMap=(function(){
 			});
 			google.maps.event.addListener(item, 'click', 
 				function(){
-					showMarkDetail(item_id);
+					showBeforeReadBubble(item_id);
 					tripPointList.selectTripPoint(item_id);
 					tripPointList.selectGroup(group_id);
 				}
@@ -100,7 +112,6 @@ var PathOnMap=(function(){
 			tmp_mark=item;
 			map.setCenter(latlng);
 		},
-
 		deleteTmpMark:function(){
 			if(tmp_mark)
 				tmp_mark.setMap();
@@ -160,20 +171,32 @@ var PathOnMap=(function(){
 			if(infowindow)
 				infowindow.close();
 		},
-		centerOnTripPoint:function(id){
+		centerTripPointOnLeftMap:function(id){
 			map.setZoom(18);
 			var origin_pos=pointData[id].position;
 			var new_pos=new google.maps.LatLng(origin_pos.lat()+0.007,origin_pos.lng()+0.0165);
 			map.setCenter(new_pos);
-			//map.setCenter(pointData[id].getPosition());
 		},
-		showMarkInfo:function(tripPoint_id){
-			showMarkDetail(tripPoint_id);
+		centerTripPointOnAllMap:function(id){
+			map.setCenter(pointData[id].position);
+		},
+		centerGroupOnMap:function(id){
+			var tpList=$('.trip_point_group:[data-id='+id+'] .point');
+			computeMap(tpList);
+		},
+		showBeforeReadBubble:function(tripPoint_id){
+			showBeforeReadBubble(tripPoint_id);
+		},
+		showTripPointInfo:function(tripPoint_id){
+			showTripPointInfo(tripPoint_id);
 		},
 		clickReadJournal:function(group_id,id){
+			readJournal_s=true;
 			console.log('loadComments '+group_id);
 			commentBox.loadComments(group_id);
 			contentBox.UiControl.showContent(group_id,id);
+			PathOnMap.centerTripPointOnLeftMap(id);
+			PathOnMap.showTripPointInfo(id);
 			tripPointList.setShowingGroup(group_id);
 			tripPointList.scrollToListItem(id); 
 		}

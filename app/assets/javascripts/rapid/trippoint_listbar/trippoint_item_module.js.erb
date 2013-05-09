@@ -51,9 +51,14 @@ var TrippointItemModule=function(obj){
 			contentBox.cancelEditWarning(group_id,function(){
 				var item=$(event.target).parents('.point');
 				var id=item.data('id');	
-				PathOnMap.showMarkInfo(id);				
-				clickPointTitle(item.parents('.trip_point_group').data('id'),id);
-				
+				if(readJournal_s){
+					PathOnMap.showTripPointInfo(id);
+					PathOnMap.centerTripPointOnLeftMap(id);
+					contentBox.UiControl.showContent(group_id,id);
+				}else{
+					PathOnMap.showBeforeReadBubble(id);
+					PathOnMap.centerTripPointOnAllMap(id);
+				}
 				selectTripPointEffect(item);
 				tripPointList.selectGroup(group_id);
 			});
@@ -78,7 +83,6 @@ var TrippointItemModule=function(obj){
 */
 		
 		
-		contentBox.UiControl.showContent(group_id,id);
 		
 /*
 		if(contentBox.isShow()&&showingGroup==group_id){
@@ -93,9 +97,10 @@ var TrippointItemModule=function(obj){
 			
 			PathOnMap.showMarkInfo(id);
 		}
-*/		
+		
 		tripPointEdit.UiListener.confirmCancel();
-	};
+*/
+};
 	
 	//點選景點得視覺效果
 	var selectTripPointEffect=function(item){
@@ -227,6 +232,18 @@ var TrippointItemModule=function(obj){
 		}
 	};
 	
+	var getSelectedTripPointItem=function(){
+		return $('.trip_point_selected');
+	};
+	
+	var getSelectedTripPointId=function(){
+		var item=getSelectedTripPointItem();
+		if(item)
+			return item.data('id');
+		else
+			return null;
+	};
+	
 	return {
 		init:function(){
 			console.log('裝載tripPointList');
@@ -255,6 +272,12 @@ var TrippointItemModule=function(obj){
 		},
 		selectTripPoint:function(id){
 			selectTripPointEffect($('.point:[data-id='+id+']'));
+		},
+		getSelectedTripPointId:function(){
+			return getSelectedTripPointId();
+		},
+		getSelectedTripPointItem:function(){
+			return getSelectedTripPointItem();
 		},
 		addNewTripPoint:function(event,group_id,item){
 			enterTripPoint(event,group_id,item);

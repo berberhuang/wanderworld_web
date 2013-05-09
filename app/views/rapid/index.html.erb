@@ -63,6 +63,9 @@
 				end
 				
 			%>
+			<% if @journal_selected%>
+				readJournal_s=true;
+			<%end%>
 			
 			document.title='<%=@trip_info.name%> - WanderWorld地球漫遊';
 			DataStatus.trip_id=<%=@trip_id%>;
@@ -161,7 +164,7 @@
 		<div class="gallery" id="map_canvas"></div>
 	</div>
 	<!--隱藏的內容框-->
-	<div class="large-6 columns" id="slidesContainer" style="<%='visibility:hidden' if !@journal_selected%>">
+	<div class="large-6 columns" id="slidesContainer" style="<%='z-index:-1' if !@journal_selected%>">
 			<!--遊記控制中心第一層-->
 			<div class="row" id="journal_cc_1st_stack">
 			<!--↓遊記標題↓，之後可以在編輯遊記的模式下重新編輯-->
@@ -171,19 +174,27 @@
 
 				<!--↓社交元件↓-->
 				<div class="large-5 columns" id="social_toggle">
-					<a class="tiny permission button dropdown" href="#">
-						<div id="notpublic" style="display:none">草稿</div>
-						<div id="public" style="display:none">已發佈</div>
-					</a>
-					<div class="permission_menu">
-						<div class="private_button">草稿</div>
-						<div class="public_button">發佈</div>
-					</div>
-					<div class="button tiny radius" >
-						<i class="foundicon-social-facebook"></i>
-					</div>
-					<div class="editTool right button secondary tiny radius" >
-						<i class="foundicon-edit"></i>
+					<div class="row">
+						<div class="large-6 columns">
+							<a class="tiny permission button dropdown" href="#">
+								<div id="notpublic" style="display:none">草稿</div>
+								<div id="public" style="display:none">已發佈</div>
+							</a>
+							<div class="permission_menu">
+								<div class="private_button">草稿</div>
+								<div class="public_button">發佈</div>
+							</div>
+						</div>
+						<div class="large-4 columns">
+							<a class="button tiny radius" >
+								<i class="foundicon-social-facebook"></i>
+							</a>
+						</div>
+						<div class="large-2 columns">
+							<a class="editTool right button secondary tiny radius" >
+								<i class="foundicon-edit"></i>
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -191,7 +202,7 @@
 			<div class="row" id="journal_cc_2nd_stack">
 				<!--遊記編輯工具-->
 				<div class="large-8 columns" >
-
+					
 				</div>
 				<!--遊記狀態/權限區塊-->
 				<div class="large-4 columns">
@@ -206,7 +217,7 @@
 					<div id="releaseButtons" class="controlButton" style="display:none">
 						<ul class="button-group radius">
 							<li><a class="button tiny" id="releasePost">更新</a></li>
-							<li><a class="button secondary tiny" id="finishPost">還原成草稿</a></li>
+							<li><a class="button secondary tiny" id="toDraft">還原成草稿</a></li>
 							<li><a class="button alert tiny" id="cancelEdit">放棄</a></li>
 						</ul>
 					</div>

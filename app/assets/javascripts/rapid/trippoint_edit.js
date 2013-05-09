@@ -90,6 +90,7 @@ var TripPointEditModule = function(item){
 			findPlaceWithoutZone(group_id,name,name,ok_callback,new_callback,fail_callback);
 			return;
 		}
+		console.log('b');
 		var str=name+" "+zone;
 		$.get("/trip/findPlace",{p_name:name,p_city:zone},function(result){
 			if(result){
@@ -193,7 +194,7 @@ var TripPointEditModule = function(item){
 			PathOnMap.createTmpMark(str,group_id,pos);
 			
 			newTripPointInput.val(str+','+city);
-			PathOnMap.getTmpMark().setDraggable(true);
+			PathOnMap.getTmpMark().setDraggable(true);		
 		},null);
 	};
 	
@@ -297,7 +298,7 @@ var TripPointEditModule = function(item){
 		
 		PathOnMap.createTmpMark(name,group_id,pos);
 
-		newTripPointInput.val(name+','+city);
+		//newTripPointInput.val(name+','+city);
 		confirmTripPoint(name);
 		
 	};
