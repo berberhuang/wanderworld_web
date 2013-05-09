@@ -130,13 +130,16 @@ var TripPointListbarModule = function(obj){
 			PathOnMap.redrawLine();
 			reLayout();
 			
+			var first_point=$('.point:first');
+			if(first_point.length>0){
+				contentBox.UiControl.showJournalSwitchToggle();
+			}
 		},
 	
 				
 		UiControl:{
 			show:function(){
 				$(target).show();
-				contentBox.UiControl.showJournalSwitchToggle();
 			},
 			hide:function(){
 				$(target).hide();

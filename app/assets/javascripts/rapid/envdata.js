@@ -17,6 +17,5 @@ var DataStatus={
 	group_id:null,
 	contentList:null,
 	tripPointList:null,
-	tripList:null,
-	isPublic:[]
+	tripList:null
 };

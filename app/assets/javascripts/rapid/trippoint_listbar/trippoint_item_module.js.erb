@@ -50,7 +50,7 @@ var TrippointItemModule=function(obj){
 		item.find('.point_name').click(function(event){
 			contentBox.cancelEditWarning(group_id,function(){
 				var item=$(event.target).parents('.point');
-				var id=item.data('id');	
+				var id=item.data('id');		
 				if(readJournal_s){
 					PathOnMap.showTripPointInfo(id);
 					PathOnMap.centerTripPointOnLeftMap(id);

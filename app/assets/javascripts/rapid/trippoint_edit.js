@@ -6,7 +6,171 @@ var TripPointEditModule = function(item){
 	var tripPointItemManager;
 	var groupItemManager;
 	
-	target.find('.finish').click(function(){tripPointEdit.UiListener.finishSetNewManPos();});
+	var name;
+	var city;
+	
+	//target.find('.finish').click(function(){tripPointEdit.UiListener.finishSetNewManPos();});
+	
+	
+	var searchOnGoogle=function(search_str){
+		var gcoder=new google.maps.Geocoder();
+		gcoder.geocode({'address':search_str,'region':'TW'},function(results,status){
+			if(status==google.maps.GeocoderStatus.OK){
+				var i;
+				city=null;
+				for(i=0;i<results[0].address_components.length;i++){
+					if(results[0].address_components[i].types[0]==='administrative_area_level_3'){
+						city=results[0].address_components[i].long_name;
+						break;
+					}else if(results[0].address_components[i].types[0]==='administrative_area_level_2'){
+						city=results[0].address_components[i].long_name;
+						break;
+					}else if(results[0].address_components[i].types[0]==='administrative_area_level_1'){
+						city=results[0].address_components[i].long_name;
+						break;
+					}else if(results[0].address_components[i].types[0]==='country'){
+						city=results[0].address_components[i].long_name;
+						break;
+					}
+				}
+				if(!city)
+					city="";
+				newTripPointData.city=city;
+				newTripPointData.pos=results[0].geometry.location;
+				findPlaceInDB()					
+			}else{
+				searchInMyDBByName(search_str);
+			}
+		});
+	};
+	
+	var findPlaceInDB=function(){
+		var name=newTripPointData.name;
+		var city=newTripPointData.city;
+		$.get("/trip/findPlace",{p_name:name,p_city:city},function(result){
+			if(result){
+				var position=new google.maps.LatLng(result[2],result[3],false);
+				newTripPointData.pos=position;
+				newTripPointData.place_id=result[0];
+				findPlaceSuccess();
+			}else{
+				findNewPlaceNotInDB();
+			}
+		});
+	};
+
+	var findPlaceSuccess=function(){
+		var pos=newTripPointData.pos;
+		var place_id=newTripPointData.place_id;		
+		var name=newTripPointData.name;
+		var city=newTripPointData.city;
+		var group_id=newTripPointData.group_id;
+		
+		PathOnMap.createTmpMark(name,group_id,pos);
+
+		newTripPointInput.val(name+','+city);
+		confirmTripPoint(name);		
+	};
+
+		//show確認新增景點對話框
+	var confirmTripPoint=function (name){
+		var contentStr='<div>在遊記中標記<span id="3" style="font-weight:bold">&nbsp'+name+'&nbsp</span>。<br /><br />'
+				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmOk()">確定</button>&nbsp'
+				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmCancel()">取消</button></div>'
+				+'<a class="button alert tiny radius right white" id="isWrong" href="javascript:tripPointEdit.UiListener.wrongTripPoint()">位置錯了嗎?</a>';	
+		if(confirmWindow){
+			if(confirmWindow.s_new)
+				tripPointEdit.UiListener.confirmNewOK();
+			else
+				tripPointEdit.UiListener.confirmOk();
+		}
+		confirmWindow = new google.maps.InfoWindow({
+			 content: contentStr,
+			 s_new:false
+		});
+		confirmWindow.open(map,PathOnMap.getTmpMark());	
+			google.maps.event.addListener(confirmWindow,'closeclick',function(){tripPointEdit.UiListener.confirmCancel()});
+		
+		PathOnMap.closeInfoWindow();
+	};
+	
+	var findNewPlaceNotInDB=function(){
+		var group_id=newTripPointData.group_id
+		var name=newTripPointData.name;
+		var city=newTripPointData.city;
+		var pos=newTripPointData.pos;
+				
+		PathOnMap.createTmpMark(name,group_id,pos);
+		
+		newTripPointInput.val(name+','+city);
+		
+		confirmPlace(name);	
+	};
+
+	//show確認新增地點對話框
+	var confirmPlace=function(name){
+		var contentStr='<div>你是第一個新增這個景點的朋友!<br />請拖曳<img style="width:30px;" src="'+getMarkURL('P',getGroupColor(newTripPointData.group_id,DataStatus.groupList))+'"/>將景點標記在正確位置。<br />'
+				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmNewOK()">確定</button>&nbsp;'
+				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmCancel()">取消</button></div>'
+				+'<a class="button alert tiny radius right white" id="isWrong" href="javascript:tripPointEdit.UiListener.wrongTripPoint()">位置錯了嗎？</a>';	
+		if(confirmWindow){
+			var s=(confirmWindow);
+			if(confirmWindow.s_new)
+				tripPointEdit.UiListener.confirmNewOK();
+			else
+				tripPointEdit.UiListener.confirmOk();
+			if(s)
+				return;
+			//closePost();
+		}
+		confirmWindow = new google.maps.InfoWindow({
+			 content: contentStr,
+			s_new:true
+		});
+		confirmWindow.open(map,PathOnMap.getTmpMark());
+			google.maps.event.addListener(confirmWindow,'closeclick',function(){tripPointEdit.UiListener.confirmCancel();});
+		PathOnMap.closeInfoWindow();
+	};
+	
+	var searchInDBByName=function(search_str){
+		$.get("/place/search",{term:search_str},function(result){
+			if(result.length){
+				findPlaceInDB();					
+			}else{
+				findNewPlaceFailed(group_id,name);
+			}
+		});
+	};
+	
+	
+	
+
+	
+	
+	//需要新增找不到位置的地點
+	var setNewManPos=function(){
+		if(confirmWindow){
+			if(confirmWindow.s_new)
+				this.UiListener.confirmNewOK();
+			else
+				this.UiListener.confirmOk();
+			$('#slidesContainer').hide();
+		}
+		PathOnMap.closeInfoWindow();
+		var tmp_mark=PathOnMap.getTmpMark();
+		if(tmp_mark){
+			tmp_mark.setDraggable(true);
+		}
+		$('#add_new').fadeIn(200).find('input').val('');
+		
+		//按下取消放棄找尋地點
+		$('.list').unbind('click').click(function(){
+			$('.list').unbind('click');
+			$('#add_new').fadeOut(600);
+			tripPointEdit.UiListener.confirmCancel();
+		});
+	}
+	
 	
 	
 	//判斷現在位置所在區域
@@ -82,7 +246,7 @@ var TripPointEditModule = function(item){
 		});
 	};
 	
-	var findPlaceByNameAndZone=function(group_id,name,zone,ok_callback,new_callback,fail_callback){
+	var findPlaceByNameAndZone=function(group_id,name,zone,ok_callback,new_callback,fail_callback){		
 		if(!name)
 			return;
 		if(!zone){
@@ -198,76 +362,12 @@ var TripPointEditModule = function(item){
 		},null);
 	};
 	
-	//show確認新增景點對話框
-	var confirmTripPoint=function (name){
-		var contentStr='<div>在遊記中標記<span id="3" style="font-weight:bold">&nbsp'+name+'&nbsp</span>。<br /><br />'
-				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmOk()">確定</button>&nbsp'
-				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmCancel()">取消</button></div>'
-				+'<a class="button alert tiny radius right white" id="isWrong" href="javascript:tripPointEdit.UiListener.wrongTripPoint()">位置錯了嗎?</a>';	
-		if(confirmWindow){
-			if(confirmWindow.s_new)
-				tripPointEdit.UiListener.confirmNewOK();
-			else
-				tripPointEdit.UiListener.confirmOk();
-		}
-		confirmWindow = new google.maps.InfoWindow({
-			 content: contentStr,
-			 s_new:false
-		});
-		confirmWindow.open(map,PathOnMap.getTmpMark());	
-			google.maps.event.addListener(confirmWindow,'closeclick',function(){tripPointEdit.UiListener.confirmCancel()});
-		
-		PathOnMap.closeInfoWindow();
-	};
-
-		//show確認新增地點對話框
-	var confirmPlace=function(name){
-		var contentStr='<div>你是第一個新增這個景點的朋友!<br />請拖曳<img style="width:30px;" src="'+getMarkURL('P',getGroupColor(newTripPointData.group_id,DataStatus.groupList))+'"/>將景點標記在正確位置。<br />'
-				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmNewOK()">確定</button>&nbsp;'
-				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmCancel()">取消</button></div>'
-				+'<a class="button alert tiny radius right white" id="isWrong" href="javascript:tripPointEdit.UiListener.wrongTripPoint()">位置錯了嗎？</a>';	
-		if(confirmWindow){
-			var s=(confirmWindow);
-			if(confirmWindow.s_new)
-				tripPointEdit.UiListener.confirmNewOK();
-			else
-				tripPointEdit.UiListener.confirmOk();
-			if(s)
-				return;
-			//closePost();
-		}
-		confirmWindow = new google.maps.InfoWindow({
-			 content: contentStr,
-			s_new:true
-		});
-		confirmWindow.open(map,PathOnMap.getTmpMark());
-			google.maps.event.addListener(confirmWindow,'closeclick',function(){tripPointEdit.UiListener.confirmCancel();});
-		PathOnMap.closeInfoWindow();
-	};
+	
 
 	
-	//需要新增找不到位置的地點
-	var setNewManPos=function(){
-		if(confirmWindow){
-			if(confirmWindow.s_new)
-				this.UiListener.confirmNewOK();
-			else
-				this.UiListener.confirmOk();
-			$('#slidesContainer').hide();
-		}
-		var tmp_mark=PathOnMap.getTmpMark();
-		if(tmp_mark){
-			tmp_mark.setDraggable(true);
-		}
-		$('#add_new').fadeIn(200).find('input').val('');
-		
-		//按下取消放棄找尋地點
-		$('.list').unbind('click').click(function(){
-			$('.list').unbind('click');
-			$('#add_new').fadeOut(600);
-			tripPointEdit.UiListener.confirmCancel();
-		});
-	}
+
+	
+
 	
 
 	//關閉描點的資訊框
@@ -290,30 +390,6 @@ var TripPointEditModule = function(item){
 		tripPointItemManager.updateMark();
 	};
 	
-	var findPlaceSuccess=function(group_id,place_id,name,city,pos){
-		newTripPointData.name=name;
-		newTripPointData.city=city;
-		newTripPointData.pos=pos;
-		newTripPointData.place_id=place_id;
-		
-		PathOnMap.createTmpMark(name,group_id,pos);
-
-		//newTripPointInput.val(name+','+city);
-		confirmTripPoint(name);
-		
-	};
-	
-	var findNewPlaceNotInDB=function(group_id,name,city,pos){
-		newTripPointData.name=name;
-		newTripPointData.city=city;
-		newTripPointData.pos=pos;
-				
-		PathOnMap.createTmpMark(name,group_id,pos);
-		
-		newTripPointInput.val(name+','+city);
-		
-		confirmPlace(name);	
-	};
 	
 	var findNewPlaceFailed=function(group_id,name){
 		newTripPointData.name=name;
@@ -335,12 +411,18 @@ var TripPointEditModule = function(item){
 		setNewTripPointInput:function(item){
 			newTripPointInput=item;
 		},
-		findTripPointByName:function(name,city,group_id,sort_id){
-			var gcoder=new google.maps.Geocoder();
-		
+		findTripPointByName:function(name,city,group_id,sort_id){		
 			newTripPointData.group_id=group_id;
 			newTripPointData.sort_id = sort_id;
-
+			newTripPointData.city=city;
+			newTripPointData.name=name;
+			if(city&&city.length>0){
+				findPlaceInDB();
+			}else{
+				searchOnGoogle(name);
+			}
+			
+			/*
 			findPlaceByNameAndZone(group_id,name,city,
 			//ok_callback
 			function(){
@@ -354,6 +436,7 @@ var TripPointEditModule = function(item){
 			function(){
 				findNewPlaceFailed(group_id,name);
 			});
+			*/
 		},
 		
 		
@@ -434,7 +517,7 @@ var TripPointEditModule = function(item){
 							PathOnMap.redrawLine();
 							
 							contentBox.insertNewPoint(group_id);
-							
+							PathOnMap.showBeforeReadBubble(tp.id)
 							//tripPointList.reActSortable();
 							groupItemManager.hideAddPointInput(item);
 							

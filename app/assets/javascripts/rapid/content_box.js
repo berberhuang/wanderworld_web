@@ -35,10 +35,10 @@ var ContentBoxModule = function(item){
 	};
 	
 	var isBounce=function(){
-		if(target.css('z-index')==0){
-			return true;
+		if(target.css('z-index')==-1){
+			return false;
 		}
-		return false;
+		return true;
 	};
 	
 	//展開遊記	
@@ -163,9 +163,8 @@ var ContentBoxModule = function(item){
 				if(id){
 					PathOnMap.centerTripPointOnLeftMap(id);
 				}else{
-					var group=groupItemManager.getSelectedGroupItem();
-					id=group.find('.point:first').data('id');
-					PathOnMap.centerTripPointOnLeftMap(id);
+					var point=$('.point:first .point_name');										
+					point.click();
 				}
 				PathOnMap.showTripPointInfo(id);
 			}
@@ -547,13 +546,16 @@ var ContentBoxModule = function(item){
 					forcePasteAsPlainText:true
 				});		
 				
-			}else if(show_group_id==group_id){
-				var point=$('#trip_point_group_'+group_id+' .trip_point li:last');
+			}
+			/*
+			else if(show_group_id==group_id){
+				var point=$('.trip_point_group:[data-id='+group_id+'] .newTripPoint input');
 				var id=point.val();
 				DataStatus.contentList[id]='';
 				var str='<div class="tp_box" id="tp_box_'+id+'"></div>';
 				contentPanel.append(str);
 			}
+			*/
 		},
 		deleteGroup:function(group_id){
 			if(show_group_id==group_id){
@@ -694,6 +696,8 @@ var ContentBoxModule = function(item){
 		},
 		setShowGroupId:function(id,isPublic){
 			show_group_id=id;
+			if(!DataStatus.isPublic)
+				DataStatus.isPublic=[];
 			DataStatus.isPublic[show_group_id]=isPublic;
 		}
 	};

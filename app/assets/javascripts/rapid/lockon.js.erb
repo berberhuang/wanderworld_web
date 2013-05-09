@@ -89,7 +89,7 @@ function initialize() {
 	//resetEnv();		 
 	
 	$('#share').click(function(){
-		$('.popup #shareInput').val('http://www.wanderworld.com.tw/'+trip_id).select();
+		$('#shareInput').val(location.href).select();
 	});
 
 	
@@ -148,7 +148,6 @@ function loadTrip(id,callback){
 		},
 		tripPointList:function(groupList,pointList){
 			tripPointList.loadTripPointList(groupList,pointList);
-			//contentBox.UiControl.showBounceButton();
 		}
 	});
 }
