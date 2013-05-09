@@ -27,6 +27,8 @@
 	$(function(){
 		initialize();
 		<% if @journal_id %>
+			@trip_selected=true
+			@journal_selected=true;
 			//loadJournal(<%=@trip_id%>,<%=@journal_id%>);
 		<% elsif @trip_id %>
 			<%

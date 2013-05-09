@@ -33,16 +33,20 @@ var commentBox;
 function initialize() {
 
 	//載入widget
-	tripPointEdit = new TripPointEditModule('#add_new');
+	
 	
 	var tripPointListDOM=$('#trip_one');
 	tripPointList=new TripPointListbarModule(tripPointListDOM);
 	groupItemManager = new GroupItemModule(tripPointListDOM);
 	tripPointItemManager = new TrippointItemModule(tripPointListDOM);
+
 	
 	tripPointList.setGroupItemManager(groupItemManager);
 	tripPointList.setTripPointItemManager(tripPointItemManager);
 	
+	tripPointEdit = new TripPointEditModule('#add_new');
+	tripPointEdit.setGroupItemManager(groupItemManager);
+	tripPointEdit.setTripPointItemManager(tripPointItemManager);
 	
 	tripListbar = new TripListbarModule('#trip_list');	
 	
