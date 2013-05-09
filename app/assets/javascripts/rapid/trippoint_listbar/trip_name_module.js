@@ -6,24 +6,29 @@ var TripNameModule = function(obj){
 		var tripNameLabel;
 		var tripNameInput;
 
-		var tripNameDivStr='<div><a></a></div>';
-		var tripNameInputStr='<input id="trip_name_input" style="display:none;" placeholder="輸入旅行名稱" />';
+		var tripNameDivStr='<div class="row" id="trip_name_editDiv" style="pointer:cursor;"><a></a></div>';
+		var tripNameInputStr='<input class="row" id="trip_name_input" style="display:none;" placeholder="輸入旅行名稱" />';
 		
 		//按下編輯旅行名稱(click)
 		var clickEditTripName=function(){
-			trip_name=$('#trip_name a:eq(0)').text();
-			$('#trip_name').find('div').hide().end().find('input').show().focus().val(trip_name);
+			trip_name=getTripNameInLabel();
+			tripNameLabel.hide();
+			tripNameInput.show().focus().val(trip_name);
 			
 			setClickOutsideEvent(tripNameInput,finishEditTripName);
 		};
 		
 		var finishEditTripName=function(){
-			var label = getTripNameLabel();
-			var input = getTripNameInput();
-			if( isStringNull(label) && isStringNull(input) ) 
+			var label = getTripNameInLabel();
+			var input = getTripNameInInput();
+			if( isStringNull(label) && isStringNull(input) ){ 
 				setTripNameLabel("請輸入旅行名稱");
-			else
-				setTripNameLabel( (!isStringNull(input)) ? input : label );
+				tripNameLabel.attr('title'," 請輸入旅行名稱");
+			}else{
+				var name=(!isStringNull(input)) ? input : label;
+				setTripNameLabel( name );
+				tripNameLabel.attr('title',name);
+			}
 			finishEdit();
 			
 			Data.saveTripName();
@@ -47,11 +52,11 @@ var TripNameModule = function(obj){
 			tripNameLabel.css('cursor','auto');
 		};
 		
-		var getTripNameLabel=function(){
+		var getTripNameInLabel=function(){
 			return tripNameLabel.find('a').text();
 		};
 		
-		var getTripNameInput=function(){
+		var getTripNameInInput=function(){
 			return tripNameInput.val();
 		};
 		var setTripNameLabel=function(str){
@@ -64,10 +69,10 @@ var TripNameModule = function(obj){
 
 		var initTripNameLabel=function(){
 			if(!tripNameLabel){
-				if(tripNameDOM.find('div').length==0)
+				if(tripNameDOM.find('#trip_name_editDiv').length==0)
 					tripNameLabel=$(tripNameDivStr).appendTo(tripNameDOM);
 				else
-					tripNameLabel=tripNameDOM.find('div:eq(0)');
+					tripNameLabel=tripNameDOM.find('#trip_name_editDiv');
 			}
 		};
 		
