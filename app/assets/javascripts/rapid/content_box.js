@@ -100,8 +100,10 @@ var ContentBoxModule = function(item){
 		var tpList=showingGroupItem.find('.point');
 		
 		for(var i in editor){
-			editor[i].setReadOnly(true);
-			editor[i].destroy();
+			if(editor[i]){
+				editor[i].setReadOnly(true);
+				editor[i].destroy();
+			}
 		}
 		var list = $('#postContent .tp_box');
 		for(var i in list){
@@ -117,8 +119,7 @@ var ContentBoxModule = function(item){
 			str+='<div class="tp_box" id="tp_box_'+id+'">';
 			str+=DataStatus.contentList[id];
 			str+='</div>';
-		}
-						
+		}		
 		contentPanel.empty().append(str);
 				
 		edit_id=null;
@@ -236,36 +237,6 @@ var ContentBoxModule = function(item){
 				}
 			}
 			moduleInstance.UiControl.setEditFocus(id);
-			//$('.tp_box').click(function(event){
-				//console.log(event);
-				//debug=event;
-				//alert($(event.target).attr('id'));
-				//var id=$(event.target).attr('id').split('_box_')[1];
-				//tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));				
-			//})
-			
-			//CKEDITOR.instances.editPost.setData(DataStatus.contentList[id]);
-			/*if(!pointData[edit_menu_id])
-				return;
-			var points=$('#trip_point_group_'+pointData[edit_menu_id].group_id+' li');
-			var k=1;
-			for(var i=0;i<points.length;i++){
-				if(!pointData[edit_menu_id].post_simple){
-						loadPost(pointData[edit_menu_id].group_id,function(){
-						editing=true;
-						ui_editPost(edit_menu_id);
-						ui_unloadTripPointSwitchControl(true);
-					});
-					k=0;
-					break;
-				}
-			}
-			if(k){
-				editing=true;
-				ui_editPost(edit_menu_id);			
-				ui_unloadTripPointSwitchControl(true);
-			}*/
-			//showContainer();
 		},
 		clickCancelEdit:function(){
 			exitEditor();
@@ -465,11 +436,6 @@ var ContentBoxModule = function(item){
 				UiListener.clickCancelEdit();
 			}
 		},
-		//isBounce:function(){
-		//	if(bounce_s)
-		//		return true;
-		//	return false;
-		//},
 		reset:function(){
 			show_id=null;
 			show_group_id=null;

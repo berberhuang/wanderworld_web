@@ -45,7 +45,7 @@
 				<% @isOwner=true %>
 				DataStatus.isOwner=true;
 			<%end%>
-			
+			DataStatus.contentList=[];
 			<%
 				@journal_selected=false
 				@contents=[]
@@ -60,6 +60,17 @@
 					if @isOwner or @public
 						@contents=Micropost.select('article,trip_points.sort_id,trip_points.id').joins(:trip_point).where('trip_points.group_id=?', @journal_id).order('trip_points.sort_id ASC')
 					end
+					%>
+						var tpbs=$('.tp_box');
+						for(var i=0; i<tpbs.length; i++){
+							var tpb=tpbs.eq(i);
+							DataStatus.contentList[tpb.data('id')]=tpb.html();
+						}
+						$('.editTool').click(function(){
+							groupItemManager.editJournal(<%=@journal_id%>);
+						});
+						groupItemManager.selectGroup(<%=@journal_id%>);
+					<%
 				end
 				
 			%>
@@ -233,7 +244,7 @@
 			<div class="large-12 columns large-centered" id="postContent">
 				<% if @journal_selected %>
 				<% for c in @contents %>
-				<div class="tp_box" id="tp_box_<%=c.id%>">
+				<div class="tp_box" id="tp_box_<%=c.id%>" data-id="<%=c.id%>">
 					<%=sanitize c.article%>
 				</div>
 				<% end %>

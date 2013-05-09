@@ -181,7 +181,7 @@ var GroupItemModule=function(obj){
 			}).end()
 			.find('#edit_post').click(function(){
 				contentBox.cancelEditWarning(group_id,function(){
-					contentBox.clickEditPost(group_id,target.find('#trip_point_group_'+group_id+' li:first').val());	
+					contentBox.clickEditPost(group_id,target.find('.trip_point_group:[data-id='+group_id+'] .point:first').data('id'));	
 					showingGroup=group_id;
 				});
 				menu.unbind('clickoutside');
@@ -410,6 +410,10 @@ var GroupItemModule=function(obj){
 		},
 		hideAddPointInput:function(item){
 			hideAddPointInput(item);
-		}
+		},
+		editJournal:function(group_id){
+			contentBox.clickEditPost(group_id,target.find('.trip_point_group:[data-id='+group_id+'] .point:first').data('id'));	
+			showingGroup=group_id;
+		}		
 	};
 };
