@@ -59,7 +59,7 @@ module RapidHelper
 		seq_num=1
 		groups.each do |g|
 			str+='<div id="trip_point_group_'+g.id.to_s+'" class="trip_point_group row" data-id="'+g.id.to_s+'" data-sortid="'+g.sort_id.to_s+'">'
-			str+='<div class="trip_point_title large-9 columns"><h4><a>'+g.title+'</a></h4><input placeholder="輸入遊記名稱" style="display:none;"></div>'
+			str+='<div class="journal_title large-9 columns"><h4><a href="#">'+g.title+'</a></h4><input placeholder="輸入遊記名稱" style="display:none;"></div>'
 			str+='<div class="trip_point_edit large-3 columns right"></div>'
 			str+='<ul class="trip_point">'
 			

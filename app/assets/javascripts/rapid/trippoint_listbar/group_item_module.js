@@ -82,7 +82,7 @@ var GroupItemModule=function(obj){
 		str+=' data-sortid="'+sort_id+'"';
 		str+='>';
 		
-		str+='<div class="trip_point_title large-9 columns"><h4><a>'+title+'</a></h4>'
+		str+='<div class="journal_title large-9 columns"><h4><a href="#">'+title+'</a></h4>'
 			+'<input placeholder="輸入遊記名稱" style="display:none;"></div>';                                            
 		str+='<div class="trip_point_edit large-3 columns right"></div>';	
 		str+='  <ul class="trip_point"></ul>';
@@ -360,8 +360,12 @@ var GroupItemModule=function(obj){
 		item.parent().remove();
 	};
 	
+	var getSelectedGroupItem=function(){
+		return $('.trip_point_group_selected');
+	};
+	
 	var getSelectedGroupId=function(){
-		return $('.trip_point_group_selected').data(id);
+		return getSelectedGroupItem().data('id');
 	};
 	
 	return {
@@ -372,8 +376,11 @@ var GroupItemModule=function(obj){
 			var a=$('.trip_point_group');
 			
 			for(var i=0; i<a.length; i++){
-				initEvent(a.eq(i));
-				ownerModeEnable(a.eq(i));
+				var t=a.eq(i);
+				initEvent(t);
+				if(DataStatus.isOwner){
+					ownerModeEnable(t);
+				}
 			}
 		},
 		refresh:function(groupList){
@@ -388,8 +395,11 @@ var GroupItemModule=function(obj){
 		selectGroup:function(id){
 			selectGroupEffect($('.trip_point_group:[data-id='+id+']'));
 		},
-		getSelectGroupId:function(){
-			return getSelectGroupId();
+		getSelectedGroupId:function(){
+			return getSelectedGroupId();
+		},
+		getSelectedGroupItem:function(){
+			return getSelectedGroupItem();
 		},
 		ownerModeSwitch:function(permission){
 			if(permission){

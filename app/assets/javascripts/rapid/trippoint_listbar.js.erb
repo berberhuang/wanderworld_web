@@ -186,7 +186,7 @@ var TripPointListbarModule = function(obj){
 			groupItemManager.selectGroup(id);
 		},
 		scrollToListItem:function(tp_id){
-			var item=$('.list li[value='+tp_id+']');
+			var item=$('.point:[data-id='+tp_id+']').parents('li');
 			var list=$('#trip_point_list');
 			list.scrollTop(item.position().top-$('.trip_point_group:first').position().top-list.height()/2,500);
 		},

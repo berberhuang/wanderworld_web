@@ -38,9 +38,9 @@ var PathOnMap=(function(){
 			});
 			google.maps.event.addListener(item, 'click', 
 				function(){
+					showMarkDetail(item_id);
 					tripPointList.selectTripPoint(item_id);
 					tripPointList.selectGroup(group_id);
-					showMarkDetail(item_id);
 				}
 			);
 			item.setMap(map);

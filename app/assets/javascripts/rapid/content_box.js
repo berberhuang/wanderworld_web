@@ -83,7 +83,7 @@ var ContentBoxModule = function(item){
 						on:{
 							focus:function(){
 								editor[id].setReadOnly(false);
-								tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
+								tripPointList.selectTripPoint(id);
 								
 								contentPanel.find('img').unbind('click').click(install_resize);
 								$('.tp_box').attr('title','');
@@ -164,6 +164,8 @@ var ContentBoxModule = function(item){
 			controlButton.hide();
 			contentPanel.show();
 			
+			var showingGroupItem=groupItemManager.getSelectedGroupItem();
+			var tpList=showingGroupItem.find('.point');
 			
 			for(var i in editor){
 				editor[i].setReadOnly(true);
@@ -175,7 +177,7 @@ var ContentBoxModule = function(item){
 			}
 			editor=[];
 			
-			var tpList=DataStatus.tripPointList;
+
 			var str='';
 			for(var i in DataStatus.groupList){
 				if(DataStatus.groupList[i].id==show_group_id){
@@ -183,12 +185,12 @@ var ContentBoxModule = function(item){
 					break;
 				}
 			}
+			
 			for(var i=0; i<tpList.length;i++){
-			if(tpList[i].group_id==show_group_id){
-				str+='<div class="tp_box" id="tp_box_'+tpList[i].id+'">';
-				str+=DataStatus.contentList[tpList[i].id];
+				var id=tpList.eq(i).data('id')
+				str+='<div class="tp_box" id="tp_box_'+id+'">';
+				str+=DataStatus.contentList[id];
 				str+='</div>';
-				}
 			}
 					
 			
@@ -361,21 +363,17 @@ var ContentBoxModule = function(item){
 					$('#foo').hide();
 					contentPanel.show();
 					
-					var tpList=DataStatus.tripPointList;
-					var str='';
 					
-					for(var i in DataStatus.groupList){
-						if(DataStatus.groupList[i].id==group_id){
-							str+='<div class="postTitle">'+DataStatus.groupList[i].title+'</div>';
-							break;
-						}
-					}
+					var g_item=$('.trip_point_group:[data-id='+group_id+']');
+					var tpList=g_item.find('.point');
+					var str='';
+										
+					str+='<div class="postTitle">'+g_item.find('.journal_name a').text()+'</div>';
+						
 					for(var i=0; i<tpList.length;i++){
-						if(tpList[i].group_id==group_id){
-							str+='<div class="tp_box" id="tp_box_'+tpList[i].id+'">';
-							str+=DataStatus.contentList[tpList[i].id];
-							str+='</div>';
-						}
+						str+='<div class="tp_box" id="tp_box_'+tpList.eq(i).data('id')+'">';
+						str+=DataStatus.contentList[tpList.eq(i).data('id')];
+						str+='</div>';
 					}
 					
 					$(str).appendTo(contentPanel);
@@ -395,7 +393,7 @@ var ContentBoxModule = function(item){
 							}
 						}
 						if(edit_group_id==null){
-							tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));						
+							tripPointList.UiControl.selectTripPoint($('.point:[data-id='+id+'] .point_name'));						
 						}
 					});
 					
