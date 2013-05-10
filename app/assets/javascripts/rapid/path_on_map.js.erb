@@ -182,9 +182,9 @@ var PathOnMap=(function(){
 				infowindow.close();
 		},
 		centerTripPointOnLeftMap:function(id){
-			map.setZoom(18);
+			map.setZoom(17);
 			var origin_pos=pointData[id].position;
-			var new_pos=new google.maps.LatLng(origin_pos.lat()+0.007,origin_pos.lng()+0.0165);
+			var new_pos=new google.maps.LatLng(origin_pos.lat()+0.0008,origin_pos.lng()+0.0036);
 			map.setCenter(new_pos);
 		},
 		centerTripPointOnAllMap:function(id){
