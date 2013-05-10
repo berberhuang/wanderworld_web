@@ -44,8 +44,14 @@ var GroupItemModule=function(obj){
 			//DataStatus.groupList.push({id:gid,title:groupName,sort_id:sort_id});
 			insertGroup(gid,sort_id,groupName);
 			reLayout();
-			$('.scroll-pane').animate({scrollTop:$('.trip_point_all').height()}, 'slow');	
+			$('.scroll-pane').animate({scrollTop:$('.trip_point_all').height()}, 'slow');
+			
+			if(tip){
+				tip.foundation('joyride','end');
+				tip.foundation('joyride','start',{startOffset:5});
+			}
 		});
+		
 	};
 
 	var removeNewGroupNameInput=function(){

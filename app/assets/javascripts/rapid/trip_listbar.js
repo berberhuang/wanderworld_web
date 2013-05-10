@@ -5,7 +5,10 @@ var TripListbarModule = function(obj){
 	
 	var UiListener = {
 		clickNewTrip:function(){
-			createNewTrip();			
+			if(tip){
+				tip.foundation('joyride','end');
+			}
+			createNewTrip();
 		},
 		clickEditTrip:function(){
 			var item=getDeleteButtonOnTripEditMenu($(this));

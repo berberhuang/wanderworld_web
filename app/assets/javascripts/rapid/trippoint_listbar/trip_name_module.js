@@ -28,6 +28,10 @@ var TripNameModule = function(obj){
 				var name=(!isStringNull(input)) ? input : label;
 				setTripNameLabel( name );
 				tripNameLabel.attr('title',name);
+				if(tip){
+					tip.foundation('joyride','end');
+					tip.foundation('joyride','start',{startOffset:4});
+				}
 			}
 			finishEdit();
 			
@@ -45,6 +49,9 @@ var TripNameModule = function(obj){
 		var enableEdit=function(){
 			tripNameLabel.unbind('click').click(function(){clickEditTripName();});
 			tripNameLabel.css('cursor','pointer');
+			if(tip){
+				tip.foundation('joyride','start',{startOffset:3});
+			}
 		};
 		
 		var disableEdit=function(){
@@ -103,7 +110,9 @@ var TripNameModule = function(obj){
 					enableEdit();
 				else
 					disableEdit();
-			}
-			
+			},
+			clickEditTripName:function(){
+				clickEditTripName();
+			}			
 		};
 };
