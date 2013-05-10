@@ -318,9 +318,9 @@
 			end
 			@url=''
 			if @places.size == 1
-				@url='http://maps.googleapis.com/maps/api/staticmap?maptype=terrain&zoom=7&size=200x300&markers=color%3Ablue'+@pos_str+'&sensor=false'
+				@url='http://maps.googleapis.com/maps/api/staticmap?maptype=hybrid&zoom=7&size=200x300&markers=color%3Ablue'+@pos_str+'&sensor=false'
 			else
-				@url='http://maps.googleapis.com/maps/api/staticmap?maptype=terrain&size=200x300&markers=color%3Ablue'+@pos_str+'&sensor=false'
+				@url='http://maps.googleapis.com/maps/api/staticmap?maptype=hybrid&size=200x300&markers=color%3Ablue'+@pos_str+'&sensor=false'
 			end
 		%>
 	  
