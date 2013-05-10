@@ -375,6 +375,7 @@ var ContentBoxModule = function(item){
 				}
 				
 				show_group_id=group_id;
+				DataStatus.group_id=group_id;
 				
 				bounce();
 				hideControlButton();

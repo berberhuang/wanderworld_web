@@ -77,6 +77,7 @@
 				readJournal_s=true;
 				contentBox.setShowGroupId(<%=@journal_id%>,<%=@public%>);
 				tripPointList.selectGroup(<%=@journal_id%>);
+				DataStatus.group_id=<%=@journal_id%>;
 				<% if @contents.size>0%>
 					tripPointList.selectTripPoint(<%=@contents[0].id%>);
 				<%end%>
