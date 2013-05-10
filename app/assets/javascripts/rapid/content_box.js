@@ -240,6 +240,9 @@ var ContentBoxModule = function(item){
 			moduleInstance.UiControl.setEditFocus(id);
 		},
 		clickCancelEdit:function(){
+			if(window.confirm('確定放棄編輯內容?') == false){	
+				return;
+			}	
 			exitEditor();
 		},
 		clickFinishPost:function(){
@@ -432,7 +435,7 @@ var ContentBoxModule = function(item){
 		setGroupTitle:function(str){
 			target.find('#journal_name h3').text(str);
 		},
-		cancelEdit:function(){
+		cancelEdit:function(){				
 			if(edit_group_id){
 				UiListener.clickCancelEdit();
 			}
@@ -442,24 +445,13 @@ var ContentBoxModule = function(item){
 			show_group_id=null;
 		},
 		cancelEditWarning:function(group_id,callback){
-			if(edit_group_id && edit_group_id!=group_id){				
-				$( "#dialog" ).find('p').text('將放棄編輯內容的更改?').end()
-				.dialog({
-				  resizable: false,
-				  height:140,
-				  modal: true,
-				  buttons: {
-					"放棄儲存": function() {
-					  $( this ).dialog( "close" );
-					  moduleInstance.cancelEdit();
-					  if(callback)
-						callback();
-					},
-					Cancel: function() {
-					  $( this ).dialog( "close" );
-					}
-				  }
-				});			
+		
+			if(edit_group_id && edit_group_id!=group_id){
+				if(window.confirm('將放棄編輯內容的更改?') == false){	
+					return;
+				}
+				moduleInstance.cancelEdit();
+				callback();			
 			}else{
 				if(callback){
 					callback();

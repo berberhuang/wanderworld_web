@@ -75,6 +75,7 @@ var PathOnMap=(function(){
 		},
 		//更新標記的icon(數字及顏色)
 		updateMark:function(){
+			
 			if(pointData.length>0){
 				for(p_i in pointData){
 					pointData[p_i].setMap();
@@ -89,7 +90,7 @@ var PathOnMap=(function(){
 			var groupList = $('.trip_point_group');
 			var i=1;
 			
-			
+
 			for(var g_i=0; g_i<groupList.length; g_i++){
 				var group_id=groupList.eq(g_i).data('id');
 				var mark_color=getGroupColor(group_id,groupList);
@@ -101,8 +102,8 @@ var PathOnMap=(function(){
 					PathOnMap.createMark(tpList.eq(tp_i).find('.point_name').text(),id,group_id,latlng,getMarkURL(i++,mark_color));
 					pointData[id].setDraggable(false);
 				}
-				
 			}
+
 		},
 		//建立未確認的暫時mark
 		createTmpMark:function(title,group_id,latlng){

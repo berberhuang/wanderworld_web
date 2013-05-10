@@ -60,19 +60,18 @@
 					if @isOwner or @public
 						@contents=Micropost.select('article,trip_points.sort_id,trip_points.id').joins(:trip_point).where('trip_points.group_id=?', @journal_id).order('trip_points.sort_id ASC')
 					end
-					%>
-						var tpbs=$('.tp_box');
-						for(var i=0; i<tpbs.length; i++){
-							var tpb=tpbs.eq(i);
-							DataStatus.contentList[tpb.data('id')]=tpb.html();
-						}
-						$('.editTool').click(function(){
-							groupItemManager.editJournal(<%=@journal_id%>);
-						});
-						groupItemManager.selectGroup(<%=@journal_id%>);
-					<%
+			%>
+					var tpbs=$('.tp_box');
+					for(var i=0; i<tpbs.length; i++){
+						var tpb=tpbs.eq(i);
+						DataStatus.contentList[tpb.data('id')]=tpb.html();
+					}
+					$('.editTool').click(function(){
+						groupItemManager.editJournal(<%=@journal_id%>);
+					});
+					groupItemManager.selectGroup(<%=@journal_id%>);						
+			<%	
 				end
-				
 			%>
 			<% if @journal_selected%>
 				readJournal_s=true;
@@ -108,6 +107,16 @@
 			<%end%>
 			tripPointList.initJavascript();
 			reLayout();
+			
+			<%
+			if @journal_selected && @contents.size > 0
+			%>				
+				PathOnMap.centerTripPointOnLeftMap(<%=@contents[0].id%>);
+				PathOnMap.showTripPointInfo(<%=@contents[0].id%>);
+			<%
+			end
+			%>
+			
 		<% elsif @user_id %>
 			<% @author_id=@user_id %>
 			<%@trips=Trip.order('start_date DESC').where(:user_id=>@user_id)%>		
@@ -412,9 +421,6 @@
 		</div>
 		</fieldset>
 </div>
-
-<!--dialog-->
-<div id="dialog" style='display:none'><p></p></div>
 
 
 <!--fb_photo_selector-->
