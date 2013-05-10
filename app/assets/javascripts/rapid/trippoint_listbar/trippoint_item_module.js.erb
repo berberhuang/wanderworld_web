@@ -75,6 +75,25 @@ var TrippointItemModule=function(obj){
 				});
 	};
 
+	var confirmDelete=function(name,callback){		
+		$( "#dialog" ).find('p').text('確定刪除此 '+name+' ?').end()
+		.dialog({
+		  resizable: false,
+		  height:140,
+		  modal: true,
+		  buttons: {
+			"確定": function() {
+			  $( this ).dialog( "close" );
+			  if(callback)
+				callback();
+			},
+			Cancel: function() {
+			  $( this ).dialog( "close" );
+			}
+		  }
+		});			
+	};
+	
 	//按下景點名稱
 	var clickPointTitle=function(group_id,id){
 		//計算遊記內景點mark地圖縮放大小
@@ -123,8 +142,16 @@ var TrippointItemModule=function(obj){
 	
 	//移除景點
 	var removePoint=function(item_id){
-		$('.point[data-id='+item_id+']').remove();
-		//PathOnMap.deleteMark(item_id);
+		var point=$('.point[data-id='+item_id+']');
+		var name=point.find('.point_name').text();
+		
+		if(window.confirm('您確定要刪除 '+name+' ?') == false){
+			return true;
+		}
+
+		point.remove();
+		PathOnMap.closeInfoWindow(item_id);
+		
 		Data.deleteTripPoint(item_id);
 		
 		updateMark();

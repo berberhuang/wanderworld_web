@@ -82,7 +82,9 @@ var GroupItemModule=function(obj){
 		str+=' data-sortid="'+sort_id+'"';
 		str+='>';
 		
-		str+='	<div class="journal_title large-10 columns"><h5><a href="#">'+title+'</a></h5></div>';                                            
+		str+='	<div class="journal_title large-10 columns"><h5><a href="#">'+title+'</a></h5>';
+		str+='	<input style="display:none"></input>';
+		str+='	</div>';
 		str+='	<div class="trip_point_edit large-2 columns right"></div>';	
 		str+='  <ul class="trip_point"></ul>';
 		str+='  <div id="add_trip_point_div" class="large-12 columns large-centered"></div>';
@@ -203,16 +205,18 @@ var GroupItemModule=function(obj){
 	};
 	
 	var clickEditGroupName=function(id){
-		var item = target.find('.trip_point_group:[data-id='+id+'] .trip_point_title');
+		var item = target.find('.trip_point_group:[data-id='+id+'] .journal_title');
 		
 		var a=item.find('a').hide();
 		var input=item.find('input').val(a.text()).show().focus();
-					
+
+		input.unbind('keydown').keydown(keydownEditGroupName);
+		
 		setTimeout(function(){
-				input.bind('clickoutside',function(){
-					finishEditGroupName(id);
-					input.unbind('clickoutside');
-				});
+			input.bind('clickoutside',function(){
+				finishEditGroupName(id);
+				input.unbind('clickoutside');
+			});
 		},50);
 		
 		reLayout();
@@ -220,13 +224,14 @@ var GroupItemModule=function(obj){
 	};
 	
 	var clickDeleteGroup=function(id){
-		if(!Data.deleteGroup(id)){
+		var group=$('.trip_point_group:[data-id='+id+']');
+		var name=group.find('.journal_title a').text();
+		if(window.confirm('您確定要刪除 '+name+' ?') == false){	
 			return;
-		}
-		var groupList=$('.trip_point_group');
-		//var tpList=DataStatus.tripPointList;
-		
-		target.find('.trip_point_group:[data-id='+id+']').empty().remove();
+		}		
+		Data.deleteGroup(id);
+				
+		group.remove();
 		tripPointItemManager.updateMark();
 		contentBox.deleteGroup(id);
 		
@@ -256,18 +261,15 @@ var GroupItemModule=function(obj){
 	var finishEditGroupName=function(id){
 		var label=getGroupNameLabel(id);
 		var input=getGroupNameInput(id);
+
 		var result= !isStringNull(input) ? input : label;
-		
+
 		setGroupNameLabel(id,result);
 		finishEdit(id);
 		
-		for(var i in DataStatus.groupList){
-			if(DataStatus.groupList[i].id==id){
-				DataStatus.groupList[i].title=result;
-				break;
-			}
+		if(contentBox.getShowGroupId()==id){
+			contentBox.setGroupTitle(result);
 		}
-		contentBox.setGroupTitle(result);
 		
 		Data.saveGroupName(id);
 		reLayout();
@@ -301,12 +303,12 @@ var GroupItemModule=function(obj){
 
 	var initGroupNameLabel=function(id){
 		if(!groupLabel[id])
-			groupLabel[id]=target.find('.trip_point_group:[data-id='+id+'] .trip_point_title a:eq(0)');
+			groupLabel[id]=target.find('.trip_point_group:[data-id='+id+'] .journal_title a:eq(0)');
 	};
 	
 	var initGroupNameInput=function(id){
 		if(!groupInput[id])
-			groupInput[id]=target.find('.trip_point_group:[data-id='+id+'] .trip_point_title input');
+			groupInput[id]=target.find('.trip_point_group:[data-id='+id+'] .journal_title input');
 	};
 
 	

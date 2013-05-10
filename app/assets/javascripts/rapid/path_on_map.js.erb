@@ -5,10 +5,7 @@ var PathOnMap=(function(){
 	var infowindow=null;
 	
 	var showBeforeReadBubble=function(item_id){	
-		if(infowindow!=null){
-			infowindow.close();
-		}
-		hideTripPointInfo();
+		closeInfoWindow();
 
 		infowindow=new google.maps.InfoWindow({
 			content: '<div><h5>'+pointData[item_id].title+'</h5></div>'
@@ -24,11 +21,8 @@ var PathOnMap=(function(){
 	};
 	
 	var showTripPointInfo=function(item_id){	
-		if(infowindow!=null){
-			infowindow.close();
-		}
+		closeInfoWindow();
 		$('#trippoint_infowindow_reading').empty().show().append('<div class="large-12 columns"><h5><i class="foundicon-location">'+pointData[item_id].title+'</i></h5></div>');
-		
 	};
 
 	var hideTripPointInfo=function(){
@@ -45,6 +39,12 @@ var PathOnMap=(function(){
 			return false;	
 		}
 		
+	};
+	
+	var closeInfoWindow=function(){
+		if(infowindow)
+			infowindow.close();
+		hideTripPointInfo();
 	};
 
 	
@@ -178,8 +178,7 @@ var PathOnMap=(function(){
 			tmp_mark.place_id=pid;
 		},
 		closeInfoWindow:function(){
-			if(infowindow)
-				infowindow.close();
+			closeInfoWindow();
 		},
 		centerTripPointOnLeftMap:function(id){
 			map.setZoom(17);

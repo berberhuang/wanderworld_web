@@ -49,6 +49,7 @@ var TripPointListbarModule = function(obj){
 			//resetEnv();		
 			contentBox.cancelEditWarning(-1,function(){
 				target.hide();
+				PathOnMap.closeInfoWindow();
 				contentBox.UiControl.hide();
 				contentBox.reset();
 				$('#trip_list').show();

@@ -163,11 +163,12 @@ var ContentBoxModule = function(item){
 				var id=tripPointItemManager.getSelectedTripPointId();
 				if(id){
 					PathOnMap.centerTripPointOnLeftMap(id);
+					PathOnMap.showTripPointInfo(id);
 				}else{
 					var point=$('.point:first .point_name');										
 					point.click();
 				}
-				PathOnMap.showTripPointInfo(id);
+				
 			}
 		},
 		
@@ -429,7 +430,7 @@ var ContentBoxModule = function(item){
 		},
 		//更改遊記框上方title
 		setGroupTitle:function(str){
-			target.find('.postTitle').text(str);
+			target.find('#journal_name h3').text(str);
 		},
 		cancelEdit:function(){
 			if(edit_group_id){
@@ -441,8 +442,9 @@ var ContentBoxModule = function(item){
 			show_group_id=null;
 		},
 		cancelEditWarning:function(group_id,callback){
-			if(edit_group_id && edit_group_id!=group_id){
-				$( "#dialog" ).dialog({
+			if(edit_group_id && edit_group_id!=group_id){				
+				$( "#dialog" ).find('p').text('將放棄編輯內容的更改?').end()
+				.dialog({
 				  resizable: false,
 				  height:140,
 				  modal: true,
@@ -664,6 +666,9 @@ var ContentBoxModule = function(item){
 			if(!DataStatus.isPublic)
 				DataStatus.isPublic=[];
 			DataStatus.isPublic[show_group_id]=isPublic;
+		},
+		getShowGroupId:function(){
+			return show_group_id;
 		}
 	};
 };

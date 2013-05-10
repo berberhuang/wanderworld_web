@@ -197,17 +197,13 @@ var Data=(function(){
 		//儲存群組名稱
 		saveGroupName:function(id){	
 			log('saveGroupName');
-			var t = $('#trip_point_group_'+id+' .trip_point_title a').text();
+			var t = $('.trip_point_group:[data-id='+id+'] .journal_title a').text();
 			$.post('/trip/editGroupTitle',{id:id,title:t});
 		},
 		//刪除群組
 		deleteGroup:function(id){
 			log('deleteGroup');
-			if(window.confirm('您確定要刪除?') == true){
-				$.get("/trip/deleteGroup/"+id);
-				return true;
-			}
-			return false;
+			$.get("/trip/deleteGroup/"+id);
 		},
 
 		//改變旅行順序
