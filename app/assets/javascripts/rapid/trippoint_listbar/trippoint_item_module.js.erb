@@ -74,56 +74,7 @@ var TrippointItemModule=function(obj){
 					removePoint(id);
 				});
 	};
-
-	var confirmDelete=function(name,callback){		
-		$( "#dialog" ).find('p').text('確定刪除此 '+name+' ?').end()
-		.dialog({
-		  resizable: false,
-		  height:140,
-		  modal: true,
-		  buttons: {
-			"確定": function() {
-			  $( this ).dialog( "close" );
-			  if(callback)
-				callback();
-			},
-			Cancel: function() {
-			  $( this ).dialog( "close" );
-			}
-		  }
-		});			
-	};
 	
-	//按下景點名稱
-	var clickPointTitle=function(group_id,id){
-		//計算遊記內景點mark地圖縮放大小
-/*		var showingGroup=groupItemManager.getSelectedGroupId();
-		if(showingGroup!=group_id){
-			var tmp=[];
-			var tpList=$('.trip_point_group:[data-id='+group_id+'] .point');
-			computeMap(tpList);
-		}
-*/
-		
-		
-		
-/*
-		if(contentBox.isShow()&&showingGroup==group_id){
-			PathOnMap.showMarkInfo(id);
-			contentBox.UiControl.showContent(group_id,id);
-		}else{
-			contentBox.UiControl.hideContent();
-			contentBox.reset();
-								
-			document.title='WanderWorld地球漫遊 - '+DataStatus.trip_name;
-			window.history.pushState(null,document.title,'/'+DataStatus.trip_id);
-			
-			PathOnMap.showMarkInfo(id);
-		}
-		
-		tripPointEdit.UiListener.confirmCancel();
-*/
-};
 	
 	//點選景點得視覺效果
 	var selectTripPointEffect=function(item){
@@ -144,15 +95,19 @@ var TrippointItemModule=function(obj){
 	var removePoint=function(item_id){
 		var point=$('.point[data-id='+item_id+']');
 		var name=point.find('.point_name').text();
-		
+		var group_id=point.parents('.trip_point_group').data('id');
+	
 		if(window.confirm('您確定要刪除 '+name+' ?') == false){
 			return true;
 		}
 
 		point.remove();
 		PathOnMap.closeInfoWindow(item_id);
+	
 		
 		Data.deleteTripPoint(item_id);
+		
+		contentBox.deleteTripPoint(group_id,item_id);
 		
 		updateMark();
 		

@@ -135,6 +135,34 @@ var ContentBoxModule = function(item){
 		
 	};
 	
+	var equipEditorOnBlock=function(id,item){
+		editor[id]=CKEDITOR.inline(item,{
+			on:{
+				focus:function(){
+					editor[id].setReadOnly(false);
+					tripPointList.selectTripPoint(id);
+					
+					contentPanel.find('img').unbind('click').click(install_resize);
+					$('.tp_box').attr('title','');
+				
+				}
+			},
+								// Remove unnecessary plugins to make the editor simpler.
+			removePlugins: 'find,flash,' +
+							'forms,iframe,newpage,' +
+							'smiley,specialchar,stylescombo,templates',
+			height : '100%',
+			toolbar : [	[ 'Undo','Redo' ],
+						[ 'Link','Unlink' ],
+						[ 'Image' , 'HorizontalRule'],
+						['FontSize'],
+						'/' ,
+						[ 'Bold','Italic','Underline', 'RemoveFormat','TextColor','Font' ]
+					],
+			forcePasteAsPlainText:true
+		});
+	};
+	
 	var UiListener={
 
 		clickJournalSwitchToggle:function(){
@@ -181,31 +209,7 @@ var ContentBoxModule = function(item){
 				(function(){
 					var id = list.eq(i).attr('id').split('_box_')[1];
 					list.eq(i).attr('contenteditable',true);
-					editor[id]=CKEDITOR.inline(list[i],{
-						on:{
-							focus:function(){
-								editor[id].setReadOnly(false);
-								tripPointList.selectTripPoint(id);
-								
-								contentPanel.find('img').unbind('click').click(install_resize);
-								$('.tp_box').attr('title','');
-							
-							}
-						},
-											// Remove unnecessary plugins to make the editor simpler.
-						removePlugins: 'find,flash,' +
-										'forms,iframe,newpage,' +
-										'smiley,specialchar,stylescombo,templates',
-						height : '100%',
-						toolbar : [	[ 'Undo','Redo' ],
-									[ 'Link','Unlink' ],
-									[ 'Image' , 'HorizontalRule'],
-									['FontSize'],
-									'/' ,
-									[ 'Bold','Italic','Underline', 'RemoveFormat','TextColor','Font' ]
-								],
-						forcePasteAsPlainText:true
-					});
+					equipEditorOnBlock(id,list[i]);
 				}());
 			}
 			
@@ -221,7 +225,7 @@ var ContentBoxModule = function(item){
 				}
 			}
 			
-			var pointList=$('#trip_point_group_'+group_id+' .point_name');
+			var pointList=$('.trip_point_group:[data-id='+group_id+'] .point_name');
 			for(var i=0; i<pointList.length; i++){
 				if(i%2){
 					pointList.eq(i).addClass('red_box');
@@ -427,11 +431,7 @@ var ContentBoxModule = function(item){
 			show_group_id=null;
 		},
 		cancelEditWarning:function(group_id,callback){
-		
 			if(edit_group_id && edit_group_id!=group_id){
-				if(window.confirm('將放棄編輯內容的更改?') == false){	
-					return;
-				}
 				moduleInstance.cancelEdit();
 				callback();			
 			}else{
@@ -443,10 +443,10 @@ var ContentBoxModule = function(item){
 		insertNewPoint:function(group_id){
 			if(edit_group_id&&edit_group_id==group_id){
 				$('.noPointMsg').remove();
-				var tpList=$('#trip_point_group_'+group_id+' .trip_point li');
+				var tpList=$('.trip_point_group:[data-id='+group_id+'] .point');
 				var i=tpList.length-1;
 				var point=tpList.last();
-				var id=point.val();
+				var id=point.data('id');
 				DataStatus.contentList[id]='';
 				
 				var str='<div class="tp_box" id="tp_box_'+id+'"></div>';
@@ -462,31 +462,7 @@ var ContentBoxModule = function(item){
 				}
 				
 				tmp.attr('contenteditable',true);
-				editor[id]=CKEDITOR.inline(tmp[0],{
-					on:{
-						focus:function(){
-							editor[id].setReadOnly(false);
-							tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
-							
-							contentPanel.find('img').unbind('click').click(install_resize);
-							$('.tp_box').attr('title','');
-						
-						}
-					},
-										// Remove unnecessary plugins to make the editor simpler.
-					removePlugins: 'find,flash,' +
-									'forms,iframe,newpage,' +
-									'smiley,specialchar,stylescombo,templates',
-					height : '100%',
-					toolbar : [	[ 'Undo','Redo' ],
-								[ 'Bold','Italic','Underline', 'RemoveFormat' ] ,
-								[ 'TextColor','BGColor','Font','FontSize'],
-								[ 'Link','Unlink' ],
-								//'/' , 
-								[ 'Image' , 'HorizontalRule' ,'Maximize']
-							],
-					forcePasteAsPlainText:true
-				});		
+				equipEditorOnBlock(id,tmp[0]);		
 				
 			}else if(show_group_id==group_id){
 				var point=$('.trip_point_group:[data-id='+group_id+'] .newTripPoint input');
