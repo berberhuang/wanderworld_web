@@ -306,7 +306,7 @@
 		<!--遊記控制中心，兩層，第一層放標題、社交原件；第二層放編輯工具-->
 		
 	<!--遊記開關-->
-	<div class="large-1 columns" style="<%='visibility:hidden;' if !@trip_selected %>">
+	<div class="large-1 columns" style="<%='visibility:hidden;' if !@trip_selected or @groups.size==0 %>">
 		<div class="large-12 columns large-centered control button secondary radius" id="bounce" title="展開/收合遊記">
 			<h1>	
 				<i class="foundicon-idea"></i>

@@ -18,7 +18,7 @@ var ContentBoxModule = function(item){
 	var edit_id;
 	var edit_group_id;
 	var show_id;
-	var show_group_id;
+	var show_group_id=null;
 	
 	
 	var moduleInstance;
@@ -186,7 +186,14 @@ var ContentBoxModule = function(item){
 					PathOnMap.showTripPointInfo(id);
 				}else{
 					var point=$('.point:first .point_name');										
-					point.click();
+					if(point.length>0)
+						point.click();
+					else{
+						if(!show_group_id)
+							show_group_id=$('.trip_point_group:first').data('id');
+						moduleInstance.UiControl.showBlankContentBox(show_group_id);
+						
+					}
 				}
 				
 			}
@@ -303,13 +310,24 @@ var ContentBoxModule = function(item){
 			showJournalSwitchToggle:function(){
 				showJournalSwitchToggle();
 			},
+			showBlankContentBox:function(group_id){
+				show_group_id=group_id;
+				bounce();
+				hideControlButton();
+				editTool.unbind('click').click(function(){UiListener.clickEditPost(group_id,id);});
+				var g_item=$('.trip_point_group:[data-id='+group_id+']');
+				var journal_name=g_item.find('.journal_title a').text();
+					
+				$('#journal_name h3').text(journal_name);
+				contentPanel.empty();
+			},
 			showContent:function(group_id,id,callback){
 				show_id=id;
 				if(group_id==show_group_id){
 					bounce();
 					
 					$('.editTool').unbind('click').click(function(){
-						contentBox.clickEditPost(group_id,target.find('#trip_point_group_'+group_id+' li:first').val());	
+						contentBox.clickEditPost(group_id,target.find('.trip_point_group:[data-id='+group_id+'] .point:first').data('id'));	
 						showingGroup=group_id;
 					});
 					

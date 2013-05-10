@@ -21,7 +21,7 @@ var GroupItemModule=function(obj){
 	
 	var showAddGroupInput=function(){
 		newGroupDom.appendTo(container);
-		var newGroupInput= newGroupDom.find('input').keydown(keydownEditGroupName).focus();
+		var newGroupInput= newGroupDom.find('input').val('').keydown(keydownEditGroupName).focus();
 		
 		reLayout();		
 		setClickOutsideEvent(newGroupDom,function(){
@@ -89,23 +89,26 @@ var GroupItemModule=function(obj){
 		str+='  <ul class="trip_point"></ul>';
 		str+='  <div id="add_trip_point_div" class="large-12 columns large-centered"></div>';
 		str+='</div>';
-		
+
 		var item=$(str).appendTo(target.find('.trip_point_all'));
 		initEvent(item,group_id);
 
 		if(DataStatus.isOwner){
 			ownerModeEnable(item);
 		}
+		contentBox.UiControl.showJournalSwitchToggle();
 	};
 	
 	var initEvent=function(item,group_id){
-		item.find('.trip_point_title input').keydown(keydownEditGroupName).end()
-			.find('.trip_point_title').click(function(event){
-				contentBox.cancelEditWarning(group_id,function(){
-					clickGroupTitle(group_id);
-					var item=$(event.target);
-					selectGroupEffect(item.parents('.trip_point_group'));
-				});
+		item.find('.journal_title input').keydown(keydownEditGroupName).end()
+			.find('.journal_title').click(function(event){
+				//console.log('click');
+				//contentBox.cancelEditWarning(group_id,function(){
+
+				clickGroupTitle(group_id);
+				//var item=$(event.target);
+				//selectGroupEffect(item.parents('.trip_point_group'));
+				//});
 			}).end();
 	};
 	
@@ -124,20 +127,14 @@ var GroupItemModule=function(obj){
 	//按下群組名稱
 	var clickGroupTitle=function(group_id){
 		document.title='WanderWorld地球漫遊 - '+DataStatus.trip_name;
-		window.history.pushState(null,document.title,'/'+DataStatus.trip_id);
-						
-		if(showingGroup!=group_id){
-			var tpList=$('.trip_point_group:[data-id='+group_id+'] .point');			
-			computeMap(tpList);
-		}
-		if(contentBox.isShow()&&showingGroup==group_id){
-			contentBox.UiControl.showContent(group_id);					
+		window.history.pushState(null,document.title,'/'+DataStatus.trip_id);	
+
+		var tp=$('.trip_point_group:[data-id='+group_id+'] .point');
+		if(tp.length>0){
+			tp.eq(0).find('.point_name').click();				
 		}else{
-			contentBox.UiControl.hide();
-			contentBox.reset();
-			PathOnMap.closeInfoWindow();
+			contentBox.UiControl.showBlankContentBox(group_id);
 		}
-		showingGroup=group_id;
 	};
 				
 	var selectGroupEffect=function(item){
@@ -209,8 +206,6 @@ var GroupItemModule=function(obj){
 		
 		var a=item.find('a').hide();
 		var input=item.find('input').val(a.text()).show().focus();
-
-		input.unbind('keydown').keydown(keydownEditGroupName);
 		
 		setTimeout(function(){
 			input.bind('clickoutside',function(){
@@ -336,8 +331,7 @@ var GroupItemModule=function(obj){
 								tripPointItemManager.addNewTripPoint(event,group_id,$(this))
 							})
 						.blur(function(event){blurAddPointInput(event,group_id);})
-						.focus()
-						.val('')		
+						.focus()		
 						.autocomplete({
 							source:'/place/search',
 							position: { my: "right top", at: "right bottom", collision: "none" }		
@@ -378,7 +372,7 @@ var GroupItemModule=function(obj){
 			
 			for(var i=0; i<a.length; i++){
 				var t=a.eq(i);
-				initEvent(t);
+				initEvent(t,t.data('id'));
 				if(DataStatus.isOwner){
 					ownerModeEnable(t);
 				}
