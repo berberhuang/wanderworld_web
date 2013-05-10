@@ -3,7 +3,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="msvalidate.01" content="76119A89703430A2C4DE9766A11E7448" />
-<title>WanderWorld地球漫遊</title>
 <link rel="shortcut icon" href="<%=asset_path('logo.ico')%>"/>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
@@ -13,6 +12,7 @@
 <%= stylesheet_link_tag "rapid" %>
 <%= yield :css %>
 <%= csrf_meta_tags %>
+<%= yield :info_head %>
 
 <script type="text/javascript">
 

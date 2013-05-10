@@ -1,11 +1,66 @@
+<% if @trip_id %>
+	<%
+	@trip_selected=true
+
+	@trip_info=Trip.find(@trip_id)
+	@author_id=@trip_info.user_id
+	@trip_info.count+=1
+	@trip_info.save!
+	@groups=Group.order('sort_id ASC').where(:trip_id=>@trip_id)
+	@tripPoints=TripPoint.select('trip_points.id,group_id,sort_id,name,longitude,latitude').order('group_id,sort_id ASC').joins(:place).where(:trip_id=>@trip_id)
+		
+	@journal_selected=false
+	@contents=[]
+	@public=false
+	@journal_name=nil
+	@isOwner=false;
+	if @trip_info.user_id.to_s==session[:user_id].to_s
+		@isOwner=true
+	end
+	
+	if @journal_id 
+		@journal_selected=true
+		@journal=Group.select('title,public,photo').find_by_id(@journal_id)
+		@journal_name=@journal.title
+		@public=@journal.public
+		if @isOwner or @public
+			@contents=Micropost.select('article,trip_points.sort_id,trip_points.id').joins(:trip_point).where('trip_points.group_id=?', @journal_id).order('trip_points.sort_id ASC')
+		end
+	end		
+	
+	%>
+<% elsif @user_id %>
+	<% @author_id=@user_id 
+		@trips=Trip.order('start_date DESC').where(:user_id=>@user_id)
+		@user = User.find(@user_id)
+		
+		if @user.id.to_s==session[:user_id].to_s
+			@isOwner=true
+		end
+	%>
+<% end %>
+
+
 <%= content_for :css do %>
 	<%= stylesheet_link_tag "index_layout" %>
 	<%= stylesheet_link_tag "newindex" %>
 <%end%>
 
-<%
-	@isOwner=false
-%>
+<%= content_for :info_head do %>
+	<%if @trip_id%>
+		<title><%=@trip_info.name%> - WanderWorld地球漫遊</title>
+		<% if @contents.size > 0 %>
+			<meta name="description" lang="zh-Hant-TW" content="<%=@contents[0].article%>"/>
+			<meta property="og:image" content="<%=@journal.photo%>" />
+		<%else%>
+			<meta name="description" lang="zh-Hant-TW" content="<%for g in @groups %><%=g.title%>,<%end%>"/>
+		<%end%>
+	<%else @user_id%>
+		<title><%=@user.username%>的旅行 - WanderWorld地球漫遊</title>
+		<meta name="description" lang="zh-Hant-TW" content="<%for t in @trips%><%=t.name%>,<%end%>" />
+	<%end%>
+<%end%>
+
 
 <script type="text/javascript">
 	//編輯顯示的URL
@@ -30,37 +85,12 @@
 	$(function(){
 		initialize();
 		<% if @trip_id %>
-			<%
-			@trip_selected=true
-
-			@trip_info=Trip.find(@trip_id)
-			@author_id=@trip_info.user_id
-			@trip_info.count+=1
-			@trip_info.save!
-			@groups=Group.order('sort_id ASC').where(:trip_id=>@trip_id)
-			@tripPoints=TripPoint.select('trip_points.id,group_id,sort_id,name,longitude,latitude').order('group_id,sort_id ASC').joins(:place).where(:trip_id=>@trip_id)
-			%>
 			DataStatus.owner_user_id=<%=@trip_info.user_id%>;
-			<% if @trip_info.user_id.to_s==session[:user_id].to_s%>
-				<% @isOwner=true %>
+			<% if @isOwner%>
 				DataStatus.isOwner=true;
 			<%end%>
 			DataStatus.contentList=[];
-			<%
-				@journal_selected=false
-				@contents=[]
-				@public=false
-				@journal_name=nil
-				
-				if @journal_id 
-					@journal_selected=true
-					@journal=Group.select('title,public').find_by_id(@journal_id)
-					@journal_name=@journal.title
-					@public=@journal.public
-					if @isOwner or @public
-						@contents=Micropost.select('article,trip_points.sort_id,trip_points.id').joins(:trip_point).where('trip_points.group_id=?', @journal_id).order('trip_points.sort_id ASC')
-					end
-			%>
+			<% if @journal_id %>
 					var tpbs=$('.tp_box');
 					for(var i=0; i<tpbs.length; i++){
 						var tpb=tpbs.eq(i);
@@ -70,9 +100,7 @@
 						groupItemManager.editJournal(<%=@journal_id%>);
 					});
 					groupItemManager.selectGroup(<%=@journal_id%>);						
-			<%	
-				end
-			%>
+			<% end %>
 			<% if @journal_selected%>
 				readJournal_s=true;
 				contentBox.setShowGroupId(<%=@journal_id%>,<%=@public%>);
@@ -83,7 +111,7 @@
 				<%end%>
 			<%end%>
 			
-			document.title='<%=@trip_info.name%> - WanderWorld地球漫遊';
+			
 			DataStatus.trip_id=<%=@trip_id%>;
 			DataStatus.trip_name='<%=@trip_info.name%>';
 			DataStatus.owner_user_id=<%=@trip_info.user_id%>;
@@ -122,13 +150,9 @@
 			end
 			%>
 			
-		<% elsif @user_id %>
-			<% @author_id=@user_id %>
-			<%@trips=Trip.order('start_date DESC').where(:user_id=>@user_id)%>		
-	
+		<% elsif @user_id %>	
 			DataStatus.owner_user_id=<%=@user_id%>;
 			
-			<%@user = User.find(@user_id)%>
 			
 			<%if @user.fbid %>
 				$('#person_avatar img').attr('src','https://graph.facebook.com/<%=@user.fbid%>/picture');
@@ -136,7 +160,7 @@
 				$('#person_avatar img').attr('src','<%=asset_path("user_avatar.png")%>');
 			<%end%>
 			
-			<% if @user_id==session[:user_id].to_s%>
+			<% if @isOwner%>
 				DataStatus.isOwner=true;
 			<%end%>
 
@@ -221,7 +245,7 @@
 							</a>
 						</div>
 						<div class="large-2 columns">
-							<a class="editTool right button secondary tiny radius" >
+							<a class="editTool right button secondary tiny radius" style="<%='visibility:hidden;' if !@isOwner%>" >
 								<i class="foundicon-edit"></i>
 							</a>
 						</div>
@@ -282,7 +306,7 @@
 	</div>
 	<!--triplist-->
 	<div id="trip_list" class="list large-2 columns gallery right" style="<%='display:none' if !@user_id %>" >
-		<a id="trip_create_button" class="button tiny radius" style="position:absolute; right:0px;">
+		<a id="trip_create_button" class="button tiny radius" style="position:absolute; right:0px;<%='visibility:hidden;' if !@isOwner%>" >
 			<i class="foundicon-plus" style="float:left">&nbsp;</i>
 			<i class="foundicon-flag" style="float:left"></i>
 			<span class="showText">新增旅行</span>
@@ -329,7 +353,7 @@
 				<%=tripPointList_gen(@groups,@tripPoints) if @groups&&@tripPoints%>
 			</div>
 		</div>
-		<div class="add_group_title button round secondary tiny columns large-centered" id="group_create_button">新增遊記
+		<div class="add_group_title button round secondary tiny columns large-centered" id="group_create_button" style="<%='display:none' if !@isOwner%>">新增遊記
 		<i class="foundicon-add-doc"></i>
 		</div>
 		<div class="row">
