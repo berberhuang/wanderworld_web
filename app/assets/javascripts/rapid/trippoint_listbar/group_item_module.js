@@ -133,7 +133,9 @@ var GroupItemModule=function(obj){
 		if(tp.length>0){
 			tp.eq(0).find('.point_name').click();				
 		}else{
+			PathOnMap.closeInfoWindow();
 			contentBox.UiControl.showBlankContentBox(group_id);
+			selectGroupEffect($('.trip_point_group:[data-id='+group_id+']'));
 		}
 	};
 				

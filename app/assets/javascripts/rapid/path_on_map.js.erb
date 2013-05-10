@@ -184,7 +184,21 @@ var PathOnMap=(function(){
 		centerTripPointOnLeftMap:function(id){
 			map.setZoom(17);
 			var origin_pos=pointData[id].position;
-			var new_pos=new google.maps.LatLng(origin_pos.lat()+0.0008,origin_pos.lng()+0.0036);
+			
+			var r=6371;
+			var d1=origin_pos.lat();
+			var y=0.03;
+			//修正地球不是圓的
+			if(d1>0){
+				y+=d1/500;
+			}else{
+				y+=-d1/500;
+			}
+			var L1=r*Math.tan(d1/180*Math.PI);
+			var L2=L1-y;
+			var d2=Math.atan(L2/r)/Math.PI*180;
+			var dist_y=d1-d2;
+			var new_pos=new google.maps.LatLng(origin_pos.lat()+dist_y,origin_pos.lng()+0.0036);
 			map.setCenter(new_pos);
 		},
 		centerTripPointOnAllMap:function(id){
@@ -202,13 +216,7 @@ var PathOnMap=(function(){
 		},
 		clickReadJournal:function(group_id,id){
 			readJournal_s=true;
-			console.log('loadComments '+group_id);
-			commentBox.loadComments(group_id);
-			contentBox.UiControl.showContent(group_id,id);
-			PathOnMap.centerTripPointOnLeftMap(id);
-			PathOnMap.showTripPointInfo(id);
-			tripPointList.setShowingGroup(group_id);
-			tripPointList.scrollToListItem(id); 
+			$('.point:[data-id='+id+'] .point_name').click();
 		}
 	};
 }());

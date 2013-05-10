@@ -76,6 +76,10 @@
 			<% if @journal_selected%>
 				readJournal_s=true;
 				contentBox.setShowGroupId(<%=@journal_id%>,<%=@public%>);
+				tripPointList.selectGroup(<%=@journal_id%>);
+				<% if @contents.size>0%>
+					tripPointList.selectTripPoint(<%=@contents[0].id%>);
+				<%end%>
 			<%end%>
 			
 			document.title='<%=@trip_info.name%> - WanderWorld地球漫遊';
@@ -211,7 +215,7 @@
 							</ul>
 						</div>
 						<div class="large-4 columns">
-							<a class="button tiny radius" onclick="postToWall()">
+							<a class="button tiny radius" id="share_journal">
 								<i class="foundicon-social-facebook"></i>
 							</a>
 						</div>
@@ -229,8 +233,8 @@
 				<div class="large-8 columns" >
 				</div>
 				<!--遊記狀態/權限區塊-->
-				<div class="large-4 columns">
-					<div id="draftButtons" class="controlButton" style="display:none">
+				<div class="large-4 columns controlButton" style="display:none">
+					<div id="draftButtons" style="display:none">
 						<ul class="button-group radius">
 							<li><a class="button secondary tiny" id="releasePost">發佈</a></li>
 							<li><a class="button secondary tiny" id="finishPost">儲存</a></li>
@@ -238,7 +242,7 @@
 						</ul>
 					</div>
 					<!--↓第二次編輯遊記↓-->
-					<div id="releaseButtons" class="controlButton" style="display:none">
+					<div id="releaseButtons" style="display:none">
 						<ul class="button-group radius">
 							<li><a class="button tiny" id="releasePost">更新</a></li>
 							<li><a class="button secondary tiny" id="toDraft">還原草稿</a></li>
@@ -350,7 +354,7 @@
 	    			<input type="text" id="shareInput" placeholder="連結網址" />
 	    		</div>
 	    		<div class="small-2 columns">
-	    			<a class="button radius postfix" onclick="postToWall()">
+	    			<a class="button radius postfix" id="share_trip">
 	    				<i class="foundicon-social-facebook">分享</i></a>
 	    		</div>
 	    	</div>

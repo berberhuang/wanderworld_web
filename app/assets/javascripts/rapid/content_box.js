@@ -3,6 +3,7 @@ var ContentBoxModule = function(item){
 	var target=$(item);
 	var contentPanel=target.find('#postContent');
 	var controlButton = target.find('.controlButton');
+	console.log(controlButton);
 	var editTool = target.find('.editTool');
 	var journalSwitchToggle = $('#bounce');	
 	var draftButtons=target.find('#draftButtons');
@@ -56,6 +57,10 @@ var ContentBoxModule = function(item){
 
 	var showJournalSwitchToggle=function(){
 		journalSwitchToggle.css('visibility','visible');
+	};
+	
+	var showControlButton=function(){
+		controlButton.show();
 	};
 	
 	var hideControlButton=function(){
@@ -207,13 +212,13 @@ var ContentBoxModule = function(item){
 		clickEditPost:function(group_id,id){
 			edit_id=id;
 			edit_group_id=group_id;
-
+			
 			if(DataStatus.isPublic[group_id]){
-				console.log(releaseButtons);
 				releaseButtons.show();
 			}else{
 				draftButtons.show();
 			}
+			showControlButton();
 			
 			var list=target.find('.tp_box');
 			for(var i=0; i<list.length; i++){
@@ -282,8 +287,18 @@ var ContentBoxModule = function(item){
 	cancelEdit.click(UiListener.clickCancelEdit);
 	toDraft.click(UiListener.clickConvertToDraft);
 	
-	target.find('.public_button').click(UiListener.clickSetPublic);
-	target.find('.private_button').click(UiListener.clickSetPrivate);
+	target.find('.public_button').click(function(){
+										$('#release_status_text').click();
+										UiListener.clickSetPublic();
+									});
+	target.find('.private_button').click(function(){
+										$('#release_status_text').click();
+										UiListener.clickSetPrivate();
+									});
+									
+	target.find('#share_journal').click(function(){
+		postToWall('http://www.wanderworld.com.tw/'+DataStatus.trip_id+'/'+DataStatus.group_id);
+	});
 	
 	return{
 		init:function(){
@@ -363,6 +378,8 @@ var ContentBoxModule = function(item){
 				
 				bounce();
 				hideControlButton();
+				console.log(group_id);
+				console.log(id);
 				editTool.unbind('click').click(function(){UiListener.clickEditPost(group_id,id);});
 				
 				$('#foo').show();

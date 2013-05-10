@@ -50,7 +50,7 @@ function onLogout(){
 	setTimeout('window.location.href="/userSession/logout";',500);
 }
 
-function postToWall(){
+function postToWall(url){
 	//var t=$('#input li:eq(0)').val();
 	//if(!pointData[t].post_simple)
 	//	loadPost(t,function(){
@@ -58,7 +58,7 @@ function postToWall(){
 	//	});
 	//else
 	//	FB.ui({method:'feed',link:'http://wanderworld.com.tw/'+trip_id,name:trip_name,description:pointData[t].post_simple.slice(0,10000),picture:"<%='http://wanderworld.com.tw'+asset_path('banner_logo_walker.png')%>"});
-	FB.ui({method:'feed',link:location.href});
+	FB.ui({method:'feed',link:url});
 }
 
 function addCommentsAndLike(){
