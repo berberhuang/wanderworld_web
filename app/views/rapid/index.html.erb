@@ -89,7 +89,7 @@
 			<%@user = @trip_info.user%>
 			
 			<%if @user.fbid %>
-				$('#person_avatar img').attr('src','https://graph.facebook.com/<%=user.fbid%>/picture');
+				$('#person_avatar img').attr('src','https://graph.facebook.com/<%=@user.fbid%>/picture');
 			<%else%>
 				$('#person_avatar img').attr('src','<%=asset_path("user_avatar.png")%>');
 			<%end%>
