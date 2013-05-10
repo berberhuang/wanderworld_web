@@ -207,7 +207,7 @@ var ContentBoxModule = function(item){
 				if(tip){
 					tip.foundation('joyride','end');
 					tip.foundation('joyride','start',{startOffset:6});
-					tip=null;
+					tip=false;
 				}				
 			}
 		},
