@@ -155,6 +155,8 @@ var CommentModule = function(item){
 		loadComments:function(group_id){
 			target.hide();
 			commentScope.empty();
+			return;
+			
 			commentModel=[];
 			$.get('/comment/getComments',{group_id:group_id}, function(resp){
 				var r=resp[0];

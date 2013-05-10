@@ -174,7 +174,7 @@
 			<% else%>
 			<img src='<%=asset_path("user_avatar.png")%>' style="display:block; margin:auto;"></img>
 			<% end %>
-        	<h5><a class="black text-center" id="person_name" href="#" style="display:block; word-wrap:break-word" ><%=@user.username if !@journal_id%></a></h5>
+        	<h5><a class="black text-center" id="person_name" href="#" style="display:block; word-wrap:break-word" ><%=@user.username %></a></h5>
         </div>
         <div class="row">
         		<h6 class="title" ><a href="#" class="black" id="firstStop" onclick="showTravelJournal()"><i class="foundicon-globe"></i>旅行列表</a></h5>

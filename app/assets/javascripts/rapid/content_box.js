@@ -384,11 +384,9 @@ var ContentBoxModule = function(item){
 					if(DataStatus.isOwner){
 						target.find('#release_status').css('visibility','visible');
 						if(DataStatus.isPublic[group_id]){
-							target.find('#notpublic').hide();
-							target.find('#public').show();
+							target.find('#release_status_text').text('已發布');
 						}else{
-							target.find('#notpublic').show();
-							target.find('#public').hide();
+							target.find('#release_status_text').text('草稿');
 						}
 						
 					}else{
