@@ -250,8 +250,8 @@
 			<hr/>
 			<!--遊記閱讀/編輯區塊-->
 		<div class="row" id="journal">
-			<div id="foo" class="large-12 columns">
-				<h6 class="text-center">請稍候</h6>
+			<div id="foo">
+				<div class="foo_load">請稍候</div>
 			</div>			
 			<div class="large-12 columns large-centered" id="postContent">
 				<% if @journal_selected %>
@@ -262,45 +262,7 @@
 				<% end %>
 				<% end %>				
 				<!--hr /-->
-			</div>	
-			
-			<!--遊記閱讀/編輯區塊→留言板-->
-			<div class="large-11 columns large-centered" id="comment">
-				<h3>留言</h3>
-				<div class="comment_scope row">
-					<div style="height:10px"></div>
-					<div class="entity">
-						<div class="content_panel">
-							<div class="p1">
-								<div class="content">寫的好棒</div>
-								<div class="footer">
-									<a class="username">cindy</a> 
-									<span>2013/5/13 13:05</span>
-									<div><a class="button" id="delete" href="#">刪除</a></div>
-								</div>
-							</div>
-							<div class="p2">
-								<div class="content">謝謝</div>
-								<div class="footer">
-									<a class="username">BertHuang</a>  
-									<span>2013/5/13 13:15</span>
-									<div><a class="button" id="delete" href="#">刪除</a></div>					
-								</div>
-							</div>
-						</div>
-						<div class="reply_input" style="margin-top:20px">
-							<textarea placeholder="回覆‧‧‧‧"></textarea>
-							<input class="submit" type="button" value="回覆"></input>
-						</div>
-					</div>
-					<div style="height:10px"></div>
-				</div>
-				<div class="comment_input" style="margin-top:20px">
-					<textarea placeholder="留言‧‧‧‧"></textarea>
-					<input class="submit" type="button" value="留言"></input>
-				</div>
-				<div class="nologin">請先登入才能夠留言或回覆</div>
-			</div>
+			</div>				
 		</div>
 		</div>
 		<!--遊記控制中心，兩層，第一層放標題、社交原件；第二層放編輯工具-->

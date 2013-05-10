@@ -74,6 +74,8 @@ var ContentBoxModule = function(item){
 		Data.setGroupPrivate(show_group_id,function(result){
 			$('#release_status_text').text('草稿');
 			DataStatus.isPublic[show_group_id]=false;
+			releaseButtons.hide();
+			draftButtons.show();
 		});
 	};
 	
@@ -81,6 +83,8 @@ var ContentBoxModule = function(item){
 		Data.setGroupRelease(show_group_id,function(result){
 			$('#release_status_text').text('已發佈');
 			DataStatus.isPublic[show_group_id]=true;
+			releaseButtons.show();
+			draftButtons.hide();
 		});
 	};
 	
