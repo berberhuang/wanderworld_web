@@ -50,7 +50,8 @@
 	<%if @trip_id%>
 		<title><%=@trip_info.name%> - WanderWorld地球漫遊</title>
 		<% if @contents.size > 0 %>
-			<meta name="description" lang="zh-Hant-TW" content="<%=@contents[0].article%>"/>
+			<meta name="description" lang="zh-Hant-TW" content="<%=@contents[0].article.gsub(/<[^>]*>/,'')%>"/>
+			
 			<meta property="og:image" content="<%=@journal.photo%>" />
 		<%else%>
 			<meta name="description" lang="zh-Hant-TW" content="<%for g in @groups %><%=g.title%>,<%end%>"/>
