@@ -465,8 +465,8 @@ var ContentBoxModule = function(item){
 				equipEditorOnBlock(id,tmp[0]);		
 				
 			}else if(show_group_id==group_id){
-				var point=$('.trip_point_group:[data-id='+group_id+'] .newTripPoint input');
-				var id=point.val();
+				var point=$('.trip_point_group:[data-id='+group_id+'] .point:last');
+				var id=point.data('id');
 				
 				DataStatus.contentList[id]='';
 				var str='<div class="tp_box" id="tp_box_'+id+'"></div>';
