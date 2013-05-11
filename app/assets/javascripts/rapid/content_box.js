@@ -83,7 +83,7 @@ var ContentBoxModule = function(item){
 	
 	var loadJournalTitle=function(g_item){
 		var journal_name=g_item.find('.journal_title a').text();
-		$('#journal_name h3').text(journal_name);
+		$('#journal_name h3').text(journal_name).attr('title',journal_name);
 		setTitle(journal_name+' - WanderWorld地球漫遊');
 	};
 	
@@ -490,7 +490,7 @@ var ContentBoxModule = function(item){
 		},
 		//更改遊記框上方title
 		setGroupTitle:function(str){
-			target.find('#journal_name h3').text(str);
+			target.find('#journal_name h3').text(str).attr('title',str);
 			setTitle(str+' - WanderWorld地球漫遊');
 		},
 		reset:function(){

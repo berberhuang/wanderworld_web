@@ -18,7 +18,7 @@
 
 /*內容框*/
 #slidesContainer {
-	height: 520px;
+	/*height: 100%;*/
 	background: rgba(240,239,233,0.9);
 	z-index:1;
 	overflow:hidden;
@@ -49,13 +49,18 @@
 	z-index:1;
 	height:520px;
 	width: 100%;
-	
+	margin-bottom:0px;
+	border-bottom:0px;
 	cursor:pointer;
 }
 
 #journal {
-	max-height:350px;
-	overflow-y:auto;
+	height:350px;
+	overflow-y:scroll;
+}
+
+#postContent{
+	
 }
 
 .tp_box{

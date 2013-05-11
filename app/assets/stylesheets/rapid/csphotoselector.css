@@ -39,7 +39,7 @@
 #CSPhotoSelector .CSPhotoSelector_clearfix:after { clear: both; }
 #CSPhotoSelector .CSPhotoSelector_clearfix { zoom: 1; }
 #CSPhotoSelector .CSPhotoSelector_dialog {
-	width: 628px;
+	width: 650px;
 	padding: 10px;
 	margin: 0 auto;
 	position: relative;
@@ -97,6 +97,7 @@
 
 #CSPhotoSelector .CSPhotoSelector_content {
 	height: 400px;
+	
 }
 
 #CSPhotoSelector .CSPhotoSelector_dialog .CSAlbum_container .CSPhotoSelector_album {

@@ -228,8 +228,8 @@
 			<!--遊記控制中心第一層-->
 			<div class="row" id="journal_cc_1st_stack">
 			<!--↓遊記標題↓，之後可以在編輯遊記的模式下重新編輯-->
-				<div class="large-7 columns " id="journal_name">
-					<h3><%=@journal_name%></h3>
+				<div class="large-7 columns word-break" style=" height:3em; overflow: hidden;" id="journal_name">
+					<h3 title="<%=@journal_name%>"><%=@journal_name%></h3>
 				</div>
 
 				<!--↓社交元件↓-->
@@ -287,7 +287,7 @@
 			</div>
 			<hr/>
 			<!--遊記閱讀/編輯區塊-->
-		<div class="row" id="journal">
+		<div class="row word-break" id="journal">
 			<div id="foo" class="large-12 columns">
 				<h6 class="text-center">請稍候</h6>
 			</div>			
@@ -306,7 +306,7 @@
 		<!--遊記控制中心，兩層，第一層放標題、社交原件；第二層放編輯工具-->
 		
 	<!--遊記開關-->
-	<div class="large-1 columns" style="<%='visibility:hidden;' if !@trip_selected or @groups.size==0 %>">
+	<div class="large-1 columns" style="padding-left:0px;<%='visibility:hidden;' if !@trip_selected or @groups.size==0 %>">
 		<div class="large-12 columns large-centered control button secondary radius" id="bounce" title="展開/收合遊記">
 			<h1>	
 				<i class="foundicon-idea"></i>
@@ -469,8 +469,8 @@
 				</div>
 			</div>
 		</div>
-		<footer class="row expandView">
-      <hr />
+  <footer class="expandView row">
+     <hr style="margin:5px" /> 
   </footer>
 
   <ol class="joyride-list" data-joyride>

@@ -84,7 +84,7 @@ var GroupItemModule=function(obj){
 		str+=' data-sortid="'+sort_id+'"';
 		str+='>';
 		
-		str+='	<div class="journal_title large-10 columns"><h5><a href="#">'+title+'</a></h5>';
+		str+='	<div class="journal_title large-10 columns" title="'+title+'"><h5><a href="#">'+title+'</a></h5>';
 		str+='	<input style="display:none"></input>';
 		str+='	</div>';
 		str+='	<div class="trip_point_edit large-2 columns right"></div>';	
@@ -297,6 +297,7 @@ var GroupItemModule=function(obj){
 	var setGroupNameLabel=function(id,str){
 		initGroupNameLabel(id);
 		groupLabel[id].text(str);
+		groupLabel[id].parents('.journal_title').attr('title',str);
 	};
 	
 	var setGroupNameInput=function(id,str){

@@ -303,7 +303,7 @@ jQuery.fn.daterangepicker = function(settings){
 		})
 		.trigger('constrainOtherPicker');
 	
-	var doneBtn = jQuery('<button class="btnDone ui-state-default ui-corner-all" >'+ options.doneButtonText +'</button>')
+	var doneBtn = jQuery('<button class="btnDone ui-state-default ui-corner-all tiny" >'+ options.doneButtonText +'</button>')
 	.click(function(){
 		rp.find('.ui-datepicker-current-day').trigger('click');
 		hideRP();		
