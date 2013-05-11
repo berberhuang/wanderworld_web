@@ -569,7 +569,7 @@
 									if ( type == IMAGE && ( this.getValue() || this.isChanged() ) ) {
 										element.data( 'cke-saved-src', this.getValue() );
 										element.setAttribute( 'src', this.getValue() );
-										element.setAttribute('style','height:95%');
+										element.setAttribute('style','height:auto');
 									} else if ( type == CLEANUP ) {
 										element.setAttribute( 'src', '' ); // If removeAttribute doesn't work.
 										element.removeAttribute( 'src' );
