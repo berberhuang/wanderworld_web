@@ -275,9 +275,7 @@ var ContentBoxModule = function(item){
 						point.click();
 					else{
 						if(!show_group_id)
-							show_group_id=$('.trip_point_group:first').data('id');
-						moduleInstance.UiControl.showBlankContentBox(show_group_id);
-						
+							moduleInstance.UiControl.showBlankContentBox($('.trip_point_group:first').data('id'));		
 					}
 				}
 				
@@ -540,6 +538,7 @@ var ContentBoxModule = function(item){
 					UiListener.clickCancelEdit();
 				}
 				moduleInstance.UiControl.hide();
+				PathOnMap.closeInfoWindow();
 			}
 		},
 		deleteTripPoint:function(group_id,id){
