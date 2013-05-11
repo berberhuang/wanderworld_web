@@ -34,6 +34,7 @@ var TripNameModule = function(obj){
 			finishEdit();
 			
 			Data.saveTripName();
+			setTitle(getTripNameInLabel()+' - WanderWorld地球漫遊');
 		};
 		
 		//完成編輯旅行名稱按下enter(keydown)

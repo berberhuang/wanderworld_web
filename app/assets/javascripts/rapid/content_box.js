@@ -84,6 +84,7 @@ var ContentBoxModule = function(item){
 	var loadJournalTitle=function(g_item){
 		var journal_name=g_item.find('.journal_title a').text();
 		$('#journal_name h3').text(journal_name);
+		setTitle(journal_name+' - WanderWorld地球漫遊');
 	};
 	
 	var loadContent=function(g_item){
@@ -268,6 +269,7 @@ var ContentBoxModule = function(item){
 					var group_id=groupItemManager.getSelectedGroupId();
 					PathOnMap.centerGroupOnMap();
 				}
+				setTitle(DataStatus.trip_name+' - WanderWorld地球漫遊');
 			}else{
 				readJournal_s=true;
 				bounce();
@@ -284,6 +286,7 @@ var ContentBoxModule = function(item){
 							moduleInstance.UiControl.showBlankContentBox($('.trip_point_group:first').data('id'));		
 					}
 				}
+				setTitle($('.trip_point_group:[data-id='+show_group_id+'] .journal_title a').text()+' - WanderWorld地球漫遊');
 				
 				tipInstance.show(6);
 				tipInstance.disable();				

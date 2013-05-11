@@ -227,6 +227,14 @@ function reLayout(){
 	
 }
 
+function setUrl(url,title){
+	window.history.pushState(state,title,url);
+}
+
+function setTitle(t){
+	document.title=t;
+}
+
 //*/
 
 //檢測位置

@@ -25,7 +25,9 @@ var Data=(function(){
 					}else{
 						$('#person_avatar img').attr('src','<%=asset_path("user_avatar.png")%>');
 					}
-					$('#person_name').text(result1[1].username);		
+					var name=result1[1].username;
+					$('#person_name').text(name);		
+					setTitle(name+'的旅行 - WanderWorld地球漫遊');
 					
 					DataStatus.tripList=result1[0];
 
@@ -63,7 +65,7 @@ var Data=(function(){
 						
 					//無刷新跳轉改變url
 					window.history.pushState(state,document.title,'/'+DataStatus.trip_id);	
-					document.title=result[0].name+' - WanderWorld地球漫遊';
+					setTitle(result[0].name+' - WanderWorld地球漫遊');
 					DataStatus.trip_name=result[0].name;
 					
 					//設定頭像名字
@@ -362,13 +364,10 @@ var Data=(function(){
 				
 				$.get('/micropost/getPost',{group_id:group_id},function(result){
 					if(result[0]){
-						for(var i in DataStatus.groupList){
-							if(DataStatus.groupList[i].id==group_id){
-								document.title='WanderWorld地球漫遊 - '+DataStatus.groupList[i].title;
-								break;
-							}
-						}
+						var group=$('.trip_point_group:[data-id='+group_id+']');
 						
+						setTitle(group.find('.journal_title a').text()+' - WanderWorld地球漫遊');
+
 						var state={
 							title:document.title,
 							url:'/'+DataStatus.trip_id+'/'+group_id,

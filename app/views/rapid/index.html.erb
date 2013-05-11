@@ -48,7 +48,11 @@
 
 <%= content_for :info_head do %>
 	<%if @trip_id%>
-		<title><%=@trip_info.name%> - WanderWorld地球漫遊</title>
+		<%if @journal_id%>
+			<title><%=@journal_name%> - WanderWorld地球漫遊</title>
+		<%else%>
+			<title><%=@trip_info.name%> - WanderWorld地球漫遊</title>
+		<%end%>
 		<% if @contents.size > 0 %>
 			<meta name="description" lang="zh-Hant-TW" content="<%=@contents[0].article.gsub(/<[^>]*>/,'')%>"/>
 			
