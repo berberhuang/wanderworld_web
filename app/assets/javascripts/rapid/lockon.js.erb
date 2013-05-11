@@ -30,13 +30,13 @@ var contentBox;
 var commentBox;
 
 var readJournal_s=false;
-var tip=false;
+var tipInstance;
 
 //初始化
 function initialize() {
 
 	//載入widget
-	
+	tipInstance=new TipModule()
 	
 	var tripPointListDOM=$('#trip_one');
 	tripPointList=new TripPointListbarModule(tripPointListDOM);

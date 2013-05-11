@@ -3,7 +3,6 @@ var ContentBoxModule = function(item){
 	var target=$(item);
 	var contentPanel=target.find('#postContent');
 	var controlButton = target.find('.controlButton');
-	console.log(controlButton);
 	var editTool = target.find('.editTool');
 	var journalSwitchToggle = $('#bounce');	
 	var draftButtons=target.find('#draftButtons');
@@ -204,11 +203,9 @@ var ContentBoxModule = function(item){
 						
 					}
 				}
-				if(tip){
-					tip.foundation('joyride','end');
-					tip.foundation('joyride','start',{startOffset:6});
-					tip=false;
-				}				
+				
+				tipInstance.show(6);
+				tipInstance.disable();				
 			}
 		},
 		

@@ -46,10 +46,7 @@ var GroupItemModule=function(obj){
 			reLayout();
 			$('.scroll-pane').animate({scrollTop:$('.trip_point_all').height()}, 'slow');
 			
-			if(tip){
-				tip.foundation('joyride','end');
-				tip.foundation('joyride','start',{startOffset:5});
-			}
+			tipInstance.show(5);
 		});
 		
 	};

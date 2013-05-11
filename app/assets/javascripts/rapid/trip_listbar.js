@@ -5,9 +5,7 @@ var TripListbarModule = function(obj){
 	
 	var UiListener = {
 		clickNewTrip:function(){
-			if(tip){
-				tip.foundation('joyride','end');
-			}
+			tipInstance.hide();
 			createNewTrip();
 		},
 		clickEditTrip:function(){

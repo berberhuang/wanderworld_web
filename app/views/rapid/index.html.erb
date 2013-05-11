@@ -182,8 +182,8 @@
 			tripListbar.ownerModeSwitch();
 			
 			if(DataStatus.isOwner&&!DataStatus.tripList.length){
-				tip=$(document);
-				tip.foundation('joyride', 'start');
+				tipInstance.enable($(document));
+				tipInstance.show(0);
 			}
 		<%end%>
 		
@@ -485,7 +485,7 @@
   <li data-id="trip_create_button" data-options="tipLocation:right;nextButton:false;">
     <h5>試著按下「新增旅行」按鈕看看吧？</h5>
   </li>
-  <li data-id="trip_name_editDiv" data-options="tipLocation:right;">
+  <li data-id="trip_name" data-options="tipLocation:right;">
     <h5>按下「請輸入旅行名稱」和下面的日期，就可以直接修改噢</h5>
   </li>
   <li data-id="group_create_button" data-options="tipLocation:right">
