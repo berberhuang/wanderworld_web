@@ -15,7 +15,7 @@ var ContentBoxModule = function(item){
 	var cancelEdit=target.find('#cancelEdit');
 	var toDraft=target.find('#toDraft');
 	
-	var editor=[];
+	editor=[];
 
 	var edit_id;
 	var edit_group_id;
@@ -47,7 +47,12 @@ var ContentBoxModule = function(item){
 		target.css('z-index','0');			
 	};
 	//收合遊記
-	var collapse=function(stopShow){											
+	var collapse=function(stopShow){
+		if(edit_group_id){
+			for(var i in editor){
+				editor[i].focusManager.blur();
+			}
+		}
 		target.css('z-index','-1');
 	};
 
@@ -162,6 +167,8 @@ var ContentBoxModule = function(item){
 		
 		edit_id=null;
 		edit_group_id=null;
+		
+		window.onbeforeunload=null;
 	};
 
 	var saveJournal=function(){
@@ -325,6 +332,10 @@ var ContentBoxModule = function(item){
 				}
 			}
 			focusEditPost($('.tp_box:[data-id='+edit_id+']'));
+			
+			window.onbeforeunload=function(){
+				return "您還沒儲存編輯中的遊記喔!"; 
+			}; 
 		},
 		clickCancelEdit:function(){
 			if(window.confirm('確定放棄編輯內容?') == false){	
@@ -507,7 +518,8 @@ var ContentBoxModule = function(item){
 				}
 				
 				tmp.attr('contenteditable',true);
-				equipEditorOnBlock(id,tmp[0]);		
+				equipEditorOnBlock(id,tmp[0]);
+
 				
 			}else if(show_group_id==group_id){
 				var point=$('.trip_point_group:[data-id='+group_id+'] .point:last');

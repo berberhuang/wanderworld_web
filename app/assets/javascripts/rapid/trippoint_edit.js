@@ -256,8 +256,6 @@ var TripPointEditModule = function(item){
 				PathOnMap.showBeforeReadBubble(tp.id);
 				PathOnMap.centerTripPointOnAllMap(tp.id);
 				groupItemManager.hideAddPointInput(newTripPointInput);
-					
-				reLayout();
 			});
 									
 		});
@@ -345,12 +343,13 @@ var TripPointEditModule = function(item){
 					PathOnMap.updateMark();
 					PathOnMap.redrawLine();
 					
+					
 					PathOnMap.showBeforeReadBubble(tp.id);
 					PathOnMap.centerTripPointOnAllMap(tp.id);
 					contentBox.insertNewPoint(group_id);
+					$('.point:[data-id='+tp.id+'] .point_name').click();
 					groupItemManager.hideAddPointInput(item);
-					reLayout();
-					
+										
 				});
 			},
 				
@@ -380,13 +379,12 @@ var TripPointEditModule = function(item){
 							PathOnMap.updateMark();
 							PathOnMap.redrawLine();
 							
-							contentBox.insertNewPoint(group_id);
+							
 							PathOnMap.showBeforeReadBubble(tp.id);
 							PathOnMap.centerTripPointOnAllMap(tp.id);
-							groupItemManager.hideAddPointInput(item);
-							
-							reLayout();
-							
+							contentBox.insertNewPoint(group_id);
+							$('.point:[data-id='+tp.id+'] .point_name').click();
+							groupItemManager.hideAddPointInput(item);							
 						});
 					}else{
 						alert('fail save');

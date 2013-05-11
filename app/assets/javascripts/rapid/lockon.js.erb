@@ -34,7 +34,7 @@ var tipInstance;
 
 //初始化
 function initialize() {
-
+	$(document).foundation();
 	//載入widget
 	tipInstance=new TipModule()
 	
@@ -214,17 +214,17 @@ function resetEnv(){
 }
 //因應解析度重新布局
 function reLayout(){
-	var main_h=$(window).height()-$('.header').height();	
 	$('#map_canvas').css('width',$(document).width()-130 );
-	//景點區高度
-	var other_h = ($('.trip_information').height()+30) + $('.add_group_title').height() + ($('#view_num').height()+30);
-	var trip_name_height=$('#trip_name').height();
+	/*
+	var main_h=$(window).height()-$('.header').height();	
+	
 	
 	contentBox.UiControl.reLayout();
-		
-	if(DataStatus.tripPointList){
-		computeMap(DataStatus.tripPointList);
-	}
+	*/	
+	//if(DataStatus.tripPointList){
+	//	computeMap(DataStatus.tripPointList);
+	//}
+	
 }
 
 //*/
