@@ -15,12 +15,14 @@ var ContentBoxModule = function(item){
 	var cancelEdit=target.find('#cancelEdit');
 	var toDraft=target.find('#toDraft');
 	
+	var journal=target.find('#journal');
+	
 	editor=[];
 
 	var edit_id;
 	var edit_group_id;
 	var show_group_id=null;
-	
+	var select_id=null;
 	
 	var moduleInstance;
 
@@ -163,7 +165,7 @@ var ContentBoxModule = function(item){
 		contentPanel.empty()
 
 		loadContent(showingGroupItem);
-		$('#journal').scroll(detectScrollOnWhichPost);
+		journal.scroll(detectScrollOnWhichPost);
 		
 		edit_id=null;
 		edit_group_id=null;
@@ -217,11 +219,11 @@ var ContentBoxModule = function(item){
 	};
 	
 	var focusPost=function(tp_box){
-		$('#journal').scrollTop(tp_box.position().top);
+		journal.scrollTop(tp_box.position().top);
 		//data都load完後才能估算正確的目標scrollTop
 		$('#postContent img').load(function(){
-			$('#journal').animate({scrollTop:tp_box.position().top},1000);				  
-		});
+			journal.animate({scrollTop:tp_box.position().top},1000);	
+		});		
 	};
 	
 	var focusEditPost=function(tp_box){
@@ -230,7 +232,7 @@ var ContentBoxModule = function(item){
 	};
 	
 	var detectScrollOnWhichPost=function(){	 
-		var pos=$('#journal').scrollTop();
+		var pos=journal.scrollTop();
 		var id;
 		var list=contentPanel.find('.tp_box');
 		var posBase=0;
@@ -243,7 +245,11 @@ var ContentBoxModule = function(item){
 				id=list.eq(i).data('id');
 			}
 		}
-		if(edit_group_id==null){
+		
+		if(select_id){
+			tripPointList.selectTripPoint(select_id);
+			select_id=null;
+		}else if(edit_group_id==null){
 			tripPointList.selectTripPoint(id);
 		}
 	};
@@ -290,7 +296,7 @@ var ContentBoxModule = function(item){
 			edit_group_id=group_id;
 			show_group_id=group_id
 			
-			$('#journal').unbind('scroll');
+			journal.unbind('scroll');
 			
 			if(DataStatus.isPublic[group_id]){
 				releaseButtons.show();
@@ -394,7 +400,7 @@ var ContentBoxModule = function(item){
 				var id=$('.trip_point_group:[data-id='+show_group_id+'] .point:first').data('id');
 				moduleInstance.clickEditPost(show_group_id,id);	
 			});
-			$('#journal').scroll(detectScrollOnWhichPost);
+			journal.scroll(detectScrollOnWhichPost);
 		},
 		ownerModeSwitch:function(){
 			if(DataStatus.isOwner){
@@ -443,8 +449,9 @@ var ContentBoxModule = function(item){
 						}else{														
 							focusPost(t);
 						}
+						select_id=id;
 					}else{
-						$('#journal').scrollTop(0);
+						journal.scrollTop(0);
 					}
 					if(callback)
 						callback();
@@ -459,7 +466,7 @@ var ContentBoxModule = function(item){
 						showContentPanel();
 						
 						refreshInterface(group_id);
-						$('#journal').scroll(detectScrollOnWhichPost);
+						journal.scroll(detectScrollOnWhichPost);
 						moduleInstance.UiControl.showContent(group_id,id,callback);
 					});		
 				}
