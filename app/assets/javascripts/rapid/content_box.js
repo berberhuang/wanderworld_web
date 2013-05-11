@@ -491,6 +491,7 @@ var ContentBoxModule = function(item){
 		//更改遊記框上方title
 		setGroupTitle:function(str){
 			target.find('#journal_name h3').text(str);
+			setTitle(str+' - WanderWorld地球漫遊');
 		},
 		reset:function(){
 			show_group_id=null;
