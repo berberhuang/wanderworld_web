@@ -424,7 +424,7 @@ var ContentBoxModule = function(item){
 				showJournalSwitchToggle();
 			},
 			showBlankContentBox:function(group_id){
-				show_group_id=group_id;
+				//show_group_id=group_id;
 				readJournal_s=true;
 				initInterface();
 				var g_item=$('.trip_point_group:[data-id='+group_id+']');
@@ -522,10 +522,13 @@ var ContentBoxModule = function(item){
 
 				
 			}else if(show_group_id==group_id){
-				var point=$('.trip_point_group:[data-id='+group_id+'] .point:last');
+				var group=$('.trip_point_group:[data-id='+group_id+']');
+				var points=group.find('.point');
+				var point=points.last();
 				var id=point.data('id');
 				
 				DataStatus.contentList[id]='';
+
 				var str='<div class="tp_box" id="tp_box_'+id+'" data-id="'+id+'"></div>';
 				contentPanel.append(str);
 			}
