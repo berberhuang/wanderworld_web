@@ -1,8 +1,6 @@
 var TrippointItemModule=function(obj){
 	var target=obj;
 	
-	var groupItemManager;
-	
 	//設定當前所在 景點列表
 	var setTripPointList=function(tpList){
 		for(i=0;i<tpList.length;i++){
@@ -54,6 +52,7 @@ var TrippointItemModule=function(obj){
 				if(readJournal_s){
 					PathOnMap.showTripPointInfo(id);
 					PathOnMap.centerTripPointOnLeftMap(id);
+					contentBox.bounce();
 					contentBox.UiControl.showContent(group_id,id);
 				}else{
 					PathOnMap.showBeforeReadBubble(id);
@@ -207,11 +206,11 @@ var TrippointItemModule=function(obj){
 		updateMark:function(){
 			updateMark();
 		},
-		setGroupItemManager:function(gim){
-			groupItemManager=gim;
-		},
 		selectTripPoint:function(id){
 			selectTripPointEffect($('.point:[data-id='+id+']'));
+		},
+		unselectTripPoint:function(){
+			unselectTripPointEffect();
 		},
 		getSelectedTripPointId:function(){
 			return getSelectedTripPointId();

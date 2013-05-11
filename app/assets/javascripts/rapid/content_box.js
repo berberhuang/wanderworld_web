@@ -2,9 +2,11 @@
 var ContentBoxModule = function(item){
 	var target=$(item);
 	var contentPanel=target.find('#postContent');
-	var controlButton = target.find('.controlButton');
 	var editTool = target.find('.editTool');
 	var journalSwitchToggle = $('#bounce');	
+
+	var controlButton = target.find('.controlButton');
+	
 	var draftButtons=target.find('#draftButtons');
 	var releaseButtons=target.find('#releaseButtons');
 	
@@ -13,11 +15,10 @@ var ContentBoxModule = function(item){
 	var cancelEdit=target.find('#cancelEdit');
 	var toDraft=target.find('#toDraft');
 	
-	var editor=[];	
-	
+	var editor=[];
+
 	var edit_id;
 	var edit_group_id;
-	var show_id;
 	var show_group_id=null;
 	
 	
@@ -50,6 +51,48 @@ var ContentBoxModule = function(item){
 		target.css('z-index','-1');
 	};
 
+	var initInterface=function(){
+		contentPanel.empty();
+		$('#journal_name h3').text("");
+		$('#foo').show();
+		hideControlButton();
+		editTool.hide().unbind('click');
+		target.find('#release_status').css('visibility','hidden');
+	};
+	
+	var refreshInterface=function(group_id){
+		if(DataStatus.isOwner){
+			target.find('#release_status').css('visibility','visible');
+			editTool.show().click(function(){
+				contentBox.clickEditPost(group_id,$('.trip_point_group:[data-id='+group_id+'] .point:first').data('id'));	
+			});
+			if(DataStatus.isPublic[group_id]){
+				target.find('#release_status_text').text('已發布');
+			}else{
+				target.find('#release_status_text').text('草稿');
+			}
+		}
+	};
+	
+	var loadJournalTitle=function(g_item){
+		var journal_name=g_item.find('.journal_title a').text();
+		$('#journal_name h3').text(journal_name);
+	};
+	
+	var loadContent=function(g_item){
+		var tpList=g_item.find('.point');
+		var str='';
+		
+		for(var i=0; i<tpList.length;i++){
+			var id=tpList.eq(i).data('id');
+			str+='<div class="tp_box" id="tp_box_'+id+'" data-id="'+id+'" >';
+			str+=DataStatus.contentList[id];
+			str+='</div>';
+		}
+		
+		$(str).appendTo(contentPanel);
+	};
+	
 	var hideJournalSwitchToggle=function(){
 		journalSwitchToggle.css('visibility','hidden');
 	};
@@ -94,6 +137,7 @@ var ContentBoxModule = function(item){
 	
 	var exitEditor=function(){
 		hideControlButton();
+		editTool.show();
 		showContentPanel();
 		
 		var showingGroupItem=groupItemManager.getSelectedGroupItem();
@@ -111,17 +155,11 @@ var ContentBoxModule = function(item){
 		}
 		editor=[];
 		
+		contentPanel.empty()
 
-		var str='';
+		loadContent(showingGroupItem);
+		$('#journal').scroll(detectScrollOnWhichPost);
 		
-		for(var i=0; i<tpList.length;i++){
-			var id=tpList.eq(i).data('id')
-			str+='<div class="tp_box" id="tp_box_'+id+'">';
-			str+=DataStatus.contentList[id];
-			str+='</div>';
-		}		
-		contentPanel.empty().append(str);
-				
 		edit_id=null;
 		edit_group_id=null;
 	};
@@ -171,6 +209,38 @@ var ContentBoxModule = function(item){
 		});
 	};
 	
+	var focusPost=function(tp_box){
+		$('#journal').scrollTop(tp_box.position().top);
+		//data都load完後才能估算正確的目標scrollTop
+		$('#postContent img').load(function(){
+			$('#journal').animate({scrollTop:tp_box.position().top},1000);				  
+		});
+	};
+	
+	var focusEditPost=function(tp_box){
+		focusPost(tp_box);
+		tp_box.focus();
+	};
+	
+	var detectScrollOnWhichPost=function(){	 
+		var pos=$('#journal').scrollTop();
+		var id;
+		var list=contentPanel.find('.tp_box');
+		var posBase=0;
+		for(var i=0;i<list.length;i++){
+			if(i==0)
+					posBase=list.eq(0).position().top;
+			if(list.eq(i).position().top>pos){
+					break;
+			}else{
+				id=list.eq(i).data('id');
+			}
+		}
+		if(edit_group_id==null){
+			tripPointList.selectTripPoint(id);
+		}
+	};
+	
 	var UiListener={
 
 		clickJournalSwitchToggle:function(){
@@ -213,6 +283,9 @@ var ContentBoxModule = function(item){
 		clickEditPost:function(group_id,id){
 			edit_id=id;
 			edit_group_id=group_id;
+			show_group_id=group_id
+			
+			$('#journal').unbind('scroll');
 			
 			if(DataStatus.isPublic[group_id]){
 				releaseButtons.show();
@@ -220,11 +293,12 @@ var ContentBoxModule = function(item){
 				draftButtons.show();
 			}
 			showControlButton();
+			editTool.hide();
 			
 			var list=target.find('.tp_box');
 			for(var i=0; i<list.length; i++){
 				(function(){
-					var id = list.eq(i).attr('id').split('_box_')[1];
+					var id = list.eq(i).data('id')
 					list.eq(i).attr('contenteditable',true);
 					equipEditorOnBlock(id,list[i]);
 				}());
@@ -250,13 +324,14 @@ var ContentBoxModule = function(item){
 					pointList.eq(i).addClass('green_box');
 				}
 			}
-			moduleInstance.UiControl.setEditFocus(id);
+			focusEditPost($('.tp_box:[data-id='+edit_id+']'));
 		},
 		clickCancelEdit:function(){
 			if(window.confirm('確定放棄編輯內容?') == false){	
-				return;
+				return false;
 			}	
 			exitEditor();
+			return true;
 		},
 		clickFinishPost:function(){
 			saveJournal();
@@ -305,6 +380,13 @@ var ContentBoxModule = function(item){
 		init:function(){
 			moduleInstance=this;
 		},
+		initJavascript:function(){
+			editTool.click(function(){
+				var id=$('.trip_point_group:[data-id='+show_group_id+'] .point:first').data('id');
+				moduleInstance.clickEditPost(show_group_id,id);	
+			});
+			$('#journal').scroll(detectScrollOnWhichPost);
+		},
 		ownerModeSwitch:function(){
 			if(DataStatus.isOwner){
 				editTool.show();
@@ -332,121 +414,50 @@ var ContentBoxModule = function(item){
 			},
 			showBlankContentBox:function(group_id){
 				show_group_id=group_id;
+				readJournal_s=true;
+				initInterface();
+				var g_item=$('.trip_point_group:[data-id='+group_id+']');
+				loadJournalTitle(g_item);
+				contentPanel.empty();
 				bounce();
 				hideControlButton();
-				editTool.unbind('click').click(function(){UiListener.clickEditPost(group_id,id);});
-				var g_item=$('.trip_point_group:[data-id='+group_id+']');
-				var journal_name=g_item.find('.journal_title a').text();
-					
-				$('#journal_name h3').text(journal_name);
-				contentPanel.empty();
+				editTool.unbind('click');
+				$('#foo').hide();
+										
 			},
 			showContent:function(group_id,id,callback){
-				show_id=id;
 				if(group_id==show_group_id){
-					bounce();
-					
-					$('.editTool').unbind('click').click(function(){
-						contentBox.clickEditPost(group_id,target.find('.trip_point_group:[data-id='+group_id+'] .point:first').data('id'));	
-						showingGroup=group_id;
-					});
-					
 					if(id){
-						var t=$('#tp_box_'+id);
-						
-						$('#journal').scrollTop(t.position().top-$('#postContent').position().top,100);
-						//data都load完後才能估算正確的目標scrollTop
-						$('#postContent img').load(function(){
-							 $('#journal').scrollTop(t.position().top-$('#postContent').position().top,100);				  
-						});
-						
-						if(edit_id!=null)
-							editor[id].focus();	
-						
+						var t=$('.tp_box:[data-id='+id+']');
+						if(edit_id){
+							focusEditPost(t);
+						}else{														
+							focusPost(t);
+						}
 					}else{
 						$('#journal').scrollTop(0);
 					}
-					
-					//PathOnMap.closeInfoWindow();
-					moduleInstance.ownerModeSwitch();
-					contentBox.UiControl.reLayout();
 					if(callback)
 						callback();
-					return ;
-				}
-				
-				show_group_id=group_id;
-				DataStatus.group_id=group_id;
-				
-				bounce();
-				hideControlButton();
-				console.log(group_id);
-				console.log(id);
-				editTool.unbind('click').click(function(){UiListener.clickEditPost(group_id,id);});
-				
-				$('#foo').show();
-				contentPanel.empty();
-				console.log("group_id:"+group_id);
-				Data.loadPost(group_id,function(result){
-					$('#foo').hide();
-					showContentPanel();
-					
-					
-					var g_item=$('.trip_point_group:[data-id='+group_id+']');
-					var tpList=g_item.find('.point');
-					var journal_name=g_item.find('.journal_title a').text();					
-					var str='';
-					
-					$('#journal_name h3').text(journal_name);
-					
-					for(var i=0; i<tpList.length;i++){
-						str+='<div class="tp_box" id="tp_box_'+tpList.eq(i).data('id')+'">';
-						str+=DataStatus.contentList[tpList.eq(i).data('id')];
-						str+='</div>';
-					}
-					
-					$(str).appendTo(contentPanel);
-					$('#journal').scroll(function(){
-						var pos=$('#journal').scrollTop();
-
-						var id;
-						var list=contentPanel.find('.tp_box');
-						var posBase=0;
-						for(var i=0;i<list.length;i++){
-							if(i==0)
-								posBase=list.eq(0).position().top;
-							if(list.eq(i).position().top-posBase>pos){
-								break;
-							}else{
-								id=list.eq(i).attr('id').split('_box_')[1];
-							}
-						}
-						if(edit_group_id==null){
-							tripPointList.selectTripPoint(id);						
-						}
-					});
-					
-					if(DataStatus.isOwner){
-						target.find('#release_status').css('visibility','visible');
-						if(DataStatus.isPublic[group_id]){
-							target.find('#release_status_text').text('已發布');
-						}else{
-							target.find('#release_status_text').text('草稿');
-						}
+				}else{
+					initInterface();
+					show_group_id=group_id;
+					Data.loadPost(group_id,function(result){
+						var g_item=$('.trip_point_group:[data-id='+group_id+']');
+						loadJournalTitle(g_item);
+						loadContent(g_item,result);
+						$('#foo').hide();
+						showContentPanel();
 						
-					}else{
-						target.find('#release_status').css('visibility','hidden');
-					}
-					
-					moduleInstance.UiControl.showContent(show_group_id,show_id,callback);	
-				});
-				
+						refreshInterface(group_id);
+						$('#journal').scroll(detectScrollOnWhichPost);
+						moduleInstance.UiControl.showContent(group_id,id,callback);
+					});		
+				}
 			},
 			setEditFocus:function(id){
-				var t=$('#tp_box_'+id);
-				$('#journal').animate({scrollTop:t.position().top-$('#postContent>div:eq(0)').position().top},500,function(){
-					t.focus();
-				});
+				var t=$('.tp_box:[data-id='+id+']');
+				focusEditPost(t);
 			},
 			reLayout:function(){
 				
@@ -462,23 +473,16 @@ var ContentBoxModule = function(item){
 		setGroupTitle:function(str){
 			target.find('#journal_name h3').text(str);
 		},
-		cancelEdit:function(){				
-			if(edit_group_id){
-				UiListener.clickCancelEdit();
-			}
-		},
 		reset:function(){
-			show_id=null;
 			show_group_id=null;
 		},
 		cancelEditWarning:function(group_id,callback){
 			if(edit_group_id && edit_group_id!=group_id){
-				moduleInstance.cancelEdit();
-				callback();			
-			}else{
-				if(callback){
-					callback();
-				}
+				if(!UiListener.clickCancelEdit())
+					return;
+			}
+			if(callback){
+				callback();
 			}
 		},
 		insertNewPoint:function(group_id){
@@ -490,7 +494,7 @@ var ContentBoxModule = function(item){
 				var id=point.data('id');
 				DataStatus.contentList[id]='';
 				
-				var str='<div class="tp_box" id="tp_box_'+id+'"></div>';
+				var str='<div class="tp_box" id="tp_box_'+id+'" data-id="'+id+'"></div>';
 				
 				var tmp=$(str).appendTo(contentPanel);
 
@@ -510,7 +514,7 @@ var ContentBoxModule = function(item){
 				var id=point.data('id');
 				
 				DataStatus.contentList[id]='';
-				var str='<div class="tp_box" id="tp_box_'+id+'"></div>';
+				var str='<div class="tp_box" id="tp_box_'+id+'" data-id="'+id+'"></div>';
 				contentPanel.append(str);
 			}
 			
@@ -646,6 +650,12 @@ var ContentBoxModule = function(item){
 				}
 				
 			}
+		},
+		bounce:function(){
+			bounce();
+		},
+		collapse:function(){
+			collapse();
 		},
 		isShow:function(){
 			if(show_group_id!=null)

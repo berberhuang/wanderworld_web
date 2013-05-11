@@ -97,14 +97,13 @@
 						var tpb=tpbs.eq(i);
 						DataStatus.contentList[tpb.data('id')]=tpb.html();
 					}
-					$('.editTool').click(function(){
-						groupItemManager.editJournal(<%=@journal_id%>);
-					});
+					
 					groupItemManager.selectGroup(<%=@journal_id%>);						
 			<% end %>
 			<% if @journal_selected%>
 				readJournal_s=true;
 				contentBox.setShowGroupId(<%=@journal_id%>,<%=@public%>);
+				contentBox.initJavascript();
 				tripPointList.selectGroup(<%=@journal_id%>);
 				DataStatus.group_id=<%=@journal_id%>;
 				<% if @contents.size>0%>

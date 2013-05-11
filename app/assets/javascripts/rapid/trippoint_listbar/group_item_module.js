@@ -4,7 +4,6 @@ var GroupItemModule=function(obj){
 	var groupLabel=[];
 	var groupInput=[];
 	
-	var tripPointItemManager;
 	var showingGroup=null;
 	
 	var newGroupInputStr='<div id="trip_point_group_0" class="trip_point_group" data-id="0"> \
@@ -133,12 +132,16 @@ var GroupItemModule=function(obj){
 		window.history.pushState(null,document.title,'/'+DataStatus.trip_id);	
 
 		var tp=$('.trip_point_group:[data-id='+group_id+'] .point');
+		
 		if(tp.length>0){
 			tp.eq(0).find('.point_name').click();				
 		}else{
-			PathOnMap.closeInfoWindow();
-			contentBox.UiControl.showBlankContentBox(group_id);
-			selectGroupEffect($('.trip_point_group:[data-id='+group_id+']'));
+			contentBox.cancelEditWarning(group_id,function(){
+				PathOnMap.closeInfoWindow();
+				contentBox.UiControl.showBlankContentBox(group_id);
+				tripPointList.unselect();
+				selectGroupEffect($('.trip_point_group:[data-id='+group_id+']'));
+			});
 		}
 	};
 				
@@ -382,6 +385,7 @@ var GroupItemModule=function(obj){
 					ownerModeEnable(t);
 				}
 			}
+			
 		},
 		refresh:function(groupList){
 			setGroupList(groupList);
@@ -389,11 +393,11 @@ var GroupItemModule=function(obj){
 		reset:function(){
 			clear();
 		},
-		setTripPointItemManager:function(tpim){
-			tripPointItemManager=tpim;
-		},
 		selectGroup:function(id){
 			selectGroupEffect($('.trip_point_group:[data-id='+id+']'));
+		},
+		unselectGroup:function(id){
+			unselectGroupEffect();
 		},
 		getSelectedGroupId:function(){
 			return getSelectedGroupId();

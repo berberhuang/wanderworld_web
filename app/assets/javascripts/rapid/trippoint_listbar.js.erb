@@ -68,8 +68,6 @@ var TripPointListbarModule = function(obj){
 			moduleInstance=this;
 			//裝載旅行名稱及輸入框enter鍵listener
 			
-			groupItemManager.setTripPointItemManager(tripPointItemManager);
-			tripPointItemManager.setGroupItemManager(groupItemManager);
 			
 			tripNameInstance.init();		
 			tripDateInstance.init();
@@ -182,6 +180,10 @@ var TripPointListbarModule = function(obj){
 		},
 		selectGroup:function(id){
 			groupItemManager.selectGroup(id);
+		},
+		unselect:function(){
+			tripPointItemManager.unselectTripPoint();
+			groupItemManager.unselectGroup();
 		},
 		scrollToListItem:function(tp_id){
 			var item=$('.point:[data-id='+tp_id+']').parents('li');
