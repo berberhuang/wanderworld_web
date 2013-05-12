@@ -60,7 +60,7 @@
 		<% if @contents.size > 0 %>
 			<% c=@contents[0].article.gsub(/<[^>]*>/,'') %>
 			<meta name="description" lang="zh-Hant-TW" content="<%=c%>"/>
-			<meta name="og:description" lang="zh-Hant-TW" content="<%=c%>"/>
+			<meta property="og:description" lang="zh-Hant-TW" content="<%=c%>"/>
 			<% if @journal.photo%>
 				<meta property="og:image" content="<%=@journal.photo%>" />
 			<%else%>
