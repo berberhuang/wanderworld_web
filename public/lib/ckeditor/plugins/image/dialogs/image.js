@@ -61,6 +61,22 @@
 					updatePreview( dialog );
 				};
 
+			var getPhotoFromFB=function(dialog,id){
+				FB.getLoginStatus(function(response) {
+						if (response.status === 'connected') {
+						//var accessToken = response.authResponse.accessToken;
+						FB.api('fql',{q:'SELECT src FROM photo_src WHERE photo_id='+id}, function(response) {
+							if (response.data&&response.data.length) {
+								var url=response.data[0].src;
+								dialog.getContentElement( 'info', 'txtUrl' ).setValue(url);
+							}
+							});
+						} else {
+						return false;
+						}
+						});
+			};
+
 			var updatePreview = function( dialog ) {
 					//Don't load before onShow.
 					if ( !dialog.originalElement || !dialog.preview )
@@ -526,6 +542,11 @@
 									if ( newUrl.length > 0 ) //Prevent from load before onShow
 									{
 										dialog = this.getDialog();
+										var id=newUrl.match(/www\.facebook\.com\/photo\.php\?fbid=[0-9]*/);
+										if(id){
+											id=id[0].split('=')[1];
+											getPhotoFromFB(dialog,id);
+										}
 										var original = dialog.originalElement;
 
 										dialog.preview.removeStyle( 'display' );
