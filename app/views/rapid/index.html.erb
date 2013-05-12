@@ -50,11 +50,17 @@
 	<%if @trip_id%>
 		<%if @journal_id%>
 			<title><%=@journal_name%> - WanderWorld地球漫遊</title>
+			<meta property="og:title" content="<%=@journal_name%>" />
+			<meta property="og:url" content="http://www.wanderworld.com.tw/<%=@trip_id%>/<%=@journal_id%>" />
 		<%else%>
 			<title><%=@trip_info.name%> - WanderWorld地球漫遊</title>
+			<meta property="og:title" content="<%=@trip_info.name%>" />
+			<meta property="og:url" content="http://www.wanderworld.com.tw/<%=@trip_id%>" />
 		<%end%>
 		<% if @contents.size > 0 %>
-			<meta name="description" lang="zh-Hant-TW" content="<%=@contents[0].article.gsub(/<[^>]*>/,'')%>"/>
+			<% c=@contents[0].article.gsub(/<[^>]*>/,'') %>
+			<meta name="description" lang="zh-Hant-TW" content="<%=c%>"/>
+			<meta name="og:description" lang="zh-Hant-TW" content="<%=c%>"/>
 			<% if @journal.photo%>
 				<meta property="og:image" content="<%=@journal.photo%>" />
 			<%else%>
@@ -62,10 +68,13 @@
 			<% end%>
 		<%else%>
 			<meta name="description" lang="zh-Hant-TW" content="<%for g in @groups %><%=g.title%>,<%end%>"/>
+			<meta property="og:description" lang="zh-Hant-TW" content="<%for g in @groups %><%=g.title%>,<%end%>"/>
 		<%end%>
 	<%else @user_id%>
 		<title><%=@user.username%>的旅行 - WanderWorld地球漫遊</title>
+		<meta property="og:title" content="<%=@user.username%>的旅行 - WanderWorld地球漫遊" />
 		<meta name="description" lang="zh-Hant-TW" content="<%for t in @trips%><%=t.name%>,<%end%>" />
+		<meta property="og:description" lang="zh-Hant-TW" content="<%for t in @trips%><%=t.name%>,<%end%>" />
 	<%end%>
 <%end%>
 
