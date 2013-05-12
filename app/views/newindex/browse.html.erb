@@ -35,7 +35,7 @@
 
   <style>
 	body{
-		background-color: #e9e9e9;
+		background-image:url(assets/images/beige_paper.png);
 	}
 	
 	#myContent{
@@ -303,7 +303,6 @@
   <!-- End Header and Nav -->
 
   <div class="row">
-    <div class="twelve columns" >
       <div class="four columns">
 	  <% if @type =='pop' %>
         <h1>人氣遊記</h1>
@@ -323,7 +322,6 @@
           <!--<dd><h4><a href="#">分類景點</a></h4></li>-->
         </ul>
       </div>
-    </div>
   </div>
   
   <!-- First Band (Image) -->
@@ -441,7 +439,7 @@
     </div> 
   </footer>
 
-<div id="register" class="reveal-modal">
+<div id="register" class="reveal-modal small">
 <%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
      <h1>註冊</h1>
      <h6>電子郵件</h6>
@@ -461,7 +459,7 @@
   </div>
 
   
-  <div id="login" class="reveal-modal">
+  <div id="login" class="reveal-modal small">
     <%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
      <h1>登入</h1>
      <h6>電子郵件</h6>
