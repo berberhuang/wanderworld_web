@@ -47,9 +47,12 @@ module RapidHelper
 	def tripDate_gen(trip_info)
 		str='<div style="cursor:pointer;"><h4 class="white"></h4>'
 		if trip_info.start_date == trip_info.end_date
-			str+='<a>'+trip_info.start_date.to_s.gsub('-','/')+'</a>'
+			start_date=ERB::Util.html_escape(trip_info.start_date.to_s.gsub('-','/'))
+			str+='<a>'+start_date+'</a>'
 		else
-			str+='<a>'+trip_info.start_date.to_s.gsub('-','/')+' - '+trip_info.end_date.to_s.gsub('-','/')+'</a>'
+			start_date=ERB::Util.html_escape(trip_info.start_date.to_s.gsub('-','/'))
+			end_date=ERB::Util.html_escape(trip_info.end_date.to_s.gsub('-','/'))
+			str+='<a>'+start_date+' - '+end_date+'</a>'
 		end
 		str+='</div>'
 		return str.html_safe
@@ -59,8 +62,9 @@ module RapidHelper
 		str='<div id="group_button" class="row"></div>'
 		seq_num=1
 		groups.each do |g|
+			title=ERB::Util.html_escape(g.title)
 			str+='<div id="trip_point_group_'+g.id.to_s+'" class="trip_point_group row" data-id="'+g.id.to_s+'" data-sortid="'+g.sort_id.to_s+'">'
-			str+='<div class="journal_title large-10 columns" title="'+g.title+'"><h5><a href="#">'+g.title+'</a></h5>'
+			str+='<div class="journal_title large-10 columns" title="'+title+'"><h5><a href="#">'+title+'</a></h5>'
 			str+='<input style="display:none"></input>'
 			str+='</div>'
 			str+='<div class="trip_point_edit large-2 columns right"></div>'

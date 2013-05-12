@@ -117,7 +117,7 @@
 			
 			
 			DataStatus.trip_id=<%=@trip_id%>;
-			DataStatus.trip_name='<%=@trip_info.name%>';
+			DataStatus.trip_name='<%=j(@trip_info.name)%>';
 			DataStatus.owner_user_id=<%=@trip_info.user_id%>;
 			<%@user = @trip_info.user%>
 			
