@@ -3,9 +3,11 @@
 .green {
 	/*grey in fact*/
 	background-color:rgba(233,239,240,0.9);
+	min-height:150px;
 }
 .red {
 	background-color:rgba(242,231,163,0.9);
+	min-height:150px;
 }
 .green_box{
 	color:rgba(233,239,240,1);
@@ -64,7 +66,6 @@
 }
 
 .tp_box{
-	min-height:150px;
 }
 
 .postTitle{
