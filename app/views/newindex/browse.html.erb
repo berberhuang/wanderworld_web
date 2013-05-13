@@ -33,11 +33,7 @@
   <%= stylesheet_link_tag "newindex" %>
   <%= csrf_meta_tags %>
 
-  <style>
-	body{
-		background-image:url(assets/images/beige_paper.png);
-	}
-	
+  <style>	
 	#myContent{
 		position:relative;
 		
@@ -328,7 +324,7 @@
   
   <div class="row" >
     <div class="twelve columns" >
-	  <ul id="myContent">
+	  <ul  id="myContent">
 	  <%
 		@order_str=''
 		if @type=='pop'
@@ -357,7 +353,7 @@
 			end
 		%>
 	  
-      <li class="journal_card">
+      <li class="gallery" class="journal_card">
 	  <a class="journal_title" target="_blank" href="<%='/'+g.trip_id.to_s+'/'+g.id.to_s %>">
 		<% if g.photo %>
 			<div class="journal_title_img">

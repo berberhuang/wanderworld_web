@@ -4,7 +4,7 @@
 
 html { font-size: 62.5%; }
 
-body { background-image:url('<%=asset_path('beige_paper.png')%>') repeat;font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; font-weight: normal; font-style: normal; font-size: 14px; line-height: 1; color: #222222; position: relative; -webkit-font-smoothing: antialiased; }
+body { background-image:url('/assets/beige-paper.png') ;font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; font-weight: normal; font-style: normal; font-size: 14px; line-height: 1; color: #222222; position: relative; -webkit-font-smoothing: antialiased; }
 
 /* Links ---------------------- */
 a img { border: none; }
@@ -1273,3 +1273,14 @@ table.show-for-xlarge, table.show-for-large, table.hide-for-small, table.hide-fo
   .top-bar ul li.has-button { padding: 5px 15px; }
   .top-bar ul li .button.small { margin: 0 !important; display: inline-block; width: 100%; }
   .top-bar ul > li.has-button a.button { margin: 0; } }
+
+
+  /*wanderworld development*/
+.gallery { 
+    border-radius: 2px;
+    box-shadow: 0px 1px 3px 2px;
+
+  }
+.gallery-border {
+  border:3px solid #c5c5c9; 
+}
