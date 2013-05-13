@@ -1276,9 +1276,9 @@ table.show-for-xlarge, table.show-for-large, table.hide-for-small, table.hide-fo
 
 
   /*wanderworld development*/
-.gallery { 
+.gallery{ 
     border-radius: 2px;
-    box-shadow: 0px 1px 3px 2px;
+    box-shadow: 0px 1px 3px 2px rgba(193,193,193,1);
 
   }
 .gallery-border {
