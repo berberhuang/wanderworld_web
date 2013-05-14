@@ -276,37 +276,37 @@
 	
 	</div>
 <%else%>
-	<div class="row header">
-		<div class="three columns">
-		  <h1><a href="#"><img id="main_logo" src="<%=asset_path('banner_logo_walker.png')%>" /></a></h1>
-		</div>
-		<div class="nine columns">
-		  <ul class="nav-bar right">
-			  <li class="floatingss" style="background-color:#000000;border-color:#000000;">
-				<div class="fb-login-button" id="custom_fb_login" style="width:400px;display:inline" autologoutlink="false" onlogin="onLogin()">以FB登入</div>
-			</li>
-			<li><a href="#" data-reveal-id="register">註冊</a></li>
-				<li><a href="#" data-reveal-id="login">登入</a></li>
-		  </ul>
-		</div>
-	</div>
+	<nav class="top-bar" >
+        <ul class="title-area">
+          <li class="name">
+          <h1><a href="#"><img id="logo" src="http://dl.dropbox.com/u/15101202/images/LOGO/banner_logo_walkder.png" /></a></h1>
+          </li>
+        </ul>
+          <section class="top-bar-section">
+          <ul class="right">
+            <li><div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">登入</div>
+            </li>
+            <li class="divider"></li>
+            <li class="name"><a href="#" data-reveal-id="register">註冊</a></li>
+            <li class="divider"></li>
+    		    <li><a href="#" data-reveal-id="login">登入</a></li>
+          </ul>
+          </section>
+          </nav>
 <%end%>
-</div>
-<div class="row">
-		<br /><br /><br />
 </div>
 
   <!-- End Header and Nav -->
 
   <div class="row">
-      <div class="four columns">
+      <div class="large-4 columns">
 	  <% if @type =='pop' %>
         <h1>人氣遊記</h1>
 	  <%elsif @type =='new'%>
 		<h1>最新遊記</h1>
 	  <%end%>
       </div>
-      <div class="three columns offset-by-five">
+      <div class="large-3 columns large-offset-4">
         <ul class="button-group even two-up " >
           <!--<li><h4><a href="#">地區分類</a></h4></li>-->
           <li style="margin-top:30px">
@@ -322,8 +322,8 @@
   
   <!-- First Band (Image) -->
   
-  <div class="row" >
-    <div class="twelve columns" >
+  <div class="row">
+    <div class="large-12 columns" >
 	  <ul  id="myContent">
 	  <%
 		@order_str=''
@@ -393,7 +393,7 @@
 </div>
  
 <div class="row">
-	<div class="two columns centered">
+	<div class="large-2 columns large-centered">
 	<ul class="pagination">
 	<% if @offset.to_i<=0 %>
 		<li class="arrow unavailable">&laquo;上一頁</li>
@@ -419,25 +419,25 @@
   <!-- Footer -->
   
   <footer class="row">
-    <div class="twelve columns">
       <hr />
       <div class="row">
-        <div class="six columns">
-          <p>&copy; Copyright no one at all. Go to town.</p>
+        <div class="large-6 columns">
+          <h6 class="subheader">WanderWorld地球漫遊 &copy; 2013</h6>
         </div>
-        <div class="six columns">
-          <ul class="link-list right">
+        <div class="large-6 columns">
+          <ul class="inline-list right">
+          	<li><a href="href="http://goo.gl/mnxVi"">問題回報</a></li>
             <li><a href="#">關於地球漫遊</a></li>
             <li><a href="http://wanderworld-ideaaxis.blogspot.tw/" target="blank">地球漫遊開發日誌</a></li>
           </ul>
         </div>
-      </div>
-    </div> 
+      </div> 
   </footer>
 
-<div id="register" class="reveal-modal small">
+<div id="register" class="row reveal-modal medium">
+    <div class="large-8 columns">
 <%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
-     <h1>註冊</h1>
+     <h4>註冊</h4>
      <h6>電子郵件</h6>
      <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
      <h6>名稱</h6>
@@ -446,29 +446,40 @@
      <%=f.password_field :password, :placeholder=>'請輸入6~20字半形英數密碼'%>
      <h6>確認密碼</h6>
      <%=f.password_field :password_confirmation, :placeholder=>"請輸入第二次密碼"%>
-     <%=f.submit '免費註冊',:class=>"button medium"%>
+     <%=f.submit '註冊',:class=>"button expand"%>
+
      <%if(flash[:signupfail])%>
       <p class="loginfail">註冊失敗</p>
      <%end%>
-    <a class="close-reveal-modal">&#215;</a>
-<%end%>  
+<%end%>
+  </div>
+  <div class="large-4 columns panel">
+    <h4>以其他帳號登入</h4>
+      <div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">facebook</div>
+  </div>
+  <a class="close-reveal-modal">&#215;</a>  
   </div>
 
-  
-  <div id="login" class="reveal-modal small">
+
+  <div id="login" class="row reveal-modal medium">
+    <div class="large-8 columns">
     <%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
-     <h1>登入</h1>
+     <h4>登入</h4>
      <h6>電子郵件</h6>
      <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
      <h6>密碼</h6>
      <%=f.password_field :password, :placeholder=>"請輸入6~20字半形英數密碼"%>
      <%=f.submit '登入' , :class=>'button medium expand'%>
      <!--<input type="submit" class="alert button medium" value="忘記密碼">-->
-     <a class="close-reveal-modal">&#215;</a>
      <%if(flash[:loginfail])%>
       <p class="loginfail">您輸入的帳號或密碼有誤</p>
     <%end%>
-    <br />
+  </div>
+  <div class="large-4 columns panel">
+    <h4>以其他帳號登入</h4>
+      <div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">facebook</div>
+    </div>
+    <a class="close-reveal-modal">&#215;</a>
   </div>
 <%end%>
 </body>

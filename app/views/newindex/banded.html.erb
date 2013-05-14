@@ -72,26 +72,29 @@
    fjs.parentNode.insertBefore(js, fjs);
  }(document, 'script', 'facebook-jssdk'));</script>
 <!-- Header and Nav -->
-  
-  <div class="row header">
-    <div class="three columns">
-      <h1><a href="#"><img id="main_logo" src="http://dl.dropbox.com/u/15101202/images/LOGO/banner_logo_walkder.png" /></a></h1>
-    </div>
-    <div class="nine columns">
-      <ul class="nav-bar right">
-		  <li class="floatingss" style="background-color:#000000;border-color:#000000;">
-			<div class="fb-login-button" id="custom_fb_login" style="width:400px;display:inline" autologoutlink="false" onlogin="onLogin()">以FB登入</div>
-		</li>
-        <li><a href="#" data-reveal-id="register">註冊</a></li>
-		    <li><a href="#" data-reveal-id="login">登入</a></li>
-      </ul>
-    </div>
-  </div>
+      <nav class="top-bar" >
+        <ul class="title-area">
+          <li class="name">
+          <h1><a href="#"><img id="logo" src="http://dl.dropbox.com/u/15101202/images/LOGO/banner_logo_walkder.png" /></a></h1>
+          </li>
+        </ul>
+          <section class="top-bar-section">
+          <ul class="right">
+            <li><div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">登入</div>
+            </li>
+            <li class="divider"></li>
+            <li class="name"><a href="#" data-reveal-id="register">註冊</a></li>
+            <li class="divider"></li>
+    		    <li><a href="#" data-reveal-id="login">登入</a></li>
+          </ul>
+          </section>
+          </nav>
   
 
-  <div id="register" class="reveal-modal large">
+  <div id="register" class="row reveal-modal medium">
+    <div class="large-8 columns">
 <%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
-     <h1>註冊</h1>
+     <h4>註冊</h4>
      <h6>電子郵件</h6>
      <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
      <h6>名稱</h6>
@@ -100,101 +103,96 @@
      <%=f.password_field :password, :placeholder=>'請輸入6~20字半形英數密碼'%>
      <h6>確認密碼</h6>
      <%=f.password_field :password_confirmation, :placeholder=>"請輸入第二次密碼"%>
-     <%=f.submit '免費註冊',:class=>"button expand"%>
+     <%=f.submit '註冊',:class=>"button expand"%>
+
      <%if(flash[:signupfail])%>
       <p class="loginfail">註冊失敗</p>
      <%end%>
-    <a class="close-reveal-modal">&#215;</a>
-<%end%>  
+<%end%>
+  </div>
+  <div class="large-4 columns panel">
+    <h4>以其他帳號登入</h4>
+      <div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">facebook</div>
+  </div>
+  <a class="close-reveal-modal">&#215;</a>  
   </div>
 
 
-  <div id="login" class="reveal-modal medium">
+  <div id="login" class="row reveal-modal medium">
+    <div class="large-8 columns">
     <%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
-     <h1>登入</h1>
+     <h4>登入</h4>
      <h6>電子郵件</h6>
      <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
      <h6>密碼</h6>
      <%=f.password_field :password, :placeholder=>"請輸入6~20字半形英數密碼"%>
      <%=f.submit '登入' , :class=>'button medium expand'%>
      <!--<input type="submit" class="alert button medium" value="忘記密碼">-->
-     <a class="close-reveal-modal">&#215;</a>
      <%if(flash[:loginfail])%>
       <p class="loginfail">您輸入的帳號或密碼有誤</p>
     <%end%>
-    <br />
+  </div>
+
+  <div class="large-4 columns panel">
+    <h4>以其他帳號登入</h4>
+      <div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">facebook</div>
+    </div>
+    <a class="close-reveal-modal">&#215;</a>
   </div>
   <!-- End Header and Nav -->
-  
   
   <!-- First Band (Image) -->
     
   <div class="row">
-    <div class="twelve columns">
       <img class="gallery" src="<%=asset_path('banded/banded-cover.jpg')%>" />
-      
       <hr />
-    </div>
   </div>
+
   <!-- Second Band (Image Left with Text) -->
   
   <div class="row">
-    <div class="twelve columns">
-      <div class="four columns">
+      <div class="large-4 columns">
         <img class="gallery" src="<%=asset_path('banded/a3.jpg')%>" />
       </div>
-      <div class="eight columns">
-        <h3>專注於旅行者的設計，寫下專屬於旅行的遊記</h3>
-        <h3 class="unbold">時間、地點、故事，缺一不可。</h3>
+      <div class="large-8 columns">
+        <h3>時間、地點、故事，缺一不可</h3>
+        <h3>專注於旅行者的設計，寫下專屬於旅行的遊記。</h3>
           <p class="lead">WanderWorld地球漫遊是一個專為旅行者打造的雲端遊記服務，我們將「人、事、時、地」以獨特的介面整合在一起，幫助旅行者說故事，或者規劃下一趟旅程。</p>
-          <hr />
-      </div>
-    </div>
-  </div>
-  
-  
 
+      </div>
+  </div>
 
   <!-- Third Band (Image Right with Text) -->
   
   <div class="row">
-    <div class="twelve columns">
-      <div class="eight columns">
-        <h3>用一張張旅行地圖，為美好的旅程留下紀錄</h3>
-        <h3 class="unbold">凡走過，必留下足跡；每個足跡都是傳奇。</h3>
+      <div class="large-8 columns">
+        <h3>一張張旅行地圖，為美好的旅程留下紀錄</h3>
+        <h3>凡走過，必留下足跡；每個足跡都是傳奇。</h3>
           <p class="lead">
             沒有一個網誌或社群網站，能像地球漫遊一樣，將地理位置和旅行故事整合地如此緊密。我們相信，將地圖和遊記結合在一起，不僅能幫助旅行者撰寫，更能讓讀者身歷其境。</p>
-        <hr />
       </div>
-        <div class="four columns">
+        <div class="large-4 columns">
           <img class="gallery" src="<%=asset_path('banded/a1.jpg')%>" />
         </div>
-    </div>
   </div>
   
-  
-  
-
   <!-- Fourth Band (Image Left with Text) -->
   
   <div class="row">
-    <div class="twelve columns">
-      <div class="four columns">
+      <div class="large-4 columns">
         <img class="gallery" src="<%=asset_path('banded/a2.jpg')%>" />
       </div>
-      <div class="eight columns">
+      <div class="large-8 columns">
         <h3>直覺的時間軸架構；剛回家，還是正要出發？</h3>
-        <h3 class="unbold">不只幫助你回憶，還要幫你規劃旅行。</h3>
+        <h3>不只幫助你回憶，還要幫你規劃旅行。</h3>
           <p class="lead">
           WanderWorld地球漫遊的時間軸將依照你輸入的旅行時間，自動顯示這趟旅行是已經出發，還是尚未啓程；除了寫遊記，你也可以規劃你的下一趟旅行。
           </p>
       </div>
-    </div>
   </div>
 
-  <div class="row" style="margin-bottom:60px;">
-    <div class="twelve columns">
-      <div class="four columns right offset-by-eight">
+  <div class="row">
+      <div class="large-4 columns right offset-by-eight">
       <h1><a href="/newindex/browse">閱讀遊記→</a></h1>
       </div>
     </div>
@@ -203,15 +201,16 @@
 
   <!-- Call to Action Panel -->
   <div class="row">
-    <div class="twelve columns panel">
-        <div class="twelve columns">
-          <div class="four columns">
+    <div class="large-12 columns panel">
+          <div class="large-4 columns">
             <h2>和我們聯絡！</h2>
-            <p>有任何疑問或建議，請讓我們知道</p> 
-            <a target="_blank" href="http://goo.gl/mnxVi" class="button large">聯絡我們</a>
+            <p>有任何疑問或建議，請讓我們知道!</p> 
+            <div class="large-10 columns" style="padding-left:0px;">
+            <a target="_blank" href="http://goo.gl/mnxVi" class="button large expand radius left">聯絡我們</a>
             </a>
           </div>
-          <div class="four columns offset-by-four fb-like-box" data-href="http://www.facebook.com/WanderWorld" data-width="292" data-height="185" data-show-faces="true" data-stream="false" data-header="false" data-border-color="#f2f2f2">
+          </div>
+          <div class="large-4 columns offset-by-four fb-like-box" data-href="http://www.facebook.com/WanderWorld" data-width="292" data-height="185" data-show-faces="true" data-stream="false" data-header="false" data-border-color="#f2f2f2">
           </div>
         </div>
     </div>
@@ -222,20 +221,18 @@
   <!-- Footer -->
   
   <footer class="row">
-    <div class="twelve columns">
       <hr />
       <div class="row">
-        <div class="six columns">
-          <p>&copy; Copyright no one at all. Go to town.</p>
+        <div class="large-6 columns">
+          <h6 class="subheader">WanderWorld地球漫遊 &copy; 2013</h6>
         </div>
-        <div class="six columns">
-          <ul class="link-list right">
+        <div class="large-6 columns">
+          <ul class="inline-list right">
             <li><a href="#">關於地球漫遊</a></li>
             <li><a href="http://wanderworld-ideaaxis.blogspot.tw/" target="blank">地球漫遊開發日誌</a></li>
           </ul>
         </div>
-      </div>
-    </div> 
+      </div> 
   </footer>
 
   <!-- Included JS Files (Uncompressed) -->
