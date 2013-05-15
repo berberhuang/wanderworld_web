@@ -36,12 +36,9 @@
   <style>	
 	#myContent{
 		position:relative;
-		
 	}
 	
 	.journal_card{
-		border-width:5px;
-		padding:4px;
 		background-color:#ffffff;
 		width:210px;
 		overflow-x:hidden;
@@ -95,7 +92,6 @@
 	
 	.journal_title span{
 		font-size:32px;
-		/*background:rgba(0,0,0,0.5);*/
 		font-weight:bold;
 		line-height:36px;
 		color:white;		
@@ -110,10 +106,7 @@
 	.user_avatar{
 		float:left;
 		max-height:40px;
-		max-width:40px;
-		margin-right:8px;
-		height:auto;
-		width:auto;
+		max-width:40px;	
 	}
 	
 	.user_name{
@@ -127,27 +120,7 @@
 		font-weight:bolder;
 		color:#666666;
 	}
-	
-	.trip_points{
-		background:#FFFFCC;
-	}
-	
-	.trip_points div{
-		margin:2px;
-		background:rgba(256,256,256,0.7);
-		padding-left:10px;
-		-moz-box-shadow: 1px 1px 3px #2e2e2e;
-		-webkit-box-shadow: 1px 1px 3px #2e2e2e;
-		box-shadow: 1px 1px 3px #2e2e2e;
 
-		-webkit-border-radius: 4px;
-		-moz-border-radius: 4px;
-		border-radius: 4px;	
-	}
-	
-	body{
-		
-	}
   </style>
 	<script type="text/javascript">
 
@@ -299,7 +272,7 @@
   <!-- End Header and Nav -->
 
   <div class="row">
-      <div class="large-4 columns">
+      <div class="large-5 columns">
 	  <% if @type =='pop' %>
         <h1>人氣遊記</h1>
 	  <%elsif @type =='new'%>
@@ -320,23 +293,20 @@
       </div>
   </div>
   
-  <!-- First Band (Image) -->
+  <!-- Journal Card -->
   
   <div class="row">
-    <div class="large-12 columns" >
-	  <ul  id="myContent">
-	  <%
-		@order_str=''
+	  <ul id="myContent">
+	  <%@order_str=''
 		if @type=='pop'
 			@order_str='groups.count+groups.created_at/1000 DESC'
 		elsif @type=='new'
 			@order_str='groups.updated_at DESC'
 		else
 			@order_str='groups.count+groups.created_at/1000 DESC'
-		end
-	  %>
-	  <%
-		@groups=Group.joins(:trip,:user).where(:public=>true).order(@order_str).select('username,fbid,name,groups.id,groups.user_id,photo,trip_id,title').limit(@offset.to_s+',20')
+		end%>
+
+	  <%@groups=Group.joins(:trip,:user).where(:public=>true).order(@order_str).select('username,fbid,name,groups.id,groups.user_id,photo,trip_id,title').limit(@offset.to_s+',20')
 		@groups.each do |g|
 			
 			@places=Place.joins(:trip_points).where(:trip_points=>{:group_id=>g.id}).order('sort_id ASC').select('name,latitude,longitude')
@@ -350,14 +320,13 @@
 				@url='http://maps.googleapis.com/maps/api/staticmap?maptype=terrain&zoom=7&size=200x300&markers=color%3Ablue'+@pos_str+'&sensor=false'
 			else
 				@url='http://maps.googleapis.com/maps/api/staticmap?maptype=terrain&size=200x300&markers=color%3Ablue'+@pos_str+'&sensor=false'
-			end
-		%>
+			end%>
 	  
-      <li class="gallery" class="journal_card">
-	  <a class="journal_title" target="_blank" href="<%='/'+g.trip_id.to_s+'/'+g.id.to_s %>">
-		<% if g.photo %>
-			<div class="journal_title_img">
-			<img class="journal_photo" src="<%=g.photo%>" onerror="this.src='<%=@url%>';" />
+      <li class="journal_card gallery">
+      		<a class="th journal_title" target="_blank" href="<%='/'+g.trip_id.to_s+'/'+g.id.to_s %>">
+				<% if g.photo %>
+				<div class="journal_title_img">
+					<img class="journal_photo" src="<%=g.photo%>" onerror="this.src='<%=@url%>';" />
 		<% else %>
 			<img src="<%=@url%>" />
 		<% end %>
@@ -367,7 +336,7 @@
 		<%end%>
 	  <p><span><%=g.title%></span></p>
 	  </a>
-	  <div class="trip_info">
+	  <div class="row trip_info">
 	    <a href="/rapid/triplist/<%=g.user_id%>" target="_blank">
 	    <% if g.fbid %>
 			<img class="user_avatar" src='https://graph.facebook.com/<%=g.fbid%>/picture' />
@@ -382,14 +351,13 @@
 	  </div>
 	  <div class="trip_points">
 		<% @places.each do |p| %>
-			<div><%=p.name%></div>
+			<div><h6 class="subheader"><%=p.name%></h6></div>
 		<%end%>
-	  </div>
+	</div>
 	  </li>
 	  
 	  <%end%>
       </ul>
-    </div>
 </div>
  
 <div class="row">
@@ -475,7 +443,7 @@
       <p class="loginfail">您輸入的帳號或密碼有誤</p>
     <%end%>
   </div>
-  <div class="large-4 columns panel">
+  <div class="large-4 columns panel" style="height:100%;">
     <h4>以其他帳號登入</h4>
       <div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">facebook</div>
     </div>
