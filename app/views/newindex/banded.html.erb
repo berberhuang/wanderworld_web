@@ -75,7 +75,7 @@
       <nav class="top-bar" >
         <ul class="title-area">
           <li class="name">
-          <h1><a href="#"><img id="logo" src="http://dl.dropbox.com/u/15101202/images/LOGO/banner_logo_walkder.png" /></a></h1>
+          <a href="#"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
           </li>
         </ul>
           <section class="top-bar-section">
@@ -90,61 +90,125 @@
           </section>
           </nav>
   
-
-  <div id="register" class="row reveal-modal medium">
+<!--註冊-->
+  <div id="register" class="reveal-modal medium">
     <div class="large-8 columns">
-<%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
-     <h4>註冊</h4>
-     <h6>電子郵件</h6>
-     <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
-     <h6>名稱</h6>
-     <%=f.text_field :username,:placeholder=>"您在網站中的名稱"%>
-     <h6>密碼</h6>
-     <%=f.password_field :password, :placeholder=>'請輸入6~20字半形英數密碼'%>
-     <h6>確認密碼</h6>
-     <%=f.password_field :password_confirmation, :placeholder=>"請輸入第二次密碼"%>
-     <%=f.submit '註冊',:class=>"button expand"%>
+      <%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
+      <fieldset>
+      
+     <legend><h2>註冊</h2></legend>
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">電子郵件:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+         <input id="user_email" name="user[email]" placeholder="請輸入您註冊的電子郵件地址" size="30" type="email" />   
+        </div>
+      </div>  
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">名稱:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.text_field :username,:placeholder=>"您在網站中的名稱"%>
+        </div>
+      </div>
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">密碼:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.password_field :password, :placeholder=>'請輸入6~20字半形英數密碼'%>
+        </div>
+      </div>
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">確認密碼:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.password_field :password_confirmation, :placeholder=>"請輸入第二次密碼"%>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="small-9 large-12 right">
+        <%=f.submit '註冊',:class=>"button radius expand"%>
+        </div>
+      </div>
 
      <%if(flash[:signupfail])%>
       <p class="loginfail">註冊失敗</p>
      <%end%>
-<%end%>
+
+      </fieldset>
+      <%end%>
   </div>
-  <div class="large-4 columns panel" style="height:100%;">
-    <h4>以其他帳號登入</h4>
+  
+
+  <div class="large-4 columns">
+    <fieldset>
+    <legend><h4>以其他帳號登入</h4></legend>
       <div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">facebook</div>
+      </fieldset>
   </div>
   <a class="close-reveal-modal">&#215;</a>  
   </div>
 
-
-  <div id="login" class="row reveal-modal medium">
+<!--登入-->
+  <div id="login" class="reveal-modal medium">
     <div class="large-8 columns">
+    <form>
+      <fieldset>
+        <legend><h2>登入</h2></legend>
     <%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
-     <h4>登入</h4>
-     <h6>電子郵件</h6>
-     <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
-     <h6>密碼</h6>
-     <%=f.password_field :password, :placeholder=>"請輸入6~20字半形英數密碼"%>
-     <%=f.submit '登入' , :class=>'button medium expand'%>
+     
+     <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">電子郵件:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
+        </div>
+    </div>
+    <div class="row collapse">
+      <div class="small-3 large-2 columns">
+        <label for="right-label" class="right inline">密碼:</label>
+      </div>
+      <div class="small-9 large-10 columns">
+        <%=f.password_field :password, :placeholder=>"請輸入6~20字半形英數密碼"%>
+      </div>
+    </div>
+      <br>
+      <div class="row">
+        <div class="small-9 large-12 right">
+        <%=f.submit '登入',:class=>"button radius expand"%>
+        </div>
+      </div>
      <!--<input type="submit" class="alert button medium" value="忘記密碼">-->
      <%if(flash[:loginfail])%>
       <p class="loginfail">您輸入的帳號或密碼有誤</p>
-    <%end%>
-  </div>
+      <%end%>
+      </fieldset>
+    </form>
+</div>
 
-  <div class="large-4 columns panel">
-    <h4>以其他帳號登入</h4>
+  <div class="large-4 columns">
+    <fieldset>
+    <legend><h4>以其他帳號登入</h4></legend>
       <div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">facebook</div>
-    </div>
-    <a class="close-reveal-modal">&#215;</a>
+      </fieldset>
+  </div>
+  <a class="close-reveal-modal">&#215;</a>  
   </div>
   <!-- End Header and Nav -->
-  
+
   <!-- First Band (Image) -->
     
   <div class="row">
-      <img class="gallery" src="<%=asset_path('banded/banded-cover.jpg')%>" />
+      <div id="guide">
+        <!--img class="gallery"  src="/assets/banded-cover.jpg"/>
+        <!--div class="black_panel"></div-->
+      </div>
       <hr />
   </div>
 
@@ -194,7 +258,7 @@
 
   <!-- Call to Action Panel -->
   <div class="row">
-    <div class="large-12 columns panel">
+    <div class="large-12 columns panel" style="margin-top:7em;">
           <div class="large-4 columns">
             <h2>和我們聯絡！</h2>
             <p>有任何疑問或建議，請讓我們知道!</p> 

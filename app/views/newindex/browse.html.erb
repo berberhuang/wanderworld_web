@@ -218,7 +218,7 @@
 	}
 </style>
 <script type="text/javascript" src="<%=asset_path('rapid/uievent.js')%>"></script>
-	<a href="/"><img class="logo" src="<%=asset_path('banner_logo_walker.png')%>" /></a>
+	<a href="/"><img id="logo" src="<%=asset_path('banner_logo_walker.png')%>" /></a>
 	<!--<div id="search">	
 		<input id="searching" type="text" placeholder="搜尋" />	
 		<button id="search_button"><img src='<%=asset_path('toolbar_find.png')%>' style="width:20px"></img></button>
@@ -252,13 +252,11 @@
 	<nav class="top-bar" >
         <ul class="title-area">
           <li class="name">
-          <h1><a href="#"><img id="logo" src="http://dl.dropbox.com/u/15101202/images/LOGO/banner_logo_walkder.png" /></a></h1>
+          <a href="#"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
           </li>
         </ul>
           <section class="top-bar-section">
           <ul class="right">
-            <li><div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">登入</div>
-            </li>
             <li class="divider"></li>
             <li class="name"><a href="#" data-reveal-id="register">註冊</a></li>
             <li class="divider"></li>
@@ -325,17 +323,14 @@
       <li class="journal_card gallery">
       		<a class="th journal_title" target="_blank" href="<%='/'+g.trip_id.to_s+'/'+g.id.to_s %>">
 				<% if g.photo %>
-				<div class="journal_title_img">
-					<img class="journal_photo" src="<%=g.photo%>" onerror="this.src='<%=@url%>';" />
-		<% else %>
-			<img src="<%=@url%>" />
-		<% end %>
-		
-		<% if g.photo %>	
-			</div>
-		<%end%>
-	  <p><span><%=g.title%></span></p>
-	  </a>
+					<div class="journal_title_img">
+						<img class="journal_photo" src="<%=g.photo%>" onerror="this.src='<%=@url%>';" />
+					</div>
+				<% else %>
+					<img src="<%=@url%>" />
+				<% end %>
+	  			<p><span><%=g.title%></span></p>
+	  		</a>
 	  <div class="row trip_info">
 	    <a href="/rapid/triplist/<%=g.user_id%>" target="_blank">
 	    <% if g.fbid %>
@@ -402,28 +397,63 @@
       </div> 
   </footer>
 
-<div id="register" class="row reveal-modal medium">
+<div id="register" class="reveal-modal medium">
+    <form>
     <div class="large-8 columns">
-<%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
-     <h4>註冊</h4>
-     <h6>電子郵件</h6>
-     <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
-     <h6>名稱</h6>
-     <%=f.text_field :username,:placeholder=>"您在網站中的名稱"%>
-     <h6>密碼</h6>
-     <%=f.password_field :password, :placeholder=>'請輸入6~20字半形英數密碼'%>
-     <h6>確認密碼</h6>
-     <%=f.password_field :password_confirmation, :placeholder=>"請輸入第二次密碼"%>
-     <%=f.submit '註冊',:class=>"button expand"%>
+      <fieldset>
+      <%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
+     <legend><h2>註冊</h2></legend>
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">電子郵件</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
+        </div>
+      </div>  
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">名稱</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.text_field :username,:placeholder=>"您在網站中的名稱"%>
+        </div>
+      </div>
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">密碼</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.password_field :password, :placeholder=>'請輸入6~20字半形英數密碼'%>
+        </div>
+      </div>
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">確認密碼</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.password_field :password_confirmation, :placeholder=>"請輸入第二次密碼"%>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="small-9 large-12 right">
+        <%=f.submit '註冊',:class=>"button radius expand right"%>
+        </div>
+      </div>
 
      <%if(flash[:signupfail])%>
       <p class="loginfail">註冊失敗</p>
      <%end%>
 <%end%>
   </div>
-  <div class="large-4 columns panel">
-    <h4>以其他帳號登入</h4>
+  </fieldset>
+</form>
+  <div class="large-4 columns">
+    <fieldset>
+    <legend><h4>以其他帳號登入</h4></legend>
       <div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">facebook</div>
+      </fieldset>
   </div>
   <a class="close-reveal-modal">&#215;</a>  
   </div>

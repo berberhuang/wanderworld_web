@@ -1091,7 +1091,7 @@ a {
   color: #2ba6cb;
   text-decoration: none;
   line-height: inherit; }
-  a:hover, a:focus {
+  a:`, a:focus {
     color: #2795b6; }
   a img {
     border: none; }
@@ -4179,5 +4179,23 @@ body{
 .gallery-border {
   border:3px solid #c5c5c9; 
 }
+
+#guide{
+  background:url('/assets/banded-cover.jpg');
+  height:400px;
+}
+
+#guide:hover{
+  background-color: black;
+}
+
+.black_panel{
+  position:absolute;
+  z-index:100;
+  background-color: black;
+  height:600px;
+}
+
+
 
 
