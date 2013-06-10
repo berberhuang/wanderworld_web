@@ -6,18 +6,6 @@
 #trip_logo img {
 	width:40px;
 }
-#trip_title {
-	width: auto;
-	margin: 15px 0 0 0;
-	float: left;
-}
-#trip_title h2 {
-	line-height:40px;
-}
-#trip_create {
-	float: left;
-	margin: 20px 0 0 25px;
-}
 
 .trip_list_info {
 	width:160px;

@@ -1,5 +1,6 @@
 <%= content_for :css do %>
-	<%= stylesheet_link_tag    "index_layout" %>
+	<%= stylesheet_link_tag "index_layout" %>
+	<%= stylesheet_link_tag "newindex" %>
 <%end%>
 <script type="text/javascript">
 	//編輯顯示的URL
@@ -73,39 +74,41 @@
 		<img src='<%=asset_path("view_all.png")%>'></img>
 	</div>
 	<!--旅行列表-->
-	<div id="trip_list" class="list" style="display:none;">
-		<div id="trip_logo"></div>
-		<div id="trip_title">
-			<h2 class="information">旅行列表</h2>
+	<div id="trip_list" class="list large-3 columns right" style="display:none;">
+		<div class="row">
+			<div class="large-7 columns">
+				<h3>旅行列表</h3>
+			</div>
+			<div id="trip_create" class="large-5 columns" style="display:none;">
+				<a id="trip_create_button" class="button radius tiny" title="新增一個旅行">＋新增旅行</a>
+			</div>
 		</div>
-		<div id="trip_create" style="display:none;">
-			<button id="trip_create_button" class="button" style="border-radius:1000px;" title="新增一個旅行">新增旅行</button>
+		<hr/>
+		<div class="row">
+			<a id="prev" class=" button" onclick="toTop()" title="至頂端" >FIRST</a>
 		</div>
-		<div id="prev" onclick="toTop()" title="至頂端"></div>
+		<div class="row">
 			<div id="timeline">
 				<div id="load_trip" class="loading">
-				<div class="load_name">Loading</div>
-				<div id="block_1" class="barlittle"></div>
-				<div id="block_2" class="barlittle"></div>
-				<div id="block_3" class="barlittle"></div>
-				<div id="block_4" class="barlittle"></div>
-				<div id="block_5" class="barlittle"></div>
-			</div>
-		<ul id="dates"></ul>
+					<div class="load_name">請稍候</div>
+				</div>
+			<ul id="dates"></ul>
 		</div>
-		<div id="next" onclick="toBottom()" title="至底端"></div>
+	</div>
+		<div class="row" >
+			<a id="next" class="button" onclick="toBottom()" title="至底端">LAST</a>
+		</div>
 	</div>
 	<!--旅行-->
-	<div id="trip_one" class="list" style="display:none;">	
+	<div id="trip_one" class="list large-3 columns right" style="display:none;">	
 		<!--旅行資訊-->
 		<div class="trip_information">
-			<div class="trip_names">
+				<a id="return_triplist" class="button secondary radius tiny" title="返回旅行列表">back</a>
+				<div class="trip_names">
 				<h1 class="information" >
 					<div id="trip_name" ></div>
 				</h1>
-				<div id="return_triplist" >
-					<img style="height:23px" src='<%=asset_path("undo_blue.png")%>' title="返回旅行列表"/>
-				</div>
+				
 			</div>
 			<div id="trip_date"></div>
 			<div id="trip_status" style="display:none;">
