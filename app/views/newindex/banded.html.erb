@@ -15,7 +15,6 @@
   <link rel="shortcut icon" href="http://www.wanderworld.com.tw/assets/logo-31972393d4fb52fb065cab20c547f7a2.ico">
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <%= javascript_include_tag "newindex" %>
-  <!-- Included CSS Files (Uncompressed) -->
   <%= stylesheet_link_tag "newindex" %>
   <%= csrf_meta_tags %>
 
@@ -295,50 +294,7 @@
 
   <%= javascript_include_tag "newindex" %>
 
-	<!--登入
-	<div id="login" style="display:none">
-		<%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
-		<table width="300px" border="0">
-			<tr>
-				<th scope="col">E-mail</th>
-				<th scope="col"><%=f.email_field :email, :class=>"fill", :placeholder=>"請輸入您的E-mail"%></th>
-			</tr>
-			<tr>
-				<th scope="row">密碼</th>
-				<td><%=f.password_field :password,:class=>"fill", :placeholder=>"請輸入您的密碼"%></td>
-			</tr>
-		</table>
-		<%if(flash[:loginfail])%>
-			<p class="loginfail">您輸入的帳號或密碼有誤</p>
-		<%end%>
-		<br />
-		<%=f.submit '登入' , :id=>"login_button"%>
-		<%end%>
-	</div>-->
 
-	<!--註冊
-	<div id="rigister" style="display:none">
-		
-		<h1>開始使用</h1><br/>
-			<tr>
-				<th scope="col">E-mail</th>
-				<th scope="col"><%=f.email_field :email,:class=>"fill",:placeholder=>"您將來登入用的帳號"%></th>
-			</tr>
-			<tr>
-				<th scope="row">名稱</th>
-				<td><%=f.text_field :username,:class=>"fill",:placeholder=>"您在網站中的名稱"%></td>
-			</tr>
-			<tr>
-				<th scope="row">密碼</th>
-				<td><%=f.password_field :password, :class=>'fill', :placeholder=>'請輸入8~12字的密碼'%></td>
-			</tr>
-			<tr>
-				<th scope="row">再次輸入密碼</th>
-				<td><%=f.password_field :password_confirmation,:class=>"fill", :placeholder=>"請輸入8~12字的密碼"%></td>
-			</tr>
-		</table>
-		<%=f.submit '開始使用',:id=>"rigister_button"%>
 		<%end%>
-	</div>-->
 </body>
 </html>
