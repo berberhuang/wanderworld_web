@@ -42,6 +42,8 @@
 
 
 
+
+
 <div class="row">
 	<!--main control-->
 	<div class="large-2 columns">
@@ -56,106 +58,164 @@
         <h5 ><a href="#"></a></h5>
           <div class="section-container vertical-nav" data-section data-options="deep_linking: false; one_up: true">
           <section class="section">
-            <h5 class="title"><a href="#" onclick="showTravelJournal()"> 旅行列表</a></h5>
-          </section>
-          <section class="section">
-            <h5 class="title"><a href="#">Section 2</a></h5>
-          </section>
-          <section class="section">
-            <h5 class="title"><a href="#">Section 3</a></h5>
-          </section>
-          <section class="section">
-            <h5 class="title"><a href="#">Section 4</a></h5>
-          </section>
-          <section class="section">
-            <h5 class="title"><a href="#">Section 5</a></h5>
-          </section>
-          <section class="section">
-            <h5 class="title"><a href="#">Section 6</a></h5>
-          </section>
+            <h5 class="title"><a href="#" id="firstStop" onclick="showTravelJournal()">旅行列表</a></h5>
+          </section>	
+          <!--section class="section">
+            <h5 class="title"><a href="#">旅行動態</a></h5>
+          </section-->
+          
         </div>
- 
       </div>
     </div>
-	</div>
 	<!--content-->
-	<div id="travel_journal" class="large-7 columns main_content">
-		<div id="map_canvas"></div>
+	<div class="large-8 columns">
+		<div class="gallery" id="map_canvas"></div>
 	</div>
 	<!--triplist-->
-	<div></div>
+	<div id="trip_list" class="list large-2 columns gallery" style="display:none" >
+		<div class="row">
+			<div class="large-6 columns">
+				<h5>旅行列表</h5>
+			</div>
+			<div id="trip_create" class="large-6 columns " style="display:none">
+				<a id="trip_create_button" class="button radius tiny right" title="新增一個旅行">＋新增旅行</a>
+			</div>
+			<hr>
+		</div>
+		<div class="row">
+			<div class="row">
+				<div class="large-5 columns large-centered">
+					<a id="prev" class="button radius" onclick="toTop()" title="至頂端" >FIRST</a>
+				</div>
+			</div>
+			<div class="row">
+				<div id="timeline">
+					<div id="load_trip" class="loading">
+						<div class="load_name">請稍候</div>
+					</div>
+					<ul id="dates"></ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="large-5 columns large-centered">
+					<a id="next" class="button radius" onclick="toBottom()" title="至底端">LASTl</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--click on a trip-->
+	<div class="large-3 columns gallery list" id="trip_one" style="display:none;">
+		<div class="row trip_information">
+			<div class="large-5 columns">
+				<a id="return_triplist" title="返回旅行列表" class="button radius tiny">←返回</a>
+			</div>
+			<div class="large-7 columns trip_names">
+				<h5 class="information">
+					<div id="trip_name" >TASTE</div>
+				</h5>
+			</div>
+			<div id="trip_date" class="row"></div>
+			<div id="trip_status" class="row" style="display:none;">
+				<div style="float:left">狀態：</div>
+				<div style="float:left;color:#FB9B35"><!--a></a--></div>
+			</div>
+			<hr>
+		</div>
+		<div class="row">
+			<div class="row loading" id="load_point">
+				<div class="load_name">Loading</div>
+			</div>
+			<div class="row">
+				<div id="trip_point_list"></div>
+				<div class="add_group_title">
+					<button id="group_create_button" class="button" style="background-color: #e9e9e9; color: #1d1d1d; border: 1px solid #c3c3c3;" title="新增一篇遊記">新增遊記</button>
+					</div>
+			</div>
+			<div class="row">
+				<div id="view_num">
+				<span>瀏覽人次：<span id="count"></span></span>
+				</div>
+				<div id="sharetoFB">
+					<a href="#share_button" rel="facebox.sharecss" id="share" >分享</a>
+					<div style="clear: both;display: block"> </div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!--share-->
+<div id="share_button" style="display:none;">
+	<div class="sharecss_l">
+		<span>按Ctrl+C複製下列網址</span>
+		<input id="shareInput" placeholder="這裡將出現分享用縮網址" size="50" />
+		<button onclick="postToWall()">分享到facebook</button>
+		<!--<a name="fb_share" type="button_count" href="http://www.facebook.com/sharer.php">分享</a><script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>-->
+		<!--<span>將足跡地圖嵌入BLOG文章中</span><br/>
+		<input id="embedInput" type="url" placeholder="<embed>瓜拉拉瓜拉瓜拉</embed>" size="50"/>-->
+	</div>
+	<div class="sharecss_r">
+		<!--<img src='<%=asset_path("LOGO黑體直行-06.png")%>' style="height:145px;"/> -->
+	</div>
+</div>
+
+<!--手動輸入景點位置-->
+<div id="add_new" style="display:none">
+    	糟了，找不到你想標記的地點，試試看手動輸入吧!
+        <ol>
+	       	<li>輸入附近的地理資訊試試看<input type="search" placeholder="試著輸入國家、城市、以及附近景點或經緯度、地址" size="40" onkeydown="tripPointEdit.UiListener.searchPos(event)" />
+        	<button class="search" onclick="tripPointEdit.UiListener.searchPos(event)">搜尋</button></li>
+        	<li>按下搜尋後，請將地圖上的<img id="pointTarget" src='<%=asset_path("logo.png")%>' />拖至正確位置，並點選下方「完成」或「取消」</li>
+        </ol>
+        <button class="finish">完成</button><button class="cancel" onclick="tripPointEdit.UiListener.cancelSetNewManPos()">取消</button>
+</div>
+
+
+<!--fb_photo_selector-->
+		<div id="CSPhotoSelector">
+			<div class="CSPhotoSelector_dialog">
+				<a href="#" id="CSPhotoSelector_buttonClose">x</a>
+				<div class="CSPhotoSelector_form">
+					<div class="CSPhotoSelector_header">
+						<p>Choose from Photos</p>
+					</div>
+
+					<div class="CSPhotoSelector_content CSAlbumSelector_wrapper">
+						<p>Browse your albums until you find a picture you want to use</p>
+						<div class="CSPhotoSelector_searchContainer CSPhotoSelector_clearfix">
+							<div class="CSPhotoSelector_selectedCountContainer">Select an album</div>
+						</div>
+						<div class="CSPhotoSelector_photosContainer CSAlbum_container"></div>
+					</div>
+
+					<div class="CSPhotoSelector_content CSPhotoSelector_wrapper">
+						<p>Select a new photo</p>
+						<div class="CSPhotoSelector_searchContainer CSPhotoSelector_clearfix">
+							<div class="CSPhotoSelector_selectedCountContainer"><span class="CSPhotoSelector_selectedPhotoCount">0</span> / <span class="CSPhotoSelector_selectedPhotoCountMax">0</span> photos selected</div>
+							<a href="#" id="CSPhotoSelector_backToAlbums">Back to albums</a>
+						</div>
+						<div class="CSPhotoSelector_photosContainer CSPhoto_container"></div>
+					</div>
+
+					<div id="CSPhotoSelector_loader"></div>
+
+
+					<div class="CSPhotoSelector_footer CSPhotoSelector_clearfix">
+						<a href="#" id="CSPhotoSelector_pagePrev" class="CSPhotoSelector_disabled">Previous</a>
+						<a href="#" id="CSPhotoSelector_pageNext">Next</a>
+						<div class="CSPhotoSelector_pageNumberContainer">
+							Page <span id="CSPhotoSelector_pageNumber">1</span> / <span id="CSPhotoSelector_pageNumberTotal">1</span>
+						</div>
+						<a href="#" id="CSPhotoSelector_buttonOK">OK</a>
+						<a href="#" id="CSPhotoSelector_buttonCancel">Cancel</a>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
 

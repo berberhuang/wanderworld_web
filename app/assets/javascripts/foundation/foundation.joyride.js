@@ -7,6 +7,7 @@
     name: 'joyride',
 
     version : '4.1.2',
+    
 
     defaults : {
       expose               : false,      // turn on or off the expose feature

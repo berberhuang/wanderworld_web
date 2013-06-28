@@ -156,11 +156,11 @@
 <!--登入-->
   <div id="login" class="reveal-modal medium">
     <div class="large-8 columns">
-    <form>
-      <fieldset>
-        <legend><h2>登入</h2></legend>
+    
+        
     <%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
-     
+     <fieldset>
+      <legend><h2>登入</h2></legend>
      <div class="row collapse">
         <div class="small-3 large-2 columns">
           <label for="right-label" class="right inline">電子郵件:</label>
@@ -187,8 +187,11 @@
      <%if(flash[:loginfail])%>
       <p class="loginfail">您輸入的帳號或密碼有誤</p>
       <%end%>
+
       </fieldset>
-    </form>
+      <%end%>
+    
+
 </div>
 
   <div class="large-4 columns">
@@ -205,7 +208,7 @@
     
   <div class="row">
     <div class="tailored gallery" >
-        <img src="<%=asset_path('banded/banded-cover.jpg')%>" />
+        <img id="firstStop" src="<%=asset_path('banded/banded-cover.jpg')%>" />
         <a href="/newindex/browse" class="right button radius large gallery">閱讀遊記</a>
     </div>
     <hr />
@@ -290,11 +293,41 @@
       </div> 
   </footer>
 
+  
+
+  <ol class="joyride-list" data-joyride>
+  <li data-id="readJournal" data-text="Next">
+    <p>看看其他人的遊記吧！</p>
+  </li>
+  <li data-id="numero1" data-class="custom so-awesome" data-text="Next">
+    <h4>Stop #1</h4>
+    <p>You can control all the details for you tour stop. Any valid HTML will work inside of Joyride.</p>
+  </li>
+  <li data-id="numero2" data-button="Next" data-options="tipLocation:top;tipAnimation:fade">
+    <h4>Stop #2</h4>
+    <p>Get the details right by styling Joyride with a custom stylesheet!</p>
+  </li>
+</ol>
+
+<div class="joyride-tip-guide">
+  <span class="joyride-nub top"></span>
+  <div class="joyride-content-wrapper">
+    <p>Hello and welcome to the Joyride documentation page.</p>
+    <a href="#" class="small button joyride-next-tip">Next</a>
+    <a href="#close" class="joyride-close-tip">&times;</a>
+  </div>
+</div>
+
   <!-- Included JS Files (Uncompressed) -->
+<script>
+  document.write('<script src="http://zeptojs.com/zepto.js"'
+    + ('__proto__' in {} ? 'zepto' : 'jquery')
+    + '.js><\/script>');
+</script>
+  
+<<script type="text/javascript">
+  $(document).foundation('joyride', 'start');
+</script>
 
-  <%= javascript_include_tag "newindex" %>
-
-
-		<%end%>
 </body>
 </html>

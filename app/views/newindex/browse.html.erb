@@ -253,25 +253,35 @@
   <!-- End Header and Nav -->
 
   <div class="row">
-      <div class="large-5 columns">
 	  <% if @type =='pop' %>
+	  <div class="large-5 columns">
         <h1>人氣遊記</h1>
+       </div>
+        <div class="large-3 columns large-offset-4">
+        <dl class="sub-nav" >
+          <dd style="margin-top:40px" class="active">
+              <a href="/newindex/browse?type=pop">人氣遊記</a>
+          </dd>
+          <dd style="margin-top:40px">
+            <a href="/newindex/browse?type=new">最新遊記</a>
+          </dd>
+        </dl>
+      </div>
 	  <%elsif @type =='new'%>
-		<h1>最新遊記</h1>
+		<div class="large-5 columns">
+        <h1>最新遊記</h1>
+       </div>
+		<div class="large-3 columns large-offset-4">
+        <dl class="sub-nav" >
+          <dd style="margin-top:40px">
+              <a href="/newindex/browse?type=pop">人氣遊記</a>
+          </dd>
+          <dd style="margin-top:40px" class="active">
+            <a href="/newindex/browse?type=new">最新遊記</a>
+          </dd>
+        </dl>
+      </div>
 	  <%end%>
-      </div>
-      <div class="large-3 columns large-offset-4">
-        <ul class="button-group even two-up " >
-          <!--<li><h4><a href="#">地區分類</a></h4></li>-->
-          <li style="margin-top:30px">
-              <a href="/newindex/browse?type=pop" class="button small round" style="border-radius:1000px 0px 0px 1000px;">人氣遊記</a>
-          </li>
-          <li style="margin-top:30px">
-            <a href="/newindex/browse?type=new" class="button small round" style="border-radius:0px 1000px 1000px 0px;">最新遊記</a>
-          </li>
-          <!--<dd><h4><a href="#">分類景點</a></h4></li>-->
-        </ul>
-      </div>
   </div>
   
   <!-- Journal Card -->
