@@ -1789,7 +1789,6 @@ fieldset {
   margin: 1.125em 0; }
   fieldset legend {
     font-weight: bold;
-    background: white;
     padding: 0 0.1875em;
     margin: 0;
     margin-left: -0.1875em; }
@@ -3056,10 +3055,9 @@ form.custom {
   left: 50%;
   z-index: 99;
   height: auto;
-  background-color: #fff;
+  background: #eee url(/assets/modal-gloss.png) no-repeat -200px -80px;
   margin-left: -40%;
   width: 80%;
-  background-color: white;
   padding: 1.25em;
   border: solid 1px #666666;
   -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
@@ -3103,7 +3101,7 @@ form.custom {
       width: 95%; } }
 @media print {
   .reveal-modal {
-    background: white !important; } }
+    background: white !important; }}
 /* Foundation Joyride */
 .joyride-list {
   display: none; }
