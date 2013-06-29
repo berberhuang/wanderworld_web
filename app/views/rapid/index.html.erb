@@ -39,30 +39,28 @@
 <div id="hide_block" style="display:none">
 	 <div id="newTripLoad"></div>
 </div-->
+<div class="row myTravel">
 
-
-
-
-
-<div class="row">
-	<!--main control-->
-	<div class="large-2 columns">
+<!--main control-->
+	<div class="large-2 columns" style="left:0px;">
 		<div class="panel">
-        	<a href="#">
-        		<% if  session[:avatar_src]%>
-	           		<img src='<%=session[:avatar_src]%>'></img>
+	        <a href="#">
+	        	<% if  session[:avatar_src]%>
+		        	<img src='<%=session[:avatar_src]%>'></img>
 				<% else%>
 					<img src='<%=asset_path("user_avatar.png")%>'></img>
 				<% end %>
 			</a>
-        <h5 ><a href="#"></a></h5>
+		<div class="large-centered columns">
+        	<h5><a id="person_name" class="large-centered" href="#"></a></h5>
+        </div>
           <div class="section-container vertical-nav" data-section data-options="deep_linking: false; one_up: true">
           <section class="section">
             <h5 class="title"><a href="#" id="firstStop" onclick="showTravelJournal()">旅行列表</a></h5>
           </section>	
-          <!--section class="section">
-            <h5 class="title"><a href="#">旅行動態</a></h5>
-          </section-->
+          <section class="section">
+            <h5 class="title"><a href="/newindex/browse">旅行動態</a></h5>
+          </section>
           
         </div>
       </div>
@@ -73,15 +71,11 @@
 	</div>
 	<!--triplist-->
 	<div id="trip_list" class="list large-2 columns gallery" style="display:none" >
-		<div class="row">
-			<div class="large-6 columns">
-				<h5>旅行列表</h5>
-			</div>
-			<div id="trip_create" class="large-6 columns " style="display:none">
-				<a id="trip_create_button" class="button radius tiny right" title="新增一個旅行">＋新增旅行</a>
-			</div>
-			<hr>
+			<div id="trip_create" class="columns large-right">
+				<a id="trip_create_button" class="button right tiny" title="新增一個旅行">新增旅行 <i class="foundicon-flag"></i></a>
 		</div>
+		<h3 style="color:white;">旅行列表</h3>
+			<hr />
 		<div class="row">
 			<div class="row">
 				<div class="large-5 columns large-centered">
@@ -104,10 +98,10 @@
 		</div>
 	</div>
 	<!--click on a trip-->
-	<div class="large-3 columns gallery list" id="trip_one" style="display:none;">
+	<div class="large-2 columns gallery list" id="trip_one" style="display:none;">
 		<div class="row trip_information">
 			<div class="large-5 columns">
-				<a id="return_triplist" title="返回旅行列表" class="button radius tiny">←返回</a>
+				<a id="return_triplist" title="返回旅行列表" class="button radius tiny secondary"><i class="foundicon-left-arrow"></i></a>
 			</div>
 			<div class="large-7 columns trip_names">
 				<h5 class="information">
