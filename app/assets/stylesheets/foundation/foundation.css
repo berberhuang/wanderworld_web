@@ -3758,7 +3758,9 @@ kbd {
   margin: -0.25em 0 1.125em;
   padding-top: 0.25em;
   margin-right: 0;
-  margin-left: -0.5625em; }
+  margin-left: -0.5625em;
+  white-space: nowrap; /* 不斷行 */
+ }
   .sub-nav dt,
   .sub-nav dd {
     float: left;
