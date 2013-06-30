@@ -29,7 +29,6 @@
   <link rel="shortcut icon" href="http://www.wanderworld.com.tw/assets/logo-31972393d4fb52fb065cab20c547f7a2.ico">
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <%= javascript_include_tag "newindex" %>
-  <!-- Included CSS Files (Uncompressed) -->
   <%= stylesheet_link_tag "newindex" %>
   <%= csrf_meta_tags %>
 
@@ -200,95 +199,89 @@
    js.src = "//connect.facebook.net/zh_TW/all.js#xfbml=1&appId=319719498074982";
    fjs.parentNode.insertBefore(js, fjs);
  }(document, 'script', 'facebook-jssdk'));</script>
-<!-- Header and Nav -->
+<!-- Header and Nav-->
 
-<div class="header"> 
 <%if UserSession.find%>
-<link href="<%=asset_path('rapid/header.css')%>" media="screen" rel="stylesheet" type="text/css" />
-<style>
-	#account_ul a{
-		line-height:30px;
-	}
-	
-	#account_ul{
-		width:160px;
-	}
-	.header{
-		position:fixed;
-	}
-</style>
-<script type="text/javascript" src="<%=asset_path('rapid/uievent.js')%>"></script>
-	<a href="/"><img id="logo" src="<%=asset_path('banner_logo_walker.png')%>" /></a>
-	<!--<div id="search">	
-		<input id="searching" type="text" placeholder="搜尋" />	
-		<button id="search_button"><img src='<%=asset_path('toolbar_find.png')%>' style="width:20px"></img></button>
-	</div>-->
-	<div id="main_list">	
-		<a href="/rapid/index">
-			<div id="account" class="item_out">
-				<div id="user_heads" class="item_left">
-					<% if session[:avatar_src]%><img src='<%=session[:avatar_src]%>'></img><% end %>
-				</div>
-				<div id="user_names" class="item_right"><%=session[:username]%></div>
-			</div>
-		</a>
-		<div id="account_list" class="hovering" onclick="showAccountList()">
-			<img style="width:18px;height:12px;" src="<%=asset_path('down_triangle.png')%>" />
-		</div>
-		<ul id="account_ul">
-			<li><h2 class="floating"><a href="/rapid/index">個人遊記</a></h2></li>
-			<%if session[:fbid]%>
-				<li><h2 class="floating"><a id="logout_a" href="javascript:onLogout()">登出Facebook</a></h2></li>
-				<li><h2 class="floating"><a id="logout_a" href="/user_session/logout">登出</a></h2></li>
-			<%else%>
-				<li><h2 class="floating"><a id="logout_a" href="/user_session/logout">登出</a></h2></li>
-			<%end%>
-			<li><div style="height:10px"></div></li>
-			<li><h2 class="floating"><a href="http://goo.gl/JeAZ2" target="_blank">問題回報</a></h2></li>
-		</ul>		
-	
-	</div>
-<%else%>
-	<nav class="top-bar" >
+<nav class="top-bar" >
         <ul class="title-area">
           <li class="name">
-          <a href="#"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
+          	<a href="#"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
           </li>
         </ul>
           <section class="top-bar-section">
-          <ul class="right">
+	<script type="text/javascript" src="<%=asset_path('rapid/uievent.js')%>"></script>
+			<ul class="right">
+				<li class="active"><% if session[:avatar_src]%><img src='<%=session[:avatar_src]%>'></img><% end %></li>
+				<li class="has-dropdown"><a href="/rapid/index"><%=session[:username]%></a>
+					<ul class="dropdown">
+						<li><a href="/rapid/index">個人遊記</a></li>
+						<%if session[:fbid]%>
+						<li><a id="logout_a" href="javascript:onLogout()">登出Facebook</a></li>
+						<li><a id="logout_a" href="/user_session/logout">登出</a></li>
+						<%else%>
+						<li><a id="logout_a" href="/user_session/logout">登出</a></li>
+						<%end%>
+						<li class="divider"></li>
+						<li><a href="http://goo.gl/JeAZ2" target="_blank">問題回報</a></li>
+					</ul>
+				</li>
+			</ul>
+		</section>
+		</nav>		
+	<%else%>
+	<nav class="top-bar" >
+        <ul class="title-area">
+          <li class="name">
+          	<a href="#"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
+          </li>
+        </ul>
+          <section class="top-bar-section">
+		<ul class="right">
+            <li class="divider"></li>
+            <li><a href="/newindex/browse">閱讀遊記</a></li>
             <li class="divider"></li>
             <li class="name"><a href="#" data-reveal-id="register">註冊</a></li>
             <li class="divider"></li>
-    		    <li><a href="#" data-reveal-id="login">登入</a></li>
+    		<li><a href="#" data-reveal-id="login">登入</a></li>
           </ul>
           </section>
-          </nav>
+          
+	
+</nav>
 <%end%>
-</div>
 
   <!-- End Header and Nav -->
 
   <div class="row">
-      <div class="large-5 columns">
 	  <% if @type =='pop' %>
+	  <div class="large-5 columns">
         <h1>人氣遊記</h1>
+       </div>
+        <div class="large-3 columns large-offset-4">
+        <dl class="sub-nav">
+          <dd style="margin-top:40px" class="active">
+              <a href="/newindex/browse?type=pop"><i class="foundicon-star"></i>人氣遊記</a>
+          </dd>
+          <dd style="margin-top:40px">
+            <a href="/newindex/browse?type=new"><i class="foundicon-clock"></i>最新遊記</a>
+          </dd>
+        </dl>
+      </div>
 	  <%elsif @type =='new'%>
-		<h1>最新遊記</h1>
+		<div class="large-5 columns">
+        <h1>最新遊記</h1>
+       </div>
+		<div class="large-3 columns large-offset-4">
+        <dl class="sub-nav" >
+          <dd style="margin-top:40px">
+              <a href="/newindex/browse?type=pop"><i class="foundicon-star">人氣遊記</i></a>
+          </dd>
+          <dd style="margin-top:40px" class="active">
+            <a href="/newindex/browse?type=new"><i class="foundicon-clock">最新遊記</i></a>
+          </dd>
+        </dl>
+      </div>
 	  <%end%>
-      </div>
-      <div class="large-3 columns large-offset-4">
-        <ul class="button-group even two-up " >
-          <!--<li><h4><a href="#">地區分類</a></h4></li>-->
-          <li style="margin-top:30px">
-              <a href="/newindex/browse?type=pop" class="button small round" style="border-radius:1000px 0px 0px 1000px;">人氣遊記</a>
-          </li>
-          <li style="margin-top:30px">
-            <a href="/newindex/browse?type=new" class="button small round" style="border-radius:0px 1000px 1000px 0px;">最新遊記</a>
-          </li>
-          <!--<dd><h4><a href="#">分類景點</a></h4></li>-->
-        </ul>
-      </div>
   </div>
   
   <!-- Journal Card -->
@@ -396,24 +389,24 @@
         </div>
       </div> 
   </footer>
-
+<!--rigister-->
 <div id="register" class="reveal-modal medium">
-    <form>
     <div class="large-8 columns">
-      <fieldset>
       <%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
+      <fieldset>
+      
      <legend><h2>註冊</h2></legend>
       <div class="row collapse">
         <div class="small-3 large-2 columns">
-          <label for="right-label" class="right inline">電子郵件</label>
+          <label for="right-label" class="right inline">電子郵件:</label>
         </div>
         <div class="small-9 large-10 columns">
-          <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
+         <input id="user_email" name="user[email]" placeholder="請輸入您註冊的電子郵件地址" size="30" type="email" />   
         </div>
       </div>  
       <div class="row collapse">
         <div class="small-3 large-2 columns">
-          <label for="right-label" class="right inline">名稱</label>
+          <label for="right-label" class="right inline">名稱:</label>
         </div>
         <div class="small-9 large-10 columns">
           <%=f.text_field :username,:placeholder=>"您在網站中的名稱"%>
@@ -421,7 +414,7 @@
       </div>
       <div class="row collapse">
         <div class="small-3 large-2 columns">
-          <label for="right-label" class="right inline">密碼</label>
+          <label for="right-label" class="right inline">密碼:</label>
         </div>
         <div class="small-9 large-10 columns">
           <%=f.password_field :password, :placeholder=>'請輸入6~20字半形英數密碼'%>
@@ -429,7 +422,7 @@
       </div>
       <div class="row collapse">
         <div class="small-3 large-2 columns">
-          <label for="right-label" class="right inline">確認密碼</label>
+          <label for="right-label" class="right inline">確認密碼:</label>
         </div>
         <div class="small-9 large-10 columns">
           <%=f.password_field :password_confirmation, :placeholder=>"請輸入第二次密碼"%>
@@ -438,17 +431,19 @@
       <br>
       <div class="row">
         <div class="small-9 large-12 right">
-        <%=f.submit '註冊',:class=>"button radius expand right"%>
+        <%=f.submit '註冊',:class=>"button radius expand"%>
         </div>
       </div>
 
      <%if(flash[:signupfail])%>
       <p class="loginfail">註冊失敗</p>
      <%end%>
-<%end%>
+
+      </fieldset>
+      <%end%>
   </div>
-  </fieldset>
-</form>
+  
+
   <div class="large-4 columns">
     <fieldset>
     <legend><h4>以其他帳號登入</h4></legend>
@@ -458,7 +453,7 @@
   <a class="close-reveal-modal">&#215;</a>  
   </div>
 
-
+<!--login-->
   <div id="login" class="row reveal-modal medium">
     <div class="large-8 columns">
     <%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
@@ -480,5 +475,15 @@
     <a class="close-reveal-modal">&#215;</a>
   </div>
 <%end%>
+
+<script>
+  document.write('<script src="http://zeptojs.com/zepto.js"'
+    + ('__proto__' in {} ? 'zepto' : 'jquery')
+    + '.js><\/script>');
+</script>
+  
+<script>
+  $(document).foundation();
+</script>
 </body>
 </html>

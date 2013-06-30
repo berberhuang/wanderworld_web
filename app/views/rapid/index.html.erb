@@ -4,7 +4,6 @@
 <%end%>
 <script type="text/javascript">
 	//編輯顯示的URL
-	
 	window.history.pushState(null,document.title,"<%=@url%>");
 	
 	//-----------------check user login status------------------//
@@ -33,224 +32,119 @@
 		<%end%>
 		
 	});
-	
-	
-
 </script>
 
 
-<!--隱藏區塊-->
+<!--隱藏區塊>
 <div id="hide_block" style="display:none">
 	 <div id="newTripLoad"></div>
-</div>
+</div-->
+<div class="row expandView">
 
-<!--主控制-->
-<div id="main_control">
-	<div id="person" >
-		<div id="person_avatar">
-			<% if  session[:avatar_src]%>
-	           	<img src='<%=session[:avatar_src]%>'></img>
+<!--main control-->
+	<div class="large-2 columns panel">
+	    <div class="row">
+	        <% if session[:avatar_src]%>
+		    <img src="<%=session[:avatar_src]%>" ></img>
 			<% else%>
-				<img src='<%=asset_path("user_avatar.png")%>'></img>
+			<img src='<%=asset_path("user_avatar.png")%>' style="display:block; margin:auto;"></img>
 			<% end %>
-		</div>
-		<div id="person_name"></div>
-		<div style="clear: both;display: block"></div>	
+        	<h5><a id="person_name" href="#" style="display:block;text-align:center;"></a></h5>
+        </div>
+        <div class="section-container vertical-nav" data-section data-options="deep_linking: false; one_up: true">
+        	<section class="section">
+        		<h5 class="title"><a href="#" id="firstStop" onclick="showTravelJournal()"><i class="foundicon-flag"></i>旅行列表</a></h5>
+        	</section>	
+        	<section class="section">
+            	<h5 class="title"><a href="/newindex/browse"><i class="foundicon-globe"></i>旅行動態</a></h5>
+          	</section>
+        </div>
+    </div>
+	<!--content-->
+	<div class="large-8 columns">
+		<div class="gallery" id="map_canvas"></div>
 	</div>
-	<div id="other_button" >
-		<div id="button_traveljournal" class="items" onclick="showTravelJournal()"> 旅行列表 </div>
-		<!--<div class="items"> 好友動態 </div>
-		<div class="items"> 相簿 </div>-->
-	</div>
-	<div class="book" ></div>
-</div>
-
-<!--漫遊日誌-->
-<div id="travel_journal" class="main_content" >
-	<!--google地圖-->
-	<div id="map_canvas"></div>
-	<!--<div id="map_small"></div>-->
-	<!--div id="map_adjust" title="調整地圖"  onclick="computeMap();">
-		<img src='<%=asset_path("view_all.png")%>'></img>
-	</div>
-	<!--旅行列表-->
-	<div id="trip_list" class="list large-3 columns right" style="display:none;">
-		<div class="row">
-			<div class="large-7 columns">
-				<h3>旅行列表</h3>
-			</div>
-			<div id="trip_create" class="large-5 columns" style="display:none;">
-				<a id="trip_create_button" class="button radius tiny" title="新增一個旅行">＋新增旅行</a>
-			</div>
-		</div>
-		<hr/>
-		<div class="row">
-			<a id="prev" class=" button" onclick="toTop()" title="至頂端" >FIRST</a>
-		</div>
-		<div class="row">
-			<div id="timeline">
-				<div id="load_trip" class="loading">
-					<div class="load_name">請稍候</div>
-				</div>
-			<ul id="dates"></ul>
-		</div>
-	</div>
-		<div class="row" >
-			<a id="next" class="button" onclick="toBottom()" title="至底端">LAST</a>
-		</div>
-	</div>
-	<!--旅行-->
-	<div id="trip_one" class="list large-3 columns right" style="display:none;">	
-		<!--旅行資訊-->
-		<div class="trip_information">
-				<a id="return_triplist" class="button secondary radius tiny" title="返回旅行列表">back</a>
-				<div class="trip_names">
-				<h1 class="information" >
-					<div id="trip_name" ></div>
-				</h1>
-				
-			</div>
-			<div id="trip_date"></div>
-			<div id="trip_status" style="display:none;">
-				<div style="float:left">狀態：</div>
-				<div style="float:left;color:#FB9B35"><a></a></div>
-			</div>
-			<div style="clear: both;display: block"> </div>
-			</div>
-			
-		<!--讀取列表-->
-		<div id="load_point" class="loading">
-			<div class="load_name">Loading</div>
-			<div id="block_1" class="barlittle"></div>
-			<div id="block_2" class="barlittle"></div>
-			<div id="block_3" class="barlittle"></div>
-			<div id="block_4" class="barlittle"></div>
-			<div id="block_5" class="barlittle"></div>
-		</div>
-		<!--景點列表-->
-		<div id="trip_point_list">
-		</div>
-		<div class="add_group_title">
-			<button id="group_create_button" class="button" style="background-color: #e9e9e9; color: #1d1d1d; border: 1px solid #c3c3c3;" title="新增一篇遊記">新增遊記</button>
-		</div>
-		<!--瀏覽人次-->
-		<div id="view_num">
-			<span>瀏覽人次：<span id="count"></span></span>
-			</div>
-		<!--分享-->
-		<div id="sharetoFB">
-			<a href="#share_button" rel="facebox.sharecss" id="share" >分享</a>
-			<div style="clear: both;display: block"> </div>
-		</div>
-		<div style="clear: both;display: block"> </div>
-	</div>
-
-	<!--隱藏的內容框-->
-	<div id="bounce" class="control" style="display:none">
-		<img src='<%=asset_path("left-03.png")%>' title="展開遊記框" />
-	</div>
-
-	<!--內容框-->
-	<div id="slidesContainer" style="display:none">
-		<div class="bounceDiv">
-			<div id="like"></div>
-			<a class="permission" href="#">
-			<div id="notpublic" style="display:none">未公開 只有你能看到</div>
-			<div id="public" style="display:none">已公開</div>
+	<!--triplist-->
+	<div id="trip_list" class="list large-2 columns gallery" style="display:none" >
+			<a id="trip_create_button" class="button tiny radius" style="position:absolute; right:0px;">
+				<i class="foundicon-plus" style="float:left">&nbsp;</i>
+				<i class="foundicon-flag" style="float:left"></i>
+				<span class="showText">新增旅行</span>
 			</a>
-			<div class="permission_menu">
-				<div class="private_button">私人</div></a>
-				<div class="public_button">公開</div></a>
-			</div>
-			<div class="editTool">
-				<img src='<%=asset_path("edit.png")%>' title="編輯遊記">
-			</div>
+		<div class="row" style="margin-top:25px;">
+			<h4 style="display:block; text-align:center; margin:0 auto; color:white;">
+				<i class="foundicon-flag"></i>旅行列表
+			</h4>
 		</div>
-		<div id="collapse" class="control">
-			<img src='<%=asset_path("right-04.png")%>' title="縮小遊記框" />
-		</div>
-		<div class="controlButton">
-			<div id="postToFB" title="發布到Facebook" style="display:none" onclick="checkbox()">
-				<input type="checkbox" id="check" onclick="checkbox()"  />
-				<img src='<%=asset_path("Facebook_icon.png")%>' style="height:25px" />
-			</div>
-			<button id="releasePost">公開</button>
-			&nbsp&nbsp
-			<button id="finishPost">儲存</button>
-			<button id="cancelEdit" style="width: 80px;">取消編輯</button>
-		</div>
-		<div id="journal">
-			<div id="foo"><div class="foo_load">載入中</div></div>			
-			<div id="postContent"></div>	
 			<hr />
-			<div id="comment">
-				<h3>留言</h3>
-				<div class="comment_scope">
-				<div class="entity">
-					<div class="content_panel">
-						<div class="p1">
-							<div class="content">寫的好棒</div>
-							<div class="footer">
-								<a class="username">cindy</a> 
-								<span>2013/5/13 13:05</span>
-								<div><a class="button" id="delete">刪除</a></div>
-							</div>
-						</div>
-						<div class="p2">
-							<div class="content">謝謝</div>
-							<div class="footer">
-								<a class="username">BertHuang</a>  
-								<span>2013/5/13 13:15</span>
-								<div><a class="button" id="delete">刪除</a></div>
-							</div>	
-						</div>
-					</div>
-					<div class="reply_input" style="margin-top:20px">
-						<textarea placeholder="回覆‧‧‧‧"></textarea>
-						<input class="submit" type="button" value="回覆"></input>
-					</div>
+		<div class="row">
+			<div class="row">
+				<div class="large-5 columns large-centered">
+					<a id="prev" class="button radius" onclick="toTop()" title="至頂端" >TOP</a>
 				</div>
-				<div style="height:10px"></div>
-				<div class="entity">
-					<div class="content_panel">
-						<div class="p1">
-							<div class="content">寫的好棒</div>
-							<div class="footer">
-								<a class="username">cindy</a> 
-								<span>2013/5/13 13:05</span>
-								<div><a class="button" id="delete" href="#">刪除</a></div>
-							</div>
-						</div>
-						<div class="p2">
-							<div class="content">謝謝</div>
-							<div class="footer">
-								<a class="username">BertHuang</a>  
-								<span>2013/5/13 13:15</span>
-								<div><a class="button" id="delete" href="#">刪除</a></div>					
-							</div>
-						</div>
-					</div>
-					<div class="reply_input" style="margin-top:20px">
-						<textarea placeholder="回覆‧‧‧‧"></textarea>
-						<input class="submit" type="button" value="回覆"></input>
-					</div>
-				</div>
-				<div style="height:10px"></div>
-				</div>
-				<div class="comment_input" style="margin-top:20px">
-					<textarea placeholder="留言‧‧‧‧"></textarea>
-					<input class="submit" type="button" value="留言"></input>
-				</div>
-				<div class="nologin">請先登入才能夠留言或回覆</div>
 			</div>
+			<div class="row">
+				<div id="timeline">
+					<div id="load_trip" class="loading">
+						<div class="load_name">請稍候</div>
+					</div>
+					<ul id="dates"></ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="large-5 columns large-centered">
+					<a id="next" class="button radius" onclick="toBottom()" title="至底端">BOTTOM</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--click on a trip-->
+	<div class="large-2 columns gallery list" id="trip_one" style="display:none;">
+		<a id="return_triplist" class="button tiny radius secondary" style="position:absolute; left:0px;">
+				<i class="foundicon-left-arrow" style="float:left"></i>
+				<span class="showText">返回旅行列表</span>
+		</a>
+		<div class="row" style="margin-top:25px;">
+			<h4 style="display:block; text-align:center; margin:0 auto; color:white;">
+				<i class="foundicon-add-doc"></i>某一段旅行
+			</h4>
+		</div>
+	<div id="trip_date" class="row"></div>
+			<div id="trip_status" class="row" style="display:none;">
+				<div style="float:left">狀態：</div>
+				<div style="float:left;color:#FB9B35"><!--a></a--></div>
+			</div>
+	<hr />
 			
 		</div>
-		
+		<div class="row">
+			<div class="row loading" id="load_point">
+				<div class="load_name">Loading</div>
+			</div>
+			<div class="row">
+				<div id="trip_point_list"></div>
+				<div class="add_group_title">
+					<button id="group_create_button" class="button" style="background-color: #e9e9e9; color: #1d1d1d; border: 1px solid #c3c3c3;" title="新增一篇遊記">新增遊記</button>
+					</div>
+			</div>
+			<div class="row">
+				<div id="view_num">
+				<span>瀏覽人次：<span id="count"></span></span>
+				</div>
+				<div id="sharetoFB">
+					<a href="#share_button" rel="facebox.sharecss" id="share" >分享</a>
+					<div style="clear: both;display: block"> </div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 
 
-<!--FB分享-->
+
+
+
+<!--share-->
 <div id="share_button" style="display:none;">
 	<div class="sharecss_l">
 		<span>按Ctrl+C複製下列網址</span>
@@ -265,8 +159,7 @@
 	</div>
 </div>
 
-
-<!--手動輸入-->
+<!--手動輸入景點位置-->
 <div id="add_new" style="display:none">
     	糟了，找不到你想標記的地點，試試看手動輸入吧!
         <ol>
@@ -277,12 +170,8 @@
         <button class="finish">完成</button><button class="cancel" onclick="tripPointEdit.UiListener.cancelSetNewManPos()">取消</button>
 </div>
 
-<!--dialog-->
-<div id="dialog"><p>將放棄編輯內容的更改?</p></div>
-
 
 <!--fb_photo_selector-->
-
 		<div id="CSPhotoSelector">
 			<div class="CSPhotoSelector_dialog">
 				<a href="#" id="CSPhotoSelector_buttonClose">x</a>
@@ -323,3 +212,7 @@
 				</div>
 			</div>
 		</div>
+
+
+
+

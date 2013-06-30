@@ -9,9 +9,10 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true&language=zh-TW"></script>
 <script type="text/javascript" src="/lib/ckeditor/ckeditor.js"></script>
-
+<%= javascript_include_tag "newindex" %>
 <%= javascript_include_tag "rapid" %>
-<%= stylesheet_link_tag    "rapid" %>
+<%= stylesheet_link_tag "newindex" %>
+<%= stylesheet_link_tag "rapid" %>
 <%= yield :css %>
 <%= csrf_meta_tags %>
 
@@ -66,131 +67,205 @@ jQuery(document).ready(function($) {
     	}
     });
 </script>
+
 <!--頭部區塊-->
-<div class="header"> 
-	<a href="/"><img class="logo" src="<%=asset_path('banner_logo_walker.png')%>" /></a>
-	<!--<div id="search">	
-		<input id="searching" type="text" placeholder="搜尋" />	
-		<button id="search_button"><img src='<%=asset_path('toolbar_find.png')%>' style="width:20px"></img></button>
-	</div>-->
-	<div id="main_list">
-	<%if UserSession.find%>
-<!--		<a href="/rapid/lookingAround">
-			<div class="item_out">
-				<div class="item_left">
-						<img src='<%=asset_path('world.png')%>' style="width:20px"></img>
-				</div>
-				<div class="item_right">旅行動態</div>
-			</div>
-		</a>
--->		<!--<a href="/rapid/index">
-			<div class="item_out">	
-				<div class="item_left">
-					<img src='<%=asset_path('user.png')%>' style="width:20px"></img>
-				</div>
-				<div class="item_right">個人遊記</div>
-			</div>
-		</a>-->
-		<a href="/rapid/index">
-			<div id="account" class="item_out">
-				<div id="user_heads" class="item_left">
-					<% if session[:avatar_src]%><img src='<%=session[:avatar_src]%>'></img><% end %>
-				</div>
-				<div id="user_names" class="item_right"><%=session[:username]%></div>
-			</div>
-		</a>
-		<div id="account_list" class="hovering" onclick="showAccountList()">
-			<img style="width:18px;height:12px;" src="<%=asset_path('down_triangle.png')%>" />
-		</div>
-		<ul id="account_ul">
-<!--			<li><h2 class="floating"><a href="/rapid/lookingAround">旅行動態</a></h2></li>  -->
-			<li><h2 class="floating"><a href="/rapid/index">個人遊記</a></h2></li>
-			<%if session[:fbid]%>
-				<li><h2 class="floating"><a id="logout_a" href="javascript:onLogout()">登出Facebook</a></h2></li>
-				<li><h2 class="floating"><a id="logout_a" href="/user_session/logout">登出</a></h2></li>
-			<%else%>
-				<li><h2 class="floating"><a id="logout_a" href="/user_session/logout">登出</a></h2></li>
-			<%end%>
-			<li><hr></li>
-			<li><h2 class="floating"><a href="#about_wanderworld" rel="facebox.wanderworld">關於地球漫遊</a></h2></li>
-			<li><h2 class="floating"><a href="http://goo.gl/JeAZ2" target="_blank">問題回報</a></h2></li>
-		</ul>		
+<%if UserSession.find%>
+<nav class="top-bar" >
+        <ul class="title-area">
+          <li class="name">
+          	<a href="/newindex/browse"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
+          </li>
+        </ul>
+          <section class="top-bar-section">
+  <script type="text/javascript" src="<%=asset_path('rapid/uievent.js')%>"></script>
+			<ul class="right">
+				<li class="active"><% if session[:avatar_src]%><img src='<%=session[:avatar_src]%>'></img><% end %></li>
+				<li class="has-dropdown"><a href="/rapid/index"><%=session[:username]%></a>
+					<ul class="dropdown">
+						<li><a href="/rapid/index">個人遊記</a></li>
+						<%if session[:fbid]%>
+						<li><a id="logout_a" href="javascript:onLogout()">登出Facebook</a></li>
+						<li><a id="logout_a" href="/user_session/logout">登出</a></li>
+						<%else%>
+						<li><a id="logout_a" href="/user_session/logout">登出</a></li>
+						<%end%>
+						<li class="divider"></li>
+						<li><a href="http://goo.gl/JeAZ2" target="_blank">問題回報</a></li>
+					</ul>
+				</li>
+			</ul>
+		</section>
+  </nav>
+
 	<%else%>
-		<h2 class="floatingss">
-			<div class="fb-login-button" id="custom_fb_login" style="width:400px;display:inline" autologoutlink="false" onlogin="onLogin()">登入</div>
-		</h2>
-		<h2 class="floatingss"><a href="#login" rel="facebox.rigistercss">登入</a></h2>
-		<h2 class="floatingss"><a href="#rigister" rel="facebox.rigistercss">註冊</a></h2>
-		<h2 class="floatingss"><a href="#about_wanderworld" rel="facebox.wanderworld">關於地球漫遊</a></h2>
+  <nav class="top-bar" >
+        <ul class="title-area">
+          <li class="name">
+            <a href='/newindex/banded'><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
+          </li>
+        </ul>
+          <section class="top-bar-section">
+		<ul class="right">
+            <li class="divider"></li>
+            <li><a href="/newindex/browse" id="readJournal">閱讀遊記</a></li>
+            <li class="divider"></li>
+            <li class="name"><a href="#" data-reveal-id="register">註冊</a></li>
+            <li class="divider"></li>
+    		<li><a href="#" data-reveal-id="login">登入</a></li>
+          </ul>
+          </section>
 	<%end%>
-	</div>
-</div>
+</nav>
 
 <%= yield %>
 
 <!--登入-->
-<div id="login" style="display:none">
-	<%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
-	<table width="300px" border="0">
-		<tr>
-			<th scope="col">E-mail</th>
-			<th scope="col"><%=f.email_field :email, :class=>"fill", :placeholder=>"請輸入您的E-mail"%></th>
-		</tr>
-		<tr>
-			<th scope="row">密碼</th>
-			<td><%=f.password_field :password,:class=>"fill", :placeholder=>"請輸入您的密碼"%></td>
-		</tr>
-	</table>
-	<%if(flash[:loginfail])%>
-		<p class="loginfail">您輸入的帳號或密碼有誤</p>
-	<%end%>
-	<br />
-	<%=f.submit '登入' , :id=>"login_button"%>
-	<%end%>
+  <div id="login" class="reveal-modal medium">
+    <div class="large-8 columns">
+    <form>
+      <fieldset>
+        <legend><h2>登入</h2></legend>
+    <%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
+     
+     <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">電子郵件:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
+        </div>
+    </div>
+    <div class="row collapse">
+      <div class="small-3 large-2 columns">
+        <label for="right-label" class="right inline">密碼:</label>
+      </div>
+      <div class="small-9 large-10 columns">
+        <%=f.password_field :password, :placeholder=>"請輸入6~20字半形英數密碼"%>
+      </div>
+    </div>
+      <br>
+      <div class="row">
+        <div class="small-9 large-12 right">
+        <%=f.submit '登入',:class=>"button radius expand"%>
+        </div>
+      </div>
+     <!--<input type="submit" class="alert button medium" value="忘記密碼">-->
+     <%if(flash[:loginfail])%>
+      <p class="loginfail">您輸入的帳號或密碼有誤</p>
+      <%end%>
+      </fieldset>
+    </form>
 </div>
+
+  <div class="large-4 columns">
+    <fieldset>
+    <legend><h4>以其他帳號登入</h4></legend>
+      <div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">facebook</div>
+      </fieldset>
+  </div>
+  <a class="close-reveal-modal">&#215;</a>  
+  </div>
 
 <!--註冊-->
-<div id="rigister" style="display:none">
-	<%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
-	<h1>開始使用<!--<img class="logo" src="<%=asset_path('banner_logo_walker.png')%>" />--></h1><br/>
-	<h3><span class="introduction">WanderWorld地球漫遊是幫助人們紀錄旅行的服務；我們喜歡旅行，相信網路世界應該要有比Blog和facebook更有個性的旅行紀錄方式。</span>
-	<span class="introduction">在地球漫遊，你可以輕易的將去過的地方和照片定在地圖上，做成一張獨一無二的個人旅行地圖。</span></h3>
-	<table width="300px" border="0">
-		<tr>
-			<th scope="col">E-mail</th>
-			<th scope="col"><%=f.email_field :email,:class=>"fill",:placeholder=>"您將來登入用的帳號"%></th>
-		</tr>
-		<tr>
-			<th scope="row">名稱</th>
-			<td><%=f.text_field :username,:class=>"fill",:placeholder=>"您在網站中的名稱"%></td>
-		</tr>
-		<tr>
-			<th scope="row">密碼</th>
-			<td><%=f.password_field :password, :class=>'fill', :placeholder=>'請輸入8~12字的密碼'%></td>
-		</tr>
-		<tr>
-			<th scope="row">再次輸入密碼</th>
-			<td><%=f.password_field :password_confirmation,:class=>"fill", :placeholder=>"請輸入8~12字的密碼"%></td>
-		</tr>
-	</table>
-	<%=f.submit '開始使用',:id=>"rigister_button"%>
+  <div id="register" class="reveal-modal medium">
+    <div class="large-8 columns">
+      <%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
+      <fieldset>
+      
+     <legend><h2>註冊</h2></legend>
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">電子郵件:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+         <input id="user_email" name="user[email]" placeholder="請輸入您註冊的電子郵件地址" size="30" type="email" />   
+        </div>
+      </div>  
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">名稱:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.text_field :username,:placeholder=>"您在網站中的名稱"%>
+        </div>
+      </div>
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">密碼:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.password_field :password, :placeholder=>'請輸入6~20字半形英數密碼'%>
+        </div>
+      </div>
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">確認密碼:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.password_field :password_confirmation, :placeholder=>"請輸入第二次密碼"%>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="small-9 large-12 right">
+        <%=f.submit '註冊',:class=>"button radius expand"%>
+        </div>
+      </div>
+
+     <%if(flash[:signupfail])%>
+      <p class="loginfail">註冊失敗</p>
+     <%end%>
+
+      </fieldset>
+      <%end%>
+  </div>
+  
+
+  <div class="large-4 columns">
+    <fieldset>
+    <legend><h4>以其他帳號登入</h4></legend>
+      <div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">facebook</div>
+      </fieldset>
+  </div>
+  <a class="close-reveal-modal">&#215;</a>  
+  </div>
 	<%end%>
-</div>
-<!--關於地球漫遊-->
-<div id="about_wanderworld" style="display:none;">
-	<h1 class="about_title">關於<img src="<%=asset_path('banner_logo_walker.png')%>" /></h1>
-   	<h3>"我們相信，每一次旅行都是改變，值得紀錄。"</h3>
-   	<p><span class="introduction">WanderWorld地球漫遊是幫助人們紀錄旅行的服務；我們喜歡旅行，相信網路世界應該要有比Blog和facebook更有個性的旅行紀錄方式。</span><br/>
-   	<span class="introduction">地球漫遊有兩個主要特色，分別是地圖式服務和時間軸分類:</span>
-	<h3>地圖式服務</h3>
-    <span class="introduction">在記錄旅行這件事情上，還有什麼比直接釘照片在地圖上更容易?我們相信，這樣不僅簡單有趣，而且充滿個性。</span>
-	<h3>時間軸分類方式:</h3>
-    <span class="introduction break">旅行，是人們在某一時間內漫遊於世界各地的過程。透過直覺式的時間軸分類方式，各位將能夠跨越地域的限制，將旅行適當的分類紀錄。</span></p>
-    <h1>BLUES團隊</h1>
-    BLUE是藍調的意思。因為我們喜歡聽藍調爵士樂，所以以此命名。<br/><br/>
-<object id="prezi_f0f59b9598ba355f3705a3ecd721f8542636f0ff" name="prezi_f0f59b9598ba355f3705a3ecd721f8542636f0ff" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="400" height="300"><param name="movie" value="http://prezi.com/bin/preziloader.swf"/><param name="allowfullscreen" value="true"/><param name="allowscriptaccess" value="always"/><param name="bgcolor" value="#ffffff"/><param name="flashvars" value="prezi_id=f0f59b9598ba355f3705a3ecd721f8542636f0ff&amp;lock_to_path=0&amp;color=ffffff&amp;autoplay=no&amp;autohide_ctrls=0"/><embed id="preziEmbed_f0f59b9598ba355f3705a3ecd721f8542636f0ff" name="preziEmbed_f0f59b9598ba355f3705a3ecd721f8542636f0ff" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="400" height="300" bgcolor="#ffffff" flashvars="prezi_id=f0f59b9598ba355f3705a3ecd721f8542636f0ff&amp;lock_to_path=0&amp;color=ffffff&amp;autoplay=no&amp;autohide_ctrls=0"></embed></object><br/>
-    <h1 style="text-align:right;"><a href="http://wanderworld-ideaaxis.blogspot.com/" target="_blank" id="wanderworld_ideaaxis">創業心得日誌→</a></h1>
+
+
+  <ol class="joyride-list" data-joyride>
+  <li data-id="readJournal" data-text="Next">
+    <p>看看其他人的遊記吧！</p>
+  </li>
+  <li data-id="numero1" data-class="custom so-awesome" data-text="Next">
+    <h4>Stop #1</h4>
+    <p>You can control all the details for you tour stop. Any valid HTML will work inside of Joyride.</p>
+  </li>
+  <li data-id="numero2" data-button="Next" data-options="tipLocation:top;tipAnimation:fade">
+    <h4>Stop #2</h4>
+    <p>Get the details right by styling Joyride with a custom stylesheet!</p>
+  </li>
+</ol>
+
+<div class="joyride-tip-guide">
+  <span class="joyride-nub top"></span>
+  <div class="joyride-content-wrapper">
+    <p>Hello and welcome to the Joyride documentation page.</p>
+    <a href="#" class="small button joyride-next-tip">Next</a>
+    <a href="#close" class="joyride-close-tip">&times;</a>
+  </div>
 </div>
 
+
+
+<script>
+  document.write('<script src="http://zeptojs.com/zepto.js"'
+    + ('__proto__' in {} ? 'zepto' : 'jquery')
+    + '.js><\/script>');
+</script>
+  
+<script>
+  $(document).foundation();
+  $(document).foundation('joyride', 'start');
+</script>
 </body>
 </html>

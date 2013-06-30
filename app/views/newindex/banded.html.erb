@@ -15,7 +15,6 @@
   <link rel="shortcut icon" href="http://www.wanderworld.com.tw/assets/logo-31972393d4fb52fb065cab20c547f7a2.ico">
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <%= javascript_include_tag "newindex" %>
-  <!-- Included CSS Files (Uncompressed) -->
   <%= stylesheet_link_tag "newindex" %>
   <%= csrf_meta_tags %>
 
@@ -157,11 +156,11 @@
 <!--登入-->
   <div id="login" class="reveal-modal medium">
     <div class="large-8 columns">
-    <form>
-      <fieldset>
-        <legend><h2>登入</h2></legend>
+    
+        
     <%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
-     
+     <fieldset>
+      <legend><h2>登入</h2></legend>
      <div class="row collapse">
         <div class="small-3 large-2 columns">
           <label for="right-label" class="right inline">電子郵件:</label>
@@ -188,8 +187,11 @@
      <%if(flash[:loginfail])%>
       <p class="loginfail">您輸入的帳號或密碼有誤</p>
       <%end%>
+
       </fieldset>
-    </form>
+      <%end%>
+    
+
 </div>
 
   <div class="large-4 columns">
@@ -207,7 +209,7 @@
   <div class="row">
     <div class="tailored gallery" >
         <img src="<%=asset_path('banded/banded-cover.jpg')%>" />
-        <a href="/newindex/browse" class="right button radius large gallery">閱讀遊記</a>
+        <a href="/newindex/browse"  id="readJournal" class="right button radius large gallery">閱讀遊記</a>
     </div>
     <hr />
   </div>
@@ -284,61 +286,48 @@
         </div>
         <div class="large-6 columns">
           <ul class="inline-list right">
-            <li><a href="#">關於地球漫遊</a></li>
             <li><a href="http://wanderworld-ideaaxis.blogspot.tw/" target="blank">地球漫遊開發日誌</a></li>
           </ul>
         </div>
       </div> 
   </footer>
 
-  <!-- Included JS Files (Uncompressed) -->
+  
 
-  <%= javascript_include_tag "newindex" %>
+  <ol class="joyride-list" data-joyride>
+  <li data-id="readJournal" data-text="Next">
+    <p>看看其他人的遊記吧！</p>
+  </li>
+  <li data-id="numero1" data-class="custom so-awesome" data-text="Next">
+    <h4>Stop #1</h4>
+    <p>You can control all the details for you tour stop. Any valid HTML will work inside of Joyride.</p>
+  </li>
+  <li data-id="numero2" data-button="Next" data-options="tipLocation:top;tipAnimation:fade">
+    <h4>Stop #2</h4>
+    <p>Get the details right by styling Joyride with a custom stylesheet!</p>
+  </li>
+</ol>
 
-	<!--登入
-	<div id="login" style="display:none">
-		<%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
-		<table width="300px" border="0">
-			<tr>
-				<th scope="col">E-mail</th>
-				<th scope="col"><%=f.email_field :email, :class=>"fill", :placeholder=>"請輸入您的E-mail"%></th>
-			</tr>
-			<tr>
-				<th scope="row">密碼</th>
-				<td><%=f.password_field :password,:class=>"fill", :placeholder=>"請輸入您的密碼"%></td>
-			</tr>
-		</table>
-		<%if(flash[:loginfail])%>
-			<p class="loginfail">您輸入的帳號或密碼有誤</p>
-		<%end%>
-		<br />
-		<%=f.submit '登入' , :id=>"login_button"%>
-		<%end%>
-	</div>-->
+<div class="joyride-tip-guide">
+  <span class="joyride-nub top"></span>
+  <div class="joyride-content-wrapper">
+    <p>Hello and welcome to the Joyride documentation page.</p>
+    <a href="#" class="small button joyride-next-tip">Next</a>
+    <a href="#close" class="joyride-close-tip">&times;</a>
+  </div>
+</div>
 
-	<!--註冊
-	<div id="rigister" style="display:none">
-		
-		<h1>開始使用</h1><br/>
-			<tr>
-				<th scope="col">E-mail</th>
-				<th scope="col"><%=f.email_field :email,:class=>"fill",:placeholder=>"您將來登入用的帳號"%></th>
-			</tr>
-			<tr>
-				<th scope="row">名稱</th>
-				<td><%=f.text_field :username,:class=>"fill",:placeholder=>"您在網站中的名稱"%></td>
-			</tr>
-			<tr>
-				<th scope="row">密碼</th>
-				<td><%=f.password_field :password, :class=>'fill', :placeholder=>'請輸入8~12字的密碼'%></td>
-			</tr>
-			<tr>
-				<th scope="row">再次輸入密碼</th>
-				<td><%=f.password_field :password_confirmation,:class=>"fill", :placeholder=>"請輸入8~12字的密碼"%></td>
-			</tr>
-		</table>
-		<%=f.submit '開始使用',:id=>"rigister_button"%>
-		<%end%>
-	</div>-->
+
+<script>
+  document.write('<script src="http://zeptojs.com/zepto.js"'
+    + ('__proto__' in {} ? 'zepto' : 'jquery')
+    + '.js><\/script>');
+</script>
+  
+<script>
+  $(document).foundation();
+  $(document).foundation('joyride', 'start');
+</script>
+
 </body>
 </html>

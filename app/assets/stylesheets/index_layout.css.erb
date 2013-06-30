@@ -22,15 +22,6 @@ input[type='submit'],input[type='button'],button {
   -webkit-box-shadow:-4px 4px 5px  rgba(0,0,0,0.5);
   border-left:black 1px groove;
 }
-.book {
-	width: 24px;
-	height: 100%;
-	background: url(<%=asset_path('address_book.png') %>) repeat-y;
-	background-size: 20px;
-	right: -15px;
-	position: absolute;
-	z-index: 3;
-}
 #person {
 	top:20px;
 	left:5px;
@@ -58,7 +49,7 @@ input[type='submit'],input[type='button'],button {
 	border-radius:5px;
 }
 
-#person_name {
+/*#person_name {
 	float:left;
 	text-align: center;
 	width: 100%; font-family:arial;
@@ -335,7 +326,7 @@ word-wrap: break-word;
 	max-width: 800px;
 	word-wrap: break-word;
 }
-/*漫遊日誌*********************************************************************/
+/*漫遊日誌********************************************************************
 .main_content {
 	width:100%;
 	position:absolute;
@@ -347,27 +338,14 @@ word-wrap: break-word;
 	border-width:0px;
 	overflow:hidden;
 	background-color: rgba(50, 50, 50, 1);
-}
+}*/
 /*google地圖*/
 #map_canvas {
-	width:100%;
-	height:100%;
-	position:absolute;
-	top:0px;
-	left:130px;
-	padding:0px;
-	margin:0px;
-	border-width:0px;
+	width: 100%;
+	max-width: 985px;
+	height:520px;
 }
-#map_small {
-	position:absolute;
-	right:0px;
-	bottom:0px;
-	width:260px;
-	height:200px;
-	background:#F1F1F1;
-	z-index:4;
-}
+
 #map_adjust {
 	width:50px;
 	height:50px;

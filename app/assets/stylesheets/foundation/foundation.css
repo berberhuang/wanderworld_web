@@ -1789,7 +1789,6 @@ fieldset {
   margin: 1.125em 0; }
   fieldset legend {
     font-weight: bold;
-    background: white;
     padding: 0 0.1875em;
     margin: 0;
     margin-left: -0.1875em; }
@@ -3056,10 +3055,9 @@ form.custom {
   left: 50%;
   z-index: 99;
   height: auto;
-  background-color: #fff;
+  background: #eee url(/assets/modal-gloss.png) no-repeat -200px -80px;
   margin-left: -40%;
   width: 80%;
-  background-color: white;
   padding: 1.25em;
   border: solid 1px #666666;
   -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
@@ -3103,7 +3101,7 @@ form.custom {
       width: 95%; } }
 @media print {
   .reveal-modal {
-    background: white !important; } }
+    background: white !important; }}
 /* Foundation Joyride */
 .joyride-list {
   display: none; }
@@ -3760,7 +3758,9 @@ kbd {
   margin: -0.25em 0 1.125em;
   padding-top: 0.25em;
   margin-right: 0;
-  margin-left: -0.5625em; }
+  margin-left: -0.5625em;
+  white-space: nowrap; /* 不斷行 */
+ }
   .sub-nav dt,
   .sub-nav dd {
     float: left;
@@ -3781,7 +3781,7 @@ kbd {
       background: #2ba6cb;
       padding: 0.1875em 0.5625em;
       cursor: default;
-      color: white; }
+      color: white;}
 
 /* Foundation Switches */
 @media only screen {
@@ -4177,7 +4177,6 @@ body{
     box-shadow: 0px 1px 3px 2px rgba(193,193,193,1);
 }
 .gallery-border {
-  border:3px solid #c5c5c9; 
 }
 
 #guide{
@@ -4198,6 +4197,33 @@ body{
   box-shadow: 0px 1px 3px 2px rgba(100,100,100,0.8);
 }
 
+.expandView{
+  max-width: 75em !important;
+}
+
+#trip_create_button, #return_triplist{
+  width:50px;
+  transition: width 0.5s;
+  -webkit-transition: width 0.5s;
+  overflow: hidden;
+  white-space:nowrap
+}
+
+#trip_create_button:hover, #return_triplist:hover{
+  width:100px;
+}
+
+.showText{
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+#trip_create_button:hover .showText, #return_triplist:hover .showText{
+  opacity: 1;
+}
 
 
 
+
+
+
+    
