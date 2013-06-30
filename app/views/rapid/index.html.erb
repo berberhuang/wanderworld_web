@@ -39,7 +39,7 @@
 <div id="hide_block" style="display:none">
 	 <div id="newTripLoad"></div>
 </div-->
-<div class="row myTravel">
+<div class="row expandView">
 
 <!--main control-->
 	<div class="large-2 columns" style="left:0px;">
@@ -56,10 +56,10 @@
         </div>
           <div class="section-container vertical-nav" data-section data-options="deep_linking: false; one_up: true">
           <section class="section">
-            <h5 class="title"><a href="#" id="firstStop" onclick="showTravelJournal()">旅行列表</a></h5>
+            <h5 class="title"><a href="#" id="firstStop" onclick="showTravelJournal()"><i class="foundicon-flag"></i>旅行列表</a></h5>
           </section>	
           <section class="section">
-            <h5 class="title"><a href="/newindex/browse">旅行動態</a></h5>
+            <h5 class="title"><a href="/newindex/browse"><i class="foundicon-globe"></i>旅行動態</a></h5>
           </section>
           
         </div>
@@ -71,10 +71,14 @@
 	</div>
 	<!--triplist-->
 	<div id="trip_list" class="list large-2 columns gallery" style="display:none" >
-			<div id="trip_create" class="columns large-right">
-				<a id="trip_create_button" class="button right tiny" title="新增一個旅行">新增旅行 <i class="foundicon-flag"></i></a>
+		<div class="row" style="margin:0px padding:0px; max-height:20px;">
+			<a id="trip_create_button" class="button right tiny radius"><!--新增旅行-->
+				<i class="foundicon-plus"> </i>
+				<i class="foundicon-flag"></i></a>
 		</div>
-		<h3 style="color:white;">旅行列表</h3>
+		<div class="row columns large-centered" style="margin:0px padding:0px; max-height:30px;">
+				<h4 class="collapse" style="color:white;"><i class="foundicon-flag"></i>旅行列表</h4>
+		</div>
 			<hr />
 		<div class="row">
 			<div class="row">
@@ -105,7 +109,7 @@
 			</div>
 			<div class="large-7 columns trip_names">
 				<h5 class="information">
-					<div id="trip_name" >TASTE</div>
+					<div id="trip_name" >某一段旅行</div>
 				</h5>
 			</div>
 			<div id="trip_date" class="row"></div>

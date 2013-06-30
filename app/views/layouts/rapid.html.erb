@@ -80,7 +80,7 @@ jQuery(document).ready(function($) {
   <script type="text/javascript" src="<%=asset_path('rapid/uievent.js')%>"></script>
 			<ul class="right">
 				<li class="active"><% if session[:avatar_src]%><img src='<%=session[:avatar_src]%>'></img><% end %></li>
-				<li class="has-dropdown"><a href="##"><%=session[:username]%></a>
+				<li class="has-dropdown"><a href="/rapid/index"><%=session[:username]%></a>
 					<ul class="dropdown">
 						<li><a href="/rapid/index">個人遊記</a></li>
 						<%if session[:fbid]%>
@@ -107,7 +107,7 @@ jQuery(document).ready(function($) {
           <section class="top-bar-section">
 		<ul class="right">
             <li class="divider"></li>
-            <li><a href="/newindex/browse">閱讀遊記</a></li>
+            <li><a href="/newindex/browse" id="readJournal">閱讀遊記</a></li>
             <li class="divider"></li>
             <li class="name"><a href="#" data-reveal-id="register">註冊</a></li>
             <li class="divider"></li>
@@ -231,5 +231,41 @@ jQuery(document).ready(function($) {
   </div>
 	<%end%>
 
+
+  <ol class="joyride-list" data-joyride>
+  <li data-id="readJournal" data-text="Next">
+    <p>看看其他人的遊記吧！</p>
+  </li>
+  <li data-id="numero1" data-class="custom so-awesome" data-text="Next">
+    <h4>Stop #1</h4>
+    <p>You can control all the details for you tour stop. Any valid HTML will work inside of Joyride.</p>
+  </li>
+  <li data-id="numero2" data-button="Next" data-options="tipLocation:top;tipAnimation:fade">
+    <h4>Stop #2</h4>
+    <p>Get the details right by styling Joyride with a custom stylesheet!</p>
+  </li>
+</ol>
+
+<div class="joyride-tip-guide">
+  <span class="joyride-nub top"></span>
+  <div class="joyride-content-wrapper">
+    <p>Hello and welcome to the Joyride documentation page.</p>
+    <a href="#" class="small button joyride-next-tip">Next</a>
+    <a href="#close" class="joyride-close-tip">&times;</a>
+  </div>
+</div>
+
+
+
+<script>
+  document.write('<script src="http://zeptojs.com/zepto.js"'
+    + ('__proto__' in {} ? 'zepto' : 'jquery')
+    + '.js><\/script>');
+</script>
+  
+<script>
+  $(document).foundation();
+  $(document).foundation('joyride', 'start');
+</script>
 </body>
 </html>

@@ -212,7 +212,7 @@
 	<script type="text/javascript" src="<%=asset_path('rapid/uievent.js')%>"></script>
 			<ul class="right">
 				<li class="active"><% if session[:avatar_src]%><img src='<%=session[:avatar_src]%>'></img><% end %></li>
-				<li class="has-dropdown"><a href="##"><%=session[:username]%></a>
+				<li class="has-dropdown"><a href="/rapid/index"><%=session[:username]%></a>
 					<ul class="dropdown">
 						<li><a href="/rapid/index">個人遊記</a></li>
 						<%if session[:fbid]%>
@@ -263,7 +263,7 @@
               <a href="/newindex/browse?type=pop"><i class="foundicon-star">人氣遊記</i></a>
           </dd>
           <dd style="margin-top:40px">
-            <a href="/newindex/browse?type=new"><i class="foundicon-star">最新遊記</i></a>
+            <a href="/newindex/browse?type=new"><i class="foundicon-clock">最新遊記</i></a>
           </dd>
         </dl>
       </div>
@@ -274,10 +274,10 @@
 		<div class="large-3 columns large-offset-4">
         <dl class="sub-nav" >
           <dd style="margin-top:40px">
-              <a href="/newindex/browse?type=pop">人氣遊記</a>
+              <a href="/newindex/browse?type=pop"><i class="foundicon-star">人氣遊記</i></a>
           </dd>
           <dd style="margin-top:40px" class="active">
-            <a href="/newindex/browse?type=new"><i class="foundicon-star">最新遊記</i></a>
+            <a href="/newindex/browse?type=new"><i class="foundicon-clock">最新遊記</i></a>
           </dd>
         </dl>
       </div>
@@ -475,5 +475,15 @@
     <a class="close-reveal-modal">&#215;</a>
   </div>
 <%end%>
+
+<script>
+  document.write('<script src="http://zeptojs.com/zepto.js"'
+    + ('__proto__' in {} ? 'zepto' : 'jquery')
+    + '.js><\/script>');
+</script>
+  
+<script>
+  $(document).foundation();
+</script>
 </body>
 </html>
