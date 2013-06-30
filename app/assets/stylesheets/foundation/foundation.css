@@ -3781,7 +3781,7 @@ kbd {
       background: #2ba6cb;
       padding: 0.1875em 0.5625em;
       cursor: default;
-      color: white; }
+      color: white;}
 
 /* Foundation Switches */
 @media only screen {
@@ -4201,6 +4201,25 @@ body{
   max-width: 75em !important;
 }
 
+#trip_create_button, #return_triplist{
+  width:50px;
+  transition: width 0.5s;
+  -webkit-transition: width 0.5s;
+  overflow: hidden;
+  white-space:nowrap
+}
+
+#trip_create_button:hover, #return_triplist:hover{
+  width:100px;
+}
+
+.showText{
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+#trip_create_button:hover .showText, #return_triplist:hover .showText{
+  opacity: 1;
+}
 
 
 

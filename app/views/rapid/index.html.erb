@@ -42,28 +42,23 @@
 <div class="row expandView">
 
 <!--main control-->
-	<div class="large-2 columns" style="left:0px;">
-		<div class="panel">
-	        <a href="#">
-	        	<% if  session[:avatar_src]%>
-		        	<img src='<%=session[:avatar_src]%>'></img>
-				<% else%>
-					<img src='<%=asset_path("user_avatar.png")%>'></img>
-				<% end %>
-			</a>
-		<div class="large-centered columns">
-        	<h5><a id="person_name" class="large-centered" href="#"></a></h5>
+	<div class="large-2 columns panel">
+	    <div class="row">
+	        <% if session[:avatar_src]%>
+		    <img src="<%=session[:avatar_src]%>" ></img>
+			<% else%>
+			<img src='<%=asset_path("user_avatar.png")%>' style="display:block; margin:auto;"></img>
+			<% end %>
+        	<h5><a id="person_name" href="#" style="display:block;text-align:center;"></a></h5>
         </div>
-          <div class="section-container vertical-nav" data-section data-options="deep_linking: false; one_up: true">
-          <section class="section">
-            <h5 class="title"><a href="#" id="firstStop" onclick="showTravelJournal()"><i class="foundicon-flag"></i>旅行列表</a></h5>
-          </section>	
-          <section class="section">
-            <h5 class="title"><a href="/newindex/browse"><i class="foundicon-globe"></i>旅行動態</a></h5>
-          </section>
-          
+        <div class="section-container vertical-nav" data-section data-options="deep_linking: false; one_up: true">
+        	<section class="section">
+        		<h5 class="title"><a href="#" id="firstStop" onclick="showTravelJournal()"><i class="foundicon-flag"></i>旅行列表</a></h5>
+        	</section>	
+        	<section class="section">
+            	<h5 class="title"><a href="/newindex/browse"><i class="foundicon-globe"></i>旅行動態</a></h5>
+          	</section>
         </div>
-      </div>
     </div>
 	<!--content-->
 	<div class="large-8 columns">
@@ -71,19 +66,21 @@
 	</div>
 	<!--triplist-->
 	<div id="trip_list" class="list large-2 columns gallery" style="display:none" >
-		<div class="row" style="margin:0px padding:0px; max-height:20px;">
-			<a id="trip_create_button" class="button right tiny radius"><!--新增旅行-->
-				<i class="foundicon-plus"> </i>
-				<i class="foundicon-flag"></i></a>
-		</div>
-		<div class="row columns large-centered" style="margin:0px padding:0px; max-height:30px;">
-				<h4 class="collapse" style="color:white;"><i class="foundicon-flag"></i>旅行列表</h4>
+			<a id="trip_create_button" class="button tiny radius" style="position:absolute; right:0px;">
+				<i class="foundicon-plus" style="float:left">&nbsp;</i>
+				<i class="foundicon-flag" style="float:left"></i>
+				<span class="showText">新增旅行</span>
+			</a>
+		<div class="row" style="margin-top:25px;">
+			<h4 style="display:block; text-align:center; margin:0 auto; color:white;">
+				<i class="foundicon-flag"></i>旅行列表
+			</h4>
 		</div>
 			<hr />
 		<div class="row">
 			<div class="row">
 				<div class="large-5 columns large-centered">
-					<a id="prev" class="button radius" onclick="toTop()" title="至頂端" >FIRST</a>
+					<a id="prev" class="button radius" onclick="toTop()" title="至頂端" >TOP</a>
 				</div>
 			</div>
 			<div class="row">
@@ -96,28 +93,29 @@
 			</div>
 			<div class="row">
 				<div class="large-5 columns large-centered">
-					<a id="next" class="button radius" onclick="toBottom()" title="至底端">LASTl</a>
+					<a id="next" class="button radius" onclick="toBottom()" title="至底端">BOTTOM</a>
 				</div>
 			</div>
 		</div>
 	</div>
 	<!--click on a trip-->
 	<div class="large-2 columns gallery list" id="trip_one" style="display:none;">
-		<div class="row trip_information">
-			<div class="large-5 columns">
-				<a id="return_triplist" title="返回旅行列表" class="button radius tiny secondary"><i class="foundicon-left-arrow"></i></a>
-			</div>
-			<div class="large-7 columns trip_names">
-				<h5 class="information">
-					<div id="trip_name" >某一段旅行</div>
-				</h5>
-			</div>
-			<div id="trip_date" class="row"></div>
+		<a id="return_triplist" class="button tiny radius secondary" style="position:absolute; left:0px;">
+				<i class="foundicon-left-arrow" style="float:left"></i>
+				<span class="showText">返回旅行列表</span>
+		</a>
+		<div class="row" style="margin-top:25px;">
+			<h4 style="display:block; text-align:center; margin:0 auto; color:white;">
+				<i class="foundicon-add-doc"></i>某一段旅行
+			</h4>
+		</div>
+	<div id="trip_date" class="row"></div>
 			<div id="trip_status" class="row" style="display:none;">
 				<div style="float:left">狀態：</div>
 				<div style="float:left;color:#FB9B35"><!--a></a--></div>
 			</div>
-			<hr>
+	<hr />
+			
 		</div>
 		<div class="row">
 			<div class="row loading" id="load_point">
