@@ -147,10 +147,10 @@
         </div>
         <div class="section-container vertical-nav" data-section data-options="deep_linking: false; one_up: true">
         	<section class="section">
-        		<h5 class="title"><a href="#" id="firstStop" onclick="showTravelJournal()"><i class="foundicon-flag"></i>旅行列表</a></h5>
+        		<h5 class="title"><a href="#" id="firstStop" onclick="showTravelJournal()"><i class="foundicon-globe"></i>旅行列表</a></h5>
         	</section>	
         	<section class="section">
-            	<h5 class="title"><a href="/newindex/browse"><i class="foundicon-globe"></i>旅行動態</a></h5>
+            	<h5 class="title"><a href="/newindex/browse"><i class="foundicon-compass"></i>旅行動態</a></h5>
           	</section>
         </div>
     </div>
@@ -160,85 +160,60 @@
 	</div>
 	<!--triplist-->
 	<div id="trip_list" class="list large-2 columns gallery" style="<%='display:none' if !@user_id %>" >
-			<a id="trip_create_button" class="button tiny radius" style="position:absolute; right:0px;">
-				<i class="foundicon-plus" style="float:left">&nbsp;</i>
-				<i class="foundicon-flag" style="float:left"></i>
-				<span class="showText">新增旅行</span>
-			</a>
+		<a id="trip_create_button" class="button tiny radius" style="position:absolute; right:0px;">
+			<i class="foundicon-plus" style="float:left">&nbsp;</i>
+			<i class="foundicon-flag" style="float:left"></i>
+			<span class="showText">新增旅行</span>
+		</a>
 		<div class="row" style="margin-top:25px;">
-			<h4 style="display:block; text-align:center; margin:0 auto; color:white;">
-				<i class="foundicon-globe"></i>旅行列表
-			</h4>
+			<h4 class="text-center" style="display:block; margin:0 auto; color:white;">
+				<i class="foundicon-globe"></i>旅行列表</h4>
 		</div>
-			<hr />
+		<hr />
 		<div class="row">
-			<div class="row">
-				<div class="large-5 columns large-centered">
-					<a id="prev" class="button radius" onclick="toTop()" title="至頂端" >TOP</a>
-				</div>
+			<div id="prev" class="columns large-centered button round tiny" onclick="toTop()" title="至頂端" >TOP
 			</div>
-			<div class="row">
-				<div id="timeline">
-					<div id="load_trip" class="loading">
-						<div class="load_name">請稍候</div>
-					</div>
-					<ul id="dates">
+			<div class="loading load_name" id="load_trip">請稍候</div>
+			<div class="row" id="timeline">
+				<ul id="dates">
 					<%=tripList_gen(@trips) if @trips%>
-					</ul>
-				</div>
+				</ul>
 			</div>
-			<div class="row">
-				<div class="large-5 columns large-centered">
-					<a id="next" class="button radius" onclick="toBottom()" title="至底端">BOTTOM</a>
-				</div>
-			</div>
+			<div id="next" class="columns large-centered button round tiny" onclick="toBottom()" title="至底端" >BOTTOM</div>
 		</div>
 	</div>
 	<!--click on a trip-->
 	<div class="large-2 columns gallery list" id="trip_one" style="<%='display:none;' if !@trip_id && !@journal_id %>" >
-		<a id="return_triplist" class="button tiny radius secondary" style="position:absolute; left:0px;">
-				<i class="foundicon-left-arrow" style="float:left"></i>
-				<a href="/rapid/triplist/<%=@author_id%>"><span class="showText">返回旅行列表<i class="foundicon-globe"></i></span></a>
-		</a>
-		
-		
-		
+		<a id="return_triplist" href="/rapid/triplist/<%=@author_id%>" style="position:absolute; left:0px;">
+			<i class="foundicon-left-arrow" style="float:left"></i>返回</a>
 		<div class="row" style="margin-top:25px;">
 			<h4 id="trip_name" style="display:block; text-align:center; margin:0 auto; ">
-				<%=tripName_gen(@trip_info) if @trip_info%>
+				<i class="foundicon-flag" style="color:white"></i><%=tripName_gen(@trip_info) if @trip_info%>
 			</h4>
 		</div>
-		<div id="trip_date" clas="row" style="padding:0px;white-space:nowrap;">
+
+		<div id="trip_date" class="row" style="margin:0px;padding:0px;white-space:nowrap;">
 			<%=tripDate_gen(@trip_info) if @trip_info%>
 		</div>
-	
-		<div id="trip_status" class="row" style="display:none;">
-			<div >狀態：<a style="color:#FB9B35"></a></div>			
+		<div id="trip_status" class="row" style="display:none;">狀態：
+			<a style="color:#FB9B35"></a>
 		</div>
-	
-	<hr />
+		<hr />
+		<div class="loading load_name row text-center" id="load_point">請稍候</div>
+		<div class="row" id="trip_point_list">
+			<div class="trip_point_all">
+				<%=tripPointList_gen(@groups,@tripPoints) if @groups&&@tripPoints%>
+			</div>
+		</div>
+		<div class="add_group_title button round secondary columns large-centered" id="group_create_button">新增遊記
+		<i class="foundicon-add-doc"></i>
+		</div>
 		<div class="row">
-			<div class="row loading" id="load_point">
-				<div class="load_name">Loading</div>
+			<div id="view_num">
+			<span>瀏覽人次：<span id="count"><%=@trip_info.count.to_s if @trip_info%></span></span>
 			</div>
-			<div class="row">
-				<div id="trip_point_list">
-					<div class="trip_point_all">
-					<%=tripPointList_gen(@groups,@tripPoints) if @groups&&@tripPoints%>
-					</div>
-				</div>
-				<div class="add_group_title">
-					<button id="group_create_button" class="button" style="background-color: #e9e9e9; color: #1d1d1d; border: 1px solid #c3c3c3;" title="新增一篇遊記">新增遊記</button>
-					</div>
-			</div>
-			<div class="row">
-				<div id="view_num">
-				<span>瀏覽人次：<span id="count"><%=@trip_info.count.to_s if @trip_info%></span></span>
-				</div>
-				<div id="sharetoFB">
-					<a href="#share_button" rel="facebox.sharecss" id="share" >分享</a>
-					<div style="clear: both;display: block"> </div>
-				</div>
+			<div id="sharetoFB">
+				<a href="#share_button" rel="facebox.sharecss" id="share" >分享</a>
 			</div>
 		</div>
 	</div>
@@ -316,7 +291,12 @@
 				</div>
 			</div>
 		</div>
-
-
-
-
+		<footer class="row expandView">
+      <hr />
+        <div class="large-6 columns">
+          <h6 class="subheader">WanderWorld地球漫遊 &copy; 2013</h6>
+        </div>
+        <div class="large-6 columns">
+        	<a class="right" href="http://wanderworld-ideaaxis.blogspot.tw/" target="blank">地球漫遊開發日誌</a>
+        </div>
+  </footer>
