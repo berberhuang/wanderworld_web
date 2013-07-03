@@ -10,11 +10,11 @@ var PathOnMap=(function(){
 			infowindow.close();
 		}
 		infowindow=new google.maps.InfoWindow({
-			content: '<div style="font-weight:bold;font-size:16px">'+pointData[item_id].title+'</div>'
+			content: '<div style="font-weight:bold;font-size:16px">'+pointData.eq(item_id).find('.point_name').text()+'</div>'
 					+'<div style="height:20px"></div>'
-					+'<a href="javascript:PathOnMap.clickReadJournal('+pointData[item_id].group_id+','+item_id+')">'
-					+'<div><button id="trip_create_button" class="button" style="left:115px;border-radius:1000px;">閱讀遊記</button>'
-					+'</a></div>'
+					+'<a class="button round medium right" href="javascript:PathOnMap.clickReadJournal('+pointData.eq(item_id).parents('.trip_point_group').data('id')+','+item_id+')">'
+					+'閱讀遊記'
+					+'</a>'
 		});
 		infowindow.open(map,pointData[item_id]);
 		google.maps.event.addListener(infowindow,'closeclick',function(){

@@ -21,14 +21,6 @@ function showTravelJournal(){
 /*旅行列表********************************************************************************/
 
 
-//時間軸到最頂端(click)
-function toTop(){
-	$("#dates").animate({'top':'-600px'},400);
-}
-//時間軸到最底端(click)
-function toBottom(){
-	$("#dates").animate({'top': -600+$("#timeline").height()-$("#dates").height()},400);
-}
 //編輯旅行(click)
 function editTrip(num){
 	$('#trip_list_'+num+' .trip_edit').css('display','block');

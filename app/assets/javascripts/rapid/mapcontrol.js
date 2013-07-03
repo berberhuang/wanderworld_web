@@ -6,9 +6,9 @@ function computeMap(tripPointList)
 	var pointData=tripPointList;
 	var array_lat = new Array();
 	var array_lng = new Array();
-	for(var i in pointData){
-		array_lat[i]=pointData[i].place.latitude;
-		array_lng[i]=pointData[i].place.longitude;
+	for(var i=0; i<pointData.length; i++){
+		array_lat[i]=pointData.eq(i).data('latitude');
+		array_lng[i]=pointData.eq(i).data('longitude');
 	}
 	var array_left = new Array();
 	var array_right = new Array();
@@ -70,11 +70,11 @@ function computeMap(tripPointList)
 		}
 	}	
 	var max_y=-90,min_y=90;//緯度
-	for(var i in pointData){
-			if (pointData[i].place.latitude > max_y)
-					max_y = pointData[i].place.latitude;
-			if (pointData[i].place.latitude < min_y)
-					min_y = pointData[i].place.latitude;
+	for(var i=0; i<pointData.length; i++){
+			if (pointData.eq(i).data('latitude') > max_y)
+					max_y = pointData.eq(i).data('latitude');
+			if (pointData.eq(i).data('latitude') < min_y)
+					min_y = pointData.eq(i).data('latitude');
 	}
 	
 	//算出距離與中心
@@ -121,8 +121,8 @@ function MapAdjust(tripPointList) {
 		map.setCenter(new google.maps.LatLng(23.80, 121.500));
 		map.setZoom(8);		
 	}else if(pointData.length==1){	//只有一個點
-		cen_x=pointData[0].place.longitude;
-		cen_y=pointData[0].place.latitude;
+		cen_x=pointData.first().data('longitude');
+		cen_y=pointData.first().data('latitude');
 		zoom_w=12;
 		map.setZoom(zoom_w);
 		map.setCenter(new google.maps.LatLng(cen_y, cen_x));

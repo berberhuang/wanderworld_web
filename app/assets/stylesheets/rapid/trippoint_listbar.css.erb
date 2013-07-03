@@ -25,6 +25,10 @@
 	height:20px;
 }
 
+.point_mark{
+	width:20px;
+}
+
 /*未整理*/
 .trip_point_group {	
 	padding-left:1%;
@@ -113,6 +117,9 @@
 	list-style-type:none;
 }
 
+.point:hover .point_edit{
+	display:inline;
+}
 
 .point_edit {
 	display:none;
@@ -164,14 +171,12 @@
 .group_edit_menu {
 	display: none;
 	position: absolute;
-	width: 120px;
-	right: 0px;
-	background: lightGrey;
+	width: 130px;
+	background: rgba(153,179,204,1) ;
 	border-radius: 3px;
-	color: blue;
-	text-align: left;
 	padding:2px 0;
 	cursor:pointer;
+	color:black;
 }
 .group_edit_menu img {
 	float: left;

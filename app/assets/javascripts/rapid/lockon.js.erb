@@ -198,46 +198,16 @@ function resetEnv(){
 //因應解析度重新布局
 function reLayout(){
 	var main_h=$(window).height()-$('.header').height();	
-    $('.main_content').css('height', main_h);
-	$('#main_control').css('height', main_h-40);
 	$('#map_canvas').css('width',$(document).width()-130 );
-	$('#timeline').css('height', $(document).height()-175);
 	//景點區高度
 	var other_h = ($('.trip_information').height()+30) + $('.add_group_title').height() + ($('#view_num').height()+30);
 	var trip_name_height=$('#trip_name').height();
-	
-	//if(trip_name_height==0){
-	//	$('.scroll-pane').css('height', $('#trip_one').height()-500);
-	//}else{
-	//	$('.scroll-pane').css('height', $('#trip_one').height()-trip_name_height-430);
-	//}
-	
-	
-	//if(other_h+($('.trip_point_all').height()+50) > $('.list').height()){
-	//	$('.scroll-pane').css('height', $(document).height()-trip_name_height-230);
-	//}
-	//else{
-	//	$('.scroll-pane').css('height', $('.trip_point_all').height());
-	//}
 	
 	contentBox.UiControl.reLayout();
 		
 	if(DataStatus.tripPointList){
 		computeMap(DataStatus.tripPointList);
 	}
-	
-/*	//lookingAround
-	var wrap_h;
-	if($(window).height()-$('.header').height() < $('.main_block').height()+20){
-			wrap_h=$('.main_block').height()+20;
-	}else{
-			wrap_h=$(window).height()-$('.header').height();
-	}
-	$('.wrap').css('height', wrap_h);
-	$('.friend_block').css('height',$(window).height()-$('.header').height()-68 );
-	$('.friend_all').css('height',$(window).height()-$('.header').height()-102 );
-*/
-
 }
 
 //*/

@@ -1,6 +1,6 @@
 var TripListbarModule = function(obj){
 	var target = $(obj);
-	var createTripButton = target.find('#trip_create');
+	var createTripButton = target.find('#trip_create_button');
 	var listCanvas = target.find('#dates');
 	
 	var UiListener = {

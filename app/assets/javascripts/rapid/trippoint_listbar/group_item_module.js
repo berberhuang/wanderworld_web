@@ -82,9 +82,9 @@ var GroupItemModule=function(obj){
 		str+=' data-sortid="'+sort_id+'"';
 		str+='>';
 		
-		str+='<div class="trip_point_title"><a>'+title+'</a>'
+		str+='<div class="trip_point_title large-9 columns"><h4><a>'+title+'</a></h4>'
 			+'<input placeholder="輸入遊記名稱" style="display:none;"></div>';                                            
-		str+='<div class="trip_point_edit right"></div>';	
+		str+='<div class="trip_point_edit large-3 columns right"></div>';	
 		str+='  <ul class="trip_point"></ul>';
 		str+='  <div id="add_trip_point_div"></div>';
 		str+='  <div style="clear: both;display: block"></div>';
@@ -111,7 +111,7 @@ var GroupItemModule=function(obj){
 	
 		
 	var ownerModeEnable=function(item){
-		var str='<i class="foundicon-edit"></i>';
+		var str='<h4><i class="foundicon-edit white"></i></h4>';
 		item.find('.trip_point_edit').append(str).click(showEditGroupMenu);
 		
 		str='<div class="add_trip_point text-center"><i class="foundicon-plus"></i><i class="foundicon-location"> </i>新增景點</div>';

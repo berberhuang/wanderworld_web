@@ -137,7 +137,7 @@
 <div class="row expandView">
 
 <!--main control-->
-	<div class="large-1 columns panel">
+	<div class="large-1 columns panel gallery">
 	    <div class="row">
 	        <% if session[:avatar_src]%>
 		    <img src='<%=session[:avatar_src]%>'></img>
@@ -147,8 +147,7 @@
         	<h5><a class="black text-center" id="person_name" href="#" style="display:block; word-wrap:break-word" ><%=@user.username if !@journal_id%></a></h5>
         </div>
         <div class="row">
-        		<h6 class="title" ><a href="#" class="black" id="firstStop" onclick="showTravelJournal()"><i class="foundicon-globe"></i>我的旅行</a></h5>
-            	<h6 class="title "><a href="/newindex/browse" class="black"><i class="foundicon-compass"></i>旅行動態</a></h5>
+        		<h6 class="title" ><a href="#" class="black" id="firstStop" onclick="showTravelJournal()"><i class="foundicon-globe"></i>旅行列表</a></h5>
         </div>
     </div>
 	<!--map-->
@@ -265,9 +264,9 @@
 				<i class="foundicon-globe"></i>旅行列表</h4>
 		</div>
 		<hr />
-		<div class="row">
+		<div class="columns">
 			<div class="loading load_name text-center" id="load_trip">請稍候</div>
-			<div class="row scroll" id="timeline">
+			<div class="large-12 row scroll" id="timeline">
 				<ul id="dates">
 					<%=tripList_gen(@trips) if @trips%>
 				</ul>
@@ -276,11 +275,11 @@
 	</div>
 	<!--click on a trip-->
 	<div class="large-2 columns gallery list" id="trip_one" style="<%='display:none;' if !@trip_id && !@journal_id %>" >
-		<a id="return_triplist" href="/rapid/triplist/<%=@author_id%>" style="position:absolute; left:0px;">
-			<i class="foundicon-left-arrow" style="float:left"></i>返回</a>
-		<div class="row" style="margin-top:10px;">
+		<a  id="return_triplist" href="/rapid/triplist/<%=@author_id%>" style="position:absolute; left:0px;">
+			<i class="foundicon-left-arrow left"></i>返回</a>
+		<div class="row"  style="margin-top:10px;">
 			<h4 id="trip_name" class="text-center">
-				<i class="foundicon-flag" style="color:white"></i><%=tripName_gen(@trip_info) if @trip_info%>
+				<i class="foundicon-flag white"><%=tripName_gen(@trip_info) if @trip_info%></i>
 			</h4>
 		</div>
 		<div id="trip_date" class="row" style="margin:0px;padding:0px;white-space:nowrap;">
@@ -304,7 +303,7 @@
 			<span>瀏覽人次：<span id="count"><%=@trip_info.count.to_s if @trip_info%></span></span>
 			</div>
 			<div id="sharetoFB">
-				<a href="#share_button" data-reveal-id="share_button" id="share" >分享</a>
+				<a href="#share_button" data-reveal-id="share_button" id="share">分享<i class="foundicon-mail"></i></a>
 			</div>
 		</div>
 	</div>

@@ -24,10 +24,9 @@
 }
 
 #timeline{
-	margin-left: 10px;
-	max-height: 340px;
-	border-left: dotted ;
-	overflow: hidden;
+	max-height: 400px;
+	border-left: dotted white;
+	overflow-y:auto;
 }
 
 
@@ -68,10 +67,10 @@
 }
 
 .trip_list_info{
-	width: 75%;
+	width: 80%;
 	float: left;
 	margin:5px 0px 5px 40px;
-	padding: 5px;
+	padding: 2px;
 	
 background: -moz-linear-gradient(left,  rgba(76,76,76,0.5) 0%, rgba(89,89,89,0.5) 6%, rgba(102,102,102,0.5) 19%, rgba(71,71,71,0.3) 55%, rgba(44,44,44,0.3) 81%, rgba(28,28,28,0.3) 91%, rgba(19,19,19,0.3) 100%); /* FF3.6+ */
 background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(76,76,76,0.5)), color-stop(6%,rgba(89,89,89,0.5)), color-stop(19%,rgba(102,102,102,0.5)), color-stop(55%,rgba(71,71,71,0.3)), color-stop(81%,rgba(44,44,44,0.3)), color-stop(91%,rgba(28,28,28,0.3)), color-stop(100%,rgba(19,19,19,0.3))); /* Chrome,Safari4+ */

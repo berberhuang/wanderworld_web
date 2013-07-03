@@ -12,64 +12,73 @@ var TrippointItemModule=function(obj){
 	
 	//加入景點
 	var insertTripPoint=function(i,group_id, sort_id,title, lat, lng){
-		str='';
-		str+='<li>'
-		
-		str+='<div class="point"';
+		str='';		
+		str+='<li>';
+		str+='<div class="point columns"'; 
 		str+=' data-id="'+i+'"';
-		str+=' data-sort_id"'+sort_id+'"';
+		str+=' data-sort_id="'+sort_id+'"';
 		str+=' data-latitude="'+lat+'"';
 		str+=' data-longitude="'+lng+'"';
-		str+='>';						
-		
+		str+='>';
+		str+='<div class="row">'; 
+		str+='<div class="large-2 columns">';
+		str+='<div class="row">';
 		str+='<img class="point_mark" />';
+		str+='</div>';
+		str+='</div>';
+		str+='<div class="large-8 columns">';
+		str+='<div class="row">';
 		str+='<a class="point_name">'+title+'</a>';
-		str+='<div class="point_edit"></div>';
-		str+='<div style="clear: both;display: block"></div>';
+		str+='</div>';
+		str+='</div>';
+		str+='<div class="point_edit large-2 columns">';
+		str+='</div>';
+		str+='</div>';
 		str+='</div>';
 		str+='</li>';
-		
-		var item=$(str).appendTo(target.find('#trip_point_group_'+group_id+' ul'));
-		//		.find('.point_name').click(function(event){
-		//			contentBox.cancelEditWarning(group_id,function(){
-		//				var item=$(event.target);
-		//				var id=item.parents('li').val();
-						
-		//				selectTripPointEffect(item);
 
-		//				clickPointTitle(item.parents('.trip_point_group').attr('id').split('_group_')[1],id);
-		//				showingGroup=group_id;
-		//			});
-		//		}).end();
+
+		var item=$(str).appendTo(target.find('.trip_point_group:[data-id='+group_id+'] ul'));
+		initEvent(item,group_id);
 		
 		if(DataStatus.isOwner){
 			ownerModeEnable(item);
 		}
 	};
+
+	var initEvent=function(item,group_id){
+		item.find('.point_name').click(function(event){
+			contentBox.cancelEditWarning(group_id,function(){
+				var item=$(event.target);
+				var id=item.parents('li').val();
+						
+				selectTripPointEffect(item);
+
+				clickPointTitle(item.parents('.trip_point_group').data('id'),id);
+				//showingGroup=group_id;
+			});
+		}).end();
+	};
 	
 	var ownerModeEnable=function(item){
-		var str='<img src="/assets/settings.png" title="編輯"></img>';
+		var str='<i class="foundicon-edit"></i>';
 		item.find('.point_edit').append(str)
-			.find('img').click(editPoint);;
+			.find('i').click(editPoint);;
 	};
 
 	//按下景點名稱
 	var clickPointTitle=function(group_id,id){
-		if(showingGroup!=group_id){
+		//計算遊記內景點mark地圖縮放大小
+		console.log('abd');
+
+		//if(showingGroup!=group_id){
 			var tmp=[];
-			var tpList=DataStatus.tripPointList;
-			for(var i=0; i<tpList.length;i++){
-				if(tpList[i].group_id==group_id){
-					tmp.push(tpList[i]);
-				}
-			}
-			
-			computeMap(tmp);
-			
-		}
+			var tpList=$('.trip_point_group:[data-id='+group_id+'] .point');
+			computeMap(tpList);
+		//}
 
 		if(contentBox.isShow()&&showingGroup==group_id){
-			//PathOnMap.showMarkInfo(id);
+			PathOnMap.showMarkInfo(id);
 			contentBox.UiControl.showContent(group_id,id);
 		}else{
 			contentBox.UiControl.hide(true);
@@ -83,7 +92,7 @@ var TrippointItemModule=function(obj){
 		
 		tripPointEdit.UiListener.confirmCancel();
 		
-		showingGroup=group_id;
+		//showingGroup=group_id;
 	};
 	
 	//點選景點得視覺效果
@@ -242,7 +251,9 @@ var TrippointItemModule=function(obj){
 		initJavascript:function(){
 			var a=$('.point');
 			for(var i=0; i<a.length; i++){
-				ownerModeEnable(a.eq(i));
+				var t=a.eq(i);
+				initEvent(t);
+				ownerModeEnable(t);
 			}
 			updateMark();
 		},
