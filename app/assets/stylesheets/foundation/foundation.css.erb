@@ -14,7 +14,7 @@ body {
   color: #222222;
   padding: 0;
   margin: 0;
-  font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-family: 微軟正黑體, "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
   font-weight: normal;
   font-style: normal;
   line-height: 1;
@@ -4162,8 +4162,8 @@ a.th {
 /*WanderWorld UI-desing*/
 
 body{
-  background-image:url('/assets/beige-paper.png');
-}
+  background-image:url(<%=asset_path('bg/beige-paper.png')%>);
+}*/
 .top-bar{
   box-shadow: 0px 1px 3px 2px rgba(60,60,60,1);
 }
@@ -4218,13 +4218,35 @@ body{
   opacity: 0;
   transition: opacity 0.5s;
 }
-#trip_create_button:hover .showText, #return_triplist:hover .showText{
+#trip_create_button:hover .showText{
   opacity: 1;
 }
 
+/*字體顏色*/
+.black{
+  color:black !important;
+}
+.white{
+ color:white !important; 
+}
+/*對話箭頭*/
+.arrow_box {
+  position: relative;
+  background: #2BA6CB;
+  left: -20px;
+}
 
+.arrow_box:after, .arrow_box:before {
+  right: 100%;
+  border: solid transparent;
+  content: "  ";
+  position: absolute;
+}
 
-
-
-
-    
+.arrow_box:after {
+  border-color: rgba(136, 183, 213, 0);
+  border-right-color: #2BA6CB;
+  border-width: 10px;
+  top: 45%;
+  margin-top: -20px;
+}

@@ -7,7 +7,7 @@
 */
 var TripPointListbarModule = function(obj){		
 	var tripPointListStr= '<div class="trip_point_all">\
-						<div id="group_bottom" style="clear: both;display: block"></div>\
+						<div id="group_bottom"></div>\
 						</div>';
 	
 	var target=$(obj);
@@ -135,6 +135,7 @@ var TripPointListbarModule = function(obj){
 		UiControl:{
 			show:function(){
 				$(target).show();
+				contentBox.UiControl.showJournalSwitchToggle();
 			},
 			hide:function(){
 				$(target).hide();

@@ -77,14 +77,14 @@ var GroupItemModule=function(obj){
 	var insertGroup=function(group_id,sort_id,title){
 		
 		var str='';
-		str+='<div id="trip_point_group_'+group_id+'" class="trip_point_group"';
+		str+='<div id="trip_point_group_'+group_id+'" class="trip_point_group row"';
 		str+=' data-id="'+group_id+'"';
 		str+=' data-sortid="'+sort_id+'"';
 		str+='>';
 		
 		str+='<div class="trip_point_title"><a>'+title+'</a>'
 			+'<input placeholder="輸入遊記名稱" style="display:none;"></div>';                                            
-		str+='  <div class="trip_point_edit"></div>';	
+		str+='<div class="trip_point_edit right"></div>';	
 		str+='  <ul class="trip_point"></ul>';
 		str+='  <div id="add_trip_point_div"></div>';
 		str+='  <div style="clear: both;display: block"></div>';
@@ -111,11 +111,11 @@ var GroupItemModule=function(obj){
 	
 		
 	var ownerModeEnable=function(item){
-		var str='<img src="/assets/edit2.png" title="編輯"></img>';
+		var str='<i class="foundicon-edit"></i>';
 		item.find('.trip_point_edit').append(str).click(showEditGroupMenu);
 		
-		str='	<div class="add_trip_point">新增景點</div>';
-		str+='	<div class="add_trip_point_space"></div>';
+		str='<div class="add_trip_point text-center"><i class="foundicon-plus"></i><i class="foundicon-location"> </i>新增景點</div>';
+		str+='<div class="add_trip_point_space"></div>';
 		item.find('#add_trip_point_div').append(str);
 		
 		var addTripPointButton=item.find('.add_trip_point');
@@ -166,9 +166,9 @@ var GroupItemModule=function(obj){
 		
 		var str='';
 		str+='<div class="group_edit_menu">';
-		str+='<div id="edit_name"><img src="/assets/doc_edit.png">更改遊記名稱</div>';
-		str+='<div id="edit_post"><img src="/assets/pencil.png">編輯遊記</div>';
-		str+='<div id="delete_group"><img src="/assets/delete1.png">刪除遊記</div>';
+		str+='<div id="edit_name"><i class="foundicon-edit"></i>更改遊記名稱</div>';
+		str+='<div id="edit_post"><i class="foundicon-edit"></i>編輯遊記</div>';
+		str+='<div id="delete_group"><i class="foundicon-trash"></i>刪除遊記</div>';
 		str+='</div>';				
 		
 		var menu=$(str).appendTo('#trip_one').show().css('position','absolute').offset({left:x+105,top:y+18});

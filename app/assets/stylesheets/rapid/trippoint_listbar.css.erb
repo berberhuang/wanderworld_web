@@ -14,10 +14,10 @@
 }
 
 /*景點列表*/
-#trip_point_list{
-	width:auto;
-	overflow: auto;
 
+#trip_point_list{
+	overflow-x: hidden;
+	overflow-y: auto; 
 }
 
 .trippoint_placeholder {
@@ -35,7 +35,7 @@
 	border-radius: 6px;
 }
 .trip_point_group:hover  .trip_point_add {
-	/*display: inline;*/
+	display: inline;
 }
 .trip_point_group:hover  .trip_point_edit {
         display: inline;
@@ -65,13 +65,6 @@
 	background-color:rgba(0, 149, 255, 0.45);
 }
 
-
-.trip_point_title {	
-	float: left;
-	width: 80%;
-	margin:5px;
-}
-
 .trip_point_title_selected{
 	background: -moz-linear-gradient(left,  rgba(100,100,100,0) 0%, rgba(100,100,100,0.68) 7%, rgba(100,100,100,1) 49%, rgba(100,100,100,0.68) 94%, rgba(100,100,100,0) 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(100,100,100,0)), color-stop(7%,rgba(100,100,100,0.68)), color-stop(49%,rgba(100,100,100,1)), color-stop(94%,rgba(100,100,100,0.68)), color-stop(100%,rgba(100,100,100,0))); /* Chrome,Safari4+ */
@@ -90,17 +83,16 @@
 	display:none;
 	cursor:pointer;
 	float:left;
-	width:150px;
-	height:20px;
+	width:100%;
+	height:40px;
 	overflow:hidden;
 	background-color:rgba(0,0,0,0.2);
-	padding-left:35%;
 	border-style:dashed;
 	border-width:2px;
-	border-color:rgba(0,0,0,0.4);
+	border-color:rgba(255,255,255,0.8);
 }
 .add_trip_point_space{
-	float:left;
+	float:left
 	width:135px;
 	height:24px;
 }
@@ -113,52 +105,22 @@
 	width: 18px;
 	cursor:pointer;
 	position: relative;
-	float: right;
 }
 .trip_point_edit img {
 	width: 16px;
 }
 .trip_point {
 	list-style-type:none;
-	margin:0;
-	padding:2px 0px 0px 0px;
-	float: left;
-	width: 100%;
 }
-ul.trip_point li:hover  .point_name {
-        margin-left:4px;
-}
-ul.trip_point li:hover  .point_mark {
-	display: inline;
-}
-ul.trip_point li:hover  .point_edit {
-	display: inline;
-}
-.point {
-	width: 100%;
-}
+
+
 .point_edit {
-	float:right;
 	display:none;
-	position: relative;
-	right: 0px;
-	margin: 2px 0;
 }
-.point_edit img {
-	height:20px;
-	opacity:0.5;
-	/*height:100%;*/
-}
-.point_edit img:hover {
-	opacity:1;
+
+.point_edit:hover {
 	cursor:pointer;
 	cursor:hand;  /*if ie*/
-}
-.point_mark {
-	width:20px;
-	height:20px;
-	margin: 2px 0 2px 0;	
-	float:left;
 }
 .point_name {
 	width:170px;
@@ -244,59 +206,7 @@ ul.trip_point li:hover  .point_edit {
 	float: left;
 }
 
-/*旅行清單*/
-.list {
-	height:100%;
-	min-height: 520px;
-	background:rgba(40,40,40,0.6);
-	z-index:1;
-	color:white;
-}
-.list a:link ,.list a:visited {
-	color:white;
-}
-.list ::-webkit-scrollbar {
-	width: 10px;
-	height: 10px;
-}
-.list ::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-}
-.list ::-webkit-scrollbar-thumb {
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    background: rgba(200,200,200,0.7); 
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
-}
 
-
-#dates {
-	width: 100%;
-	cursor: url(<%=asset_path('cursor_hand.png')%>),auto;
-	position: relative;
-}
-#dates li {
-	list-style: none;	
-	font-size: 2em;
-}
-#dates a {
-	color: #ffffcc;
-	-webkit-transition: 0.5s;
-	-moz-transition: 0.5s;
-	-o-transition: 0.5s;
-	-ms-transition: 0.5s;
-	transition: 0.5s;
-	background: url(<%=asset_path('biggerdot.png')%>) left center no-repeat;
-	padding-left: 10px;
-}
-#dates a:hover ,a.selected {
-	color: #ffcc00;
-}
-#dates .selected {
-	color: #ffcc00;
-}
 
 
 

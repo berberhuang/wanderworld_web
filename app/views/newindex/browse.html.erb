@@ -214,7 +214,7 @@
 				<li class="active"><% if session[:avatar_src]%><img src='<%=session[:avatar_src]%>'></img><% end %></li>
 				<li class="has-dropdown"><a href="/rapid/index"><%=session[:username]%></a>
 					<ul class="dropdown">
-						<li><a href="/rapid/index">個人遊記</a></li>
+						<li><a href="/rapid/index">我的旅行</a></li>
 						<%if session[:fbid]%>
 						<li><a id="logout_a" href="javascript:onLogout()">登出Facebook</a></li>
 						<li><a id="logout_a" href="/user_session/logout">登出</a></li>
@@ -382,9 +382,8 @@
         </div>
         <div class="large-6 columns">
           <ul class="inline-list right">
-          	<li><a href="href="http://goo.gl/mnxVi"">問題回報</a></li>
-            <li><a href="#">關於地球漫遊</a></li>
             <li><a href="http://wanderworld-ideaaxis.blogspot.tw/" target="blank">地球漫遊開發日誌</a></li>
+            <li><a href="href="http://goo.gl/mnxVi"">問題回報</a></li>
           </ul>
         </div>
       </div> 

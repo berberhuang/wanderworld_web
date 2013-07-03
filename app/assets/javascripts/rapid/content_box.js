@@ -5,8 +5,7 @@ var ContentBoxModule = function(item){
 	var editPanel=target.find('#editPostDiv');
 	var controlButton = target.find('.controlButton');
 	var editTool = target.find('.editTool');
-	var bounce=$('#bounce');
-	var collapse=target.find('#collapse');
+	var journalSwitchToggle = $('#bounce');	
 	var releasePost=target.find('#releasePost');
 	var finishPost=target.find('#finishPost');
 	var cancelEdit=target.find('#cancelEdit');
@@ -33,29 +32,37 @@ var ContentBoxModule = function(item){
 		
 	};
 	
+	//展開遊記	
+	var bounce=function(){
+		bounce_s=true;		
+		target.css('visibility','visible');			
+	};
+	//收合遊記
+	var collapse=function(stopShow){
+		bounce_s=false;											
+		target.css('visibility','hidden');
+		//PathOnMap.showMarkInfo(show_id);
+	};
+
+	var hideJournalSwitchToggle=function(){
+		journalSwitchToggle.css('visibility','hidden');
+	};
+
+	var showJournalSwitchToggle=function(){
+		journalSwitchToggle.css('visibility','visible');
+	};
+
 	var UiListener={
-		//展開遊記
-		clickBounce:function(){
+
+		clickJournalSwitchToggle:function(){
 			if(bounce_s){
-				return;	
+				collapse();
+			}else{
+				bounce();
+				PathOnMap.closeInfoWindow();
 			}
-			bounce_s=true;
-			PathOnMap.closeInfoWindow();
-			//target.animate({width:$(document).width()-390},15);
-			target.css({width:$(document).width()-390});
-			moduleInstance.UiControl.hideBounceButton();
-			
 		},
-		//收合遊記
-		clickCollapse:function(stopShow){
-			if(!bounce_s){
-				return;
-			}
-			bounce_s=false;
-			moduleInstance.UiControl.showBounceButton();
-						
-			target.animate({width:'0px'},500);
-		},
+		
 		//按下編輯遊記
 		clickEditPost:function(group_id,id){
 			edit_id=id;
@@ -272,11 +279,7 @@ var ContentBoxModule = function(item){
 	};
 	
 	
-	bounce.click(UiListener.clickBounce);
-	collapse.click(function(){
-		UiListener.clickCollapse();
-		PathOnMap.showMarkInfo(show_id);
-	});
+	journalSwitchToggle.click(UiListener.clickJournalSwitchToggle);
 	
 	finishPost.click(UiListener.clickFinishPost);
 	releasePost.click(UiListener.clickReleasePost);
@@ -289,9 +292,6 @@ var ContentBoxModule = function(item){
 	return{
 		init:function(){
 			moduleInstance=this;
-			target.css('width','0px');
-			target.show();
-			//target.append('');
 		},
 		ownerModeSwitch:function(){
 			if(DataStatus.isOwner){
@@ -308,23 +308,20 @@ var ContentBoxModule = function(item){
 		},
 		UiControl:{
 			hide:function(){
-				UiListener.clickCollapse();
-				bounce.hide(500);
-			},
-			showBounceButton:function(){
-				bounce.show(500);
-			},
-			hideBounceButton:function(){
-				bounce.hide(500);
+				collapse();
+				hideJournalSwitchToggle();
 			},
 			hideContent:function(){
 				if(bounce_s)
-					UiListener.clickCollapse();
+					collapse();
+			},
+			showJournalSwitchToggle:function(){
+				showJournalSwitchToggle();
 			},
 			showContent:function(group_id,id,callback){
 				show_id=id;
 				if(group_id==show_group_id){
-					UiListener.clickBounce();
+					bounce();
 					if(id){
 						var t=$('#tp_box_'+id);
 						
@@ -352,7 +349,7 @@ var ContentBoxModule = function(item){
 				
 				show_group_id=group_id;
 				
-				UiListener.clickBounce();
+				bounce();
 				editPanel.hide();
 				controlButton.hide();
 				editTool.unbind('click').click(function(){UiListener.clickEditPost(group_id,id);});
@@ -424,22 +421,7 @@ var ContentBoxModule = function(item){
 				});
 			},
 			reLayout:function(){
-				//遊記框高度
-				if(bounce_s){
-					//bounce.hide();
-					//$('#collapse').show();		
-					//$('#slidesContainer').css('height',$(document).height()-$('.header').height());
-					//$('#slide_main').css('height',$(document).height()-$('.header').height()-40);
-					//$('.cke_editor').css('height',$(document).height()-$('.header').height()-40-15);
-					target.width($(document).width()-390);
-					
-				}
-				$('.control').css('line-height', $(document).height()-$('.header').height()-40 +'px');
-				$('#foo').css('top',$('#journal').height()/2+30);
-				//遊記框位置
-				//var Container_r = 260 + ($(document).width()- 1280)/2  ;
-				//$('#slidesContainer').css('right',Container_r);
-				//$('#slidesContainer_s').css('right',Container_r);
+				
 			}
 		},
 		//給trippointList的groupEdit上的editPost按鈕用

@@ -23,11 +23,10 @@ module RapidHelper
 			
 			t.name=ERB::Util.html_escape(t.name)
 			str+='<li>'
-			str+='<div id="trip_list_'+t.id.to_s+'" class="trip_list_info">'
-			
+			str+='<div id="trip_list_'+t.id.to_s+'" class="trip_list_info arrow_box">'
 			str+='<div class="trip_edit" title="編輯"></div>'
 			str+='<div onclick="loadTrip('+t.id.to_s+')">'
-			str+='<div class="trip_list_date">'+t.start_date.to_s+'</div>'
+			str+='<div class="trip_list_date">'+'<i class="foundicon-flag"></i>'+t.start_date.to_s+'</div>'
 			str+='<div class="trip_list_name">'+t.name+'</div>'
 			str+='</div>'	
 			str+='</div>'
@@ -45,7 +44,7 @@ module RapidHelper
 	end
 	
 	def tripDate_gen(trip_info)
-		str='<div style="cursor:pointer;">'
+		str='<div style="cursor:pointer;"><h4 class="white"><i class="foundicon-calendar left"></i></h4>'
 		if trip_info.start_date == trip_info.end_date
 			str+='<a>'+trip_info.start_date.to_s.gsub('-','/')+'</a>'
 		else
@@ -56,12 +55,12 @@ module RapidHelper
 	end
 
 	def tripPointList_gen(groups,tripPoints)
-		str='<div id="group_buttom" style="clear:both;display:block"></div>'
+		str='<div id="group_button" class="row"></div>'
 		seq_num=1
 		groups.each do |g|
-			str+='<div id="trip_point_group_'+g.id.to_s+'" class="trip_point_group" data-id="'+g.id.to_s+'" data-sortid="'+g.sort_id.to_s+'">'
-			str+='<div class="trip_point_title"><a>'+g.title+'</a><input placeholder="輸入遊記名稱" style="display:none;"></div>'
-			str+='<div class="trip_point_edit"></div>'
+			str+='<div id="trip_point_group_'+g.id.to_s+'" class="trip_point_group row" data-id="'+g.id.to_s+'" data-sortid="'+g.sort_id.to_s+'">'
+			str+='<div class="trip_point_title large-10 columns"><a>'+g.title+'</a><input placeholder="輸入遊記名稱" style="display:none;"></div>'
+			str+='<div class="trip_point_edit large-2 columns right"></div>'
 			str+='<ul class="trip_point">'
 			
 			iter=0
@@ -71,16 +70,19 @@ module RapidHelper
 			while tripPoints[iter]&&tripPoints[iter].group_id==g.id do
 				str+='<li>'
 				
-				str+='<div class="point"' 
+				str+='<div class="point row"' 
 				str+=' data-id="'+tripPoints[iter].id.to_s+'"'
 				str+=' data-sort_id="'+tripPoints[iter].sort_id.to_s+'"'
 				str+=' data-latitude="'+tripPoints[iter].latitude.to_s+'"'
 				str+=' data-longitude="'+tripPoints[iter].longitude.to_s+'"'
 				str+='>'
-				
+				str+='<div class="large-1 columns right">'
 				str+='<img class="point_mark" alt="'+seq_num.to_s+'" \>'
+				str+='</div>'
+				str+='<div class="large-9 columns right">'
 				str+='<a class="point_name">'+tripPoints[iter].name+'</a>'
-				str+='<div class="point_edit"></div>'
+				str+='</div>'
+				str+='<div class="point_edit large-2 columns right"></div>'
 				str+='</div>'
 				str+='</li>'
 				iter=iter+1

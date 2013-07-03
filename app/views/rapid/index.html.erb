@@ -133,33 +133,128 @@
 <div id="hide_block" style="display:none">
 	 <div id="newTripLoad"></div>
 </div-->
+<!--內容-->
 <div class="row expandView">
 
 <!--main control-->
-	<div class="large-2 columns panel">
+	<div class="large-1 columns panel">
 	    <div class="row">
 	        <% if session[:avatar_src]%>
 		    <img src='<%=session[:avatar_src]%>'></img>
 			<% else%>
 			<img src='<%=asset_path("user_avatar.png")%>' style="display:block; margin:auto;"></img>
 			<% end %>
-        	<h5><a id="person_name" href="#" style="display:block;text-align:center;"><%=@user.username if !@journal_id%></a></h5>
+        	<h5><a class="black text-center" id="person_name" href="#" style="display:block; word-wrap:break-word" ><%=@user.username if !@journal_id%></a></h5>
         </div>
-        <div class="section-container vertical-nav" data-section data-options="deep_linking: false; one_up: true">
-        	<section class="section">
-        		<h5 class="title"><a href="#" id="firstStop" onclick="showTravelJournal()"><i class="foundicon-globe"></i>旅行列表</a></h5>
-        	</section>	
-        	<section class="section">
-            	<h5 class="title"><a href="/newindex/browse"><i class="foundicon-compass"></i>旅行動態</a></h5>
-          	</section>
+        <div class="row">
+        		<h6 class="title" ><a href="#" class="black" id="firstStop" onclick="showTravelJournal()"><i class="foundicon-globe"></i>我的旅行</a></h5>
+            	<h6 class="title "><a href="/newindex/browse" class="black"><i class="foundicon-compass"></i>旅行動態</a></h5>
         </div>
     </div>
-	<!--content-->
-	<div class="large-8 columns">
+	<!--map-->
+	<div class="large-1 columns">
 		<div class="gallery" id="map_canvas"></div>
 	</div>
+	<!--隱藏的內容框-->
+	<div class="large-7 columns" id="slidesContainer" style="visibility:hidden;">
+		<div class="bounceDiv" class="row">
+			<div id="like"></div>
+				<a class="permission" href="#">
+				<div id="notpublic" style="display:none">未公開 只有你能看到</div>
+				<div id="public" style="display:none">已公開</div>
+			</a>
+			<div class="permission_menu">
+				<div class="private_button">私人</div></a>
+				<div class="public_button">公開</div></a>
+			</div>
+			<div class="editTool">
+				<img src='<%=asset_path("edit.png")%>' title="編輯遊記">
+			</div>
+		</div>
+		<div class="controlButton">
+			<div id="postToFB" title="發布到Facebook" style="display:none" onclick="checkbox()">
+				<input type="checkbox" id="check" onclick="checkbox()"  />
+				<img src='<%=asset_path("Facebook_icon.png")%>' style="height:25px" />
+			</div>
+			<button id="releasePost">公開</button>
+			&nbsp&nbsp
+			<button id="finishPost">儲存</button>
+			<button id="cancelEdit" style="width: 80px;">取消編輯</button>
+		</div>
+		<div id="journal" class="row">
+			<div id="foo"><div class="foo_load">載入中</div></div>			
+			<div id="postContent"></div>	
+			<hr />
+			<div id="comment">
+				<h3>留言</h3>
+				<div class="comment_scope">
+				<div class="entity">
+					<div class="content_panel">
+						<div class="p1">
+							<div class="content">寫的好棒</div>
+							<div class="footer">
+								<a class="username">cindy</a> 
+								<span>2013/5/13 13:05</span>
+								<div><a class="button" id="delete">刪除</a></div>
+							</div>
+						</div>
+						<div class="p2">
+							<div class="content">謝謝</div>
+							<div class="footer">
+								<a class="username">BertHuang</a>  
+								<span>2013/5/13 13:15</span>
+								<div><a class="button" id="delete">刪除</a></div>
+							</div>	
+						</div>
+					</div>
+					<div class="reply_input" style="margin-top:20px">
+						<textarea placeholder="回覆‧‧‧‧"></textarea>
+						<input class="submit" type="button" value="回覆"></input>
+					</div>
+				</div>
+				<div style="height:10px"></div>
+				<div class="entity">
+					<div class="content_panel">
+						<div class="p1">
+							<div class="content">寫的好棒</div>
+							<div class="footer">
+								<a class="username">cindy</a> 
+								<span>2013/5/13 13:05</span>
+								<div><a class="button" id="delete" href="#">刪除</a></div>
+							</div>
+						</div>
+						<div class="p2">
+							<div class="content">謝謝</div>
+							<div class="footer">
+								<a class="username">BertHuang</a>  
+								<span>2013/5/13 13:15</span>
+								<div><a class="button" id="delete" href="#">刪除</a></div>					
+							</div>
+						</div>
+					</div>
+					<div class="reply_input" style="margin-top:20px">
+						<textarea placeholder="回覆‧‧‧‧"></textarea>
+						<input class="submit" type="button" value="回覆"></input>
+					</div>
+				</div>
+				<div style="height:10px"></div>
+				</div>
+				<div class="comment_input" style="margin-top:20px">
+					<textarea placeholder="留言‧‧‧‧"></textarea>
+					<input class="submit" type="button" value="留言"></input>
+				</div>
+				<div class="nologin">請先登入才能夠留言或回覆</div>
+			</div>
+		</div>
+	</div>
+	<!--遊記開關-->
+	<div class="large-1 columns" style="<%='visibility:hidden;' if !@trip_selected %>">
+	<div id="bounce" class="control">
+		<h1><i class="foundicon-page"></i></h1>
+	</div>
+	</div>
 	<!--triplist-->
-	<div id="trip_list" class="list large-2 columns gallery" style="<%='display:none' if !@user_id %>" >
+	<div id="trip_list" class="list large-2 columns gallery right" style="<%='display:none' if !@user_id %>" >
 		<a id="trip_create_button" class="button tiny radius" style="position:absolute; right:0px;">
 			<i class="foundicon-plus" style="float:left">&nbsp;</i>
 			<i class="foundicon-flag" style="float:left"></i>
@@ -171,27 +266,23 @@
 		</div>
 		<hr />
 		<div class="row">
-			<div id="prev" class="columns large-centered button round tiny" onclick="toTop()" title="至頂端" >TOP
-			</div>
-			<div class="loading load_name" id="load_trip">請稍候</div>
-			<div class="row" id="timeline">
+			<div class="loading load_name text-center" id="load_trip">請稍候</div>
+			<div class="row scroll" id="timeline">
 				<ul id="dates">
 					<%=tripList_gen(@trips) if @trips%>
 				</ul>
 			</div>
-			<div id="next" class="columns large-centered button round tiny" onclick="toBottom()" title="至底端" >BOTTOM</div>
 		</div>
 	</div>
 	<!--click on a trip-->
 	<div class="large-2 columns gallery list" id="trip_one" style="<%='display:none;' if !@trip_id && !@journal_id %>" >
 		<a id="return_triplist" href="/rapid/triplist/<%=@author_id%>" style="position:absolute; left:0px;">
 			<i class="foundicon-left-arrow" style="float:left"></i>返回</a>
-		<div class="row" style="margin-top:25px;">
-			<h4 id="trip_name" style="display:block; text-align:center; margin:0 auto; ">
+		<div class="row" style="margin-top:10px;">
+			<h4 id="trip_name" class="text-center">
 				<i class="foundicon-flag" style="color:white"></i><%=tripName_gen(@trip_info) if @trip_info%>
 			</h4>
 		</div>
-
 		<div id="trip_date" class="row" style="margin:0px;padding:0px;white-space:nowrap;">
 			<%=tripDate_gen(@trip_info) if @trip_info%>
 		</div>
@@ -201,11 +292,11 @@
 		<hr />
 		<div class="loading load_name row text-center" id="load_point">請稍候</div>
 		<div class="row" id="trip_point_list">
-			<div class="trip_point_all">
+			<div class="columns trip_point_all">
 				<%=tripPointList_gen(@groups,@tripPoints) if @groups&&@tripPoints%>
 			</div>
 		</div>
-		<div class="add_group_title button round secondary columns large-centered" id="group_create_button">新增遊記
+		<div class="add_group_title button round secondary tiny columns large-centered" id="group_create_button">新增遊記
 		<i class="foundicon-add-doc"></i>
 		</div>
 		<div class="row">
@@ -213,30 +304,41 @@
 			<span>瀏覽人次：<span id="count"><%=@trip_info.count.to_s if @trip_info%></span></span>
 			</div>
 			<div id="sharetoFB">
-				<a href="#share_button" rel="facebox.sharecss" id="share" >分享</a>
+				<a href="#share_button" data-reveal-id="share_button" id="share" >分享</a>
 			</div>
 		</div>
 	</div>
 </div>
 
 
-
-
-
 <!--share-->
-<div id="share_button" style="display:none;">
-	<div class="sharecss_l">
-		<span>按Ctrl+C複製下列網址</span>
-		<input id="shareInput" placeholder="這裡將出現分享用縮網址" size="50" />
-		<button onclick="postToWall()">分享到facebook</button>
-		<!--<a name="fb_share" type="button_count" href="http://www.facebook.com/sharer.php">分享</a><script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>-->
-		<!--<span>將足跡地圖嵌入BLOG文章中</span><br/>
-		<input id="embedInput" type="url" placeholder="<embed>瓜拉拉瓜拉瓜拉</embed>" size="50"/>-->
+<div id="share_button" class="reveal-modal small">
+	<div class="large-12 columns">
+    <form>
+    	<fieldset>
+    		<legend><h2>分享你的旅行</h2></legend>
+	    	<div class="row collapse">
+	    		<div class="small-3 large-3 columns">
+	    			<label for="right-label" class="right inline">旅行連結:</label>
+	    		</div>
+	    		<div class="small-9 large-9 columns">
+	    			<input id="shareInput" placeholder="連結網址" />
+	    		</div>
+	    	</div>
+	    	<div class="row">
+	    		<div class="large-4 columns right button tiny round" onclick="postToWall()">
+	    			<i class="foundicon-social-facebook" style="font-size:2em">分享</i>
+	    		</div>
+
+	    	</div>
+	    </fieldset>
+	</form>
 	</div>
-	<div class="sharecss_r">
-		<!--<img src='<%=asset_path("LOGO黑體直行-06.png")%>' style="height:145px;"/> -->
-	</div>
+	<a class="close-reveal-modal">&#215;</a>  
 </div>
+
+
+
 
 <!--手動輸入景點位置-->
 <div id="add_new" style="display:none">
@@ -300,3 +402,28 @@
         	<a class="right" href="http://wanderworld-ideaaxis.blogspot.tw/" target="blank">地球漫遊開發日誌</a>
         </div>
   </footer>
+  
+
+  <ol class="joyride-list" data-joyride>
+  <li data-id="firsttop" data-text="Next">
+    <p>看看其他人的遊記吧！</p>
+  </li>
+  <li data-id="numero1" data-class="custom so-awesome" data-text="Next">
+    <h4>Stop #1</h4>
+    <p>You can control all the details for you tour stop. Any valid HTML will work inside of Joyride.</p>
+  </li>
+  <li data-id="numero2" data-button="Next" data-options="tipLocation:top;tipAnimation:fade">
+    <h4>Stop #2</h4>
+    <p>Get the details right by styling Joyride with a custom stylesheet!</p>
+  </li>
+</ol>
+
+<div class="joyride-tip-guide">
+  <span class="joyride-nub top"></span>
+  <div class="joyride-content-wrapper">
+    <p>Hello and welcome to the Joyride documentation page.</p>
+    <a href="#" class="small button joyride-next-tip">Next</a>
+    <a href="#close" class="joyride-close-tip">&times;</a>
+  </div>
+</div>
+
