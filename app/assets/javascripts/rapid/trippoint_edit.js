@@ -221,10 +221,10 @@ var TripPointEditModule = function(item){
 
 		//show確認新增地點對話框
 	var confirmPlace=function(name){
-		var contentStr='<div>你是第一個新增這個景點的朋友!<br />請拖曳<img style="width:30px;" src="'+getMarkURL('P',getGroupColor(newTripPointData.group_id,DataStatus.groupList))+'"/>將景點標記在正確位置,<br />並按下確定<br />'
-				+'<button onclick="tripPointEdit.UiListener.confirmNewOK()">確定</button>'
-				+'<button onclick="tripPointEdit.UiListener.confirmCancel()">取消</button></div>'
-				+'<a id="isWrong" style="float:right;color:black;text-decoration:underline" href="javascript:tripPointEdit.UiListener.wrongTripPoint()">位置錯了？請按這裡</a>';	
+		var contentStr='<div>你是第一個新增這個景點的朋友!<br />請拖曳<img style="width:30px;" src="'+getMarkURL('P',getGroupColor(newTripPointData.group_id,DataStatus.groupList))+'"/>將景點標記在正確位置。<br />'
+				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmNewOK()">確定</button>&nbsp;'
+				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmCancel()">取消</button></div>'
+				+'<a class="button alert tiny radius right" id="isWrong"  href="javascript:tripPointEdit.UiListener.wrongTripPoint()">位置錯了？請按這裡</a>';	
 		if(confirmWindow){
 			var s=(confirmWindow);
 			if(confirmWindow.s_new)
