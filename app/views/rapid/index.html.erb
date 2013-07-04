@@ -157,92 +157,106 @@
 		<div class="gallery" id="map_canvas"></div>
 	</div>
 	<!--隱藏的內容框-->
-	<div class="large-6 columns" id="slidesContainer" style="visibility:hidden;">
-		<div class="row" id="journal_edit_center">
-			<!--↓遊記標題，之後可以在編輯遊記的模式下重新編輯-->
-			<div class="columns">
+	<div class="large-6 columns" id="slidesContainer" style="">
+			<!--遊記控制中心第一層-->
+			<div class="row" id="journal_cc_1st_stack">
+			<!--↓遊記標題↓，之後可以在編輯遊記的模式下重新編輯-->
+				<div class="large-7 columns " id="journal_name"></div>
+				<!--↓社交原件↓-->
+				<div class="large-5 columns" id="social_toggle">
+					<div id="like">
+						<i class="foundicon-social-fabecook"></i>
+					</div>
+				</div>
 			</div>
-			<div id="like"></div>
-				<a class="permission" href="#">
-				<div id="notpublic" style="display:none">未公開 只有你能看到</div>
-				<div id="public" style="display:none">已公開</div>
-			</a>
-			<div class="permission_menu">
-				<div class="private_button">私人</div></a>
-				<div class="public_button">公開</div></a>
+			<!--遊記控制中心第二層-->
+			<div class="row" id="journal_cc_2nd_stack">
+				<!--遊記編輯工具-->
+				<div class="controlButton">
+					<button id="releasePost">公開</button>
+						&nbsp&nbsp
+					<button id="finishPost">儲存</button>
+					<button id="cancelEdit" style="width: 80px;">取消編輯</button>
+				</div>
+				<!--使用者權限區塊-->
+				<div class="large-4 columns">
+					<a class="permission" href="#">
+						<div id="notpublic" style="display:none">未公開 只有你能看到</div>
+						<div id="public" style="display:none">已公開</div>
+					</a>
+						<div class="permission_menu">
+							<div class="private_button">私人</div>
+					</a>
+							<div class="public_button">公開</div>
+					</a>
+						</div>
+						<div class="editTool">
+							<img src='<%=asset_path("edit.png")%>' title="編輯遊記">
+						</div>
+				</div>
 			</div>
-			<div class="editTool">
-				<img src='<%=asset_path("edit.png")%>' title="編輯遊記">
-			</div>
-		</div>
-		<div class="controlButton">
-			<div id="postToFB" title="發布到Facebook" style="display:none" onclick="checkbox()">
-				<input type="checkbox" id="check" onclick="checkbox()"  />
-				<img src='<%=asset_path("Facebook_icon.png")%>' style="height:25px" />
-			</div>
-			<button id="releasePost">公開</button>
-			&nbsp&nbsp
-			<button id="finishPost">儲存</button>
-			<button id="cancelEdit" style="width: 80px;">取消編輯</button>
-		</div>
-
+			<!--遊記閱讀/編輯區塊-->
 		<div class="row" id="journal">
-			<div id="foo"><div class="foo_load">載入中</div></div>			
-			<div id="postContent"></div>	
+			<div id="foo">
+				<div class="foo_load">請稍候</div>
+			</div>			
+			<div class="large-11 columns large-centered" id="postContent">
+			</div>	
 			<hr />
-			<div id="comment">
+			<!--遊記閱讀/編輯區塊>留言板-->
+			<div class="large-11 columns large-centered" id="comment">
 				<h3>留言</h3>
-				<div class="comment_scope">
-				<div class="entity">
-					<div class="content_panel">
-						<div class="p1">
-							<div class="content">寫的好棒</div>
-							<div class="footer">
-								<a class="username">cindy</a> 
-								<span>2013/5/13 13:05</span>
-								<div><a class="button" id="delete">刪除</a></div>
+				<div class="comment_scope row">
+					<div class="entity">
+						<div class="content_panel">
+							<div class="p1">
+								<div class="content">寫的好棒</div>
+								<div class="footer">
+									<a class="username">cindy</a> 
+									<span>2013/5/13 13:05</span>
+									<div><a class="button" id="delete">刪除</a></div>
+								</div>
+							</div>
+							<div class="p2">
+								<div class="content">謝謝</div>
+								<div class="footer">
+									<a class="username">BertHuang</a>  
+									<span>2013/5/13 13:15</span>
+									<div><a class="button" id="delete">刪除</a></div>
+								</div>	
 							</div>
 						</div>
-						<div class="p2">
-							<div class="content">謝謝</div>
-							<div class="footer">
-								<a class="username">BertHuang</a>  
-								<span>2013/5/13 13:15</span>
-								<div><a class="button" id="delete">刪除</a></div>
-							</div>	
+						<div class="reply_input" style="margin-top:20px">
+							<textarea placeholder="回覆‧‧‧‧"></textarea>
+							<input class="submit" type="button" value="回覆"></input>
 						</div>
 					</div>
-					<div class="reply_input" style="margin-top:20px">
-						<textarea placeholder="回覆‧‧‧‧"></textarea>
-						<input class="submit" type="button" value="回覆"></input>
-					</div>
-				</div>
-				<div style="height:10px"></div>
-				<div class="entity">
-					<div class="content_panel">
-						<div class="p1">
-							<div class="content">寫的好棒</div>
-							<div class="footer">
-								<a class="username">cindy</a> 
-								<span>2013/5/13 13:05</span>
-								<div><a class="button" id="delete" href="#">刪除</a></div>
+					<div style="height:10px"></div>
+					<div class="entity">
+						<div class="content_panel">
+							<div class="p1">
+								<div class="content">寫的好棒</div>
+								<div class="footer">
+									<a class="username">cindy</a> 
+									<span>2013/5/13 13:05</span>
+									<div><a class="button" id="delete" href="#">刪除</a></div>
+								</div>
+							</div>
+							<div class="p2">
+								<div class="content">謝謝</div>
+								<div class="footer">
+									<a class="username">BertHuang</a>  
+									<span>2013/5/13 13:15</span>
+									<div><a class="button" id="delete" href="#">刪除</a></div>					
+								</div>
 							</div>
 						</div>
-						<div class="p2">
-							<div class="content">謝謝</div>
-							<div class="footer">
-								<a class="username">BertHuang</a>  
-								<span>2013/5/13 13:15</span>
-								<div><a class="button" id="delete" href="#">刪除</a></div>					
-							</div>
+						<div class="reply_input" style="margin-top:20px">
+							<textarea placeholder="回覆‧‧‧‧"></textarea>
+							<input class="submit" type="button" value="回覆"></input>
 						</div>
 					</div>
-					<div class="reply_input" style="margin-top:20px">
-						<textarea placeholder="回覆‧‧‧‧"></textarea>
-						<input class="submit" type="button" value="回覆"></input>
-					</div>
-				</div>
-				<div style="height:10px"></div>
+					<div style="height:10px"></div>
 				</div>
 				<div class="comment_input" style="margin-top:20px">
 					<textarea placeholder="留言‧‧‧‧"></textarea>
@@ -251,7 +265,9 @@
 				<div class="nologin">請先登入才能夠留言或回覆</div>
 			</div>
 		</div>
-	</div>
+		</div>
+		<!--遊記控制中心，兩層，第一層放標題、社交原件；第二層放編輯工具-->
+		
 	<!--遊記開關-->
 	<div class="large-1 columns" style="<%='visibility:hidden;' if !@trip_selected %>">
 	<div id="bounce" class="control">
@@ -345,28 +361,32 @@
 <!--手動輸入景點位置-->
 <div id="add_new" class="large-6 columns large-centered">
 	<form>
+		<fieldset>
+		<legend class="text-center"><h5>手動標記景點</h5></legend>
 		<div class="row collapse">
 			<div class="large-4 columns">
-				<h6>輸入附近的地理資訊試試看</h6>
+				<h6>1.輸入該景點的相關位置：</h6>
 			</div>
 			<div class="large-7 columns">
-				<input type="text" placeholder="試著輸入國家、城市、周遭景點或經緯度、地址" onkeydown="tripPointEdit.UiListener.searchPos(event)" />
+				<input type="search" placeholder="地址、城市、國家、周遭景點或經緯度" onkeydown="tripPointEdit.UiListener.searchPos(event)" />
 			</div>
 			<div class="large-1 columns"> 
 				<a class="button radius postfix" onclick="tripPointEdit.UiListener.searchPos(event)">搜尋</a>
 			</div>
 		</div>
-	</form>
 		<div class="row">
-			按下搜尋後，請將地圖上的<img id="pointTarget" src='<%=asset_path("logo.png")%>' />拖至正確位置，並點選「完成」或者「取消
+			<h6>
+			2.按下搜尋後，請將地圖上的<img id="pointTarget" src='<%=asset_path("logo.png")%>' />拖至正確位置，並點選「完成」或者「取消」。
+			</h6>
 		</div>
 		<div class="row">
 		</hr>
-			<div class="large-4 columns large-offset-8">
-				<button class="finish tiny radius">完成</button>&nbsp;
-				<button class="cancel tiny radius" onclick="tripPointEdit.UiListener.cancelSetNewManPos()">取消</button>
+			<div class="large-6 columns large-offset-6">
+				<button class="finish medium radius">完成</button>&nbsp;
+				<button class="cancel medium radius" onclick="tripPointEdit.UiListener.cancelSetNewManPos()">取消</button>
 			</div>
 		</div>
+		</fieldset>
 </div>
 
 <!--dialog-->
