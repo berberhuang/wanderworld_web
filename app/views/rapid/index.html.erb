@@ -32,7 +32,7 @@
 		<% if @trip_id %>
 			<%
 			@trip_selected=true
-			
+
 			@trip_info=Trip.find(@trip_id)
 			@author_id=@trip_info.user_id
 			@trip_info.count+=1
@@ -82,7 +82,7 @@
 			<%else%>
 				DataStatus.trip_date='<%=@trip_info.start_date.to_s.gsub('-','/')%> - <%=@trip_info.end_date.to_s.gsub('-','/')%>';
 			<%end%>
-			
+
 			<% today=Date.current%>
 			<% if today<@trip_info.start_date %>
 				DataStatus.trip_status='倒數<%=(@trip_info.start_date-today).to_s%>天';
@@ -168,42 +168,52 @@
 				<div class="large-7 columns " id="journal_name">
 					<h3><%=@journal_name%></h3>
 				</div>
-				<!--↓社交原件↓-->
+				<!--↓社交元件↓-->
 				<div class="large-5 columns" id="social_toggle">
 					<div id="like">
 						<i class="foundicon-social-fabecook"></i>
 					</div>
+					<div class="editTool right button secondary tiny radius" >
+							<i class="foundicon-edit"></i>
+					</div>
 				</div>
 			</div>
 			<!--遊記控制中心第二層-->
-			<div class="row" id="journal_cc_2nd_stack" style="margin-top:0px; margin-bottom:0px;">
+			<div class="row" id="journal_cc_2nd_stack">
 				<!--遊記編輯工具-->
-				<div class="large-8 columns" style="margin-top:0px; margin-bottom:0px;">
-					<div class="controlButton" style="visibility:hidden">
-						<input />
-					<a class="button success tiny" id="releasePost">公開</a>
-					<a class="button success tiny" id="finishPost">儲存</a>
-					<a class="button alert tiny" id="cancelEdit">放棄</a>
-					</div>
+				<div class="large-8 columns" >
+					<div><input /></div>
 				</div>
-				<!--使用者權限區塊-->
+				<!--遊記狀態/權限區塊-->
 				<div class="large-4 columns">
-					<a class="permission" href="#" style="<%='visibility:hidden' if !@isOwner %>">
-						<div id="notpublic" style="<%='display:none' if @public%>">未公開 只有你能看到</div>
-						<div id="public" style="<%='display:none' if !@public%>">已公開</div>
-					</a>
+					<div class="controlButton">
+						<ul class="button-group radius">
+							<li><a class="button secondary tiny" id="releasePost">發佈</a></li>
+							<li><a class="button secondary tiny" id="finishPost">儲存</a></li>
+							<li><a class="button alert tiny" id="cancelEdit">放棄</a></li>
+						</ul>
+					</div>
+					<div class="controlButton">
+						<ul class="button-group radius">
+							<li><a class="button tiny" id="releasePost">更新</a></li>
+							<li><a class="button secondary tiny" id="finishPost">還原成草稿</a></li>
+							<li><a class="button alert tiny" id="cancelEdit">放棄</a></li>
+						</ul>
+					</div>
+					<a class="tiny permission button dropdown" href="#">
+								<div id="notpublic" style="display:none">草稿</div>
+								<div id="public" style="display:none">已發佈</div>
+							</a>
 						<div class="permission_menu">
-							<div class="private_button">私人</div>
+
+							<div class="private_button">草稿</div>
 					</a>
 							<div class="public_button">公開</div>
 					</a>
 						</div>
-						<div class="editTool">
-							<img src='<%=asset_path("edit.png")%>' title="編輯遊記">
-						</div>
 				</div>
 			</div>
-			<hr />
+			<hr/>
 			<!--遊記閱讀/編輯區塊-->
 		<div class="row" id="journal">
 			<div id="foo">
@@ -215,6 +225,7 @@
 					<%=sanitize c.article%>
 				</div>
 				<% end %>
+				<hr />
 			</div>	
 			
 			<!--遊記閱讀/編輯區塊→留言板-->

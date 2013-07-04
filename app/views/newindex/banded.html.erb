@@ -126,14 +126,11 @@
         <div class="small-3 large-2 columns">
           <label for="right-label" class="right inline">確認密碼:</label>
         </div>
-        <div class="small-9 large-10 columns">
+        <div class="small-7 large-8 columns">
           <%=f.password_field :password_confirmation, :placeholder=>"請輸入第二次密碼"%>
         </div>
-      </div>
-      <br>
-      <div class="row">
-        <div class="small-9 large-12 right">
-        <%=f.submit '註冊',:class=>"button radius expand"%>
+        <div class="small-2 large-2 columns">
+          <%=f.submit '註冊',:class=>"button radius postfix"%>
         </div>
       </div>
 
@@ -175,16 +172,13 @@
       <div class="small-3 large-2 columns">
         <label for="right-label" class="right inline">密碼:</label>
       </div>
-      <div class="small-9 large-10 columns">
+      <div class="small-9 large-8 columns">
         <%=f.password_field :password, :placeholder=>"請輸入6~20字半形英數密碼"%>
       </div>
-    </div>
-      <br>
-      <div class="row">
-        <div class="small-9 large-12 right">
-        <%=f.submit '登入',:class=>"button radius expand"%>
+      <div class="small-9 large-2 columns">
+        <%=f.submit '登入',:class=>"button radius postfix"%>
         </div>
-      </div>
+    </div>
      <!--<input type="submit" class="alert button medium" value="忘記密碼">-->
      <%if(flash[:loginfail])%>
       <p class="loginfail">您輸入的帳號或密碼有誤</p>
