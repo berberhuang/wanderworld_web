@@ -258,12 +258,12 @@ var TripPointEditModule = function(item){
 		if(tmp_mark){
 			tmp_mark.setDraggable(true);
 		}
-		$('#add_new').show(500).find('input').val('');
+		$('#add_new').fadeIn(200).find('input').val('');
 		
 		//按下取消放棄找尋地點
 		$('.list').unbind('click').click(function(){
 			$('.list').unbind('click');
-			$('#add_new').hide(500);
+			$('#add_new').fadeOut(600);
 			tripPointEdit.UiListener.confirmCancel();
 		});
 	}
@@ -488,7 +488,7 @@ var TripPointEditModule = function(item){
 			},
 			//取消新增手動地點
 			cancelSetNewManPos:function(){
-				target.hide();
+				target.fadeOut(200);
 				moduleInstance.UiListener.confirmCancel();
 			}
 		}
