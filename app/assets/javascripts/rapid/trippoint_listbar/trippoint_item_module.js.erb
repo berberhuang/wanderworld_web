@@ -159,23 +159,6 @@ var TrippointItemModule=function(obj){
 		$('.point[data-id='+item_id+']').remove();
 		//PathOnMap.deleteMark(item_id);
 		Data.deleteTripPoint(item_id);
-		/*
-		var tpList=DataStatus.tripPointList;
-		for(var i=0; i<tpList.length; i++){
-			if(tpList[i].id==item_id){
-				contentBox.deleteTripPoint(tpList[i].group_id,item_id);
-				tpList[i]=null;
-				break;
-			}
-		}
-		
-		DataStatus.tripPointList=[];
-		for(var i=0; i<tpList.length; i++){
-			if(tpList[i]){
-				DataStatus.tripPointList.push(tpList[i]);
-			}
-		}
-		*/
 		
 		updateMark();
 		
