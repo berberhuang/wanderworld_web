@@ -26,13 +26,10 @@
 
 	$(function(){
 		initialize();
-		<% if @journal_id %>
-			@trip_selected=true
-			@journal_selected=true;
-			//loadJournal(<%=@trip_id%>,<%=@journal_id%>);
-		<% elsif @trip_id %>
+		<% if @trip_id %>
 			<%
 			@trip_selected=true
+			@journal_selected=true if @journal_id
 			@trip_info=Trip.find(@trip_id)
 			@author_id=@trip_info.user_id
 			@trip_info.count+=1
@@ -157,7 +154,7 @@
 		<div class="gallery" id="map_canvas"></div>
 	</div>
 	<!--隱藏的內容框-->
-	<div class="large-6 columns" id="slidesContainer" style="">
+	<div class="large-6 columns" id="slidesContainer" style="<%='visibility:hidden if !@journal_selected'%>">
 			<!--遊記控制中心第一層-->
 			<div class="row" id="journal_cc_1st_stack">
 			<!--↓遊記標題↓，之後可以在編輯遊記的模式下重新編輯-->
@@ -172,15 +169,14 @@
 				</div>
 			</div>
 			<!--遊記控制中心第二層-->
-			<div class="row" id="journal_cc_2nd_stack">
+			<div class="row" id="journal_cc_2nd_stack" style="margin-top:0px; margin-bottom:0px;">
 				<!--遊記編輯工具-->
-				<div class="large-8 columns">
+				<div class="large-8 columns" style="margin-top:0px; margin-bottom:0px;">
 					<div class="controlButton">
 						<input />
-					<a id="releasePost">公開</a>
-						&nbsp&nbsp
-					<a id="finishPost">儲存</a>
-					<a id="cancelEdit">放棄</a>
+					<a class="button success tiny" id="releasePost">公開</a>
+					<a class="button success tiny" id="finishPost">儲存</a>
+					<a class="button alert tiny" id="cancelEdit">放棄</a>
 				</div>
 				</div>
 				<!--使用者權限區塊-->
@@ -200,15 +196,18 @@
 						</div>
 				</div>
 			</div>
+			<hr />
 			<!--遊記閱讀/編輯區塊-->
 		<div class="row" id="journal">
 			<div id="foo">
 				<div class="foo_load">請稍候</div>
 			</div>			
-			<div class="large-11 columns large-centered" id="postContent">
+			<div class="large-12 columns large-centered" id="postContent">
+				今天天氣很好，太陽出來了
+				<hr />
 			</div>	
-			<hr />
-			<!--遊記閱讀/編輯區塊>留言板-->
+			
+			<!--遊記閱讀/編輯區塊→留言板-->
 			<div class="large-11 columns large-centered" id="comment">
 				<h3>留言</h3>
 				<div class="comment_scope row">
@@ -365,7 +364,6 @@
 
 <!--手動輸入景點位置-->
 <div id="add_new" class="large-6 columns large-centered">
-	<form>
 		<fieldset>
 		<legend class="text-center"><h5>手動標記景點</h5></legend>
 		<div class="row collapse">
@@ -373,7 +371,7 @@
 				<h6>1.輸入該景點的相關位置：</h6>
 			</div>
 			<div class="large-7 columns">
-				<input type="search" placeholder="地址、城市、國家、周遭景點或經緯度" onkeydown="tripPointEdit.UiListener.searchPos(event)" />
+				<input type="text" placeholder="地址、城市、國家、周遭景點或經緯度" onkeydown="tripPointEdit.UiListener.searchPos(event)" />
 			</div>
 			<div class="large-1 columns"> 
 				<a class="button radius postfix" onclick="tripPointEdit.UiListener.searchPos(event)">搜尋</a>
@@ -386,9 +384,9 @@
 		</div>
 		<div class="row">
 		</hr>
-			<div class="large-6 columns large-offset-6">
-				<button class="finish medium radius">完成</button>&nbsp;
-				<button class="cancel medium radius" onclick="tripPointEdit.UiListener.cancelSetNewManPos()">取消</button>
+			<div class="large-3 columns large-offset-9">
+				<button class="finish tiny radius">完成</button>&nbsp;
+				<button class="cancel tiny radius alert" onclick="tripPointEdit.UiListener.cancelSetNewManPos()">取消</button>
 			</div>
 		</div>
 		</fieldset>
