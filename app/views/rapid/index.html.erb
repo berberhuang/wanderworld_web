@@ -336,18 +336,31 @@
 	<a class="close-reveal-modal">&#215;</a>  
 </div>
 
-
-
-
 <!--手動輸入景點位置-->
-<div id="add_new" style="display:none">
-    	糟了，找不到你想標記的地點，試試看手動輸入吧!
-        <ol>
-	       	<li>輸入附近的地理資訊試試看<input type="search" placeholder="試著輸入國家、城市、以及附近景點或經緯度、地址" size="40" onkeydown="tripPointEdit.UiListener.searchPos(event)" />
-        	<button class="search" onclick="tripPointEdit.UiListener.searchPos(event)">搜尋</button></li>
-        	<li>按下搜尋後，請將地圖上的<img id="pointTarget" src='<%=asset_path("logo.png")%>' />拖至正確位置，並點選下方「完成」或「取消」</li>
-        </ol>
-        <button class="finish">完成</button><button class="cancel" onclick="tripPointEdit.UiListener.cancelSetNewManPos()">取消</button>
+<div id="add_new" class="large-6 columns large-centered">
+	<form>
+		<div class="row collapse">
+			<div class="large-4 columns">
+				<h6>輸入附近的地理資訊試試看</h6>
+			</div>
+			<div class="large-7 columns">
+				<input type="text" placeholder="試著輸入國家、城市、周遭景點或經緯度、地址" onkeydown="tripPointEdit.UiListener.searchPos(event)" />
+			</div>
+			<div class="large-1 columns"> 
+				<a class="button radius postfix" onclick="tripPointEdit.UiListener.searchPos(event)">搜尋</a>
+			</div>
+		</div>
+	</form>
+		<div class="row">
+			按下搜尋後，請將地圖上的<img id="pointTarget" src='<%=asset_path("logo.png")%>' />拖至正確位置，並點選「完成」或者「取消
+		</div>
+		<div class="row">
+		</hr>
+			<div class="large-4 columns large-offset-8">
+				<button class="finish tiny radius">完成</button>&nbsp;
+				<button class="cancel tiny radius" onclick="tripPointEdit.UiListener.cancelSetNewManPos()">取消</button>
+			</div>
+		</div>
 </div>
 
 <!--dialog-->
@@ -396,12 +409,6 @@
 		</div>
 		<footer class="row expandView">
       <hr />
-        <div class="large-6 columns">
-          <h6 class="subheader">WanderWorld地球漫遊 &copy; 2013</h6>
-        </div>
-        <div class="large-6 columns">
-        	<a class="right" href="http://wanderworld-ideaaxis.blogspot.tw/" target="blank">地球漫遊開發日誌</a>
-        </div>
   </footer>
   
 

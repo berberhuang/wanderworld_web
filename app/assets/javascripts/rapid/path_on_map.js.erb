@@ -11,9 +11,8 @@ var PathOnMap=(function(){
 		}
 
 		infowindow=new google.maps.InfoWindow({
-			content: '<div style="font-weight:bold;font-size:16px">'+pointData[item_id].title+'</div>'
-					+'<div style="height:20px"></div>'
-					+'<a class="button round medium right" href="javascript:PathOnMap.clickReadJournal('+pointData[item_id].group_id+','+item_id+')">'
+			content: '<div><h5>'+pointData[item_id].title+'</h5></div>'
+					+'<a class="button radius medium right" href="javascript:PathOnMap.clickReadJournal('+pointData[item_id].group_id+','+item_id+')">'
 					+'閱讀遊記'
 					+'</a>'
 		});

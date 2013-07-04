@@ -199,10 +199,10 @@ var TripPointEditModule = function(item){
 	
 	//show確認新增景點對話框
 	var confirmTripPoint=function (name){
-		var contentStr='<div>將<span id="3" style="font-weight:bold">&nbsp'+name+'&nbsp</span>標記在此<br />'
-				+'<button onclick="tripPointEdit.UiListener.confirmOk()">確定</button>'
-				+'<button onclick="tripPointEdit.UiListener.confirmCancel()">取消</button></div>'
-				+'<a id="isWrong" style="float:right;color:black" href="javascript:tripPointEdit.UiListener.wrongTripPoint()">位置錯了嗎?</a>';	
+		var contentStr='<div>在遊記中標記<span id="3" style="font-weight:bold">&nbsp'+name+'&nbsp</span>。<br /><br />'
+				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmOk()">確定</button>&nbsp'
+				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmCancel()">取消</button></div>'
+				+'<a class="button alert tiny radius right white" id="isWrong" href="javascript:tripPointEdit.UiListener.wrongTripPoint()">位置錯了嗎?</a>';	
 		if(confirmWindow){
 			if(confirmWindow.s_new)
 				tripPointEdit.UiListener.confirmNewOK();
@@ -224,7 +224,7 @@ var TripPointEditModule = function(item){
 		var contentStr='<div>你是第一個新增這個景點的朋友!<br />請拖曳<img style="width:30px;" src="'+getMarkURL('P',getGroupColor(newTripPointData.group_id,DataStatus.groupList))+'"/>將景點標記在正確位置。<br />'
 				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmNewOK()">確定</button>&nbsp;'
 				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmCancel()">取消</button></div>'
-				+'<a class="button alert tiny radius right" id="isWrong"  href="javascript:tripPointEdit.UiListener.wrongTripPoint()">位置錯了？請按這裡</a>';	
+				+'<a class="button alert tiny radius right white" id="isWrong" href="javascript:tripPointEdit.UiListener.wrongTripPoint()">位置錯了嗎？</a>';	
 		if(confirmWindow){
 			var s=(confirmWindow);
 			if(confirmWindow.s_new)
