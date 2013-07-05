@@ -107,119 +107,113 @@ _gaq.push(['_trackPageview']);
 	<%end%>
 </nav>
 
-	<!--註冊-->
-	  <div id="register" class="reveal-modal medium">
-		<div class="large-8 columns">
-		  <%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
-		  <fieldset>
-		  
-		 <legend><h2>註冊</h2></legend>
-		  <div class="row collapse">
-			<div class="small-3 large-2 columns">
-			  <label for="right-label" class="right inline">電子郵件:</label>
-			</div>
-			<div class="small-9 large-10 columns">
-			 <input id="user_email" name="user[email]" placeholder="請輸入您註冊的電子郵件地址" size="30" type="email" />   
-			</div>
-		  </div>  
-		  <div class="row collapse">
-			<div class="small-3 large-2 columns">
-			  <label for="right-label" class="right inline">名稱:</label>
-			</div>
-			<div class="small-9 large-10 columns">
-			  <%=f.text_field :username,:placeholder=>"您在網站中的名稱"%>
-			</div>
-		  </div>
-		  <div class="row collapse">
-			<div class="small-3 large-2 columns">
-			  <label for="right-label" class="right inline">密碼:</label>
-			</div>
-			<div class="small-9 large-10 columns">
-			  <%=f.password_field :password, :placeholder=>'請輸入6~20字半形英數密碼'%>
-			</div>
-		  </div>
-		  <div class="row collapse">
-			<div class="small-3 large-2 columns">
-			  <label for="right-label" class="right inline">確認密碼:</label>
-			</div>
-			<div class="small-9 large-10 columns">
-			  <%=f.password_field :password_confirmation, :placeholder=>"請輸入第二次密碼"%>
-			</div>
-		  </div>
-		  <br>
-		  <div class="row">
-			<div class="small-9 large-12 right">
-			<%=f.submit '註冊',:class=>"button radius expand"%>
-			</div>
-		  </div>
+<!--註冊-->
+  <div id="register" class="reveal-modal medium">
+    <div class="large-8 columns">
+      <%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
+      <fieldset>
+      
+     <legend><h2>註冊</h2></legend>
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">電子郵件:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+         <input id="user_email" name="user[email]" placeholder="請輸入您註冊的電子郵件地址" size="30" type="email" />   
+        </div>
+      </div>  
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">名稱:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.text_field :username,:placeholder=>"您在網站中的名稱"%>
+        </div>
+      </div>
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">密碼:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.password_field :password, :placeholder=>'請輸入6~20字半形英數密碼'%>
+        </div>
+      </div>
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">確認密碼:</label>
+        </div>
+        <div class="small-7 large-8 columns">
+          <%=f.password_field :password_confirmation, :placeholder=>"請輸入第二次密碼"%>
+        </div>
+        <div class="small-2 large-2 columns">
+          <%=f.submit '註冊',:class=>"button radius postfix"%>
+        </div>
+      </div>
 
-		 <%if(flash[:signupfail])%>
-		  <p class="loginfail">註冊失敗</p>
-		 <%end%>
+     <%if(flash[:signupfail])%>
+      <p class="loginfail">註冊失敗</p>
+     <%end%>
 
-		  </fieldset>
-		  <%end%>
-	  </div>
-	  
+      </fieldset>
+      <%end%>
+  </div>
+  
 
-	  <div class="large-4 columns">
-		<fieldset>
-		<legend><h4>以其他帳號登入</h4></legend>
-		  <div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">facebook</div>
-		  </fieldset>
-	  </div>
-	  <a class="close-reveal-modal">&#215;</a>  
-	  </div>
+  <div class="large-4 columns">
+    <fieldset>
+    <legend><h4>以其他帳號登入</h4></legend>
+      <div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">facebook</div>
+      </fieldset>
+  </div>
+  <a class="close-reveal-modal">&#215;</a>  
+  </div>
 
-	<!--登入-->
-	  <div id="login" class="reveal-modal medium">
-		<div class="large-8 columns">
-		
-			
-		<%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
-		 <fieldset>
-		  <legend><h2>登入</h2></legend>
-		 <div class="row collapse">
-			<div class="small-3 large-2 columns">
-			  <label for="right-label" class="right inline">電子郵件:</label>
-			</div>
-			<div class="small-9 large-10 columns">
-			  <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
-			</div>
-		</div>
-		<div class="row collapse">
-		  <div class="small-3 large-2 columns">
-			<label for="right-label" class="right inline">密碼:</label>
-		  </div>
-		  <div class="small-9 large-10 columns">
-			<%=f.password_field :password, :placeholder=>"請輸入6~20字半形英數密碼"%>
-		  </div>
-		</div>
-		  <br>
-		  <div class="row">
-			<div class="small-9 large-12 right">
-			<%=f.submit '登入',:class=>"button radius expand"%>
-			</div>
-		  </div>
-		 <!--<input type="submit" class="alert button medium" value="忘記密碼">-->
-		 <%if(flash[:loginfail])%>
-		  <p class="loginfail">您輸入的帳號或密碼有誤</p>
-		  <%end%>
+<!--登入-->
+  <div id="login" class="reveal-modal medium">
+    <div class="large-8 columns">
+    
+        
+    <%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
+     <fieldset>
+      <legend><h2>登入</h2></legend>
+     <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">電子郵件:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
+        </div>
+    </div>
+    <div class="row collapse">
+      <div class="small-3 large-2 columns">
+        <label for="right-label" class="right inline">密碼:</label>
+      </div>
+      <div class="small-9 large-8 columns">
+        <%=f.password_field :password, :placeholder=>"請輸入6~20字半形英數密碼"%>
+      </div>
+      <div class="small-9 large-2 columns">
+        <%=f.submit '登入',:class=>"button radius postfix"%>
+        </div>
+    </div>
+     <!--<input type="submit" class="alert button medium" value="忘記密碼">-->
+     <%if(flash[:loginfail])%>
+      <p class="loginfail">您輸入的帳號或密碼有誤</p>
+      <%end%>
 
-		  </fieldset>
-		  <%end%>
-		
+      </fieldset>
+      <%end%>
+    
 
-	</div>
+</div>
 
-	  <div class="large-4 columns">
-		<fieldset>
-		<legend><h4>以其他帳號登入</h4></legend>
-		  <div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">facebook</div>
-		  </fieldset>
-	  </div>
-	  <a class="close-reveal-modal">&#215;</a>  
-	  </div>
+  <div class="large-4 columns">
+    <fieldset>
+    <legend><h4>以其他帳號登入</h4></legend>
+      <div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">facebook</div>
+      </fieldset>
+  </div>
+  <a class="close-reveal-modal">&#215;</a>  
+  </div>
 
 <%= yield %>
 
