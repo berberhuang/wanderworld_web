@@ -168,13 +168,14 @@
 				<div class="large-7 columns " id="journal_name">
 					<h3><%=@journal_name%></h3>
 				</div>
+
 				<!--↓社交元件↓-->
 				<div class="large-5 columns" id="social_toggle">
-					<div id="like">
-						<i class="foundicon-social-fabecook"></i>
+					<div class="button tiny radius" >
+						<i class="foundicon-social-facebook"></i>
 					</div>
 					<div class="editTool right button secondary tiny radius" >
-							<i class="foundicon-edit"></i>
+						<i class="foundicon-edit"></i>
 					</div>
 				</div>
 			</div>
@@ -182,17 +183,37 @@
 			<div class="row" id="journal_cc_2nd_stack">
 				<!--遊記編輯工具-->
 				<div class="large-8 columns" >
-					<div><input /></div>
+					<div>
+						<ul class="button-group radius">
+							<li><a class="button secondary tiny"><i class="foundicon-left-arrow"></i></a></li>
+							<li><a class="button secondary tiny"><i class="foundicon-right-arrow"></i></a></li>
+							<li><a class="button secondary tiny"><i class="foundicon-photo"></i></a></li>
+							<li><a class="button secondary tiny"><i class="foundicon-minus"></i></a></li>
+							<li><a class="button secondary tiny">Link</a></li>
+							<li><a class="button secondary tiny">Unlink</a></li>
+						</ul>
+						<ul class="button-group radius">
+							<li><a class="button secondary tiny">B</a></li>
+							<li><a class="button secondary tiny">I</a></li>
+							<li><a class="button secondary tiny">U</a></li>
+							<li><a class="button secondary tiny"><i class="foundicon-remove"></i></a></li>
+							<li><a class="button secondary tiny dropdown">顏色</a></li>
+							<li><a class="button secondary tiny dropdown">字體</a></li>
+							<li><a class="button secondary tiny dropdown">Size</a></li>
+							
+						</ul>
+					</div>
 				</div>
 				<!--遊記狀態/權限區塊-->
 				<div class="large-4 columns">
-					<div class="controlButton">
+					<!--div class="controlButton">
 						<ul class="button-group radius">
 							<li><a class="button secondary tiny" id="releasePost">發佈</a></li>
 							<li><a class="button secondary tiny" id="finishPost">儲存</a></li>
 							<li><a class="button alert tiny" id="cancelEdit">放棄</a></li>
 						</ul>
-					</div>
+					</div-->
+					<!--↓第二次編輯遊記↓-->
 					<div class="controlButton">
 						<ul class="button-group radius">
 							<li><a class="button tiny" id="releasePost">更新</a></li>
@@ -203,12 +224,12 @@
 					<a class="tiny permission button dropdown" href="#">
 								<div id="notpublic" style="display:none">草稿</div>
 								<div id="public" style="display:none">已發佈</div>
-							</a>
+					</a>
 						<div class="permission_menu">
 
 							<div class="private_button">草稿</div>
 					</a>
-							<div class="public_button">公開</div>
+							<div class="public_button">發佈</div>
 					</a>
 						</div>
 				</div>
@@ -220,11 +241,13 @@
 				<div class="foo_load">請稍候</div>
 			</div>			
 			<div class="large-12 columns large-centered" id="postContent">
+				<% if @Journal_selected %>
 				<% for c in @contents %>
 				<div class="tp_box" id="tp_box_<%=c.id%>">
 					<%=sanitize c.article%>
 				</div>
 				<% end %>
+				<% end %>				
 				<hr />
 			</div>	
 			
@@ -296,7 +319,7 @@
 	<!--遊記開關-->
 	<div class="large-1 columns" style="<%='visibility:hidden;' if !@trip_selected %>">
 	<div id="bounce" class="control">
-		<h1><i class="foundicon-page"></i></h1>
+		<h1><i class="foundicon-idea"></i></h1>
 	</div>
 	</div>
 	<!--triplist-->
@@ -349,7 +372,7 @@
 			<div id="view_num">
 			<span>瀏覽人次：<span id="count"><%=@trip_info.count.to_s if @trip_info%></span></span>
 			</div>
-			<div id="sharetoFB">
+			<div class="button tiny radius" id="sharetoFB">
 				<a href="#share_button" data-reveal-id="share_button" id="share">分享<i class="foundicon-mail"></i></a>
 			</div>
 		</div>
@@ -362,20 +385,15 @@
 	<div class="large-12 columns">
     <form>
     	<fieldset>
-    		<legend><h2>分享你的旅行</h2></legend>
+    		<legend><h3>分享你的旅行</h3></legend>
 	    	<div class="row collapse">
-	    		<div class="small-3 large-3 columns">
-	    			<label for="right-label" class="right inline">旅行連結:</label>
+	    		<div class="small-10 columns">
+	    			<input type="text" id="shareInput" placeholder="連結網址" />
 	    		</div>
-	    		<div class="small-9 large-9 columns">
-	    			<input id="shareInput" placeholder="連結網址" />
+	    		<div class="small-2 columns">
+	    			<a class="button radius postfix" onclick="postToWall()">
+	    				<i class="foundicon-social-facebook">分享</i></a>
 	    		</div>
-	    	</div>
-	    	<div class="row">
-	    		<div class="large-4 columns right button tiny round" onclick="postToWall()">
-	    			<i class="foundicon-social-facebook" style="font-size:2em">分享</i>
-	    		</div>
-
 	    	</div>
 	    </fieldset>
 	</form>
@@ -386,7 +404,7 @@
 <!--手動輸入景點位置-->
 <div id="add_new" class="large-6 columns large-centered">
 		<fieldset>
-		<legend class="text-center"><h5>手動標記景點</h5></legend>
+		<legend class="text-center"><h4>手動標記景點</h4></legend>
 		<div class="row collapse">
 			<div class="large-4 columns">
 				<h6>1.輸入該景點的相關位置：</h6>
@@ -398,13 +416,12 @@
 				<a class="button radius postfix" onclick="tripPointEdit.UiListener.searchPos(event)">搜尋</a>
 			</div>
 		</div>
-		<div class="row">
-			<h6>
-			2.按下搜尋後，請將地圖上的<img id="pointTarget" src='<%=asset_path("logo.png")%>' />拖至正確位置，並點選「完成」或者「取消」。
-			</h6>
+		<div class="row collapse">
+			<div class="large-12 columns">
+				<h6>2.按下搜尋後，請將地圖上的<img id="pointTarget" src='<%=asset_path("logo.png")%>' />拖至正確位置，並點選「完成」或者「取消」。</h6>
+			</div>
 		</div>
 		<div class="row">
-		</hr>
 			<div class="large-3 columns large-offset-9">
 				<button class="finish tiny radius">完成</button>&nbsp;
 				<button class="cancel tiny radius alert" onclick="tripPointEdit.UiListener.cancelSetNewManPos()">取消</button>
