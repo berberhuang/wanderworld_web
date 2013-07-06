@@ -198,14 +198,17 @@
 				<div class="large-5 columns" id="social_toggle">
 					<div class="row">
 						<div id="release_status" class="large-6 columns" style="<%='visibility:hidden' if !@isOwner%>">
-							<a class="tiny permission button dropdown" href="#">
-								<div id="notpublic" style="<%='display:none' if @public%>">草稿</div>
-								<div id="public" style="<%='display:none' if !@public%>">已發佈</div>
+							<a id="release_status_text" class="tiny permission secondary button dropdown" href="#" data-dropdown="1">
+								<%if @public %>
+									 已發佈
+								<%else %>
+									草稿
+								<%end%>
 							</a>
-							<div class="permission_menu">
-								<div class="private_button">草稿</div>
-								<div class="public_button">發佈</div>
-							</div>
+							<ul id="1" class="f-dropdown">
+								<li><a href="#" class="private_button">草稿</a</li>
+								<li><a href="#" class="public_button">發佈</a</li>
+							</ul>
 						</div>
 						<div class="large-4 columns">
 							<a class="button tiny radius" onclick="postToWall()">
@@ -304,9 +307,12 @@
 		
 	<!--遊記開關-->
 	<div class="large-1 columns" style="<%='visibility:hidden;' if !@trip_selected %>">
-	<div id="bounce" class="control">
-		<h1><i class="foundicon-idea"></i></h1>
-	</div>
+		<div class="large-12 columns large-centered control button secondary radius" id="bounce" >
+			<h1 class="break-word">	
+					遊<br/>記<br/>開<br/>關<br/>
+					<i class="foundicon-left-arrow"></i>
+			</h1>
+		</div>
 	</div>
 	<!--triplist-->
 	<div id="trip_list" class="list large-2 columns gallery right" style="<%='display:none' if !@user_id %>" >

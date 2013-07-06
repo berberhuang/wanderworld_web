@@ -72,23 +72,15 @@ var ContentBoxModule = function(item){
 	
 	var setPrivate=function(){
 		Data.setGroupPrivate(show_group_id,function(result){
-			target.find('.permission_menu').hide();	
-			if(result){	
-				target.find('#public').hide();
-				target.find('#notpublic').show();
-				DataStatus.isPublic[show_group_id]=false;
-			}
+			$('#release_status_text').text('草稿');
+			DataStatus.isPublic[show_group_id]=false;
 		});
 	};
 	
 	var setPublic=function(){
 		Data.setGroupRelease(show_group_id,function(result){
-			target.find('.permission_menu').hide();
-			if(result){
-				target.find('#public').show();
-				target.find('#notpublic').hide();
-				DataStatus.isPublic[show_group_id]=true;
-			}
+			$('#release_status_text').text('已發佈');
+			DataStatus.isPublic[show_group_id]=true;
 		});
 	};
 	
@@ -259,13 +251,6 @@ var ContentBoxModule = function(item){
 			saveJournal();
 			exitEditor();
 		},
-		clickPermissionSetting:function(){
-			var t=target.find('.permission_menu');
-			t.show().unbind('clickoutside');
-			setTimeout(function(){t.bind('clickoutside',function(){
-					t.hide();
-			})},100);
-		},
 		clickSetPublic:function(){
 			setPublic();			
 		},
@@ -282,7 +267,6 @@ var ContentBoxModule = function(item){
 	cancelEdit.click(UiListener.clickCancelEdit);
 	toDraft.click(UiListener.clickConvertToDraft);
 	
-	target.find('.permission').click(UiListener.clickPermissionSetting);
 	target.find('.public_button').click(UiListener.clickSetPublic);
 	target.find('.private_button').click(UiListener.clickSetPrivate);
 	
