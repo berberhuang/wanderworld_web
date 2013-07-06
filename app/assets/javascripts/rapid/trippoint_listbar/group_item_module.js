@@ -8,7 +8,7 @@ var GroupItemModule=function(obj){
 	var showingGroup=null;
 	
 	var newGroupInputStr='<div id="trip_point_group_0" class="trip_point_group" data-id="0"> \
-						  <input value="" placeholder="輸入遊記名稱" /> \
+						  <input value="" size="18" placeholder="輸入遊記名稱" /> \
 						  </div>';
 	
 	var container=target.find('.trip_point_all');	
@@ -109,7 +109,7 @@ var GroupItemModule=function(obj){
 	
 		
 	var ownerModeEnable=function(item){
-		var str='<h5><i class="foundicon-edit white"></i></h5>';
+		var str='<h5><i class="foundicon-tools white"></i></h5>';
 		item.find('.trip_point_edit').append(str).click(showEditGroupMenu);
 		
 		str='<div class="add_trip_point large-12 columns text-center"><i class="foundicon-plus"></i><i class="foundicon-location"> </i>新增景點</div>';
