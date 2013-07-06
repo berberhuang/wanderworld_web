@@ -82,12 +82,10 @@ var GroupItemModule=function(obj){
 		str+=' data-sortid="'+sort_id+'"';
 		str+='>';
 		
-		str+='<div class="journal_title large-10 columns"><h5><a href="#">'+title+'</a></h5>'
-			+'<input placeholder="輸入遊記名稱" style="display:none;"></div>';                                            
-		str+='<div class="trip_point_edit large-2 columns right"></div>';	
+		str+='	<div class="journal_title large-10 columns"><h5><a href="#">'+title+'</a></h5></div>';                                            
+		str+='	<div class="trip_point_edit large-2 columns right"></div>';	
 		str+='  <ul class="trip_point"></ul>';
-		str+='  <div id="add_trip_point_div" class="large-10 columns large-centered"></div>';
-		str+='  <div"></div>';
+		str+='  <div id="add_trip_point_div" class="large-12 columns large-centered"></div>';
 		str+='</div>';
 		
 		var item=$(str).appendTo(target.find('.trip_point_all'));
@@ -336,7 +334,8 @@ var GroupItemModule=function(obj){
 								tripPointItemManager.addNewTripPoint(event,group_id,$(this))
 							})
 						.blur(function(event){blurAddPointInput(event,group_id);})
-						.focus()		
+						.focus()
+						.val('')		
 						.autocomplete({
 							source:'/place/search',
 							position: { my: "right top", at: "right bottom", collision: "none" }		
