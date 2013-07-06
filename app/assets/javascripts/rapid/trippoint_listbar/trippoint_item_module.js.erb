@@ -31,7 +31,7 @@ var TrippointItemModule=function(obj){
 		str+='<a class="point_name">'+title+'</a>';
 		str+='</div>';
 		str+='</div>';
-		str+='<div class="point_edit large-2 columns">';
+		str+='<div class="point_edit large-2 columns" id="removeTripPoint">';
 		str+='</div>';
 		str+='</div>';
 		str+='</div>';
@@ -66,9 +66,13 @@ var TrippointItemModule=function(obj){
 	};
 	
 	var ownerModeEnable=function(item){
-		var str='<i class="foundicon-edit"></i>';
+		var str='<i class="foundicon-trash"></i>';
+
 		item.find('.point_edit').append(str)
-			.find('i').click(editPoint);;
+			.find('i').click(function(event){
+					var id=$(event.target).parents('.point').data('id');
+					removePoint(id);
+				});
 	};
 
 	//按下景點名稱
@@ -113,53 +117,7 @@ var TrippointItemModule=function(obj){
 		target.find('.trip_point_selected').removeClass('trip_point_selected');
 	};
 	
-	//編輯景點(click)menu
-	var editPoint=function(event){	
-		var item=$(event.target).parents('.point');
-		var id=item.data('id');
-		var group_id=item.parents('.trip_point_group').data('id');
-		edit_menu_id=id;
-		var x=item.offset().left;
-		var y=item.offset().top;
-		//var menu=item.parent().css('display','block').find('.point_edit_menu').show();	
-		
-		var str='';
-		str+='<div class="point_edit_menu">';
-		str+='<div id="editPostContent"><img src="/assets/pencil.png">編輯遊記</div>';
-		str+='<div id="removeTripPoint"><img src="/assets/delete1.png">刪除景點</div>';
-		str+='</div>';	
-		
-		var menu=$(str).appendTo('#trip_one').show().css('position','absolute').offset({left:x+115,top:y+20});
-		
-		menu.find('#removeTripPoint').click(function(){
-					removePoint(id);
-					menu.unbind('clickoutside');
-					menu.unbind('mouseleave');
-					menu.remove();
-				}).end()
-			.find('#editPostContent').click(function(){
-					contentBox.cancelEditWarning(group_id,function(){
-						contentBox.clickEditPost(group_id,id);	
-						showingGroup=group_id;
-					});
-					menu.unbind('clickoutside');
-					menu.unbind('mouseleave');
-					menu.remove();
-				}).end();
-		
-		setTimeout(function(){
-			menu.bind('clickoutside',function(){
-				menu.unbind('clickoutside');
-				menu.unbind('mouseleave');
-				menu.remove();
-			});
-			menu.bind('mouseleave',function(){
-				menu.unbind('clickoutside').css('display','');
-				menu.unbind('mouseleave');
-				menu.remove();
-			});
-		},50);		
-	};
+	
 	
 	
 	

@@ -82,12 +82,12 @@ var GroupItemModule=function(obj){
 		str+=' data-sortid="'+sort_id+'"';
 		str+='>';
 		
-		str+='<div class="journal_title large-9 columns"><h4><a href="#">'+title+'</a></h4>'
+		str+='<div class="journal_title large-10 columns"><h5><a href="#">'+title+'</a></h5>'
 			+'<input placeholder="輸入遊記名稱" style="display:none;"></div>';                                            
-		str+='<div class="trip_point_edit large-3 columns right"></div>';	
+		str+='<div class="trip_point_edit large-2 columns right"></div>';	
 		str+='  <ul class="trip_point"></ul>';
-		str+='  <div id="add_trip_point_div"></div>';
-		str+='  <div style="clear: both;display: block"></div>';
+		str+='  <div id="add_trip_point_div" class="large-10 columns large-centered"></div>';
+		str+='  <div"></div>';
 		str+='</div>';
 		
 		var item=$(str).appendTo(target.find('.trip_point_all'));
@@ -111,10 +111,10 @@ var GroupItemModule=function(obj){
 	
 		
 	var ownerModeEnable=function(item){
-		var str='<h4><i class="foundicon-edit white"></i></h4>';
+		var str='<h5><i class="foundicon-edit white"></i></h5>';
 		item.find('.trip_point_edit').append(str).click(showEditGroupMenu);
 		
-		str='<div class="add_trip_point text-center"><i class="foundicon-plus"></i><i class="foundicon-location"> </i>新增景點</div>';
+		str='<div class="add_trip_point large-12 columns text-center"><i class="foundicon-plus"></i><i class="foundicon-location"> </i>新增景點</div>';
 		item.find('#add_trip_point_div').append(str);
 		
 		var addTripPointButton=item.find('.add_trip_point');

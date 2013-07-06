@@ -60,8 +60,8 @@ module RapidHelper
 		seq_num=1
 		groups.each do |g|
 			str+='<div id="trip_point_group_'+g.id.to_s+'" class="trip_point_group row" data-id="'+g.id.to_s+'" data-sortid="'+g.sort_id.to_s+'">'
-			str+='<div class="journal_title large-9 columns"><h4><a href="#">'+g.title+'</a></h4><input placeholder="輸入遊記名稱" style="display:none;"></div>'
-			str+='<div class="trip_point_edit large-3 columns right"></div>'
+			str+='<div class="journal_title large-10 columns"><h5><a href="#">'+g.title+'</a></h5><input placeholder="輸入遊記名稱" style="display:none;"></div>'
+			str+='<div class="trip_point_edit large-2 columns right"></div>'
 			str+='<ul class="trip_point">'
 			
 			iter=0
@@ -98,7 +98,7 @@ module RapidHelper
 			end
 			
 			str+='</ul>'			
-			str+='<div id="add_trip_point_div"></div>'
+			str+='<div id="add_trip_point_div" class="large-12 columns text-centered"></div>'
 			str+='</div>'
 		end
 		return str.html_safe
