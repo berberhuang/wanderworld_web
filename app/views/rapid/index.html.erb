@@ -163,6 +163,7 @@
 	<!--map-->
 	<div class="large-2 columns">
 		<div class="gallery" id="map_canvas"></div>
+		<div id="trippoint_infowindow_reading" class="arrow_box_bottom"></div>
 	</div>
 	<!--隱藏的內容框-->
 	<div class="large-6 columns" id="slidesContainer" style="<%='z-index:-1' if !@journal_selected%>">
@@ -218,7 +219,7 @@
 					<div id="releaseButtons" class="controlButton" style="display:none">
 						<ul class="button-group radius">
 							<li><a class="button tiny" id="releasePost">更新</a></li>
-							<li><a class="button secondary tiny" id="toDraft">還原成草稿</a></li>
+							<li><a class="button secondary tiny" id="toDraft">還原草稿</a></li>
 							<li><a class="button alert tiny" id="cancelEdit">放棄</a></li>
 						</ul>
 					</div>

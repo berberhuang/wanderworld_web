@@ -4231,6 +4231,14 @@ body{
 .white{
  color:white !important; 
 }
+
+/*強制中英文斷行*/
+.word-break{
+  word-break:break-all !important;
+  word-wrap:break-word !important;
+
+}
+
 /*對話箭頭*/
 .arrow_box {
   position: relative;
@@ -4252,3 +4260,24 @@ body{
   top: 45%;
   margin-top: -20px;
 }
+
+/*下對話箭頭*/
+.arrow_box_bottom {
+  background:white;
+
+}
+.arrow_box_bottom:after, .arrow_box_bottom:before {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  position: absolute;
+}
+
+.arrow_box_bottom:after {
+  border-color: rgba(136, 183, 213, 0);
+  border-top-color: white;
+  border-width: 30px;
+  left: 50%;
+  margin-left: -30px;
+}
+

@@ -8,6 +8,7 @@ var PathOnMap=(function(){
 		if(infowindow!=null){
 			infowindow.close();
 		}
+		hideTripPointInfo();
 
 		infowindow=new google.maps.InfoWindow({
 			content: '<div><h5>'+pointData[item_id].title+'</h5></div>'
@@ -26,15 +27,24 @@ var PathOnMap=(function(){
 		if(infowindow!=null){
 			infowindow.close();
 		}
+		$('#trippoint_infowindow_reading').empty().show().append('<div class="large-12 columns"><h5><i class="foundicon-location">'+pointData[item_id].title+'</i></h5></div>');
 		
-		infowindow=new google.maps.InfoWindow({
-			content: '<div><h5>'+pointData[item_id].title+'</h5></div>',
-		});
+	};
 
-		infowindow.open(map,pointData[item_id]);
-		google.maps.event.addListener(infowindow,'closeclick',function(){
-			//tripPointList.unselectTripPoint();
-		});
+	var hideTripPointInfo=function(){
+		if(isTripPointInfoShow()){
+			$('#trippoint_infowindow_reading').hide();	
+		};
+	};
+
+	var isTripPointInfoShow=function(){
+		if($('#trippoint_infowindow_reading').css('display')!='none'){
+			return true;
+		}
+		else{
+			return false;	
+		}
+		
 	};
 
 	

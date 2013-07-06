@@ -38,7 +38,7 @@ module RapidHelper
 
 	def tripName_gen(trip_info)
 		tripName=ERB::Util.html_escape(trip_info.name)
-		str='<div class="row" id="trip_name_editDiv" style="cursor:pointer; height:4em; overflow:hidden;" title="'+tripName+'">'
+		str='<div class="row word-break" id="trip_name_editDiv" style="cursor:pointer; height:4em; overflow:hidden;" title="'+tripName+'">'
 		str+='<h4><a>'+tripName+'</a></h4>'
 		str+='</div>'
 		return str.html_safe
