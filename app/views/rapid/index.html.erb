@@ -472,13 +472,16 @@
   <li data-text="如何新增旅行？" data-button="新增一個旅行吧">
     <h5>在WanderWorld地球漫遊，我們這樣記錄旅程：</h5><br />
     <ul style="list-style:none;">
-    	<li><i class="foundicon-flag">旅行</i>，紀錄一次完整的旅程，由許多遊記組成<hr/></li>
-    	<li><i class="foundicon-page">遊記</i>，將旅行依照你喜歡的方式，區分成你喜歡的段落，並由景點組成<hr/></li>
-    	<li><i class="foundicon-location">景點</i>，這是你畫在地圖上的標記，幫你紀錄充滿回憶的地方，大至國家，小至風景名勝</li>
+    	<li><i class="foundicon-flag">旅行</i>，從出發到回家，紀錄一次完整的旅程，由許多遊記組成<hr/></li>
+    	<li><i class="foundicon-page">遊記</i>，將旅行依照你喜歡的方式區分成段落，包含許多景點<hr/></li>
+    	<li><i class="foundicon-location">景點</i>，從風景名勝到國家，在地圖上標記你去過的地方。遊記內容將會和各個景點緊密結合。</li>
     </ul>
   </li>
-  <li data-id="trip_create_button" data-options="tipLocation:right">
+  <li data-id="trip_create_button" data-options="tipLocation:right; nextButton:false;">
     <h5>試著按下「新增旅行」按鈕看看吧？</h5>
+  </li>
+  <li data-id="trip_name_editDiv" data-options="tipLocation:right;">
+    <h5>按下「請輸入旅行名稱」和下面的日期，就可以直接修改噢</h5>
   </li>
   <li data-id="group_create_button" data-options="tipLocation:right">
     <h5>然後將指標移到這，就可以新增遊記囉</h5>
@@ -487,7 +490,7 @@
   <li data-id="bounce" data-text="寫下你的旅行故事" data-options="tipLocation:left">
   	<p>點擊此按鈕，可以開啓/收合遊記；注意左邊的遊記中，景點會跟著你的閱讀內容移動噢！</p>
   </li>
-  <li data-text="開始導覽">  
+  <li data-text="寫下你的旅行故事">  
     <p>導覽結束，若有任何問題，歡迎透過意見反映或到<a href="http://www.facebook.com/wanderworld">漫遊到世界盡頭</a>和我們分享</p>
     <h5>專注於旅行者的設計，寫下專屬於旅行的遊記</h5><br><img src="<%=asset_path('banded/main_logo.png')%>" />
   </li>
