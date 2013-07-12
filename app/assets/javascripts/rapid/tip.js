@@ -1,8 +1,13 @@
 var TipModule=function(){
 	var target;
 	
+	var end=function(){
+		target.foundation('joyride','end');
+	};
+
 	var show=function(i){
-		target.foundation('joyride', 'start',{startOffset:i});
+		target.foundation('joyride', 'start',{startOffset:i,
+						     postRideCallback:end});
 	};
 	
 	var hide=function(){
