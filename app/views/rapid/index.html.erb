@@ -201,7 +201,7 @@
 	<div class="large-1 columns panel gallery">
 	    <div class="row">
 	        <% if @user.fbid%>
-		    	<img src='https://graph.facebook.com/<%=@user.fbid%>/picture'></img>
+		    	<img src='https://graph.facebook.com/<%=@user.fbid%>/picture?type=normal'></img>
 		<% else%>
 			<img src='<%=asset_path("user_avatar.png")%>' style="display:block; margin:auto;"></img>
 		<% end %>
