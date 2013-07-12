@@ -79,6 +79,21 @@ var TrippointItemModule=function(obj){
 	var selectTripPointEffect=function(item){
 		unselectTripPointEffect();
 		item.addClass('trip_point_selected');
+
+		var pane=$('#trip_point_list');
+		var pane_top=pane.scrollTop();
+		var pane_bottom=pane_top+pane.height();
+		var target_pos=item.position().top;
+		var target_height=item.height();
+
+		if(target_pos+target_height>pane_bottom){
+			var tmp=target_pos+target_height-pane.height();
+			if(tmp<0)
+				tmp=0;
+			$('#trip_point_list').scrollTop(tmp);
+		}else if(target_pos<pane_top){
+			$('#trip_point_list').scrollTop(target_pos);
+		}
 	};
 	//取消鎖定景點的效果
 	var unselectTripPointEffect=function(){

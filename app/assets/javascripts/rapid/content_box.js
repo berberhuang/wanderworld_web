@@ -20,6 +20,7 @@ var ContentBoxModule = function(item){
 	editor=[];
 
 	var edit_id;
+	var show_id;
 	var edit_group_id;
 	var show_group_id=null;
 	var select_id=null;
@@ -198,6 +199,8 @@ var ContentBoxModule = function(item){
 					editor[id].setReadOnly(false);
 					tripPointList.selectTripPoint(id);
 					
+					PathOnMap.centerTripPointOnLeftMap(id);
+					PathOnMap.showTripPointInfo(id);
 					contentPanel.find('img').unbind('click').click(install_resize);
 					$('.tp_box').attr('title','');
 				
@@ -220,11 +223,7 @@ var ContentBoxModule = function(item){
 	};
 	
 	var focusPost=function(tp_box){
-		journal.scrollTop(tp_box.position().top);
-		//data都load完後才能估算正確的目標scrollTop
-		$('#postContent img').load(function(){
-			journal.animate({scrollTop:tp_box.position().top},1000);	
-		});		
+		setTimeout(function(){journal.scrollTop(tp_box.position().top)},500);
 	};
 	
 	var focusEditPost=function(tp_box){
@@ -233,6 +232,9 @@ var ContentBoxModule = function(item){
 	};
 	
 	var detectScrollOnWhichPost=function(){	 
+		if(edit_group_id){
+			return ;
+		}
 		var pos=journal.scrollTop();
 		var id;
 		var list=contentPanel.find('.tp_box');
@@ -251,7 +253,12 @@ var ContentBoxModule = function(item){
 			tripPointList.selectTripPoint(select_id);
 			select_id=null;
 		}else if(edit_group_id==null){
-			tripPointList.selectTripPoint(id);
+			if(show_id!=id){
+				tripPointList.selectTripPoint(id);
+				PathOnMap.centerTripPointOnLeftMap(id);
+				PathOnMap.showTripPointInfo(id);
+				show_id=id;
+			}
 		}
 	};
 	
