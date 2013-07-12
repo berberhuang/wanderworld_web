@@ -58,7 +58,7 @@
 			<% if @journal.photo%>
 				<meta property="og:image" content="<%=@journal.photo%>" />
 			<%else%>
-        			<meta property="og:image" content="<%=asset_path('banded/banded-cover.jpg')%>" />
+        			<meta property="og:image" content="http://www.wanderworld.com.tw<%=asset_path('banded/banded-cover.jpg')%>" />
 			<% end%>
 		<%else%>
 			<meta name="description" lang="zh-Hant-TW" content="<%for g in @groups %><%=g.title%>,<%end%>"/>
@@ -288,7 +288,7 @@
 				<% if @journal_selected %>
 				<% for c in @contents %>
 				<div class="tp_box" id="tp_box_<%=c.id%>" data-id="<%=c.id%>">
-					<%=sanitize c.article%>
+					<%=sanitize c.article, tags: %w(table tr td p img a span hr), attributes: %w(id href src class style height width alt)%>
 				</div>
 				<% end %>
 				<% end %>				
