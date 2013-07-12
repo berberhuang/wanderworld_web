@@ -282,13 +282,17 @@ var ContentBoxModule = function(item){
 				bounce();
 				var id=tripPointItemManager.getSelectedTripPointId();
 				if(id){
-					PathOnMap.centerTripPointOnLeftMap(id);
-					PathOnMap.showTripPointInfo(id);
+					$('.point:[data-id='+id+'] .point_name').click();
 				}else{
-					var point=$('.point:first .point_name');										
-					if(point.length>0)
+					var point;
+					if(show_group_id){
+						point=$('.trip_point_group:[data-id='+show_group_id+'] .point:first .point_name');
+					}else{
+						point=$('.point:first .point_name');
+					}										
+					if(point.length>0){
 						point.click();
-					else{
+					}else{
 						if(!show_group_id)
 							moduleInstance.UiControl.showBlankContentBox($('.trip_point_group:first').data('id'));		
 					}
@@ -547,6 +551,7 @@ var ContentBoxModule = function(item){
 
 				var str='<div class="tp_box" id="tp_box_'+id+'" data-id="'+id+'"></div>';
 				contentPanel.append(str);
+				
 			}
 			
 		},
@@ -555,15 +560,18 @@ var ContentBoxModule = function(item){
 				if(edit_group_id==group_id){
 					UiListener.clickCancelEdit();
 				}
-				moduleInstance.UiControl.hide();
 				PathOnMap.closeInfoWindow();
+				collapse();
+			}
+			if($('.trip_point_group').length==0){
+				hideJournalSwitchToggle();
 			}
 		},
 		deleteTripPoint:function(group_id,id){
 			if(show_group_id==group_id){
 				target.find('#tp_box_'+id).remove();
 				if(edit_group_id==group_id){
-					var pointList=$('#trip_point_group_'+edit_group_id+' .point_name');
+					var pointList=$('.trip_point_group:[data-id='+edit_group_id+'] .point_name');
 					for(var i=0; i<pointList.length; i++){
 						pointList.eq(i).removeClass('red_box');
 						pointList.eq(i).removeClass('green_box');
@@ -584,6 +592,11 @@ var ContentBoxModule = function(item){
 							postList.eq(i).addClass('green');
 						}
 					}
+				}
+				if($('.trip_point_group:[data-id='+show_group_id+'] .point').length==0){
+					hideControlButton();
+					editTool.hide().unbind('click');
+					target.find('#release_status').css('visibility','hidden');
 				}
 			}
 		},

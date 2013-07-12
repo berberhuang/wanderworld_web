@@ -55,8 +55,11 @@
 		<%end%>
 		<% if @contents.size > 0 %>
 			<meta name="description" lang="zh-Hant-TW" content="<%=@contents[0].article.gsub(/<[^>]*>/,'')%>"/>
-			
-			<meta property="og:image" content="<%=@journal.photo%>" />
+			<% if @journal.photo%>
+				<meta property="og:image" content="<%=@journal.photo%>" />
+			<%else%>
+        			<meta property="og:image" content="<%=asset_path('banded/banded-cover.jpg')%>" />
+			<% end%>
 		<%else%>
 			<meta name="description" lang="zh-Hant-TW" content="<%for g in @groups %><%=g.title%>,<%end%>"/>
 		<%end%>
@@ -121,11 +124,6 @@
 			DataStatus.owner_user_id=<%=@trip_info.user_id%>;
 			<%@user = @trip_info.user%>
 			
-			<%if @user.fbid %>
-				$('#person_avatar img').attr('src','https://graph.facebook.com/<%=@user.fbid%>/picture');
-			<%else%>
-				$('#person_avatar img').attr('src','<%=asset_path("user_avatar.png")%>');
-			<%end%>
 			
 			
 			<% if @trip_info.start_date==@trip_info.end_date %>
@@ -158,11 +156,6 @@
 			DataStatus.owner_user_id=<%=@user_id%>;
 			
 			
-			<%if @user.fbid %>
-				$('#person_avatar img').attr('src','https://graph.facebook.com/<%=@user.fbid%>/picture');
-			<%else%>
-				$('#person_avatar img').attr('src','<%=asset_path("user_avatar.png")%>');
-			<%end%>
 			
 			<% if @isOwner%>
 				DataStatus.isOwner=true;
@@ -207,11 +200,11 @@
 <!--main control-->
 	<div class="large-1 columns panel gallery">
 	    <div class="row">
-	        <% if session[:avatar_src]%>
-		    <img src='<%=session[:avatar_src]%>'></img>
-			<% else%>
+	        <% if @user.fbid%>
+		    	<img src='https://graph.facebook.com/<%=@user.fbid%>/picture'></img>
+		<% else%>
 			<img src='<%=asset_path("user_avatar.png")%>' style="display:block; margin:auto;"></img>
-			<% end %>
+		<% end %>
         	<h5><a class="black text-center" id="person_name" href="#" style="display:block; word-wrap:break-word" ><%=@user.username %></a></h5>
         </div>
         <div class="row">
