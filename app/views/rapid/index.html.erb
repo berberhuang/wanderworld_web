@@ -63,8 +63,10 @@
 			<meta property="og:description" lang="zh-Hant-TW" content="<%=c%>"/>
 			<% if @journal.photo%>
 				<meta property="og:image" content="<%=@journal.photo%>" />
+				<link rel="image_src" href="<%=@journal.photo%>" />
 			<%else%>
         			<meta property="og:image" content="http://www.wanderworld.com.tw<%=asset_path('banded/banded-cover.jpg')%>" />
+        			<link rel="image_src" href="http://www.wanderworld.com.tw<%=asset_path('banded/banded-cover.jpg')%>" />
 			<% end%>
 		<%else%>
 			<meta name="description" lang="zh-Hant-TW" content="<%for g in @groups %><%=g.title%>,<%end%>"/>
@@ -217,7 +219,7 @@
         	<h5><a class="black text-center" id="person_name" href="#" style="display:block; word-wrap:break-word" ><%=@user.username %></a></h5>
         </div>
         <div class="row">
-        		<h6 class="title" ><a href="#" class="black" id="firstStop" onclick="showTravelJournal()"><i class="foundicon-globe"></i>旅行列表</a></h5>
+        		<h6 class="title" ><a href="/rapid/triplist/<%=@author_id%>" class="black" id="firstStop" onclick="showTravelJournal()"><i class="foundicon-globe"></i>旅行列表</a></h5>
         </div>
     </div>
 	<!--map-->
