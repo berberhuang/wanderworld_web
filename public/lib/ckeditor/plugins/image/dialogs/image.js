@@ -77,14 +77,15 @@
 						});
 			};
 
-			var setPhotoFromFB=function(img,id){
+			var setPhotoFromFB=function(element,id){
 				FB.getLoginStatus(function(response) {
 						if (response.status === 'connected') {
 						//var accessToken = response.authResponse.accessToken;
 						FB.api('fql',{q:'SELECT src FROM photo_src WHERE photo_id='+id}, function(response) {
 							if (response.data&&response.data.length) {
 								var url=response.data[0].src;
-								$(img).attr('src',url);
+								element.data( 'cke-saved-src', url );
+								element.setAttribute( 'src', url );
 							}
 							});
 						} else {
@@ -599,7 +600,7 @@
 										var id=newUrl.match(/www\.facebook\.com\/photo\.php\?fbid=[0-9]*/);
 										if(id){
 											id=id[0].split('=')[1];
-											setPhotoFromFB(element.$,id);
+											setPhotoFromFB(element,id);
 										}
 									} else if ( type == CLEANUP ) {
 										element.setAttribute( 'src', '' ); // If removeAttribute doesn't work.
