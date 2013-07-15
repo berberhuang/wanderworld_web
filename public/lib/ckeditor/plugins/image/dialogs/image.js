@@ -61,7 +61,7 @@
 					updatePreview( dialog );
 				};
 
-			var getPhotoFromFB=function(dialog,id){
+			var previewPhotoFromFB=function(dialog,id){
 				FB.getLoginStatus(function(response) {
 						if (response.status === 'connected') {
 						//var accessToken = response.authResponse.accessToken;
@@ -69,6 +69,22 @@
 							if (response.data&&response.data.length) {
 								var url=response.data[0].src;
 								dialog.getContentElement( 'info', 'txtUrl' ).setValue(url);
+							}
+							});
+						} else {
+						return false;
+						}
+						});
+			};
+
+			var setPhotoFromFB=function(img,id){
+				FB.getLoginStatus(function(response) {
+						if (response.status === 'connected') {
+						//var accessToken = response.authResponse.accessToken;
+						FB.api('fql',{q:'SELECT src FROM photo_src WHERE photo_id='+id}, function(response) {
+							if (response.data&&response.data.length) {
+								var url=response.data[0].src;
+								$(img).attr('src',url);
 							}
 							});
 						} else {
@@ -355,20 +371,6 @@
 						this.preview.setStyle( 'display', 'none' );
 					}
 					
-					/*
-					//txtUrl change
-					$('#'+this.getContentElement('info','txtUrl').domId).keyup(function(e){
-						var target=$(e.target);
-						var str=target.val();
-						var t=str.split('.');
-						var token=t[t.length-1];
-						if(token!='jpg'&&token!='png'&&token!='gif'){
-							return;
-						}
-						//debug=moduleInstance.setValueOf('info','txtUrl',str);
-						debug=moduleInstance;
-					});
-					*/
 
 					// install fbSelector
 					var setFbPhotoUrl=function(url){
@@ -434,7 +436,7 @@
 						}
 						this.imageElement.setAttribute( 'alt', '' );
 					}
-
+					
 					// Create a new link.
 					if ( !this.linkEditMode )
 						this.linkElement = editor.document.createElement( 'a' );
@@ -545,7 +547,7 @@
 										var id=newUrl.match(/www\.facebook\.com\/photo\.php\?fbid=[0-9]*/);
 										if(id){
 											id=id[0].split('=')[1];
-											getPhotoFromFB(dialog,id);
+											previewPhotoFromFB(dialog,id);
 										}
 										var original = dialog.originalElement;
 
@@ -591,6 +593,14 @@
 										element.data( 'cke-saved-src', this.getValue() );
 										element.setAttribute( 'src', this.getValue() );
 										element.setAttribute('style','height:auto');
+										
+										var newUrl=this.getValue();
+										var dialog = this.getDialog();
+										var id=newUrl.match(/www\.facebook\.com\/photo\.php\?fbid=[0-9]*/);
+										if(id){
+											id=id[0].split('=')[1];
+											setPhotoFromFB(element.$,id);
+										}
 									} else if ( type == CLEANUP ) {
 										element.setAttribute( 'src', '' ); // If removeAttribute doesn't work.
 										element.removeAttribute( 'src' );
