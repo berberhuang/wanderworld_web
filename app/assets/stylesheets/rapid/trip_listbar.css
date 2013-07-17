@@ -24,6 +24,27 @@
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 }
 
+#trip_create_button {
+  width:50px;
+  transition: width 0.5s;
+  -webkit-transition: width 0.5s;
+  overflow: hidden;
+  white-space:nowrap
+}
+
+#trip_create_button:hover{
+  width:110px;
+}
+
+.showText{
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+#trip_create_button:hover .showText{
+  opacity: 1;
+}
+
+
 #timeline{
 	max-height: 400px;
 	border-left: dotted white;

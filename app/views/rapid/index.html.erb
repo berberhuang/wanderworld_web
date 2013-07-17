@@ -254,7 +254,7 @@
 						</div>
 						<div class="large-4 columns">
 							<a class="button tiny radius" id="share_journal">
-								<i class="foundicon-social-facebook"></i>
+								<i class="icon-facebook-sign"></i>
 							</a>
 						</div>
 						<div class="large-2 columns">
@@ -313,7 +313,7 @@
 	<div class="large-1 columns" style="padding-left:0px;<%='visibility:hidden;' if !@trip_selected or @groups.size==0 %>">
 		<div class="large-12 columns large-centered control button secondary radius" id="bounce" title="展開/收合遊記">
 			<h1>	
-				<i class="foundicon-idea"></i>
+				<i class="icon-book icon large"></i>
 			</h1>
 		</div>
 	</div>
@@ -340,8 +340,8 @@
 	</div>
 	<!--click on a trip-->
 	<div class="large-2 columns gallery list" id="trip_one" style="<%='display:none;' if !@trip_id && !@journal_id %>" >
-		<a  id="return_triplist" href="/rapid/triplist/<%=@author_id%>" style="position:absolute; left:0px;">
-			<i class="foundicon-left-arrow left"></i>返回</a>
+		<a  id="return_triplist" href="/rapid/triplist/<%=@author_id%>" style="position:absolute;">
+			<i class="icon-level-up icon-rotate-270 pull-left"></i>旅行列表</a>
 		<div class="row text-center"  style="margin-top:10px;">
 				<div class="large-12 columns large-centered" id="trip_name">
 					<div class="row">
@@ -374,7 +374,7 @@
 			<span>瀏覽人次：<span id="count"><%=@trip_info.count.to_s if @trip_info%></span></span>
 			</div>
 			<div class="button tiny radius" id="sharetoFB">
-				<a href="#share_button" data-reveal-id="share_button" id="share">分享<i class="foundicon-mail"></i></a>
+				<a href="#share_button" data-reveal-id="share_button" id="share"><i class="icon-share-alt"></i>分享</a>
 			</div>
 		</div>
 	</div>
@@ -393,7 +393,8 @@
 	    		</div>
 	    		<div class="small-2 columns">
 	    			<a class="button radius postfix" id="share_trip">
-	    				<i class="foundicon-social-facebook">分享</i></a>
+	    				<i class="icon-facebook-sign icon-large pull-left"></i>分享
+	    			</a>
 	    		</div>
 	    	</div>
 	    </fieldset>

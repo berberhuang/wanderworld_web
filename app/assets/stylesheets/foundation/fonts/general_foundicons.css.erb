@@ -1,8 +1,8 @@
 /* font-face */
 @font-face {
-  font-family: "GeneralEnclosedFoundicons";
-  src: url("../fonts/general_enclosed_foundicons.eot");
-  src: url("../fonts/general_enclosed_foundicons.eot?#iefix") format("embedded-opentype"), url("../fonts/general_enclosed_foundicons.woff") format("woff"), url("../fonts/general_enclosed_foundicons.ttf") format("truetype"), url("../fonts/general_enclosed_foundicons.svg#GeneralEnclosedFoundicons") format("svg");
+  font-family: "GeneralFoundicons";
+  src: url("<%=asset_path('fonts/foundation-fonts/general_foundicons.eot')%>");
+  src: url("<%=asset_path('fonts/foundation-fonts/general_foundicons.eot?#iefix')%>") format("embedded-opentype"), url("<%=asset_path('fonts/foundation-fonts/general_foundicons.woff')%>") format("woff"), url("<%=asset_path('fonts/foundation-fonts/general_foundicons.ttf')%>") format("truetype"), url("<%=asset_path('fonts/foundation-fonts/general_foundicons.svg#GeneralFoundicons')%>") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -20,7 +20,7 @@
 }
 
 [class*="foundicon-"]:before {
-  font-family: "GeneralEnclosedFoundicons";
+  font-family: "GeneralFoundicons";
   font-weight: normal;
   font-style: normal;
   text-decoration: inherit;
@@ -214,3 +214,4 @@
 .foundicon-search:before {
   content: "\f02e";
 }
+
