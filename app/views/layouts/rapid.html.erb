@@ -71,6 +71,9 @@ _gaq.push(['_trackPageview']);
           <section class="top-bar-section">
   <script type="text/javascript" src="<%=asset_path('rapid/uievent.js')%>"></script>
 			<ul class="right">
+      <li class="divider"></li>
+            <li><a href="/newindex/browse" id="readJournal">瀏覽遊記</a></li>
+            <li class="divider"></li>
 				<li class="active"><% if session[:avatar_src]%><img style="height:40px" src='<%=session[:avatar_src]%>'></img><% end %></li>
 				<li class="has-dropdown"><a href="/rapid/index"><%=session[:username]%></a>
 					<ul class="dropdown">
