@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8" />
+
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width" />
+
+  <title>WanderWorld地球漫遊</title>
+  <link rel="shortcut icon" href="http://www.wanderworld.com.tw/assets/logo-31972393d4fb52fb065cab20c547f7a2.ico">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <%= stylesheet_link_tag "newindex" %>
+  <%= csrf_meta_tags %>
+
+</head>
+<body>
+  <div id="fb-root"></div>
+  <script>
+    $(function(){
+		fb_init(function(){
+			FB.getLoginStatus(function(){
+				if(login_s&&fid){
+					<%=yield :fb_init_yes %>
+				}
+            });
+        });
+    	if(!login_s||!fid){	
+			<%=yield :fb_init_no %>
+    	}
+    });
+</script>
+<div id="fb-root"></div>
+ <script>(function(d, s, id) {
+   var js, fjs = d.getElementsByTagName(s)[0];
+   if (d.getElementById(id)) return;
+   js = d.createElement(s); js.id = id;
+   js.src = "//connect.facebook.net/zh_TW/all.js#xfbml=1&appId=319719498074982";
+   fjs.parentNode.insertBefore(js, fjs);
+ }(document, 'script', 'facebook-jssdk'));</script>
+
+ 
+ <!-- Header and Nav -->
+      <nav class="top-bar" >
+        <ul class="title-area">
+          <li class="name">
+          <a href="/newindex/banded.html"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
+          </li>
+        </ul>
+      </nav>
+  
+
+
+  <!-- First Band (Image) -->
+    
+  <div class="row">
+  	<h1>使用條款</h1>
+    <hr />
+    <p>為保障您的權益，請於註冊使用WanderWorld地球漫遊服務前，詳細閱覽以下的規定。
+一旦您註冊為WanderWorld地球漫遊會員或使用WanderWorld地球漫遊所提供之任何服務，及表示同意並遵守以下所有規定。</p>
+
+<h3>總則</h3>
+<p>WanderWorld地球漫遊及其涉及的產品、服務、與相關軟件的所有權和營運權歸WanderWorld地球漫遊團隊(以下簡稱WanderWorld地球漫遊團隊)所有，WanderWorld地球漫遊團隊所提供的服務必須按照其發佈的團隊章程，服務條款和操作規則嚴格執行。服務使用人(以下簡稱用戶)在註冊程序過程中勾選「我同意WanderWorld地球漫遊服務條款」按鈕即表示用戶與WanderWorld地球漫遊團隊達成協議，完全接受本服務條款下的所有條款。當用戶使用「WanderWorld地球漫遊」的任何服務，即視為您已了解並完全同意本服務條款的所有內容，包括「WanderWorld地球漫遊」對服務條款隨時做的任何更改。<p>
+  </div>
+
+  
+  <div class="row">
+      <h1>服務內容</h1>
+      <ol>
+      	<li>「WanderWorld地球漫遊」的具體服務內容由「WanderWorld地球漫遊」根據實際狀況提供，例如個人照片、線上交流等。「WanderWorld地球漫遊」保留隨時變更、中斷或終止部分或全部網絡服務包括收費網絡服務的權利。「WanderWorld地球漫遊」不承擔因服務調整或中斷給用戶造成的損失。</li>
+      	<li>用戶必須同意接受「WanderWorld地球漫遊」透過電子郵件或其他方式向用戶發送廣告或其他相關商業信息</li>
+      	<li>WanderWorld地球漫遊團隊運用自己的的操作系統透過國際互聯網路為使用者提供各項服務，除此之外與網絡服務有關的設備（如個人電腦、及配備上網裝置）及所需的費用（個人上網和與此服務有關的電話費及上網費）均應由用戶自行負擔。</li>
+      </ol>
+  </div>
+
+
+  
+  <div class="row">
+      <h1>使用規則</h1>
+      <ol>
+      	<li>用戶在申請使用WanderWorld地球漫遊團隊提供的網路服務時，必須向WanderWorld地球漫遊團隊提供即時與詳盡的個人資料，在個人資料有任何變動時，用戶必須提供即時、準確與詳盡的要求。如果因註冊信息不真實、不準確詳盡而引發的糾紛與問題，WanderWorld地球漫遊團隊不負責任何衍生出的法律相關責任。</li>
+      	<li>用戶在使用WanderWorld地球漫遊服務時，承諾絕不為任何非法目的或以任何非法方式使用本服務，並承諾遵守中華民國相關法規及一切使用網際網路之國際慣例。您若係中華民國以外之使用者，並同意遵守所屬國家或地域之法令。您同意並保證不得利用本服務從事侵害他人權益或違法之行為，包括但不限於：
+      		<ul>
+      			<li>上載、張貼、公布或傳送任何誹謗、侮辱、具威脅性、攻擊性、不雅、猥褻、不實、違反公共秩序或善良風俗或其他不法之文字、圖片或任何形式的檔案於本服務上；</li>
+      			<li>侵害他人名譽、隱私權、營業秘密、商標權、著作權、專利權、其他智慧財產權及其他權利；</li>
+      			<li>違反依法律或契約所應負之保密義務；</li>
+      			<li>冒用他人名義使用本服務；</li>
+      			<li>上載、張貼、傳輸或散佈任何含有電腦病毒或任何對電腦軟、硬體產生中斷、破壞或限制功能之程式碼之資料；</li>
+      			<li>從事不法交易行為或張貼虛假不實、引人犯罪之訊息；</li>
+      			<li>販賣槍枝、毒品、禁藥、盜版軟體或其他違禁物；</li>
+      			<li>提供賭博資訊或以任何方式引誘他人參與賭博；</li>
+      			<li>濫發廣告郵件、垃圾郵件、連鎖信、違法之多層次傳銷訊息等；</li>
+      			<li>以任何方法傷害未成年人；</li>
+      			<li>偽造訊息來源或以任何方式干擾傳輸來源之認定；</li>
+      			<li>干擾或中斷本服務或伺服器或連結本服務之網路，或不遵守連結至本服務之相關需求、程序、政策或規則等；</li>
+      			<li>對於恐怖行動提供任何實質支持或資源；</li>
+      			<li>追蹤他人或其他干擾他人或為前述目前蒐集或儲存他人之個人資訊；</li>
+      			<li>其他WanderWorld地球漫遊有正當理由認為不適當之行為；</li>
+      			<li>不得為任何非法目的而使用網路服務系統；</li>
+      			<li>遵守所有與網路服務有關的網路通訊協定、規定和程序；</li>
+      			<li>不得利用WanderWorld地球漫遊服務進行任何可能對互聯網的正常運轉造成不利影響的行為；</li>
+      			<li>不得利用WanderWorld地球漫遊服務進行任何不利於WanderWorld地球漫遊的行為；</li>
+      			<li>如發現任何非法用戶帳號或帳號出現安全性漏洞的情況，應立即通告WanderWorld地球漫遊網站方。</li>
+      			<li>如有用戶在使用網路服務時違反上述任何規定，WanderWorld地球漫遊有權要求用戶改正或直接採取一切必要的措施（包括但不限於刪除使用者張貼的內容、回收使用者帳號、暫停或終止使用者使用WanderWorld地球漫遊服務的權利）以減輕用戶不當行為而造成的影響。如有用戶的任何行為導致WanderWorld地球漫遊產生任何的損失，WanderWorld地球漫遊團隊有權保留相關記錄並要求用戶賠償，用戶所產生的一切損失則由用戶自行承擔。</li>
+      		</ul>
+      	</li>
+      </ol>
+  </div>
+  
+  
+  <div class="row">
+  	<h1>內容使用權</h1>
+  	<hr />
+  	<p>用戶擁有權利可以在WanderWorld地球漫遊平台自由的張貼與共享用戶自己創作的合法訊息並依法享有著作權與相關的權利。但用戶不能夠張貼其他受版權保護或是非法的內容。如WanderWorld地球漫遊團隊收到第三方或商業機構提起版權投訴，WanderWorld地球漫遊團隊有權利在未告知用戶情況下將內容刪除。</p>
+  </div>
+
+  <div class="row">
+  	<h1>內容所有權</h1>
+  	<hr />
+  	<p>內容的定義包含文字、軟件、聲音、照片、影像、圖表；在廣告中的所有內容；電子郵件中的所有內容；所有功能與服務為用戶提供的商業信息。以上所列出的所有內容均受版權、商標、標籤與其他財產所有權法律的保富。用戶只能在WanderWorld地球漫遊團隊授權下才能使用這些內容，而不能擅自複製、修改、編選這些內容、或創造與內容有關的衍生產品。</p>
+  </div>
+
+  <div class="row">
+  	<h1>廣告說明</h1>
+  	<hr />
+  	<p>WanderWorld地球漫遊 所有頁面之相關所有權及廣告版面經營權，包括但不限於網頁最上方以及其他本團隊認為適當之位置或方式所出現之橫幅式廣告、跳躍式廣告或其他形式廣告與訊息等，均仍歸本團隊所有，除另行取得本團隊事前同意外，會員或第三人均不得以任何方式自行或以第三人名義銷售、經營、或對第三人提供此等網路廣告或類似業務。然會員自身的個人部落格頁面空間不在此限。</p>
+  	<p>
+  		所有於WanderWorld地球漫遊網站出現之廣告資訊，均由個別廣告主或贊助廠商自行負完全之責任，與本團隊無關。
+  	</p>
+  </div>
+
+   <div class="row">
+  	<h1>用戶隱私</h1>
+  	<hr />
+  	<p>保護用戶隱私是WanderWorld地球漫遊團隊在經營WanderWorld地球漫遊平台最重要的一項基本政策。WanderWorld地球漫遊團隊保證不會公開、編輯或透漏用戶的註冊資料以及保存在WanderWorld地球漫遊團隊各項服務中非公開的內容。WanderWorld地球漫遊團隊會透過技術的方式提供隱私保護服務的功能來充分的保護用戶的個人資料安全。</p>
+  	<p>在不透漏擔個用戶隱私資料的前提下，WanderWorld地球漫遊團隊有權對整體用戶數據庫進行分析並對用戶數據庫進行商業上的利用。</p>
+  	<p>WanderWorld地球漫遊團隊保證不對外公開或向第三方提供用戶的個人資料以及在WanderWorld地球漫遊平台上的服務中發布或儲存的信息，但以下的情況除外：
+  		<ul>
+  		<li>遵守有關法律規定，包括在國家有關機關查詢時，提供用戶在WanderWorld地球漫遊的網頁上發佈的信息內容及其發佈時間、互聯網地址或者域名以及其他用戶上傳至WanderWorld地球漫遊的信息。</li>
+  		<li>遵從WanderWorld地球漫遊產品服務程序。</li>
+  		<li>事先獲得用戶的授權</li>
+  		<li>保持維護WanderWorld地球漫遊團隊的商標所有權。</li>
+  		<li>在緊急情況下維護用戶個人和社會大眾的隱私安全。</li>
+  		<li>為維護WanderWorld地球漫遊的合法權益</li>
+  		<li>WanderWorld地球漫遊團隊認為必要的其他情況下。</li>
+  		</ul></p>
+  </div>
+
+   <div class="row">
+  	<h1>免責聲明</h1>
+  	<hr />
+  	<p>用戶明確同意使用WanderWorld地球漫遊平台上所提供的服務使用的風險由用戶個人承擔。WanderWorld地球漫遊團隊明確表示不提供任何類型的擔保，不論是明確的或隱含的，但是對商業性的隱含擔保，特定目的和不違反規定的是當性擔保除外，WanderWorld地球漫遊團隊不保證一定能滿足用戶的要求，也不擔保提供的服務不會中斷，對所提供服務的安全性、真實性、即時性與發生的錯誤都不做任何擔保。對於因不可抗力或WanderWorld地球漫遊團隊無法控制的原因造成的網絡服務中斷或其他缺陷，WanderWorld地球漫遊團隊不承擔任何責任。用戶同意保障與維護WanderWorld地球漫遊團隊及其他用戶的利益，由於用戶登入網站內容違法、不真實、不正常、侵犯第三方合法權益，或用戶違反本協議下的任何條款造成WanderWorld地球漫遊團隊或任何第三方造成損失，用戶同意承擔由此造成的損害賠償責任。</p>
+  	<h3>服務變更、中斷或終止</h3>
+  	<p>WanderWorld地球漫遊團隊或用戶可隨時根據實際狀況中斷服務。WanderWorld地球漫遊團隊不需對任何用戶或第三方負責而隨時中斷服務。如發生下列任一情況，WanderWorld地球漫遊團隊有權單方面在未通知用戶的狀況下，中斷或終止向用戶提供任何服務：
+  	<ul>
+  		<li>用戶提供的資料不真實</li>
+  		<li>用戶違反本服務條款中的規定的任何條款</li>
+  		<li>未經WanderWorld地球漫遊團隊同意，將WanderWorld地球漫遊平台用於商業目的</li>
+  		<li>用戶在使用收費服務時未按照規定向WanderWorld地球漫遊支付相關的費用</li>
+  	</ul></p>
+  	<p>用戶若反對任何服務條款或對後來的條款修改有意義，或是對WanderWorld地球漫遊團隊的服務不滿，用戶僅有以下的權利：</p>
+  	<ul>
+  		<li>不繼續使用WanderWorld地球漫遊團隊及WanderWorld地球漫遊提供的任何服務</li>
+  		<li>結束用戶使用WanderWorld地球漫遊團隊及WanderWorld地球漫遊服務的資格</li>
+  		<li>書面通知WanderWorld地球漫遊團隊停止該用戶的所有服務。結束用戶服務後，用戶使用WanderWorld地球漫遊團隊服務的權利立即中止。WanderWorld地球漫遊團隊也不再對用戶承擔任何的義務與責任。</li>
+  	</ul>
+  </div>
+
+
+  <div class="row">
+  	<h1>服務條款的修改</h1>
+  	<p>WanderWorld地球漫遊團隊有權於任何時間，不經通知隨時修改或暫時或永久停止繼續提供本服務（或其任一部分）的權利。用戶在使用WanderWorld地球漫遊平台服務時，有必要自行依據最新的WanderWorld地球漫遊服務條款進行仔細閱讀與重新確認的動作，任何的用戶爭議產生時，請以最新的服務條款為基準。</p>
+  	<p>兒童及青少年之保護因網路上之資訊眾多，難免有不適合於兒童與青少年之資訊存在，如暴力、色情或犯罪等資訊，為保護兒童及青少年受到不當資訊的影響，除WanderWorld地球漫遊會設立檢舉管道移除不適當的資訊外，父母或監護人亦須盡到下列義務：
+  	<ol>
+  		<li>對於十二歲以上未滿十八歲之青少年，應避免其接觸其他使用者所上傳含有暴力、色情或鼓勵犯罪等資訊之內容。</li>
+  		<li>未滿十二歲之兒童，應全程陪同其上網，以避免兒童接觸到不當資訊。</li>
+  	</ol></p>
+  	<h3>其他</h3>
+  	<ul>
+  		<li>本服務條款構成雙方對本協議之約定事項及其他相關事宜的完整協議，除本服務條款規定的條款之外，未賦予本服務條款各方其他權利</li>
+  		<li>WanderWorld地球漫遊團隊將視向用戶所提供服務內容之特性，要求用戶在註冊WanderWorld地球漫遊團隊提供的服務時，遵守特定的條款；如該服務的服務條款予以上服務條款有任何不一致之處，則以特定條款為準。</li>
+  		<li>如本協議中的任何條款無論因任何原因完全或部分無效或不具有執行力，本協議的其餘條款人應有效並且有約束力</li>
+  		<li>本服務條款的最終解釋權歸WanderWorld地球漫遊團隊所有。</li>
+  	</ul>
+  </div>
+
+
+
+  <!-- Footer -->
+  
+  <footer class="row">
+      <hr />
+      <div class="row">
+        <div class="large-6 columns">
+          <h6 class="subheader">WanderWorld地球漫遊 &copy; 2013</h6>
+        </div>
+        <div class="large-6 columns">
+          <ul class="inline-list right">
+            <li><a href="http://wanderworld-ideaaxis.blogspot.tw/" target="blank">地球漫遊開發日誌</a></li>
+            <li><a href="href="http://goo.gl/mnxVi"">問題回報</a></li>
+          </ul>
+        </div>
+      </div> 
+  </footer>
+
+
+</body>
+</html>

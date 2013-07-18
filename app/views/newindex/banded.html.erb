@@ -132,6 +132,7 @@
         <div class="small-2 large-2 columns">
           <%=f.submit '註冊',:class=>"button radius postfix"%>
         </div>
+        <div class="large-10 columns right"><p class="right">註冊使用本服務，代表您同意<a href="/term/index.html">服務條款</a></p></div>
       </div>
 
      <%if(flash[:signupfail])%>
@@ -278,7 +279,7 @@
       <hr />
       <div class="row">
         <div class="large-6 columns">
-          <h6 class="subheader">WanderWorld地球漫遊 &copy; 2013</h6>
+          <a href="/term/index.html">WanderWorld地球漫遊 &copy; 2013</a>
         </div>
         <div class="large-6 columns">
           <ul class="inline-list right">
@@ -290,40 +291,9 @@
   </footer>
 
 
-  <ol class="joyride-list" data-joyride>
-  <li data-id="firsttop" data-text="Next">
-    <p>看看其他人的遊記吧！</p>
-  </li>
-  <li data-id="numero1" data-class="custom so-awesome" data-text="Next">
-    <h4>Stop #1</h4>
-    <p>You can control all the details for you tour stop. Any valid HTML will work inside of Joyride.</p>
-  </li>
-  <li data-id="numero2" data-button="Next" data-options="tipLocation:top;tipAnimation:fade">
-    <h4>Stop #2</h4>
-    <p>Get the details right by styling Joyride with a custom stylesheet!</p>
-  </li>
-</ol>
-
-<div class="joyride-tip-guide">
-  <span class="joyride-nub top"></span>
-  <div class="joyride-content-wrapper">
-    <p>Hello and welcome to the Joyride documentation page.</p>
-    <a href="#" class="small button joyride-next-tip">Next</a>
-    <a href="#close" class="joyride-close-tip">&times;</a>
-  </div>
-</div>
-
-
-
-<script>
-  document.write('<script src="http://zeptojs.com/zepto.js"'
-    + ('__proto__' in {} ? 'zepto' : 'jquery')
-    + '.js><\/script>');
-</script>
   
 <script>
   $(document).foundation();
-  $(document).foundation('joyride', 'start');
 </script>
 
 </body>

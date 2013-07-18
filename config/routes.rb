@@ -1,4 +1,6 @@
 Travel::Application.routes.draw do
+  get "term/index"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
