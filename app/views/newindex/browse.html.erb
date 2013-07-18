@@ -170,7 +170,8 @@
 		
 		$('#myContent>li').wookmark(options);
 		
-		$('.has_photo').load(
+		a=[];
+		$('.journal_photo').load(
 			function(e){
 				var tmp=$(e.target);
 				/*tmp.parent().cycle({
@@ -178,9 +179,11 @@
 					timeout:2000+Math.floor((Math.random()*1000)+1)
 				});
 				*/
-				
-				if(tmp.width()>250){
-					tmp.animate({'left':(200-tmp.width())/2},1000);
+				if(!e.srcElement.src.match('http://maps.googleapis.com/maps')){
+			
+					if(tmp.width()>250){
+						tmp.animate({'left':(200-tmp.width())/2},1000);
+					}
 				}
 			}
 		);
@@ -300,11 +303,11 @@
 	  <%
 		@order_str=''
 		if @type=='pop'
-			@order_str='groups.count-groups.created_at DESC'
+			@order_str='groups.created_at DESC'
 		elsif @type=='new'
 			@order_str='groups.created_at DESC'
 		else
-			@order_str='groups.count-groups.created_at DESC'
+			@order_str='groups.created_at DESC'
 		end
 	  %>
 	  <%
@@ -329,7 +332,7 @@
 	  <a class="journal_title" target="_blank" href="<%='/'+g.trip_id.to_s+'/'+g.id.to_s %>">
 		<% if g.photo %>
 			<div class="journal_title_img">
-			<img class="journal_photo<%=' has_photo' if g.photo.to_s.size>10%>" src="<%=g.photo%>" onerror="this.src='<%=@url%>';" />
+			<img class="journal_photo" src="<%=g.photo%>" onerror="this.src='<%=@url%>';" />
 		<% else %>
 			<img src="<%=@url%>" />
 		<% end %>
