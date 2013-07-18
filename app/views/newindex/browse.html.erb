@@ -303,11 +303,11 @@
 	  <%
 		@order_str=''
 		if @type=='pop'
-			@order_str='groups.created_at DESC'
+			@order_str='groups.count*(groups.created_at/3600) DESC'
 		elsif @type=='new'
 			@order_str='groups.created_at DESC'
 		else
-			@order_str='groups.created_at DESC'
+			@order_str='groups.count*(groups.created_at/3600) DESC'
 		end
 	  %>
 	  <%
