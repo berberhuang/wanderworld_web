@@ -28,16 +28,16 @@ class MicropostController < ApplicationController
 
 
 	def getPost
-		@t=Group.find_by_id(params[:group_id])
-		@public=@t.public
-		if @t.trip.user.id==session[:user_id]||@public
+		@g=Group.find_by_id(params[:group_id])
+		@public=@g.public
+		if @g.trip.user.id==session[:user_id]||@public
 			#已經發布公開
-			@t.count=@t.count+1
-			@t.save
-			if @t=@t.trip_points.sort!{|a,b| a.sort_id<=>b.sort_id}
+			@g.count=@g.count+1
+			@g.save
+			if @g=@g.trip_points.sort!{|a,b| a.sort_id<=>b.sort_id}
 				ids=[]
 				article=[]
-				@t.each_with_index do |tp,i|
+				@g.each_with_index do |tp,i|
 					ids[i]=tp.id
 					if tp.micropost
 						article[i]=tp.micropost.article
@@ -52,10 +52,10 @@ class MicropostController < ApplicationController
 			end
 		else
 			#沒有發布公開
-			if @t=@t.trip_points.sort!{|a,b| a.sort_id<=>b.sort_id}	
+			if @g=@g.trip_points.sort!{|a,b| a.sort_id<=>b.sort_id}	
 				ids=[]
 				article=[]
-				@t.each_with_index do |tp,i|
+				@g.each_with_index do |tp,i|
 					ids[i]=tp.id
 					article[i]=''
 				end

@@ -20,7 +20,10 @@
 	
 	if @journal_id 
 		@journal_selected=true
-		@journal=Group.select('title,public,photo').find_by_id(@journal_id)
+		@journal=Group.select('title,public,photo,count').find_by_id(@journal_id)
+		@journal.count=@journal.count+1
+		@journal.save		
+
 		@journal_name=@journal.title
 		@public=@journal.public
 		if @isOwner or @public
