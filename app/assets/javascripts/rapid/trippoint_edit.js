@@ -324,7 +324,6 @@ var TripPointEditModule = function(item){
 				var group_id=newTripPointData.group_id;
 				var name = newTripPointData.name;
 				var tmp_mark=PathOnMap.getTmpMark();
-				
 				Data.saveTripPoint(-1,place_id,sort_id,group_id,function(tp){
 					tripPointEdit.UiListener.confirmCancel();
 					tp.place={

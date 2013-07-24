@@ -45,7 +45,7 @@ class UserSessionController < ApplicationController
 	
 			username_id='fb'+user['id'][3,6]+user['email']
 			password=user['id'][2,4]+user['id'][0,2]
-			@user=User.find_by_email(username_id)
+			@user=User.find_by_fbid(user['id'])
 			if @user
 				@user.fbid=user['id']
 				@user.save

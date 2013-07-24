@@ -406,7 +406,15 @@ class TripController < ApplicationController
 						render :json=>@tmp
 						return
 					end
+				else
+					if params[:trip_point][:sort_id]=='null'
+						@tmp=TripPoint.select('sort_id').limit(1).where('group_id=?',@tpoint.group_id).order('sort_id DESC')
+						@tpoint.sort_id=@tmp[0].sort_id+1
+					end
 				end
+					
+
+
 				@tpoint.user_id=session[:user_id]
 				@tpoint.trip_id=params[:id]
 				@tpoint.save

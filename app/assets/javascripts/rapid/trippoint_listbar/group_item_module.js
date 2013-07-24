@@ -55,14 +55,13 @@ var GroupItemModule=function(obj){
 	};
 	
 	var genNewGroupSortId=function(){
-		var groupList = $('.trip_point_group');
-		var sort_id = null;
-		
-		for(var i=0; i < groupList.length; i++){
-			if( !sort_id || groupList.eq(i).data('sort_id') > sort_id ){
-				sort_id = groupList.eq(i).data('sort_id');
-			}
+		var group = $('.trip_point_group:last');
+		var sort_id = 0;
+
+		if(group){
+			sort_id=group.data('sortid');
 		}
+		
 		return sort_id+1;
 	};
 	

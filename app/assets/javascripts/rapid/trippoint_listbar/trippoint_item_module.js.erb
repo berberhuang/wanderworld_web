@@ -158,16 +158,13 @@ var TrippointItemModule=function(obj){
 		//input所在group內中的最大sort_id
 		var lowbound=null;
 		
-		var tripPointList = $('.point');
+		var group=$('.trip_point_group:[data-id='+group_id+']');
+		var tripPoint = group.find('.point:last');
 		var tplen=tripPointList.length;
 		
 		//找尋input所在group內中的最大sort_id
-		for(var i=0; i<tplen; i++){
-			if(tripPointList[i].group_id==group_id){
-				if(lowbound == null || tripPointList[i].sort_id > lowbound){
-					lowbound = tripPointList[i].sort_id;
-				}
-			}
+		if(tripPoint){
+			lowbound = tripPoint.data('sort_id');
 		}
 		
 		if(lowbound==null){
