@@ -1,4 +1,10 @@
 Travel::Application.routes.draw do
+  get "photos/all"
+
+  get "photos/album"
+
+  get "photos/photo"
+
   get "term/index"
 
   # The priority is based upon order of creation:
