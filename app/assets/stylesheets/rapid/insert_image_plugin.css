@@ -1,0 +1,138 @@
+
+.img_plugin_preview ul{
+	text-align:center;
+	width:680px;
+	height:275px;
+	margin:0px;
+	padding:0px;
+	overflow-y:auto;
+	list-style-type:none;
+}
+
+.img_plugin_preview li{
+	padding:5px;
+	float:left;
+	width:145px;
+	height:110px;
+	text-align:center;
+}
+
+.img_plugin_preview img{
+	max-width:100%;
+	max-height:100%;
+	width:auto;
+	height:auto;
+	cursor:pointer;
+}
+
+
+.img_plugin_other_preview ul{
+	text-align:center;
+	width:680px;
+	height:360px;
+	margin:0px;
+	padding:0px;
+	overflow-y:auto;
+	list-style-type:none;
+}
+
+.img_plugin_other_preview li{
+	padding:5px;
+	float:left;
+	width:145px;
+	height:110px;
+	text-align:center;
+}
+
+.img_plugin_other_preview img{
+	max-width:100%;
+	max-height:100%;
+	width:auto;
+	height:auto;
+	cursor:pointer;
+}
+
+.img_plugin_unselected{
+	border:1px solid gray !important;
+	margin:2px !important;
+}
+
+.img_plugin_selected{
+	border:2px solid blue !important;
+	margin:1px !important;
+}
+
+.img_plugin_unselected:hover{
+	background-color: #889BBD;
+}
+
+.img_plugin_selected:hover{
+	background-color: #889BBD;
+}
+
+.img_plugin_albums ul{
+	text-align:center;
+	width:680px;
+	height:375px;
+	margin:0px;
+	padding:0px;
+	overflow-y:auto;
+	list-style-type:none;
+}
+.img_plugin_albums li{
+	padding:5px;
+	padding-bottom:30px;
+	float:left;
+	width:155px;
+	height:110px;
+	text-align:center;
+	cursor:pointer;
+}
+
+.img_plugin_albums li:hover .image_border{
+	background-color: #889BBD;
+}
+
+.img_plugin_albums li:hover .image_border div{
+	background-color: #889BBD;
+}
+
+.img_plugin_albums .image_border{
+	width:155px;
+	height:110px;
+	border:1px solid gray;
+	padding:2px;
+	cursor:pointer;
+}
+
+.img_plugin_albums .image_border div{
+	height:95% !important;
+	padding:2px;
+	overflow-y:hidden;
+	cursor:pointer;
+}
+
+.img_plugin_albums img{
+	max-width:100%;
+	width:auto;
+	height:auto;
+	cursor:pointer;
+}
+
+.img_plugin_albums .album_name{
+	text-overflow: ellipsis;
+	overflow-x:hidden;
+	white-space: nowrap;
+	color:#3B5998;
+	font-weight: bold;
+	padding-left: 2px;
+	cursor:pointer;
+}
+
+.img_plugin_return {
+	font-size:14px !important;
+	color:#3B5998 !important;
+	font-weight:bold !important;
+	cursor:pointer !important;
+	padding:20px !important;
+}

@@ -29,13 +29,16 @@
 				toolbar: 'insert,10'
 			});
 
+			/*
 			editor.on( 'doubleclick', function( evt ) {
 				var element = evt.data.element;
 
 				if ( element.is( 'img' ) && !element.data( 'cke-realelement' ) && !element.isReadOnly() )
 					evt.data.dialog = 'image';
 			});
+			*/
 
+			/*
 			// If the "menu" plugin is loaded, register the menu items.
 			if ( editor.addMenuItems ) {
 				editor.addMenuItems({
@@ -46,6 +49,7 @@
 					}
 				});
 			}
+			*/
 
 			// If the "contextmenu" plugin is loaded, register the listeners.
 			if ( editor.contextMenu ) {
@@ -63,7 +67,6 @@
 			setupAlignCommand( 'block' );
 
 
-			alert('k');			
 			
 
 			function setupAlignCommand( value ) {
@@ -148,3 +151,4 @@ CKEDITOR.config.image_removeLinkByEmptyURL = true;
  * @cfg {String} [image_previewText='Lorem ipsum dolor...' (placeholder text)]
  * @member CKEDITOR.config
  */
+

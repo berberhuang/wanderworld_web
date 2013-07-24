@@ -14,11 +14,14 @@
 				regexGetSize = /^\s*(\d+)((px)|\%)?\s*$/i,
 				regexGetSizeOrEmpty = /(^\s*(\d+)((px)|\%)?\s*$)|^$/i,
 				pxLengthRegex = /^\d+px$/;
+			var insertType;
 			
 			var fb_selector;
 			var isFBLogin=false;
 			
-			var install_resize=function(e){
+			var accessToken=null;
+			
+		/*	var install_resize=function(e){
 				var t=$(e.target);
 				t.unbind('click');
 				t.resize_by_drag();
@@ -28,7 +31,7 @@
 				});
 
 			};
-
+		*/
 			var onSizeChange = function() {
 					var value = this.getValue(),
 						// This = input element.
@@ -61,38 +64,6 @@
 					updatePreview( dialog );
 				};
 
-			var previewPhotoFromFB=function(dialog,id){
-				FB.getLoginStatus(function(response) {
-						if (response.status === 'connected') {
-						//var accessToken = response.authResponse.accessToken;
-						FB.api('fql',{q:'SELECT src FROM photo_src WHERE photo_id='+id}, function(response) {
-							if (response.data&&response.data.length) {
-								var url=response.data[0].src;
-								dialog.getContentElement( 'info', 'txtUrl' ).setValue(url);
-							}
-							});
-						} else {
-						return false;
-						}
-						});
-			};
-
-			var setPhotoFromFB=function(element,id){
-				FB.getLoginStatus(function(response) {
-						if (response.status === 'connected') {
-						//var accessToken = response.authResponse.accessToken;
-						FB.api('fql',{q:'SELECT src FROM photo_src WHERE photo_id='+id}, function(response) {
-							if (response.data&&response.data.length) {
-								var url=response.data[0].src;
-								element.data( 'cke-saved-src', url );
-								element.setAttribute( 'src', url );
-							}
-							});
-						} else {
-						return false;
-						}
-						});
-			};
 
 			var updatePreview = function( dialog ) {
 					//Don't load before onShow.
@@ -290,12 +261,88 @@
 				imagePreviewLoaderId = numbering( 'ImagePreviewLoader' ),
 				previewLinkId = numbering( 'previewLink' ),
 				previewImageId = numbering( 'previewImage' );
+			
+			var showAlbum=function(obj,datas){
+				var ul=obj.find('.img_plugin_albums ul');
+				ul.empty();
+				for(var i=0;i<datas.length;i++){
+					var data=datas[i];
+					var src="https://graph.facebook.com/"+data.object_id+"/picture?type=album&access_token="+accessToken;
+					$('<li data-id="'+data.object_id+'"><div class="image_border"><div class="image_self"><img src="'+src+'" /></div></div><div class="album_name">'+data.name+'</div></li>').appendTo(ul)
+						.click(function(event){
+							var albumId=$(event.target).parents('li').data('id');
+							FB.api('/'+ albumId +'/photos?fields=id,picture,source,height,width&limit=1500', function(response){
+	if(response.data){
+		showPhoto(obj,response.data);
+	}								
+});
+						});
+				}
+			};
+
+			var showPhoto=function(obj,datas){
+				var return_btn=obj.find('.img_plugin_return');
+				var album=obj.find('.img_plugin_albums');
+				var preview=obj.find('.img_plugin_other_preview');
+				var ul=preview.find('ul');
+				return_btn.unbind('click').click(function(){
+					album.show();
+					return_btn.hide();
+					preview.hide();
+				});
+				album.hide();
+				return_btn.show();
+				preview.show();
+				ul.empty();
+				for(var i=0;i<datas.length;i++){
+					data=datas[i];
+					var imgObj=$('<li class="img_plugin_unselected"><img src="'+data.picture+'" data-src="'+data.source+'"/></li>').appendTo(preview.find('ul'))
+						.click(function(event){
+							var tmp=$(event.target).parents('li');
+							if(tmp.hasClass('img_plugin_unselected')){
+								tmp.removeClass('img_plugin_unselected')
+								.addClass('img_plugin_selected');
+							}else{
+								tmp.removeClass('img_plugin_selected')
+								.addClass('img_plugin_unselected');
+							}
+						});
+				}
+			};
+			
+			var loadFBAlbum=function(obj){
+				FB.getLoginStatus(function(response) {
+					if (response.status === 'connected') {
+						accessToken = response.authResponse.accessToken;
+						var id=FB.getUserID();
+						// Load Facebook photos
+						//FB.api('/'+ id +'/albums', function(response) {
+						FB.api('fql',{q:'SELECT name,object_id FROM album WHERE owner='+id+' order by created DESC limit 500'}, function(response) {
+							if (response.data.length) {
+								showAlbum(obj,response.data);
+
+								if (typeof callback === 'function') { callback(); }
+							} else {
+								alert ('Sorry, your friend won\'t let us look through their photos');
+								log('CSPhotoSelector - buildAlbumSelector - No albums returned');
+								return false;
+							}
+						});
+					} else {
+						log('image plugin-User is not logged in to Facebook');
+						return false;
+					}
+				});
+			};
+			
 			return {
 				title: editor.lang.image[ dialogType == 'image' ? 'title' : 'titleButton' ],
-				minWidth: 280,
-				minHeight: 300,
+				minWidth: 680,
+				minHeight: 400,
 				onShow: function() {
-					moduleInstance=this;
+					this.insertType='url';
+					$(this.getContentElement('url','preview').getElement().$).find('ul').empty();
+				/*	moduleInstance=this;
 					this.imageElement = false;
 					this.linkElement = false;
 
@@ -397,8 +444,26 @@
 								fbphotoSelect(id,setFbPhotoUrl);
 						}
 					});;
+				*/
 				},
 				onOk: function() {
+					console.log(this.insertType);
+					var selected=[];
+					if(this.insertType=='url'){
+						selected=$(this.getContentElement('url','preview').getElement().$).find('.img_plugin_selected');
+						for(var i=0;i<selected.length;i++){
+							editor.insertHtml(selected.eq(i).html())
+						}
+						
+					}else if(this.insertType=='upload'){
+					}else if(this.insertType=='album'){
+					}else if(this.insertType=='other'){
+						selected=$(this.getContentElement('other','preview').getElement().$).find('.img_plugin_selected');
+						for(var i=0;i<selected.length;i++){
+							editor.insertHtml('<img src="'+selected.eq(i).find('img').data('src')+'" />');
+						}
+					}
+					/*
 					// Edit existing Image.
 					if ( this.imageEditMode ) {
 						var imgTagName = this.imageEditMode;
@@ -428,6 +493,7 @@
 						}
 					} else // Create a new image.
 					{
+						var imgTagName = this.imageEditMode;
 						// Image dialog -> create IMG element.
 						if ( dialogType == 'image' )
 							this.imageElement = editor.document.createElement( 'img' );
@@ -474,9 +540,14 @@
 							editor.insertElement( this.imageElement );
 						}
 					}
+					*/
 					
 				},
 				onLoad: function() {
+					this.on('selectPage',function(event){
+						this.insertType=event.data.page;						
+					});
+				
 					if ( dialogType != 'image' )
 						this.hidePage( 'Link' ); //Hide Link tab.
 					var doc = this._.element.getDocument();
@@ -503,30 +574,12 @@
 
 					delete this.imageElement;
 				},
+				
 				contents: [
 					{
-					id: 'info',
-					label: editor.lang.image.infoTab,
-					accessKey: 'I',
+					id: 'url',
+					label: '照片URL',
 					elements: [
-						{
-						type: 'vbox',
-						padding: 0,
-						children: [
-							{
-							type: 'hbox',
-							widths: [ '280px', '110px' ],
-							align: 'left',
-							children: [
-								{
-								type: 'button',
-								id: 'fbSelector',
-								style: 'display:block;width:80px;background-color:blue;color:white;',
-								align: 'center',
-								label: 'FB Album',
-							}
-							]
-						},
 							{
 							type: 'hbox',
 							widths: [ '280px', '110px' ],
@@ -539,36 +592,53 @@
 								required: true,
 								onChange: function() {
 									var dialog = this.getDialog(),
-										newUrl = this.getValue();
+									    newUrl = this.getValue();
 
 									//Update original image
 									if ( newUrl.length > 0 ) //Prevent from load before onShow
 									{
 										dialog = this.getDialog();
+										
+										var preview=$(dialog.getContentElement('url','preview').getElement().$);
+										
+										var imgObj=$('<li class="img_plugin_selected"><img src="'+newUrl+'"/></li>').appendTo(preview.find('ul'))
+											.click(function(event){
+												var tmp=$(event.target).parents('li');
+													if(tmp.hasClass('img_plugin_unselected')){
+														tmp.removeClass('img_plugin_unselected')
+															.addClass('img_plugin_selected');
+													}else{
+														tmp.removeClass('img_plugin_selected')
+															.addClass('img_plugin_unselected');
+													}
+											});
+											
 										var id=newUrl.match(/www\.facebook\.com\/photo\.php\?fbid=[0-9]*/);
 										if(id){
 											id=id[0].split('=')[1];
-											previewPhotoFromFB(dialog,id);
+											previewPhotoFromFB(imgObj,id);
 										}
-										var original = dialog.originalElement;
+										this.setValue('');
+										//$(t).append('<div>yesyes</div>');
+										//console.log('abcdsdf');
 
-										dialog.preview.removeStyle( 'display' );
+										//dialog.preview.removeStyle( 'display' );
 
-										original.setCustomData( 'isReady', 'false' );
+										//original.setCustomData( 'isReady', 'false' );
 										// Show loader
-										var loader = CKEDITOR.document.getById( imagePreviewLoaderId );
-										if ( loader )
-											loader.setStyle( 'display', '' );
+										//var loader = CKEDITOR.document.getById( imagePreviewLoaderId );
+										//if ( loader )
+										//	loader.setStyle( 'display', '' );
 
-										original.on( 'load', onImgLoadEvent, dialog );
-										original.on( 'error', onImgLoadErrorEvent, dialog );
-										original.on( 'abort', onImgLoadErrorEvent, dialog );
-										original.setAttribute( 'src', newUrl );
+										//original.on( 'load', onImgLoadEvent, dialog );
+										//original.on( 'error', onImgLoadErrorEvent, dialog );
+										//original.on( 'abort', onImgLoadErrorEvent, dialog );
+										//original.setAttribute( 'src', newUrl );
 
 										// Query the preloader to figure out the url impacted by based href.
-										previewPreloader.setAttribute( 'src', newUrl );
-										dialog.preview.setAttribute( 'src', previewPreloader.$.src );
-										updatePreview( dialog );
+										//previewPreloader.setAttribute( 'src', newUrl );
+										//dialog.preview.setAttribute( 'src', previewPreloader.$.src );
+										//updatePreview( dialog );
 									}
 									// Dont show preview if no URL given.
 									else if ( dialog.preview ) {
@@ -590,6 +660,7 @@
 									}
 								},
 								commit: function( type, element ) {
+									
 									if ( type == IMAGE && ( this.getValue() || this.isChanged() ) ) {
 										element.data( 'cke-saved-src', this.getValue() );
 										element.setAttribute( 'src', this.getValue() );
@@ -607,40 +678,88 @@
 										element.removeAttribute( 'src' );
 									}
 									
-									$('#postContent img').resize_by_drag('destroy').unbind('click').click(install_resize);
-								},
-								validate: CKEDITOR.dialog.validate.notEmpty( editor.lang.image.urlMissing )
+								}
+								//validate: CKEDITOR.dialog.validate.notEmpty( editor.lang.image.urlMissing )
 							}
 							]
 						},
 							{
+							type: 'hbox',
+							widths: [ '280px', '110px' ],
+							style: 'text-align:right;',
+							children: [
+								{
+								id:'insert',
+								style: 'text-align:right;',
+								type:'button',
+								label:'新增'
+							}
+							]
+						},
+							{
+							id:'preview',
+							type:'html',
+							html:'<div class="img_plugin_preview"><ul></ul></div>'
+						}	
+						]
+					
+					
+				},/*
+					{
+					id:'upload',
+					label:'上傳',
+					elements:[
+						{
+							type:'html',
+							html:'<div>abc</div>'
+						}
+					]
+				},
+					{
+					id:'album',
+					label:'相簿',
+					elements:[
+						{
+							type:'html',
+							html:'<div id="preview" style="overflow-y:auto;"></div>'
+						}
+					]
+				},*/
+					{
+					id:'other',
+					label:'其他網路相簿',
+					elements:[
+						{
+						type: 'vbox',
+						padding: 0,
+						children: [
+							{
+							type: 'hbox',
+							widths: [ '280px', '110px' ],
+							align: 'left',
+							children: [
+								{
 								type: 'button',
-								id: 'browse',
-								// v-align with the 'txtUrl' field.
-								// TODO: We need something better than a fixed size here.
-								style: 'display:inline-block;margin-top:10px;',
+								id: 'fbSelector',
+								style: 'display:block;width:80px;background-color:blue;color:white;',
 								align: 'center',
-								label: editor.lang.common.browseServer,
-								hidden: true,
-								filebrowser: 'info:txtUrl'
+								label: 'Facebook',
+								onClick:function(){
+									var obj=$(this.getDialog().getContentElement('other','preview').getElement().$);
+									loadFBAlbum(obj);
+								}
+							}
+							]
 						},
 							{
-							type: 'html',
-							id: 'htmlPreview',
-							style: 'width:95%;',
-							html: '<div>' + CKEDITOR.tools.htmlEncode( editor.lang.common.preview ) + '<br>' +
-								'<div id="' + imagePreviewLoaderId + '" class="ImagePreviewLoader" style="display:none"><div class="loading">&nbsp;</div></div>' +
-								'<div class="ImagePreviewBox"><table><tr><td>' +
-									'<img id="' + previewImageId + '" style="max-width:100%;max-height:95%;width:auto;height:auto" />' +
-								'</td></tr></table></div></div>'
-						},
-							{
-									type:'html',
-									html:'<div style="font-size:0.9em;color:rgb(60,60,60)">若圖片無法顯示，可能是圖片位址改變，請重設圖片URL</div>'
-						}							
+							id:'preview',
+							type:'html',
+							html:'<div><div class="img_plugin_albums"><ul></ul></div><a src="#" class="img_plugin_return" style="display:none">返回</a><div class="img_plugin_other_preview" style="display:none"><ul></ul></div></div>'
+						}	
 						]
 					}
 					]
+					
 				}
 				]
 			};
@@ -654,3 +773,4 @@
 		return imageDialog( editor, 'imagebutton' );
 	});
 })();
+
