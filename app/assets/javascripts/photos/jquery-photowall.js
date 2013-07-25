@@ -124,7 +124,7 @@ var PhotoWall = {
         ,zoomAction:'mouseenter'
         ,zoomTimeout:500
         ,zoomDuration:300
-        ,zoomImageBorder:5
+        ,zoomImageBorder:3
         ,showBoxPadding: 2
         ,showBoxSocial: true
     },
