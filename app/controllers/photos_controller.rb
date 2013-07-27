@@ -117,7 +117,13 @@ class PhotosController < ApplicationController
 	def uploadPhoto
 		@photo = Photo.create(params[:photo])
 		@photo.user_id=session[:user_id]
-		if @photo.save
+		
+		t=Trip.find(@photo.trip_id)
+		if t&&t.user_id==@photo.user_id
+			@auth=true
+		end
+
+		if @auth&&@photo.save
 			resp=@photo.to_jq_upload
 			respond_to do |format|
 				format.all {render json: {files: [resp]},status: :created}
