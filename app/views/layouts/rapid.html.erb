@@ -113,6 +113,36 @@ _gaq.push(['_trackPageview']);
 </nav>
 <%end%>
 
+<div class="large-12 columns user-status add-shadow">
+<div class="large-2 columns">
+    <ul class="inline-list">
+      <li class="name">
+        <% if @user.fbid%>
+        <a href='#'><img src='https://graph.facebook.com/<%=@user.fbid%>/picture?type=normal'></img></a>
+        <% else%>
+        <a href='#'><img src='<%=asset_path("user_avatar.png")%>' style="height:45px;"/></a>
+        <% end %>
+      </li>
+      <li>
+      <h5 class="word-break"><a class="white" id="person_name" href="#"><%=@user.username %></a></h5>
+    </li>
+    </ul>
+</div>
+<div class="large-8 columns large-centered">
+  <ul class="user-function-switcher">
+    <li>
+      <h6><a class="white" href="/rapid/triplist/<%=@author_id%>" onclick="showTravelJournal()">遊記</a></h6>  
+    </li>
+    <li>
+      <h6><a class="white" href="/photos/all/<%=@author_id%>" >相簿</a></h6>  
+    </li>
+  </ul>
+</div>    
+  
+
+</div>
+
+
 <!--註冊-->
   <div id="register" class="reveal-modal medium">
     <div class="large-8 columns">

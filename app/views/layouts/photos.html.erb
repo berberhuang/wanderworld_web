@@ -42,7 +42,7 @@ _gaq.push(['_trackPageview']);
 <%end%>
 
 </script>
-
+<!--///////////////Photo Wall///////////////////-->
 <script type="text/javascript">
 $(document).ready(function(){
     PhotoWall.init({
@@ -52,11 +52,11 @@ $(document).ready(function(){
         ,zoomTimeout:       500                      // Timeout before zoom
         ,zoomDuration:      100                      // Zoom duration time
         ,zoomImageBorder:   5                         // Zoomed image border size 
-        ,showBox:           true                     // Enavle fullscreen mode
-        ,showBoxSocial:     true                     // Show social buttons
+        ,showBox:           false                    // Enavle fullscreen mode
+        ,showBoxSocial:     false                     // Show social buttons
         ,padding:           5                        // padding between images in gallery
         ,lineMaxHeight:     150                      // Max set height of pictures line
-        ,lineMaxHeightDynamic: true                  // Dynamic lineMaxHeight. If set to True,
+        ,lineMaxHeightDynamic: false                  // Dynamic lineMaxHeight. If set to True,
                                                      // then line height will be changing on 
                                                      // resize, coressponding to 
                                                      // baseScreenHeight param
@@ -96,10 +96,21 @@ $(document).ready(function(){
             
           } 
         PhotoWall.load(photos);
+        <!--////////////Photo Swipe////////////////-->
+        var myPhotoSwipe = $("#photo_wall .pw-link").photoSwipe({ 
+              enableMouseWheel: true , 
+              enableKeyboard: true ,
+              captionAndToolbarHide: false,
+              allowUserZoom: true,
+              preventSlideshow: true,
+            }); 
+
       }
   });
 });
 </script> 
+
+
 
 </head>
 <body>

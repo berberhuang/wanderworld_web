@@ -803,6 +803,6 @@ var ShowBox = {
         var thL = Math.round(cW/2) - (ShowBox._index * 64 + 30);
         $('#showbox .showbox-th-container').animate({
             left:  thL
-        },{duration:300,queue:false});	
+        },{duration:100,queue:false});	
 	}
 }
