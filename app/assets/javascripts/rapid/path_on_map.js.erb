@@ -202,10 +202,19 @@ var PathOnMap=(function(){
 			map.setCenter(new_pos);
 		},
 		centerTripPointOnAllMap:function(id){
-			map.setCenter(pointData[id].position);
+			
+			//map.setCenter(pointData[id].position);
+			var group_id=pointData[id].group_id;
+			var tpList=$('.trip_point_group:[data-id='+group_id+'] .point');
+			computeMap(tpList);
+			
 		},
 		centerGroupOnMap:function(id){
 			var tpList=$('.trip_point_group:[data-id='+id+'] .point');
+			computeMap(tpList);
+		},
+		centerTripOnMap:function(){
+			var tpList=$('.trip_point_group .point');
 			computeMap(tpList);
 		},
 		showBeforeReadBubble:function(tripPoint_id){

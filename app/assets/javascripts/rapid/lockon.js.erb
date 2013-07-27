@@ -152,6 +152,7 @@ function loadTrip(id,callback){
 		},
 		tripPointList:function(groupList,pointList){
 			tripPointList.loadTripPointList(groupList,pointList);
+			PathOnMap.centerTripOnMap();
 		}
 	});
 }
