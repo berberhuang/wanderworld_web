@@ -8,4 +8,5 @@
 //= require foundation
 //= require fblogin
 //= require_tree ./foundation
+//= require ./photos/klass.min.js
 //= require_tree ./photos

@@ -7,9 +7,13 @@
 
 html,
 body {
-  font-size: 100%;}
+  font-size: 100%;
+  height: 100%;
+;}
 
 body {
+  height: auto;
+  min-height:100%;
   background: white;
   color: #222222;
   padding: 0;
@@ -19,6 +23,7 @@ body {
   font-style: normal;
   line-height: 1;
   position: relative; }
+
 
 a:focus {
   outline: none; }
@@ -249,6 +254,49 @@ select {
   margin-bottom: 0;
   max-width: 75em;
   *zoom: 1; }
+  .row:before, .row:after {
+    content: " ";
+    display: table; }
+  .row:after {
+    clear: both; }
+  .row.collapse .column,
+  .row.collapse .columns {
+    position: relative;
+    padding-left: 0;
+    padding-right: 0;
+    float: left; }
+  .row .row {
+    width: auto;
+    margin-left: -0.9375em;
+    margin-right: -0.9375em;
+    margin-top: 0;
+    margin-bottom: 0;
+    max-width: none;
+    *zoom: 1; }
+    .row .row:before, .row .row:after {
+      content: " ";
+      display: table; }
+    .row .row:after {
+      clear: both; }
+    .row .row.collapse {
+      width: auto;
+      margin: 0;
+      max-width: none;
+      *zoom: 1; }
+      .row .row.collapse:before, .row .row.collapse:after {
+        content: " ";
+        display: table; }
+      .row .row.collapse:after {
+        clear: both; }
+
+.column,
+.columns {
+  position: relative;
+  padding-left: 0.9375em;
+  padding-right: 0.9375em;
+  width: 100%;
+  float: left; }
+
   .large-1 {
     position: relative;
     width: 8.33333%; }
@@ -4212,7 +4260,6 @@ body{
 .tailored{
   background-color: black;
   border-color: #d9d9d9;
-  margin-bottom: 1.25em;
   padding:0 0 2em 0;
 }
 .tailored a{
