@@ -21,247 +21,6 @@
 			
 			var accessToken=null;
 			
-		/*	var install_resize=function(e){
-				var t=$(e.target);
-				t.unbind('click');
-				t.resize_by_drag();
-				t.parent().bind('clickoutside',function(){
-					t.resize_by_drag('destroy');
-					t.click(install_resize);
-				});
-
-			};
-		*/
-			var onSizeChange = function() {
-					var value = this.getValue(),
-						// This = input element.
-						dialog = this.getDialog(),
-						aMatch = value.match( regexGetSize ); // Check value
-					if ( aMatch ) {
-						if ( aMatch[ 2 ] == '%' ) // % is allowed - > unlock ratio.
-						switchLockRatio( dialog, false ); // Unlock.
-						value = aMatch[ 1 ];
-					}
-
-					// Only if ratio is locked
-					if ( dialog.lockRatio ) {
-						var oImageOriginal = dialog.originalElement;
-						if ( oImageOriginal.getCustomData( 'isReady' ) == 'true' ) {
-							if ( this.id == 'txtHeight' ) {
-								if ( value && value != '0' )
-									value = Math.round( oImageOriginal.$.width * ( value / oImageOriginal.$.height ) );
-								if ( !isNaN( value ) )
-									dialog.setValueOf( 'info', 'txtWidth', value );
-							} else //this.id = txtWidth.
-							{
-								if ( value && value != '0' )
-									value = Math.round( oImageOriginal.$.height * ( value / oImageOriginal.$.width ) );
-								if ( !isNaN( value ) )
-									dialog.setValueOf( 'info', 'txtHeight', value );
-							}
-						}
-					}
-					updatePreview( dialog );
-				};
-
-
-			var updatePreview = function( dialog ) {
-					//Don't load before onShow.
-					if ( !dialog.originalElement || !dialog.preview )
-						return 1;
-
-					// Read attributes and update imagePreview;
-					dialog.commitContent( PREVIEW, dialog.preview );
-					return 0;
-				};
-
-			// Custom commit dialog logic, where we're intended to give inline style
-			// field (txtdlgGenStyle) higher priority to avoid overwriting styles contribute
-			// by other fields.
-			function commitContent() {
-				var args = arguments;
-				var inlineStyleField = this.getContentElement( 'advanced', 'txtdlgGenStyle' );
-				inlineStyleField && inlineStyleField.commit.apply( inlineStyleField, args );
-
-				this.foreach( function( widget ) {
-					if ( widget.commit && widget.id != 'txtdlgGenStyle' )
-						widget.commit.apply( widget, args );
-				});
-			}
-
-			// Avoid recursions.
-			var incommit;
-
-			// Synchronous field values to other impacted fields is required, e.g. border
-			// size change should alter inline-style text as well.
-			function commitInternally( targetFields ) {
-				if ( incommit )
-					return;
-
-				incommit = 1;
-
-				var dialog = this.getDialog(),
-					element = dialog.imageElement;
-				if ( element ) {
-					// Commit this field and broadcast to target fields.
-					this.commit( IMAGE, element );
-
-					targetFields = [].concat( targetFields );
-					var length = targetFields.length,
-						field;
-					for ( var i = 0; i < length; i++ ) {
-						field = dialog.getContentElement.apply( dialog, targetFields[ i ].split( ':' ) );
-						// May cause recursion.
-						field && field.setup( IMAGE, element );
-					}
-				}
-
-				incommit = 0;
-			}
-
-			var switchLockRatio = function( dialog, value ) {
-					if ( !dialog.getContentElement( 'info', 'ratioLock' ) )
-						return null;
-
-					var oImageOriginal = dialog.originalElement;
-
-					// Dialog may already closed. (#5505)
-					if ( !oImageOriginal )
-						return null;
-
-					// Check image ratio and original image ratio, but respecting user's preference.
-					if ( value == 'check' ) {
-						if ( !dialog.userlockRatio && oImageOriginal.getCustomData( 'isReady' ) == 'true' ) {
-							var width = dialog.getValueOf( 'info', 'txtWidth' ),
-								height = dialog.getValueOf( 'info', 'txtHeight' ),
-								originalRatio = oImageOriginal.$.width * 1000 / oImageOriginal.$.height,
-								thisRatio = width * 1000 / height;
-							dialog.lockRatio = false; // Default: unlock ratio
-
-							if ( !width && !height )
-								dialog.lockRatio = true;
-							else if ( !isNaN( originalRatio ) && !isNaN( thisRatio ) ) {
-								if ( Math.round( originalRatio ) == Math.round( thisRatio ) )
-									dialog.lockRatio = true;
-							}
-						}
-					} else if ( value != undefined )
-						dialog.lockRatio = value;
-					else {
-						dialog.userlockRatio = 1;
-						dialog.lockRatio = !dialog.lockRatio;
-					}
-
-					var ratioButton = CKEDITOR.document.getById( btnLockSizesId );
-					if ( dialog.lockRatio )
-						ratioButton.removeClass( 'cke_btn_unlocked' );
-					else
-						ratioButton.addClass( 'cke_btn_unlocked' );
-
-					ratioButton.setAttribute( 'aria-checked', dialog.lockRatio );
-
-					// Ratio button hc presentation - WHITE SQUARE / BLACK SQUARE
-					if ( CKEDITOR.env.hc ) {
-						var icon = ratioButton.getChild( 0 );
-						icon.setHtml( dialog.lockRatio ? CKEDITOR.env.ie ? '\u25A0' : '\u25A3' : CKEDITOR.env.ie ? '\u25A1' : '\u25A2' );
-					}
-
-					return dialog.lockRatio;
-				};
-
-			var resetSize = function( dialog ) {
-					var oImageOriginal = dialog.originalElement;
-					if ( oImageOriginal.getCustomData( 'isReady' ) == 'true' ) {
-						var widthField = dialog.getContentElement( 'info', 'txtWidth' ),
-							heightField = dialog.getContentElement( 'info', 'txtHeight' );
-						widthField && widthField.setValue( oImageOriginal.$.width );
-						heightField && heightField.setValue( oImageOriginal.$.height );
-					}
-					updatePreview( dialog );
-				};
-
-			var setupDimension = function( type, element ) {
-					if ( type != IMAGE )
-						return;
-
-					function checkDimension( size, defaultValue ) {
-						var aMatch = size.match( regexGetSize );
-						if ( aMatch ) {
-							if ( aMatch[ 2 ] == '%' ) // % is allowed.
-							{
-								aMatch[ 1 ] += '%';
-								switchLockRatio( dialog, false ); // Unlock ratio
-							}
-							return aMatch[ 1 ];
-						}
-						return defaultValue;
-					}
-
-					var dialog = this.getDialog(),
-						value = '',
-						dimension = this.id == 'txtWidth' ? 'width' : 'height',
-						size = element.getAttribute( dimension );
-
-					if ( size )
-						value = checkDimension( size, value );
-					value = checkDimension( element.getStyle( dimension ), value );
-
-					this.setValue( value );
-				};
-
-			var previewPreloader;
-
-			var onImgLoadEvent = function() {
-					// Image is ready.
-					var original = this.originalElement;
-					original.setCustomData( 'isReady', 'true' );
-					original.removeListener( 'load', onImgLoadEvent );
-					original.removeListener( 'error', onImgLoadErrorEvent );
-					original.removeListener( 'abort', onImgLoadErrorEvent );
-
-					// Hide loader
-					CKEDITOR.document.getById( imagePreviewLoaderId ).setStyle( 'display', 'none' );
-
-					// New image -> new domensions
-					if ( !this.dontResetSize )
-						resetSize( this );
-
-					if ( this.firstLoad )
-						CKEDITOR.tools.setTimeout( function() {
-						switchLockRatio( this, 'check' );
-					}, 0, this );
-
-					this.firstLoad = false;
-					this.dontResetSize = false;
-				};
-
-			var onImgLoadErrorEvent = function() {
-					// Error. Image is not loaded.
-					var original = this.originalElement;
-					original.removeListener( 'load', onImgLoadEvent );
-					original.removeListener( 'error', onImgLoadErrorEvent );
-					original.removeListener( 'abort', onImgLoadErrorEvent );
-
-					// Set Error image.
-					var noimage = CKEDITOR.getUrl( CKEDITOR.plugins.get( 'image' ).path + 'images/noimage.png' );
-
-					if ( this.preview )
-						this.preview.setAttribute( 'src', noimage );
-
-					// Hide loader
-					CKEDITOR.document.getById( imagePreviewLoaderId ).setStyle( 'display', 'none' );
-					switchLockRatio( this, false ); // Unlock.
-				};
-
-			var numbering = function( id ) {
-					return CKEDITOR.tools.getNextId() + '_' + id;
-				},
-				btnLockSizesId = numbering( 'btnLockSizes' ),
-				btnResetSizeId = numbering( 'btnResetSize' ),
-				imagePreviewLoaderId = numbering( 'ImagePreviewLoader' ),
-				previewLinkId = numbering( 'previewLink' ),
-				previewImageId = numbering( 'previewImage' );
-			
 			var showAlbum=function(obj,datas){
 				var ul=obj.find('.img_plugin_albums ul');
 				ul.empty();
@@ -272,10 +31,10 @@
 						.click(function(event){
 							var albumId=$(event.target).parents('li').data('id');
 							FB.api('/'+ albumId +'/photos?fields=id,picture,source,height,width&limit=1500', function(response){
-	if(response.data){
-		showPhoto(obj,response.data);
-	}								
-});
+								if(response.data){
+									showPhoto(obj,response.data);
+								}								
+							});
 						});
 				}
 			};
@@ -335,6 +94,74 @@
 				});
 			};
 			
+
+			var attachFileUploadListener=function(file_selector,preview_ul){
+				file_selector.fileupload({
+					datatype: 'json',
+					autoUpload: true,
+					formData:{'photo[trip_id]':DataStatus.trip_id,'photo[trip_point_id]':contentBox.getEditTripPointId()},
+					acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+					disableImageResize: /Android(?!.*Chrome)|Opera/
+						.test(window.navigator && navigator.userAgent)
+				}).bind('fileuploadadd',function(e,data){
+					var imgObj=$('<li data-filename="'+data.files[0].name+'" class="img_plugin_selected"><img src=""/><div class="img_plugin_progress_bar"><div></div></div></li>');
+					imgObj.appendTo(preview_ul)
+						.click(function(event){
+							var tmp=$(event.target).parents('li');
+							if(tmp.hasClass('img_plugin_unselected')){
+								tmp.removeClass('img_plugin_unselected')
+									.addClass('img_plugin_selected');
+							}else{
+								tmp.removeClass('img_plugin_selected')
+									.addClass('img_plugin_unselected');
+							}
+						});
+
+				}).bind('fileuploaddone',function(e,data){
+					$.each(JSON.parse(data.result).files, function (index, file) {
+						if(!index){
+							var imgObj=preview_ul.find('li:[data-filename="'+file.name+'"]');
+							imgObj.find('img').attr('src',file.url).data('src',file.original);
+							imgObj.find('.img_plugin_progress_bar').hide();
+						}
+					});
+
+				}).bind('fileuploadprogress',function(e,data){
+					$.each(data.files, function (index, file) {
+						if(!index){
+							var imgObj=preview_ul.find('li:[data-filename="'+file.name+'"]');
+							var bar=imgObj.find('.img_plugin_progress_bar div');
+							bar.css('width',(data.loaded/data.total)*100 +'%');
+						}
+					});
+				});
+				
+			};
+
+
+			var getAlbum=function(preview){
+				
+				var loadPhotoToAlbumContainer=function(result){	
+					for(var i=0;i<result.length;i++){
+						data=result[i];
+						var imgObj=$('<li class="img_plugin_unselected"><img src="'+data.picture+'" data-src="'+data.source+'"/></li>').appendTo(preview.find('ul'))
+							.click(function(event){
+								var tmp=$(event.target).parents('li');
+								if(tmp.hasClass('img_plugin_unselected')){
+									tmp.removeClass('img_plugin_unselected')
+									.addClass('img_plugin_selected');
+								}else{
+									tmp.removeClass('img_plugin_selected')
+									.addClass('img_plugin_unselected');
+								}
+							});
+					}
+				};
+				
+				$.get('/photos/album/'+DataStatus.trip_id,null,loadPhotoToAlbumContainer,'json');
+			};
+
+			
 			return {
 				title: editor.lang.image[ dialogType == 'image' ? 'title' : 'titleButton' ],
 				minWidth: 680,
@@ -342,6 +169,7 @@
 				onShow: function() {
 					this.insertType='url';
 					$(this.getContentElement('url','preview').getElement().$).find('ul').empty();
+					$(this.getContentElement('upload','preview').getElement().$).find('ul').empty();
 				/*	moduleInstance=this;
 					this.imageElement = false;
 					this.linkElement = false;
@@ -447,7 +275,6 @@
 				*/
 				},
 				onOk: function() {
-					console.log(this.insertType);
 					var selected=[];
 					if(this.insertType=='url'){
 						selected=$(this.getContentElement('url','preview').getElement().$).find('.img_plugin_selected');
@@ -456,7 +283,16 @@
 						}
 						
 					}else if(this.insertType=='upload'){
+						selected=$(this.getContentElement('upload','preview').getElement().$).find('.img_plugin_selected');
+						for(var i=0;i<selected.length;i++){
+							editor.insertHtml('<img src="'+selected.eq(i).find('img').data('src')+'" />');
+						}
 					}else if(this.insertType=='album'){
+						selected=$(this.getContentElement('album','preview').getElement().$).find('.img_plugin_selected');
+						for(var i=0;i<selected.length;i++){
+							editor.insertHtml('<img src="'+selected.eq(i).find('img').data('src')+'" />');
+						}
+
 					}else if(this.insertType=='other'){
 						selected=$(this.getContentElement('other','preview').getElement().$).find('.img_plugin_selected');
 						for(var i=0;i<selected.length;i++){
@@ -544,35 +380,26 @@
 					
 				},
 				onLoad: function() {
+					var album_loaded=false;
 					this.on('selectPage',function(event){
-						this.insertType=event.data.page;						
+						this.insertType=event.data.page;
+						if(this.insertType=='album'){
+							if(!album_loaded){
+								var preview=$(this.getContentElement('album','preview').getElement().$);
+								getAlbum(preview);
+								album_loaded=true;
+							}
+						}						
 					});
+					var preview=$(this.getContentElement('upload','preview').getElement().$);
+					
+					var file_selector=preview.find('#fileupload');
+					attachFileUploadListener(file_selector,preview.find('.img_plugin_preview ul'));
+					
 				
-					if ( dialogType != 'image' )
-						this.hidePage( 'Link' ); //Hide Link tab.
-					var doc = this._.element.getDocument();
-
-					if ( this.getContentElement( 'info', 'ratioLock' ) ) {
-						this.addFocusable( doc.getById( btnResetSizeId ), 5 );
-						this.addFocusable( doc.getById( btnLockSizesId ), 5 );
-					}
-
-					this.commitContent = commitContent;
 					
 				},
 				onHide: function() {
-					if ( this.preview )
-						this.commitContent( CLEANUP, this.preview );
-
-					if ( this.originalElement ) {
-						this.originalElement.removeListener( 'load', onImgLoadEvent );
-						this.originalElement.removeListener( 'error', onImgLoadErrorEvent );
-						this.originalElement.removeListener( 'abort', onImgLoadErrorEvent );
-						this.originalElement.remove();
-						this.originalElement = false; // Dialog is closed.
-					}
-
-					delete this.imageElement;
 				},
 				
 				contents: [
@@ -619,65 +446,12 @@
 											previewPhotoFromFB(imgObj,id);
 										}
 										this.setValue('');
-										//$(t).append('<div>yesyes</div>');
-										//console.log('abcdsdf');
-
-										//dialog.preview.removeStyle( 'display' );
-
-										//original.setCustomData( 'isReady', 'false' );
-										// Show loader
-										//var loader = CKEDITOR.document.getById( imagePreviewLoaderId );
-										//if ( loader )
-										//	loader.setStyle( 'display', '' );
-
-										//original.on( 'load', onImgLoadEvent, dialog );
-										//original.on( 'error', onImgLoadErrorEvent, dialog );
-										//original.on( 'abort', onImgLoadErrorEvent, dialog );
-										//original.setAttribute( 'src', newUrl );
-
-										// Query the preloader to figure out the url impacted by based href.
-										//previewPreloader.setAttribute( 'src', newUrl );
-										//dialog.preview.setAttribute( 'src', previewPreloader.$.src );
-										//updatePreview( dialog );
 									}
 									// Dont show preview if no URL given.
 									else if ( dialog.preview ) {
 										dialog.preview.removeAttribute( 'src' );
 										dialog.preview.setStyle( 'display', 'none' );
 									}
-								},
-								setup: function( type, element ) {
-									if ( type == IMAGE ) {
-										var url = element.data( 'cke-saved-src' ) || element.getAttribute( 'src' );
-										var field = this;
-
-										this.getDialog().dontResetSize = true;
-
-										field.setValue( url ); // And call this.onChange()
-										// Manually set the initial value.(#4191)
-										field.setInitValue();
-										
-									}
-								},
-								commit: function( type, element ) {
-									
-									if ( type == IMAGE && ( this.getValue() || this.isChanged() ) ) {
-										element.data( 'cke-saved-src', this.getValue() );
-										element.setAttribute( 'src', this.getValue() );
-										element.setAttribute('style','height:auto');
-										
-										var newUrl=this.getValue();
-										var dialog = this.getDialog();
-										var id=newUrl.match(/www\.facebook\.com\/photo\.php\?fbid=[0-9]*/);
-										if(id){
-											id=id[0].split('=')[1];
-											setPhotoFromFB(element,id);
-										}
-									} else if ( type == CLEANUP ) {
-										element.setAttribute( 'src', '' ); // If removeAttribute doesn't work.
-										element.removeAttribute( 'src' );
-									}
-									
 								}
 								//validate: CKEDITOR.dialog.validate.notEmpty( editor.lang.image.urlMissing )
 							}
@@ -704,14 +478,16 @@
 						]
 					
 					
-				},/*
+				},
 					{
 					id:'upload',
 					label:'上傳',
 					elements:[
 						{
+							id:'preview',
 							type:'html',
-							html:'<div>abc</div>'
+								html:'<div>'+'<form id="fileupload" data-url="/photos/uploadPhoto" ><input type="file" name="photo[img]" multiple /></form>'+
+'<div class="img_plugin_preview img_plugin_file_drag"><ul></ul></div>'+'</div>'
 						}
 					]
 				},
@@ -720,11 +496,12 @@
 					label:'相簿',
 					elements:[
 						{
+							id:'preview',
 							type:'html',
-							html:'<div id="preview" style="overflow-y:auto;"></div>'
+							html:'<div class="img_plugin_other_preview"><ul></ul></div>'
 						}
 					]
-				},*/
+				},
 					{
 					id:'other',
 					label:'其他網路相簿',

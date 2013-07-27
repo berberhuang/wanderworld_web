@@ -136,3 +136,19 @@
 	cursor:pointer !important;
 	padding:20px !important;
 }
+
+
+.img_plugin_progress_bar div{
+	background-color:gray;
+	height:2px;
+	width:1%;
+	margin-top:80px;
+}
+
+.img_plugin_file_drag {
+	height:375px !important;
+	border:3px dashed gray !important;
+	text-align:center !important;
+	font-weight:bold !important;
+	color:gray !important;
+}

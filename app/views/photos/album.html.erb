@@ -1,3 +1,14 @@
+<%
+
+	@newuser=User.new
+	@user_session=UserSession.new
+				
+	@trip_id=params[:id]
+	@journal_id=params[:tp_id]	
+	
+	#從處理要求triplist要求
+	@user_id = params[:user_id]
+%>
 <div class="row">
 
     <div class="large-10 columns ">

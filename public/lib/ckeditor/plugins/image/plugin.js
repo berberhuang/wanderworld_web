@@ -15,7 +15,7 @@
 		icons: 'image', // %REMOVE_LINE_CORE%
 		init: function( editor ) {
 			var pluginName = 'image';
-
+			/*
 			// Register the dialog.
 			CKEDITOR.dialog.add( pluginName, this.path + 'dialogs/image.js' );
 
@@ -28,6 +28,7 @@
 				command: pluginName,
 				toolbar: 'insert,10'
 			});
+			*/
 
 			/*
 			editor.on( 'doubleclick', function( evt ) {
@@ -52,12 +53,14 @@
 			*/
 
 			// If the "contextmenu" plugin is loaded, register the listeners.
+			/*
 			if ( editor.contextMenu ) {
 				editor.contextMenu.addListener( function( element, selection ) {
 					if ( getSelectedImage( editor, element ) )
 						return { image: CKEDITOR.TRISTATE_OFF };
 				});
 			}
+			*/
 		},
 		afterInit: function( editor ) {
 			// Customize the behavior of the alignment commands. (#7430)

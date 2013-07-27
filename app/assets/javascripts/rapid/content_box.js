@@ -27,16 +27,6 @@ var ContentBoxModule = function(item){
 	
 	var moduleInstance;
 
-	var install_resize=function(e){
-		var t=$(e.target);
-		t.unbind('click');
-		t.resize_by_drag();
-		t.parent().bind('clickoutside',function(){
-			t.resize_by_drag('destroy');
-			t.click(install_resize);
-		});
-		
-	};
 	
 	var isBounce=function(){
 		if(target.css('z-index')==-1){
@@ -176,7 +166,6 @@ var ContentBoxModule = function(item){
 	};
 
 	var saveJournal=function(){
-		contentPanel.find('img').resize_by_drag('destroy').unbind('click');
 		for(var id in editor){
 			var str=editor[id].getData().replace(/.*<span style="display: none;">&nbsp;<\/span><\/div>/,'');
 			if(!DataStatus.contentList){
@@ -201,7 +190,6 @@ var ContentBoxModule = function(item){
 					
 					PathOnMap.centerTripPointOnLeftMap(id);
 					PathOnMap.showTripPointInfo(id);
-					contentPanel.find('img').unbind('click').click(install_resize);
 					$('.tp_box').attr('title','');
 				
 				}
@@ -631,7 +619,6 @@ var ContentBoxModule = function(item){
 												editor[id].setReadOnly(false);
 												tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
 												
-												contentPanel.find('img').unbind('click').click(install_resize);
 												$('.tp_box').attr('title','');
 											
 											}
@@ -715,6 +702,9 @@ var ContentBoxModule = function(item){
 		},
 		getShowGroupId:function(){
 			return show_group_id;
+		},
+		getEditTripPointId:function(){
+			return edit_id;
 		}
 	};
 };
