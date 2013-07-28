@@ -5,9 +5,9 @@
 // the compiled file.
 //
 //= require jquery_ujs
-//= require_tree ./jquery_ui
-//= require foundation
 //= require fblogin
-//= require_tree ./foundation
-//= require ./photos/klass.min.js
+//= require foundation
 //= require_tree ./photos
+//= require_tree ./jquery_ui
+//= require_tree ./foundation
+

@@ -53,6 +53,7 @@
       } else {
         // fire method
         return this[method].call(this, options);
+
       }
     },
 
