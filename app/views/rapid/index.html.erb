@@ -46,7 +46,6 @@
 
 <%= content_for :css do %>
 	<%= stylesheet_link_tag "index_layout" %>
-	<%= stylesheet_link_tag "newindex" %>
 <%end%>
 
 <%= content_for :info_head do %>
@@ -209,23 +208,7 @@
 	 <div id="newTripLoad"></div>
 </div-->
 <!--內容-->
-<div class="row" media="screen">
-
-<!--main control>
-	<div class="large-1 columns panel gallery">
-	    <div class="row">
-	        <% if @user.fbid%>
-		    	<img src='https://graph.facebook.com/<%=@user.fbid%>/picture?type=normal'></img>
-		<% else%>
-			<img src='<%=asset_path("user_avatar.png")%>' style="display:block; margin:auto;"></img>
-		<% end %>
-        	<h5><a class="black text-center" id="person_name" href="#" style="display:block; word-wrap:break-word" ><%=@user.username %></a></h5>
-        </div>
-        <div class="row">
-        		<h6 class="title" ><a href="/rapid/triplist/<%=@author_id%>" class="black" onclick="showTravelJournal()"><i class="foundicon-globe"></i>旅行遊記</a></h6>
-        		<h6 class="title" ><a href="/photos/all/<%=@author_id%>" class="black" onclick="showTravelJournal()"><i class="foundicon-globe"></i>旅行相簿</a></h6>
-        </div>
-    </div>
+<div class="row wrapper" media="screen">
 	<!--map-->
 	<div class="large-2 columns large-offset-1">
 		<div class="gallery" id="map_canvas"></div>
@@ -315,7 +298,7 @@
 		
 	<!--遊記開關-->
 	<div class="large-1 columns" style="padding-left:0px;<%='visibility:hidden;' if !@trip_selected or @groups.size==0 %>">
-		<div class="large-12 columns large-centered control button secondary radius" id="bounce" title="展開/收合遊記">
+		<div class="large-12 columns control button secondary radius" id="bounce" title="展開/收合遊記">
 			<h1>	
 				<i class="icon-book icon large"></i>
 			</h1>
@@ -481,6 +464,7 @@
   <footer class="expandView row">
      <hr style="margin:5px" /> 
   </footer>
+</div>
 
   <ol class="joyride-list" data-joyride>
   <li data-text="開始導覽">

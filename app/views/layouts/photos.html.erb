@@ -16,29 +16,29 @@
 <%= csrf_meta_tags %>
 <%= yield :info_head %>
 
-<script type="text/javascript">
+<script>
 
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-30218831-1']);
 _gaq.push(['_trackPageview']);
 
 (function() {
-	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
 
 
 <%if session[:username]%>
-	var login_s=true;
+  var login_s=true;
 <%else%>
-	var login_s=false;
+  var login_s=false;
 <%end%>
 
 <%if session[:fbid]%>
-	var fid=<%=session[:fbid]%>;
+  var fid=<%=session[:fbid]%>;
 <%else%>
-	var fid=null;
+  var fid=null;
 <%end%>
 
 </script>
@@ -67,7 +67,7 @@ $(document).ready(function(){
   // 1024, 1152, 1280, 1440, 1600
      
   $.ajax({
-    url: 'https://picasaweb.google.com/data/feed/api/user/118283508237214694671/albumid/5685978516288199793'
+    url: 'https://picasaweb.google.com/data/feed/api/user/114615859448377442875/albumid/5339746932044051121'
        +'/?alt=json&fields=entry(gphoto:id,title,media:group(media:thumbnail,media:'
        +'content))&imgmax=720',
     dataType: 'jsonp',
@@ -131,6 +131,7 @@ $(document).ready(function(){
 </script>
 <!--頭部區塊-->
 <%if UserSession.find%>
+<div class="fixed">
 <nav class="top-bar">
         <ul class="title-area">
           <li class="name">
@@ -161,9 +162,11 @@ $(document).ready(function(){
 			</ul>
 		</section>
   </nav>
+  </div>
 
 	<%else%>
-  <nav class="top-bar" >
+  <div class="fixed">
+  <nav class="top-bar">
         <ul class="title-area">
           <li class="name">
             <a href='/newindex/banded'><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
@@ -181,32 +184,33 @@ $(document).ready(function(){
           </section>
 	
 </nav>
+</div>
 <%end%>
 
-<div class="large-12 columns user-status add-shadow">
-<div class="large-2 columns">
-    <ul class="inline-list">
+
+<div class="fixed user-status add-shadow">
+<nav class="top-bar">
+    <ul class="title-area">
       <li class="name">
-        <a href='#'><img src='<%=asset_path("user_avatar.png")%>' style="height:45px;"/></a>
+        <a href="#"><img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/></a>
       </li>
-      <li>
-      <h4 class="word-break"><a class="white" id="person_name" href="#">Jeffrey</a></h4>
-    </li>
     </ul>
-</div>
-<div class="large-8 columns large-centered">
-  <ul class="user-function-switcher">
+    <ul class="title-area">
+      <li class="name">
+        <h1><a class="white" id="person_name" href="#">fabsjgtas;dgJ</a></h1>
+      </li>
+    </ul>
+    <ul class="user-function-switcher">
     <li>
       <h6><a class="white" href="/rapid/triplist/<%=@author_id%>" onclick="showTravelJournal()">遊記</a></h6>  
     </li>
     <li>
       <h6><a class="white" href="/photos/all/<%=@author_id%>" >相簿</a></h6>  
     </li>
-  </ul>
-</div>    
-  
-
+  </ul>  
+</nav>
 </div>
+
 
 <!--註冊-->
   <div id="register" class="reveal-modal medium">

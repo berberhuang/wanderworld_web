@@ -16,7 +16,7 @@
 <%= csrf_meta_tags %>
 <%= yield :info_head %>
 
-<script type="text/javascript">
+<script>
 
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-30218831-1']);
@@ -62,84 +62,84 @@ _gaq.push(['_trackPageview']);
 
 <!--頭部區塊-->
 <%if UserSession.find%>
-<nav class="top-bar" >
+<div class="fixed">
+<nav class="top-bar">
         <ul class="title-area">
           <li class="name">
-          	<a href="/newindex/browse"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
+            <a href="/newindex/browse"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
           </li>
         </ul>
           <section class="top-bar-section">
   <script type="text/javascript" src="<%=asset_path('rapid/uievent.js')%>"></script>
-			<ul class="right">
+      <ul class="right">
       <li class="divider"></li>
             <li><a href="/newindex/browse" id="readJournal">瀏覽遊記</a></li>
             <li class="divider"></li>
-				<li class="active"><% if session[:avatar_src]%><img style="height:40px" src='<%=session[:avatar_src]%>'></img><% end %></li>
-				<li class="has-dropdown"><a href="/rapid/index"><%=session[:username]%></a>
-					<ul class="dropdown">
-						<li><a href="/rapid/index">我的旅行</a></li>
+        <li class="active"><% if session[:avatar_src]%><img style="height:40px" src='<%=session[:avatar_src]%>'></img><% end %></li>
+        <li class="has-dropdown"><a href="/rapid/index"><%=session[:username]%></a>
+          <ul class="dropdown">
+            <li><a href="/rapid/index">我的旅行</a></li>
             <li><a href="/photos/all">我的相簿</a></li>
-						<%if session[:fbid]%>
-						<li><a id="logout_a" href="javascript:onLogout()">登出Facebook</a></li>
-						<li><a id="logout_a" href="/user_session/logout">登出</a></li>
-						<%else%>
-						<li><a id="logout_a" href="/user_session/logout">登出</a></li>
-						<%end%>
-						<li class="divider"></li>
-						<li><a href="http://goo.gl/JeAZ2" target="_blank">問題回報</a></li>
-					</ul>
-				</li>
-			</ul>
-		</section>
+            <%if session[:fbid]%>
+            <li><a id="logout_a" href="javascript:onLogout()">登出Facebook</a></li>
+            <li><a id="logout_a" href="/user_session/logout">登出</a></li>
+            <%else%>
+            <li><a id="logout_a" href="/user_session/logout">登出</a></li>
+            <%end%>
+            <li class="divider"></li>
+            <li><a href="http://goo.gl/JeAZ2" target="_blank">問題回報</a></li>
+          </ul>
+        </li>
+      </ul>
+    </section>
   </nav>
+  </div>
 
-	<%else%>
-  <nav class="top-bar" >
+  <%else%>
+  <div class="fixed">
+  <nav class="top-bar">
         <ul class="title-area">
           <li class="name">
             <a href='/newindex/banded'><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
           </li>
         </ul>
           <section class="top-bar-section">
-		<ul class="right">
+    <ul class="right">
             <li class="divider"></li>
             <li><a href="/newindex/browse" id="readJournal">瀏覽遊記</a></li>
             <li class="divider"></li>
             <li class="name"><a href="#" data-reveal-id="register">註冊</a></li>
             <li class="divider"></li>
-    		<li><a href="#" data-reveal-id="login">登入</a></li>
+        <li><a href="#" data-reveal-id="login">登入</a></li>
           </ul>
           </section>
+  
 </nav>
+</div>
 <%end%>
 
-<div class="large-12 columns user-status add-shadow">
-<div class="large-2 columns">
-    <ul class="inline-list">
+
+<div class="fixed user-status add-shadow">
+<nav class="top-bar">
+    <ul class="title-area">
       <li class="name">
-        <% if @user.fbid%>
-        <a href='#'><img src='https://graph.facebook.com/<%=@user.fbid%>/picture?type=normal'></img></a>
-        <% else%>
-        <a href='#'><img src='<%=asset_path("user_avatar.png")%>' style="height:45px;"/></a>
-        <% end %>
+        <a href="#"><img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/></a>
       </li>
-      <li>
-      <h5 class="word-break"><a class="white" id="person_name" href="#"><%=@user.username %></a></h5>
-    </li>
     </ul>
-</div>
-<div class="large-8 columns large-centered">
-  <ul class="user-function-switcher">
+    <ul class="title-area">
+      <li class="name">
+        <h1><a class="white" id="person_name" href="#">fabsjgtas;dgJ</a></h1>
+      </li>
+    </ul>
+    <ul class="user-function-switcher">
     <li>
       <h6><a class="white" href="/rapid/triplist/<%=@author_id%>" onclick="showTravelJournal()">遊記</a></h6>  
     </li>
     <li>
       <h6><a class="white" href="/photos/all/<%=@author_id%>" >相簿</a></h6>  
     </li>
-  </ul>
-</div>    
-  
-
+  </ul>  
+</nav>
 </div>
 
 

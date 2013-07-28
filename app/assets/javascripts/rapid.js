@@ -5,7 +5,6 @@
 // the compiled file.
 //
 //= require jquery_ujs
-//= require facebox
 //= require fblogin
 //= require spin
 //= require foundation
