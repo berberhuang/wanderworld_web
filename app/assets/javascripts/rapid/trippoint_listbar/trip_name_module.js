@@ -6,8 +6,8 @@ var TripNameModule = function(obj){
 		var tripNameLabel;
 		var tripNameInput;
 
-		var tripNameDivStr='<div class="row word-break" id="trip_name_editDiv" style="pointer:cursor;"><h4><a></a></h4></div>';
-		var tripNameInputStr='<input class="row" id="trip_name_input" style="display:none;" placeholder="輸入旅行名稱" />';
+		var tripNameDivStr='<div class="columns word-break text-centered" id="trip_name_editDiv" ><h4><i class="foundicon-flag white"></i><a></a></h4></div>';
+		var tripNameInputStr='<div class="journal_title columns" style="display:none"><h5><input placeholder="請輸入旅行名稱"></input></h5>'
 		
 		//按下編輯旅行名稱(click)
 		var clickEditTripName=function(){

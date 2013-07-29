@@ -327,15 +327,11 @@
 	</div>
 	<!--click on a trip-->
 	<div class="large-2 columns gallery list" id="trip_one" style="<%='display:none;' if !@trip_id && !@journal_id %>" >
-		<a  id="return_triplist" href="/rapid/triplist/<%=@author_id%>" style="position:absolute;">
-			<i class="icon-level-up icon-rotate-270 pull-left"></i>旅行列表</a>
-		<div class="row text-center"  style="margin-top:10px;">
-				<div class="large-12 columns large-centered" id="trip_name">
-					<div class="row">
-						<h4><i class="foundicon-flag white"></i></h4>
-					</div>
+		<a class="button tiny radius secondary black" id="return_triplist" href="/rapid/triplist/<%=@author_id%>" >
+		<i class="icon-level-up icon-rotate-270 pull-left black"></i>旅行列表</a>
+		<div class="row"  style="margin-top:20px;">
+				<div class="columns" id="trip_name">
 					<%=tripName_gen(@trip_info) if @trip_info%>
-					
 				</div>
 				
 			
@@ -353,15 +349,18 @@
 				<%=tripPointList_gen(@groups,@tripPoints) if @groups&&@tripPoints%>
 			</div>
 		</div>
-		<div class="add_group_title button round secondary tiny columns large-centered" id="group_create_button" style="<%='display:none' if !@isOwner%>">新增遊記
-		<i class="foundicon-add-doc"></i>
+		<div class="row columns" id="group_create_button" style="<%='display:none' if !@isOwner%>">
+		<div class="large-centered">
+			<a class="add_group_title button round secondary" href="#">新增遊記<i class="foundicon-add-doc"></i></a>	
 		</div>
-		<div class="row">
-			<div id="view_num">
-			<span>瀏覽人次：<span id="count"><%=@trip_info.count.to_s if @trip_info%></span></span>
+		
+		</div>
+		<div class="row" id="trip-points-list-bottom">
+			<div id="view_num" class="large-6 columns">
+			<span><i class="icon-eye-open icon-large"></i><span id="count"><%=@trip_info.count.to_s if @trip_info%></span></span>
 			</div>
-			<div class="button tiny radius" id="sharetoFB">
-				<a href="#share_button" data-reveal-id="share_button" id="share"><i class="icon-share-alt"></i>分享</a>
+			<div class="large-6 columns right" id="sharetoFB">
+			<a class="button tiny radius " href="#share_button" data-reveal-id="share_button" id="share"><i class="icon-share-alt"></i>分享</a>
 			</div>
 		</div>
 	</div>
