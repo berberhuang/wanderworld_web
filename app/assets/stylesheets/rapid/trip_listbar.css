@@ -59,18 +59,12 @@
 }
 #dates li {
 	list-style: none;	
-	font-size: 1em;
 }
 #dates a {
-	color: #ffffcc;
 	padding-left: 10px;
+	font-size: 1.5em;
 }
-#dates a:hover ,a.selected {
-	color: #ffcc00;
-}
-#dates .selected {
-	color: #ffcc00;
-}
+
 
 
 #trip_logo {

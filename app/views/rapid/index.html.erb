@@ -328,7 +328,8 @@
 	<!--click on a trip-->
 	<div class="large-2 columns gallery list" id="trip_one" style="<%='display:none;' if !@trip_id && !@journal_id %>" >
 		<a class="button tiny radius secondary black" id="return_triplist" href="/rapid/triplist/<%=@author_id%>" >
-		<i class="icon-level-up icon-rotate-270 pull-left black"></i>旅行列表</a>
+			<i class="icon-level-up icon-rotate-270 pull-left black"></i>旅行列表
+		</a>
 		<div class="row"  style="margin-top:20px;">
 				<div class="columns" id="trip_name">
 					<%=tripName_gen(@trip_info) if @trip_info%>
@@ -349,23 +350,25 @@
 				<%=tripPointList_gen(@groups,@tripPoints) if @groups&&@tripPoints%>
 			</div>
 		</div>
-		<div class="row columns" id="group_create_button" style="<%='display:none' if !@isOwner%>">
-		<div class="large-centered">
-			<a class="add_group_title button round secondary" href="#">新增遊記<i class="foundicon-add-doc"></i></a>	
+		<div class="row" id="group_create_button" style="<%='display:none' if !@isOwner%>">
+			<div class="large-10 large-offset-2 columns">
+				<a class="add_group_title button tiny round secondary" href="#">新增遊記
+				<i class="foundicon-add-doc">
+				</i></a>
+			</div>
+		</div>
+		<hr style="margin:0 0 5px 0"/>
+		<div class="row" id="trippoint-list-bottom">
+			<div class="large-7 columns">
+				<p><i class="icon-eye-open icon-large"></i><span id="count"><%=@trip_info.count.to_s if @trip_info%></span></p>	
+			</div>
+			<div class="large-4 columns button radius tiny pull-1" id="share" data-reveal-id="share_button">
+				<i class="icon-share-alt"></i>分享
+			</div>
 		</div>
 		
-		</div>
-		<div class="row" id="trip-points-list-bottom">
-			<div id="view_num" class="large-6 columns">
-			<span><i class="icon-eye-open icon-large"></i><span id="count"><%=@trip_info.count.to_s if @trip_info%></span></span>
-			</div>
-			<div class="large-6 columns right" id="sharetoFB">
-			<a class="button tiny radius " href="#share_button" data-reveal-id="share_button" id="share"><i class="icon-share-alt"></i>分享</a>
-			</div>
-		</div>
 	</div>
 </div>
-
 
 <!--share-->
 <div id="share_button" class="reveal-modal small">
