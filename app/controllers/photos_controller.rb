@@ -17,7 +17,7 @@ class PhotosController < ApplicationController
 
   def album			
 	@trip_id=params[:id]
-	@authors=Trip.joins(:user).select('users.username,users.id').where(:id => @trip_id)
+	@authors=Trip.select('trips.name,users.username,users.id').where(:id => @trip_id).joins(:user)
 	
 	if @authors.length==0
 		redirect_to '/'
@@ -25,6 +25,7 @@ class PhotosController < ApplicationController
 		@author=@authors[0]
 		@author_id=@author.id
 		@author_name=@author.username
+		@trip_name=@authors.name
 
 		@photo_rows=[]
 		@photo_rows=Photo.select('*').where('trip_id=?',@trip_id).order('created_at ASC')
@@ -89,7 +90,7 @@ class PhotosController < ApplicationController
 			end
 			redirect_to '/'
 		end
-  end
+	end
 
 	def index
 		redirect_to '/'
