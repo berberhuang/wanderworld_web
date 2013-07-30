@@ -78,6 +78,7 @@ class RapidController < ApplicationController
 	def test
 		@newuser=User.new
 		@user_session=UserSession.new
+		@photo=Photo.new
 	end
 
 	def logSrcURL str

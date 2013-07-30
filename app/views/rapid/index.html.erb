@@ -3,7 +3,9 @@
 	@trip_selected=true
 
 	@trip_info=Trip.find(@trip_id)
-	@author_id=@trip_info.user_id
+	@author=@trip_info.user
+	@author_id=@author.id
+	@author_name=@author.username
 	@trip_info.count+=1
 	@trip_info.save!
 	@groups=Group.order('sort_id ASC').where(:trip_id=>@trip_id)
@@ -36,6 +38,7 @@
 	<% @author_id=@user_id 
 		@trips=Trip.order('start_date DESC').where(:user_id=>@user_id)
 		@user = User.find(@user_id)
+		@author_name=@user.username
 		
 		if @user.id.to_s==session[:user_id].to_s
 			@isOwner=true
