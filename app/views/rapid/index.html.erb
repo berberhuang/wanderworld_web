@@ -290,7 +290,7 @@
 				<% if @journal_selected %>
 				<% for c in @contents %>
 				<div class="tp_box" id="tp_box_<%=c.id%>" data-id="<%=c.id%>">
-					<%=sanitize c.article, tags: %w(table tr td p img a span hr), attributes: %w(id href src class style height width alt)%>
+					<%=sanitize c.article, tags: %w(table tr td p img a span hr em strong i), attributes: %w(id href src style class height width alt)%>
 				</div>
 				<% end %>
 				<% end %>				
