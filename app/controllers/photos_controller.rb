@@ -25,7 +25,7 @@ class PhotosController < ApplicationController
 		@author=@authors[0]
 		@author_id=@author.id
 		@author_name=@author.username
-		@trip_name=@authors.name
+		@trip_name=@author.name
 
 		@photo_rows=[]
 		@photo_rows=Photo.select('*').where('trip_id=?',@trip_id).order('created_at ASC')

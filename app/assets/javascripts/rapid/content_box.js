@@ -198,10 +198,11 @@ var ContentBoxModule = function(item){
 			removePlugins: 'find,flash,' +
 							'forms,iframe,newpage,' +
 							'smiley,specialchar,stylescombo,templates',
+			extraPlugins: 'customimage',
 			height : '100%',
 			toolbar : [	[ 'Undo','Redo' ],
 						[ 'Link','Unlink' ],
-						[ 'Image' , 'HorizontalRule'],
+						[ 'CustomImage' , 'HorizontalRule'],
 						['FontSize'],
 						'/' ,
 						[ 'Bold','Italic','Underline', 'RemoveFormat','TextColor','Font' ]
