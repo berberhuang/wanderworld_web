@@ -1,5 +1,7 @@
 #return-album-list{
-  width:110px;
+  display: none;
   position: absolute;
-  left: 0px;
+  left: -10px;
 }
+
+

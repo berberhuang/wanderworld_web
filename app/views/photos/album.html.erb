@@ -12,22 +12,17 @@
 %>
 <div class="row wrapper">
     <div class="large-9 columns large-offset-1 gallery panel">
-        <h1>cool</h1>
+        <div class="album-title large-10 columns">
+            <h1>
+            <a class="black" id="return-album-list" href="/photos/all/<%=@author_id%>" title="返回相簿"><i class="icon-level-up icon-rotate-270" ></i></a>
+            <a class="black" href="#">Album Name</a>
+            </h1>
+        </div>
         <hr/>
     	<ul class="large-block-grid-4 small-block-grid-3 clearing-thumbs" data-clearing>
 		<% @photo_src.each do |p| %>
 			<%=photo_tag(p[:picture],p[:source]).html_safe%>
 		<% end %>	
-		<!--
-    		<li><a class="th gallery" href="/yellowbook-life/10395_533917856628131_626399093_n.jpg"><img  src="/yellowbook-life/10395_533917856628131_626399093_n.jpg"></a></li>
-    		<li><a class="th gallery" href="/yellowbook-life/10395_533917856628131_626399093_n.jpg"><img  src="/yellowbook-life/10395_533917856628131_626399093_n.jpg"></a></li>
-    		<li><a class="th gallery" href="/yellowbook-life/10395_533917856628131_626399093_n.jpg"><img  src="/yellowbook-life/10395_533917856628131_626399093_n.jpg"></a></li>
-    		<li><a class="th gallery" href="/yellowbook-life/10395_533917856628131_626399093_n.jpg"><img  src="/yellowbook-life/10395_533917856628131_626399093_n.jpg"></a></li>
-    		<li><a class="th gallery" href="/yellowbook-life/10395_533917856628131_626399093_n.jpg"><img  src="/yellowbook-life/10395_533917856628131_626399093_n.jpg"></a></li>
-    		<li><a class="th gallery" href="/yellowbook-life/10395_533917856628131_626399093_n.jpg"><img  src="/yellowbook-life/10395_533917856628131_626399093_n.jpg"></a></li>
-    		<li><a class="th gallery" href="/yellowbook-life/10395_533917856628131_626399093_n.jpg"><img  src="/yellowbook-life/10395_533917856628131_626399093_n.jpg"></a></li>
-    		<li><a class="th gallery" href="/yellowbook-life/10395_533917856628131_626399093_n.jpg"><img  src="/yellowbook-life/10395_533917856628131_626399093_n.jpg"></a></li>
-    		<li><a class="th gallery" href="/yellowbook-life/10395_533917856628131_626399093_n.jpg"><img  src="/yellowbook-life/10395_533917856628131_626399093_n.jpg"></a></li>-->
     	</ul>
     </div>
     <div class= "large-2 columns gallery list">

@@ -61,6 +61,8 @@ _gaq.push(['_trackPageview']);
     	}
     });
 </script>
+
+
 <!--頭部區塊-->
 <%if UserSession.find%>
 <div class="fixed">
@@ -258,6 +260,9 @@ _gaq.push(['_trackPageview']);
 
 <script>
    $(document).foundation();
+   $(document).ready(function(){
+      showReturnAlbumList()
+   });
 </script>
 </body>
 </html>
