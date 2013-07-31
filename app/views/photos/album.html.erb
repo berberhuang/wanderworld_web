@@ -11,7 +11,9 @@
 	@user_id = params[:user_id]
 %>
 <div class="row wrapper">
-    <div class="large-9 columns large-offset-1">
+    <div class="large-9 columns large-offset-1 gallery panel">
+        <h1>cool</h1>
+        <hr/>
     	<ul class="large-block-grid-4 small-block-grid-3 clearing-thumbs" data-clearing>
 		<% @photo_src.each do |p| %>
 			<%=photo_tag(p[:picture],p[:source]).html_safe%>

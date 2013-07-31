@@ -32,8 +32,7 @@
     list-style: none;
     display: inline-block;
     margin-left: 1.375em;
-    border-bottom:4px solid white;
-	  box-shadow: 0 3px 3px -3px white,0 3px 3px -3px grey ;}
+    border-bottom:4px solid white;}
     .user-function-switcher > li > * {
       margin-bottom: 0.375em;
       display: block; }
