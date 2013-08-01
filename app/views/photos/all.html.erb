@@ -1,7 +1,7 @@
 <div class="row wrapper">
 
     <div class="large-9 columns large-offset-1">
-        <ul class="large-block-grid-4 small-block-grid-2">
+        <ul class="large-block-grid-4 small-block-grid-2" id="album-list">
 		<% @albums.each do |a|%>
 			<%=album_tag(a.trip_id,a.name,a.img(:thumb),a.number).html_safe%>
 		<%end%>
@@ -9,7 +9,9 @@
     </div>
 
     <div class= "large-2 columns gallery list">
-        <h5 class="text-center">旅行相簿</h5>
+                
+        <h5 class="text-center white">旅行相簿</h5>
+
     </div>
 </div>
 

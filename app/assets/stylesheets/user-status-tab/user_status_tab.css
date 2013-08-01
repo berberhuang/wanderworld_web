@@ -18,22 +18,26 @@
 }
 
 
-.user-function-switcher{
+ul.user-function-switcher{
   display: inline-block;
 	background: transparent !important;
-	margin: 10px 12.5% 1.0625em auto;
-  padding: 0;
-  list-style: none;
+  margin-right: 15%;
   overflow: hidden;
 }
-.user-function-switcher > li {
+.user-function-switcher li {
     width:inherit;
     float:none;
     list-style: none;
     display: inline-block;
-    margin-left: 1.375em;
-    border-bottom:4px solid white;}
-    .user-function-switcher > li > * {
-      margin-bottom: 0.375em;
+    padding:10px 0px;
+    margin-left: 1.375em;}
+    
+    .user-function-switcher  li  a{
+      cursor: pointer;
+      margin: 10px 0px;
+      border-bottom:4px solid white;  
       display: block; }
 
+    .user-function-switcher  li  a:hover{
+      font-weight: bold;
+      display: block;}
