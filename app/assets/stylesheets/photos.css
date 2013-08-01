@@ -5,5 +5,6 @@
  *= require_self
  *= require_tree ./foundation
  *= require_tree ./photos
+ *= require_tree ./rapid
  *= require_tree ./user-status-tab
 */

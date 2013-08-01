@@ -3,13 +3,13 @@ module PhotosHelper
 
 	def photo_tag picture, source
 		
-    		'<li><a class="th gallery" href="'+source+'"><img src="'+picture+'"></a></li>'
+    		'<li><a class="th th-item gallery" href="'+source+'" style="background-image:url('+picture+')"><img src="'+picture+' "class="transparent"></a></li>'
 	end
 
 	def album_tag trip_id, trip_name, cover_src, number_of_photo
 		
             '<li><div class="album gallery word-break" href="#">'+
-                '<div><a href="/photos/album/'+trip_id.to_s+'"><img src="'+cover_src+'" /></a></div>'+
+                '<div><a class="th th-item" href="/photos/album/'+trip_id.to_s+'" style="background-image:url('+cover_src+')"></a></div>'+
                 '<div class="album-info">'+
                    '<h6 class="album-name"><a href="/photos/album/'+trip_id.to_s+'">'+trip_name+'</a></h6>'+
                     '<p class="subheader">'+number_of_photo.to_s+'張照片</p>'+

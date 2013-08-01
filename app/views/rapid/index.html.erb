@@ -331,17 +331,15 @@
 	</div>
 	<!--click on a trip-->
 	<div class="large-2 columns gallery list" id="trip_one" style="<%='display:none;' if !@trip_id && !@journal_id %>" >
-		<a class="button tiny radius secondary black" id="return_triplist" href="/rapid/triplist/<%=@author_id%>" >
-			<i class="icon-level-up icon-rotate-270 pull-left black"></i>旅行列表
-		</a>
-		<div class="row"  style="margin-top:20px;">
-				<div class="columns" id="trip_name">
-					<%=tripName_gen(@trip_info) if @trip_info%>
-				</div>
-				
-			
+		<div class="row">
+			<div id="return_triplist" href="/rapid/triplist/<%=@author_id%>">
+				<i class="icon-level-up icon-large icon-rotate-270 pull-left"></i>
+			</div>
+			<div class="columns" id="trip_name">
+				<%=tripName_gen(@trip_info) if @trip_info%>
+			</div>
 		</div>
-		<div id="trip_date" class="row" style="margin:0px;padding:0px;white-space:nowrap;">
+		<div id="trip_date" class="row word-break">
 			<%=tripDate_gen(@trip_info) if @trip_info%>
 		</div>
 		<div id="trip_status" class="row" style="display:none;">狀態：
