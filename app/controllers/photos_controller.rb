@@ -4,6 +4,16 @@ class PhotosController < ApplicationController
 	@user_session=UserSession.new
 	@user_id=params[:id]
 	
+	if !@user_id
+		if session[:user_id]
+			@user_id=session[:user_id].to_s
+			redirect_to '/photos/all/'+@user_id
+		else
+			redirect_to '/'
+		end
+		return
+	end
+	
 	@author_id=@user_id
 	@author=User.find(@author_id) if @author_id
 	if @author
@@ -17,6 +27,16 @@ class PhotosController < ApplicationController
 
   def album			
 	@trip_id=params[:id]
+	if !@trip_id
+		if session[:user_id]
+			@user_id=session[:user_id].to_s
+			redirect_to '/photos/all/'+@user_id
+		else
+			redirect_to '/'
+		end
+		return
+	end
+
 	@authors=Trip.select('trips.name,users.username,users.id').where(:id => @trip_id).joins(:user)
 	
 	if @authors.length==0
@@ -42,7 +62,6 @@ class PhotosController < ApplicationController
 			format.json {render json: @photo_src}
 		end
 	end
-
   end
 
   def photo
