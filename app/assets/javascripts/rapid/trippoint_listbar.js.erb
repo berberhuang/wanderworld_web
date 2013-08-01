@@ -47,16 +47,15 @@ var TripPointListbarModule = function(obj){
 		//按下返回旅行列表(click)
 		returnTripList:function(){
 			//resetEnv();		
-			contentBox.cancelEditWarning(-1,function(){
-				target.hide();
-				PathOnMap.closeInfoWindow();
-				contentBox.UiControl.hide();
-				contentBox.reset();
-				$('#trip_list').show();
-				loadTripList(DataStatus.owner_user_id);
-				map.setCenter(new google.maps.LatLng(23.80, 121.500));
-				map.setZoom(8);
-			});
+			if(!contentBox.UiControl.hide())
+				return false;
+			target.hide();
+			PathOnMap.closeInfoWindow();
+			contentBox.reset();
+			$('#trip_list').show();
+			loadTripList(DataStatus.owner_user_id);
+			map.setCenter(new google.maps.LatLng(23.80, 121.500));
+			map.setZoom(8);
 		}		
 		
 	};

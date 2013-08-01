@@ -133,12 +133,12 @@ var TrippointItemModule=function(obj){
 	
 	//在增加景點框按enter(keydown)
 	var enterTripPoint=function(event,group_id,item){
-		target.find("#newTripPoint").unbind("clickoutside");
 		if(event.keyCode==13||event.type=='click'){
-			var item_id=$(event.target).parent().val();
 			
+			if(!contentBox.UiControl.hideContent())							return false;	
+			var item_id=$(event.target).parent().val();		
+			target.find("#newTripPoint").unbind("clickoutside");
 			addItem(group_id,item);			
-			contentBox.UiControl.hideContent();					
 		}
 	};
 	

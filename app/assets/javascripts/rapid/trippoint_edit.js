@@ -79,12 +79,6 @@ var TripPointEditModule = function(item){
 				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmOk()">確定</button>&nbsp'
 				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmCancel()">取消</button></div>'
 				+'<a class="button alert tiny radius right white" id="isWrong" href="javascript:tripPointEdit.UiListener.wrongTripPoint()">位置錯了嗎?</a>';	
-		if(confirmWindow){
-			if(confirmWindow.s_new)
-				tripPointEdit.UiListener.confirmNewOK();
-			else
-				tripPointEdit.UiListener.confirmOk();
-		}
 		confirmWindow = new google.maps.InfoWindow({
 			 content: contentStr,
 			 s_new:false
@@ -114,16 +108,6 @@ var TripPointEditModule = function(item){
 				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmNewOK()">確定</button>&nbsp;'
 				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmCancel()">取消</button></div>'
 				+'<a class="button alert tiny radius right white" id="isWrong" href="javascript:tripPointEdit.UiListener.wrongTripPoint()">位置錯了嗎？</a>';	
-		if(confirmWindow){
-			var s=(confirmWindow);
-			if(confirmWindow.s_new)
-				tripPointEdit.UiListener.confirmNewOK();
-			else
-				tripPointEdit.UiListener.confirmOk();
-			if(s)
-				return;
-			//closePost();
-		}
 		confirmWindow = new google.maps.InfoWindow({
 			 content: contentStr,
 			s_new:true
@@ -151,10 +135,6 @@ var TripPointEditModule = function(item){
 	//需要新增找不到位置的地點
 	var setNewManPos=function(){
 		if(confirmWindow){
-			if(confirmWindow.s_new)
-				this.UiListener.confirmNewOK();
-			else
-				this.UiListener.confirmOk();
 			$('#slidesContainer').hide();
 		}
 		PathOnMap.closeInfoWindow();
@@ -211,6 +191,7 @@ var TripPointEditModule = function(item){
 					city="";
 				writePlaceToDB(name,city,latlng);
 			}else{
+				writePlaceToDB(name,"Global",latlng);
 			}
 		});
 	};
@@ -419,8 +400,9 @@ var TripPointEditModule = function(item){
 				var tmp_mark=PathOnMap.getTmpMark();
 				if(tmp_mark){
 					findZoneByPos(newTripPointData.name,tmp_mark.position);
-				}else
+				}else{
 					tripPointEdit.UiListener.confirmCancel();
+				}
 				$('#add_new').hide();
 			},
 			wrongTripPoint:function(){

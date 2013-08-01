@@ -37,16 +37,22 @@ var ContentBoxModule = function(item){
 	
 	//展開遊記	
 	var bounce=function(){		
+		readJournal_s=true;
 		target.css('z-index','0');			
+		setTitle($('.trip_point_group:[data-id='+show_group_id+'] .journal_title a').text()+' - WanderWorld地球漫遊');
 	};
 	//收合遊記
 	var collapse=function(stopShow){
 		if(edit_group_id){
-			for(var i in editor){
-				editor[i].focusManager.blur();
-			}
+			if(window.confirm('確定放棄編輯內容?') == false){	
+				return false;
+			}	
+			exitEditor();
 		}
+		readJournal_s=false;
 		target.css('z-index','-1');
+		setTitle(DataStatus.trip_name+' - WanderWorld地球漫遊');
+		return true;
 	};
 
 	var initInterface=function(){
@@ -255,8 +261,9 @@ var ContentBoxModule = function(item){
 
 		clickJournalSwitchToggle:function(){
 			if(isBounce()){
-				readJournal_s=false;
-				collapse();
+				if(!collapse()){
+					return;
+				}
 				var id=tripPointItemManager.getSelectedTripPointId();
 				if(id){
 					PathOnMap.centerTripPointOnAllMap(id);
@@ -265,9 +272,7 @@ var ContentBoxModule = function(item){
 					var group_id=groupItemManager.getSelectedGroupId();
 					PathOnMap.centerGroupOnMap();
 				}
-				setTitle(DataStatus.trip_name+' - WanderWorld地球漫遊');
 			}else{
-				readJournal_s=true;
 				bounce();
 				var id=tripPointItemManager.getSelectedTripPointId();
 				if(id){
@@ -286,7 +291,6 @@ var ContentBoxModule = function(item){
 							moduleInstance.UiControl.showBlankContentBox($('.trip_point_group:first').data('id'));		
 					}
 				}
-				setTitle($('.trip_point_group:[data-id='+show_group_id+'] .journal_title a').text()+' - WanderWorld地球漫遊');
 				
 				tipInstance.show(6);
 				tipInstance.disable();				
@@ -420,12 +424,17 @@ var ContentBoxModule = function(item){
 		},
 		UiControl:{
 			hide:function(){
-				collapse();
+				if(!collapse())
+					return false;
 				hideJournalSwitchToggle();
+				return true;
 			},
 			hideContent:function(){
-				if(isBounce())
-					collapse();
+				if(isBounce()){
+					if(!collapse())
+						return false;
+				}
+				return true;
 			},
 			showJournalSwitchToggle:function(){
 				showJournalSwitchToggle();
@@ -688,7 +697,7 @@ var ContentBoxModule = function(item){
 			bounce();
 		},
 		collapse:function(){
-			collapse();
+			return collapse();
 		},
 		isShow:function(){
 			if(show_group_id!=null)
