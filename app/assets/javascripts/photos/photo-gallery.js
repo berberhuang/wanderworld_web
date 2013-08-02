@@ -15,11 +15,15 @@ var locationLabel=function(){
 	picker.find('li').click(function(){
 			picker.find('.labelClicked').removeClass('labelClicked').addClass('labelUnclicked');
 			var target=$(this);
+			var hideBlock=$('#none');
 			target.addClass('labelClicked').removeClass('labelUnclicked');
 			var location_id=target.data('location_id');
-			if(location_id)
-				$('#photo_container').find('li:[data-loction_id!='+location_id+']').hide().end().find('li:[data-location_id='+location_id+']').show();
-			else
-				$('#photo_container li').show();
+			var photoContainer=$('#photo_container');
+			if(location_id){
+				photoContainer.find('li:[data-location_id!='+location_id+']').appendTo(hideBlock);
+				hideBlock.find('li:[data-location_id='+location_id+']').appendTo(photoContainer);
+			}else{
+				hideBlock.find('li').appendTo(photoContainer);
+			}
 	})
 }
