@@ -12,50 +12,25 @@
 %>
 <div class="row wrapper">
     <div class="large-9 columns large-offset-1 gallery panel">
-        <div class="album-title large-10 columns">
+        <div class="album-title large-9 columns">
             <h1>
             <a class="black" id="return-album-list" href="/photos/all/<%=@author_id%>" title="返回相簿"><i class="icon-level-up icon-rotate-270" ></i></a>
             <a class="black" href="#"><%=@trip_name%></a>
             </h1>
         </div>
         <hr/>
-    	<ul class="large-block-grid-4 small-block-grid-3 clearing-thumbs" data-clearing>
+    	<ul id="photo_container" class="large-block-grid-4 small-block-grid-2 clearing-thumbs" data-clearing>
 		<% @photo_src.each do |p| %>
-			<%=photo_tag(p[:picture],p[:source]).html_safe%>
+			<%=photo_tag(p[:picture],p[:source],p[:place_id]).html_safe%>
 		<% end %>	
     	</ul>
     </div>
-    <div class= "large-2 columns gallery list">
-    	<div class="row">
-            <div id="return_triplist" href="/rapid/triplist/<%=@author_id%>">
-                <i class="icon-level-up icon-large icon-rotate-270 pull-left"></i>
-            </div>
-            <div class="columns" id="trip_name">
-                <%=tripName_gen(@trip_info) if @trip_info%>
-            </div>
-        </div>
-        <div id="trip_date" class="row word-break">
-            <%=tripDate_gen(@trip_info) if @trip_info%>
-
-        </div>
-        <div id="trip_status" class="row" style="display:none;">狀態：
-            <a style="color:#FB9B35"></a>
-        </div>
-        <hr />
-        <div class="loading load_name row text-center" id="load_point">請稍候</div>
-        <div class="row" id="trip_point_list">
-            <div class="columns trip_point_all">
-                <%=tripPointList_gen(@groups,@tripPoints) if @groups&&@tripPoints%>
-            </div>
-        </div>
-        <hr style="margin:0 0 5px 0"/>
-        <div class="row" id="trippoint-list-bottom">
-            <div class="large-7 columns">
-                <p><i class="icon-eye-open icon-large"></i><span id="count"><%=@trip_info.count.to_s if @trip_info%></span></p> 
-            </div>
-            <div class="large-4 columns button radius tiny pull-1" id="share" data-reveal-id="share_button">
-                <i class="icon-share-alt"></i>分享
-            </div>
-        </div>
+    <div class="location-picker large-2 columns">
+        <ul class="no-bullet">
+            <li class="labelClicked"><a href="#">全部</a></li>
+            <% @location_rows.each do |l| %>
+                <%=location_picker(l.name,l.place_id).html_safe%>
+            <%end%>
+        </ul>
     </div>
 </div>

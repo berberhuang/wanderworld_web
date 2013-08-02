@@ -1,6 +1,7 @@
 class Photo < ActiveRecord::Base
 	belongs_to :trip
 	belongs_to :user
+	belongs_to :place
 	attr_accessible :img ,:trip_id, :user_id, :trip_point_id
 	has_attached_file :img ,
 	:url=>':s3_domain_url',

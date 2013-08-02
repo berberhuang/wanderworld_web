@@ -45,7 +45,7 @@ module RapidHelper
 	end
 	
 	def tripDate_gen(trip_info)
-		str='<div style="cursor:pointer;"><h4 class="white"></h4>'
+		str='<div style="cursor:pointer;"><h6 class="white"></h6>'
 		if trip_info.start_date == trip_info.end_date
 			start_date=ERB::Util.html_escape(trip_info.start_date.to_s.gsub('-','/'))
 			str+='<a>'+start_date+'</a>'

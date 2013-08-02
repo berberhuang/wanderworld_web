@@ -49,9 +49,12 @@ class PhotosController < ApplicationController
 
 		@photo_rows=[]
 		@photo_rows=Photo.select('*').where('trip_id=?',@trip_id).order('created_at ASC')
+		@location_rows=TripPoint.select('*,places.name').where('trip_id=?',@trip_id).group('place_id').order('group_id,sort_id ASC').joins(:place)
 		@photo_src=[]
+
 		@photo_rows.each do |p|
 			@photo_src.push({
+				:place_id=>p.place_id,
 				:picture=>p.img(:thumb),
 				:source=>p.img(:original)
 			})
