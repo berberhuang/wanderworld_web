@@ -82,6 +82,7 @@ module RapidHelper
 				str+=' data-sort_id="'+tripPoints[iter].sort_id.to_s+'"'
 				str+=' data-latitude="'+tripPoints[iter].latitude.to_s+'"'
 				str+=' data-longitude="'+tripPoints[iter].longitude.to_s+'"'
+				str+=' data-place_id="'+tripPoints[iter].place_id.to_s+'"'
 				str+='>'
 				str+='<div class="row">' 
 				str+='<div class="large-2 columns">'

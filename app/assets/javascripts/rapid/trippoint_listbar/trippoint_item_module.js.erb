@@ -4,12 +4,12 @@ var TrippointItemModule=function(obj){
 	//設定當前所在 景點列表
 	var setTripPointList=function(tpList){
 		for(i=0;i<tpList.length;i++){
-			insertTripPoint(tpList[i].id,tpList[i].group_id,tpList[i].sort_id,tpList[i].place.name,tpList[i].place.latitude, tpList[i].place.longitude);
+			insertTripPoint(tpList[i].id,tpList[i].place_id,tpList[i].group_id,tpList[i].sort_id,tpList[i].place.name,tpList[i].place.latitude, tpList[i].place.longitude);
 		}
 	};
 	
 	//加入景點
-	var insertTripPoint=function(i,group_id, sort_id,title, lat, lng){
+	var insertTripPoint=function(i,place_id,group_id, sort_id,title, lat, lng){
 		str='';		
 		str+='<li>';
 		str+='<div class="point columns"'; 
@@ -17,6 +17,7 @@ var TrippointItemModule=function(obj){
 		str+=' data-sort_id="'+sort_id+'"';
 		str+=' data-latitude="'+lat+'"';
 		str+=' data-longitude="'+lng+'"';
+		str+=' data-place_id="'+place_id+'"';
 		str+='>';
 		str+='<div class="row">'; 
 		str+='<div class="large-2 columns">';
@@ -197,7 +198,6 @@ var TrippointItemModule=function(obj){
 	
 	return {
 		init:function(){
-			console.log('裝載tripPointList');
 			var tripPointPane=target.find('#trip_point_list').addClass('scroll-pane')
 		},
 		initJavascript:function(){
@@ -233,8 +233,11 @@ var TrippointItemModule=function(obj){
 		addNewTripPoint:function(event,group_id,item){
 			enterTripPoint(event,group_id,item);
 		},
-		insertTripPoint:function(i,group_id,sort_id,title,lat,lng){
-			insertTripPoint(i,group_id,sort_id,title,lat,lng);
+		insertTripPoint:function(i,place_id,group_id,sort_id,title,lat,lng){
+			insertTripPoint(i,place_id,group_id,sort_id,title,lat,lng);
+		},
+		getPlaceIdByTripPointId:function(tp_id){
+			return target.find('.point:[data-id='+tp_id+']').data('place_id')		
 		}
 	};
 };

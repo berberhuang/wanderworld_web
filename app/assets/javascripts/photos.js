@@ -10,4 +10,3 @@
 //= require_tree ./photos
 //= require_tree ./jquery_ui
 //= require_tree ./foundation
-

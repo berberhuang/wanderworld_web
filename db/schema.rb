@@ -71,8 +71,18 @@ ActiveRecord::Schema.define(:version => 20130802072517) do
     t.datetime "updated_at"
   end
 
-# Could not dump table "photos" because of following StandardError
-#   Unknown type 'place_id' for column 'interger'
+  create_table "photos", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "trip_id"
+    t.integer  "trip_point_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "img_file_name"
+    t.string   "img_content_type"
+    t.integer  "img_file_size"
+    t.datetime "img_updated_at"
+    t.integer  "place_id"
+  end
 
   create_table "places", :force => true do |t|
     t.string   "name"

@@ -2,7 +2,7 @@ class Photo < ActiveRecord::Base
 	belongs_to :trip
 	belongs_to :user
 	belongs_to :place
-	attr_accessible :img ,:trip_id, :user_id, :trip_point_id
+	attr_accessible :img ,:trip_id, :user_id, :place_id
 	has_attached_file :img ,
 	:url=>':s3_domain_url',
 	:path => "photos/:photos_trip_id/:style/:id:basename.:extension",
@@ -23,7 +23,8 @@ class Photo < ActiveRecord::Base
 		"name" => read_attribute(:img_file_name),
 		"size" => read_attribute(:img_file_size),
 		"url" => img.url(:thumb),
-		"original"=>img.url(:original)
+		"original"=>img.url(:original),
+		"id"=>id
 		#"delete_url" => file.path(self),
 		#"delete_type" => "DELETE" 
 		}

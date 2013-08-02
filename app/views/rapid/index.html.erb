@@ -9,7 +9,7 @@
 	@trip_info.count+=1
 	@trip_info.save!
 	@groups=Group.order('sort_id ASC').where(:trip_id=>@trip_id)
-	@tripPoints=TripPoint.select('trip_points.id,group_id,sort_id,name,longitude,latitude').order('group_id,sort_id ASC').joins(:place).where(:trip_id=>@trip_id)
+	@tripPoints=TripPoint.select('trip_points.id,group_id,sort_id,place_id,name,longitude,latitude').order('group_id,sort_id ASC').joins(:place).where(:trip_id=>@trip_id)
 		
 	@journal_selected=false
 	@contents=[]

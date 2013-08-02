@@ -196,12 +196,13 @@ var ContentBoxModule = function(item){
 					
 					PathOnMap.centerTripPointOnLeftMap(id);
 					PathOnMap.showTripPointInfo(id);
+					edit_id=id;
 					$('.tp_box').attr('title','');
 				
 				}
 			},
 								// Remove unnecessary plugins to make the editor simpler.
-			removePlugins: 'find,flash,' +
+			removePlugins: 'find,flash,image,' +
 							'forms,iframe,newpage,' +
 							'smiley,specialchar,stylescombo,templates',
 			extraPlugins: 'customimage',

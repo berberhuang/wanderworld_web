@@ -26,7 +26,6 @@
 					target=$(this.getSelectedElement().$);
 					var content=$(this.getContentElement('page','edit').getElement().$);
 					var size=target.attr('width');
-					console.log(size);
 
 					switch(size){
 						case '100%':

@@ -20,6 +20,8 @@
 			var isFBLogin=false;
 			
 			var accessToken=null;
+
+			var needReloadAlbum=true;
 			
 			var showAlbum=function(obj,datas){
 				var ul=obj.find('.img_plugin_albums ul');
@@ -96,15 +98,17 @@
 			
 
 			var attachFileUploadListener=function(file_selector,preview_ul){
+				var place_id=tripPointItemManager.getPlaceIdByTripPointId(contentBox.getEditTripPointId());
 				file_selector.fileupload({
 					datatype: 'json',
 					autoUpload: true,
-					formData:{'photo[trip_id]':DataStatus.trip_id,'photo[trip_point_id]':contentBox.getEditTripPointId()},
+					formData:{'photo[trip_id]':DataStatus.trip_id,'photo[trip_point_id]':place_id,'photo[place_id]':place_id},
 					acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
 					disableImageResize: /Android(?!.*Chrome)|Opera/
 						.test(window.navigator && navigator.userAgent)
 				}).bind('fileuploadadd',function(e,data){
 					var imgObj=$('<li data-filename="'+data.files[0].name+'" class="img_plugin_selected"><img src=""/><div class="img_plugin_progress_bar"><div></div></div></li>');
+					needReloadAlbum=true;
 					imgObj.appendTo(preview_ul)
 						.click(function(event){
 							var tmp=$(event.target).parents('li');
@@ -121,7 +125,7 @@
 					$.each(JSON.parse(data.result).files, function (index, file) {
 						if(!index){
 							var imgObj=preview_ul.find('li:[data-filename="'+file.name+'"]');
-							imgObj.find('img').attr('src',file.url).data('src',file.original);
+							imgObj.find('img').attr('src',file.url).data('src',file.original).data('id',file.id);
 							imgObj.find('.img_plugin_progress_bar').hide();
 						}
 					});
@@ -141,10 +145,12 @@
 
 			var getAlbum=function(preview){
 				
-				var loadPhotoToAlbumContainer=function(result){	
+				var loadPhotoToAlbumContainer=function(result){
+					var ul=preview.find('ul');
+					ul.empty();	
 					for(var i=0;i<result.length;i++){
 						data=result[i];
-						var imgObj=$('<li class="img_plugin_unselected"><img src="'+data.picture+'" data-src="'+data.source+'"/></li>').appendTo(preview.find('ul'))
+						var imgObj=$('<li class="img_plugin_unselected" data-id="'+data.id+'"><img src="'+data.picture+'" data-src="'+data.source+'" /></li>').appendTo(ul)
 							.click(function(event){
 								var tmp=$(event.target).parents('li');
 								if(tmp.hasClass('img_plugin_unselected')){
@@ -170,110 +176,9 @@
 					this.insertType='url';
 					$(this.getContentElement('url','preview').getElement().$).find('ul').empty();
 					$(this.getContentElement('upload','preview').getElement().$).find('ul').empty();
-				/*	moduleInstance=this;
-					this.imageElement = false;
-					this.linkElement = false;
 
-					// Default: create a new element.
-					this.imageEditMode = false;
-					this.linkEditMode = false;
-
-					this.lockRatio = true;
-					this.userlockRatio = 0;
-					this.dontResetSize = false;
-					this.firstLoad = true;
-					this.addLink = false;
-
-					var editor = this.getParentEditor(),
-						sel = editor.getSelection(),
-						element = sel && sel.getSelectedElement(),
-						link = element && editor.elementPath( element ).contains( 'a', 1 );
-
-					//Hide loader.
-					CKEDITOR.document.getById( imagePreviewLoaderId ).setStyle( 'display', 'none' );
-					// Create the preview before setup the dialog contents.
-					previewPreloader = new CKEDITOR.dom.element( 'img', editor.document );
-					this.preview = CKEDITOR.document.getById( previewImageId );
-
-					// Copy of the image
-					this.originalElement = editor.document.createElement( 'img' );
-					this.originalElement.setAttribute( 'alt', '' );
-					this.originalElement.setCustomData( 'isReady', 'false' );
-
-					if ( link ) {
-						this.linkElement = link;
-						this.linkEditMode = true;
-
-						// Look for Image element.
-						var linkChildren = link.getChildren();
-						if ( linkChildren.count() == 1 ) // 1 child.
-						{
-							var childTagName = linkChildren.getItem( 0 ).getName();
-							if ( childTagName == 'img' || childTagName == 'input' ) {
-								this.imageElement = linkChildren.getItem( 0 );
-								if ( this.imageElement.getName() == 'img' )
-									this.imageEditMode = 'img';
-								else if ( this.imageElement.getName() == 'input' )
-									this.imageEditMode = 'input';
-							}
-						}
-						// Fill out all fields.
-						if ( dialogType == 'image' )
-							this.setupContent( LINK, link );
-					}
-
-					if ( element && element.getName() == 'img' && !element.data( 'cke-realelement' ) || element && element.getName() == 'input' && element.getAttribute( 'type' ) == 'image' ) {
-						this.imageEditMode = element.getName();
-						this.imageElement = element;
-					}
-
-					if ( this.imageEditMode ) {
-						// Use the original element as a buffer from  since we don't want
-						// temporary changes to be committed, e.g. if the dialog is canceled.
-						this.cleanImageElement = this.imageElement;
-						this.imageElement = this.cleanImageElement.clone( true, true );
-
-						// Fill out all fields.
-						this.setupContent( IMAGE, this.imageElement );
-					} else
-						this.imageElement = editor.document.createElement( 'img' );
-
-					// Refresh LockRatio button
-					switchLockRatio( this, true );
-
-					// Dont show preview if no URL given.
-					if ( !CKEDITOR.tools.trim( this.getValueOf( 'info', 'txtUrl' ) ) ) {
-						this.preview.removeAttribute( 'src' );
-						this.preview.setStyle( 'display', 'none' );
-					}
-					
-
-					// install fbSelector
-					var setFbPhotoUrl=function(url){
-						moduleInstance.setValueOf('info','txtUrl',url);
-					};
-
-					this.getContentElement( 'info', 'fbSelector' ).on('click',function(){
-					
-						if(!isFBLogin){
-							FB.login(function (response) {
-								if (response.authResponse) {
-									id = null;
-									if ( $(this).attr('data-id') ) id = $(this).attr('data-id');
-										fbphotoSelect(id,setFbPhotoUrl);
-										isFBLogin=true;
-									} else {
-										return;
-									}
-								}, {scope:'user_photos'});
-						}else{
-							id = null;
-							if ( $(this).attr('data-id') ) id = $(this).attr('data-id');
-								fbphotoSelect(id,setFbPhotoUrl);
-						}
-					});;
-				*/
 				},
+
 				onOk: function() {
 					var selected=[];
 					if(this.insertType=='url'){
@@ -291,6 +196,9 @@
 						selected=$(this.getContentElement('album','preview').getElement().$).find('.img_plugin_selected');
 						for(var i=0;i<selected.length;i++){
 							editor.insertHtml('<img src="'+selected.eq(i).find('img').data('src')+'" />');
+							var photo_id=selected.eq(i).data('id');
+							var place_id=tripPointItemManager.getPlaceIdByTripPointId(contentBox.getEditTripPointId());
+							$.post('/photos/setLocation',{id:photo_id,place_id:place_id});
 						}
 
 					}else if(this.insertType=='other'){
@@ -299,95 +207,18 @@
 							editor.insertHtml('<img src="'+selected.eq(i).find('img').data('src')+'" />');
 						}
 					}
-					/*
-					// Edit existing Image.
-					if ( this.imageEditMode ) {
-						var imgTagName = this.imageEditMode;
-
-						// Image dialog and Input element.
-						if ( dialogType == 'image' && imgTagName == 'input' && confirm( editor.lang.image.button2Img ) ) {
-							// Replace INPUT-> IMG
-							imgTagName = 'img';
-							this.imageElement = editor.document.createElement( 'img' );
-							this.imageElement.setAttribute( 'alt', '' );
-							editor.insertElement( this.imageElement );
-						}
-						// ImageButton dialog and Image element.
-						else if ( dialogType != 'image' && imgTagName == 'img' && confirm( editor.lang.image.img2Button ) ) {
-							// Replace IMG -> INPUT
-							imgTagName = 'input';
-							this.imageElement = editor.document.createElement( 'input' );
-							this.imageElement.setAttributes({
-								type: 'image',
-								alt: ''
-							});
-							editor.insertElement( this.imageElement );
-						} else {
-							// Restore the original element before all commits.
-							this.imageElement = this.cleanImageElement;
-							delete this.cleanImageElement;
-						}
-					} else // Create a new image.
-					{
-						var imgTagName = this.imageEditMode;
-						// Image dialog -> create IMG element.
-						if ( dialogType == 'image' )
-							this.imageElement = editor.document.createElement( 'img' );
-						else {
-							this.imageElement = editor.document.createElement( 'input' );
-							this.imageElement.setAttribute( 'type', 'image' );
-						}
-						this.imageElement.setAttribute( 'alt', '' );
-					}
 					
-					// Create a new link.
-					if ( !this.linkEditMode )
-						this.linkElement = editor.document.createElement( 'a' );
-
-					// Set attributes.
-					this.commitContent( IMAGE, this.imageElement );
-					this.commitContent( LINK, this.linkElement );
-
-					// Remove empty style attribute.
-					if ( !this.imageElement.getAttribute( 'style' ) )
-						this.imageElement.removeAttribute( 'style' );
-
-					// Insert a new Image.
-					if ( !this.imageEditMode ) {
-						if ( this.addLink ) {
-							//Insert a new Link.
-							if ( !this.linkEditMode ) {
-								editor.insertElement( this.linkElement );
-								this.linkElement.append( this.imageElement, false );
-							} else //Link already exists, image not.
-							editor.insertElement( this.imageElement );
-						} else
-							editor.insertElement( this.imageElement );
-					} else // Image already exists.
-					{
-						//Add a new link element.
-						if ( !this.linkEditMode && this.addLink ) {
-							editor.insertElement( this.linkElement );
-							this.imageElement.appendTo( this.linkElement );
-						}
-						//Remove Link, Image exists.
-						else if ( this.linkEditMode && !this.addLink ) {
-							editor.getSelection().selectElement( this.linkElement );
-							editor.insertElement( this.imageElement );
-						}
-					}
-					*/
-					
+					var preview=$(this.getContentElement('album','preview').getElement().$);
+					preview.find('.img_plugin_selected').removeClass('img_plugin_selected').addClass('img_plugin_unselected');
 				},
 				onLoad: function() {
-					var album_loaded=false;
 					this.on('selectPage',function(event){
 						this.insertType=event.data.page;
 						if(this.insertType=='album'){
-							if(!album_loaded){
+							if(needReloadAlbum){
 								var preview=$(this.getContentElement('album','preview').getElement().$);
 								getAlbum(preview);
-								album_loaded=true;
+								needReloadAlbum=false;
 							}
 						}						
 					});

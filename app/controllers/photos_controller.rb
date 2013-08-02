@@ -55,6 +55,7 @@ class PhotosController < ApplicationController
 		@photo_rows.each do |p|
 			@photo_src.push({
 				:place_id=>p.place_id,
+				:id=>p.id,
 				:picture=>p.img(:thumb),
 				:source=>p.img(:original)
 			})
@@ -137,6 +138,28 @@ class PhotosController < ApplicationController
 			respond_to do |format|
 				format.all {render json: @photo.errors,status: :unprocessable_entity}
 			end
+		end
+	end
+
+	def setLocation
+		id=params[:id]
+		place_id=params[:place_id]
+		if(id && place_id)
+			p=Photo.find(id)
+			if(p.user_id!=session[:user_id])
+				render :json=>false
+				return 	
+			end
+
+			p[:place_id]=place_id
+
+			if(p.save!)
+				render :json=>true
+			else
+				render :json=>false
+			end
+		else
+			render :json=>false
 		end
 	end
 	
