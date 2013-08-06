@@ -1,9 +1,16 @@
 # encoding: UTF-8
 module PhotosHelper
 
-	def photo_tag picture, source, location_id
+	def photo_tag picture, source, location_id, show_editor
 		
-    		'<li data-location_id="'+location_id.to_s+'"><a class="th th-item gallery" href="'+source+'" style="background-image:url(\''+picture+'\')"><img src="'+picture+' "class="transparent"></a></li>'
+    		str='<li data-location_id="'+location_id.to_s+'" style="display:block">'+
+        #照片tool
+        '<a class="th th-item gallery" href="'+source+'" style="background-image:url(\''+picture+'\')">'+
+        '<img src="'+picture+' "class="transparent"></a>'
+        if show_editor
+          str+='<div id="photoEditor"><a href="#"><i class="icon-trash"></i></a></div>'
+        end
+        str+='</li>'
 	end
 
 	def album_tag trip_id, trip_name, cover_src, number_of_photo

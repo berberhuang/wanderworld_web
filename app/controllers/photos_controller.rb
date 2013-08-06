@@ -27,6 +27,7 @@ class PhotosController < ApplicationController
 
   def album			
 	@trip_id=params[:id]
+
 	if !@trip_id
 		if session[:user_id]
 			@user_id=session[:user_id].to_s
@@ -46,6 +47,7 @@ class PhotosController < ApplicationController
 		@author_id=@author.id
 		@author_name=@author.username
 		@trip_name=@author.name
+		
 
 		@photo_rows=[]
 		@photo_rows=Photo.select('*').where('trip_id=?',@trip_id).order('created_at ASC')
@@ -62,7 +64,12 @@ class PhotosController < ApplicationController
 		end
 	
 		respond_to do |format|
-			format.html
+			format.html {
+				@newuser=User.new
+				@user_session=UserSession.new
+				@user_id=session[:user_id]
+				@isOwner=(@author.id == @user_id)								
+			}
 			format.json {render json: @photo_src}
 		end
 	end

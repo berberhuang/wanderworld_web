@@ -1,31 +1,20 @@
 
-<%
-
-	@newuser=User.new
-	@user_session=UserSession.new
-				
-	@trip_id=params[:id]
-	@journal_id=params[:tp_id]	
-	
-	#從處理要求triplist要求
-	@user_id = params[:user_id]
-%>
 <div class="row wrapper">
     <div class="large-9 columns large-offset-1 gallery panel">
-        <div class="album-title large-9 columns">
+        <div class="album-title large-10 columns">
             <h1>
             <a class="black" id="return-album-list" href="/photos/all/<%=@author_id%>" title="返回相簿"><i class="icon-level-up icon-rotate-270" ></i></a>
             <a class="black" href="#"><%=@trip_name%></a>
             </h1>
         </div>
         <hr/>
-    	<ul id="photo_container" class="large-block-grid-4 small-block-grid-2 clearing-thumbs" data-clearing>
+    	<ul id="photo_container" class="large-block-grid-6 small-block-grid-2 clearing-thumbs" data-clearing>
 		<% @photo_src.each do |p| %>
-			<%=photo_tag(p[:picture],p[:source],p[:place_id]).html_safe%>
+			<%=photo_tag(p[:picture],p[:source],p[:place_id],@isOwner).html_safe%>
 		<% end %>	
     	</ul>
     </div>
-    <div id="none" style="display:none;"></div>
+    
     <div class="location-picker large-2 columns">
         <ul class="no-bullet">
             <li class="labelClicked"><a href="#">全部</a></li>
@@ -35,3 +24,4 @@
         </ul>
     </div>
 </div>
+<div id="none" style="display:none;"></div>
