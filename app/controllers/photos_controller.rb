@@ -163,6 +163,22 @@ class PhotosController < ApplicationController
 		end
 	end
 	
+	def deletePhoto
+		@photo_id=params[:photo_id]
+		if @photo_id
+			photo = Photo.find_by_id(@photo_id)
+			if(photo)
+				if photo.user_id==session[:user_id]
+					photo.img.destroy
+					photo.delete
+					render :json=>true
+					return 
+				end
+			end
+		end
+		render :json=>false
+	end
+
 	def logSrcURL str
 		session[:url]=str
 	end	
