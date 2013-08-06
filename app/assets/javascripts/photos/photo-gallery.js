@@ -39,3 +39,21 @@ var editPhoto=function(){
 	});
 
 };
+
+var deletePhoto=function(){
+	$('.photo_delete_button').click(function(){
+		var target=$(this).parents('li');
+		var id=target.data('id');
+		
+		if(window.confirm('您確定要刪除?') == false){	
+			return false;
+		}	
+		
+
+		$.post('/photos/deletePhoto',{photo_id:id},function(result){
+			if(result){
+				target.remove();	
+			}
+		});
+	});
+};

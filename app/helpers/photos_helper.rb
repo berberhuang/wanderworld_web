@@ -1,14 +1,14 @@
 # encoding: UTF-8
 module PhotosHelper
 
-	def photo_tag picture, source, location_id, show_editor
+	def photo_tag id,picture, source, location_id, show_editor
 		
-    		str='<li data-location_id="'+location_id.to_s+'" style="display:block">'+
+    		str='<li data-id="'+id.to_s+'" data-location_id="'+location_id.to_s+'" style="display:block">'+
         #照片tool
         '<a class="th th-item gallery" href="'+source+'" style="background-image:url(\''+picture+'\')">'+
         '<img src="'+picture+' "class="transparent"></a>'
         if show_editor
-          str+='<div id="photoEditor"><a href="#"><i class="icon-trash"></i></a></div>'
+          str+='<div id="photoEditor"><a class="photo_delete_button" href="#"><i class="icon-trash"></i></a></div>'
         end
         str+='</li>'
 	end

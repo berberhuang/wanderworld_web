@@ -2,6 +2,7 @@
 <script>
     $(document).ready(function(){
           editPhoto();
+	  deletePhoto();
     });
 </script>
 <%end%>
@@ -15,9 +16,9 @@
             </h1>
         </div>
         <hr/>
-    	<ul id="photo_container" class="clearing-thumbs" data-clearing>
+    	<ul id="photo_container" class="small-block-grid-4 clearing-thumbs" data-clearing>
 		<% @photo_src.each do |p| %>
-			<%=photo_tag(p[:picture],p[:source],p[:place_id],@isOwner).html_safe%>
+			<%=photo_tag(p[:id],p[:picture],p[:source],p[:place_id],@isOwner).html_safe%>
 		<% end %>
     	</ul>
     </div>
