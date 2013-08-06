@@ -9,7 +9,7 @@
 	})
 }*/
 
-//clicked 後有效果
+//clicked 後有效果，並解決
 var locationLabel=function(){
 	var picker=$('.location-picker');
 	picker.find('li').click(function(){
@@ -25,5 +25,17 @@ var locationLabel=function(){
 			}else{
 				hideBlock.find('li').appendTo(photoContainer);
 			}
-	})
-}
+	});
+};
+
+//hover相片出現編輯選項
+var editPhoto=function(){
+/*	var photos=$('#photo_container > li');
+	var tool=$('#photoEditor');
+	photos.find('.th-item').hover(function(){
+		tool.show().appendTo(photos.find('a'));
+	},function(){
+		tool.hide();
+	});
+*/
+};

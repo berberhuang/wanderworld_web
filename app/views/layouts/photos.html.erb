@@ -43,7 +43,14 @@ _gaq.push(['_trackPageview']);
 
 </script>
 
+<script>
+  $(document).ready(function(){
+          $(document).foundation();
+          locationLabel();
+  });
+</script>
 
+<%= yield :js %>
 </head>
 <body>
 <div id="fb-root"></div>
@@ -255,14 +262,12 @@ _gaq.push(['_trackPageview']);
   <a class="close-reveal-modal">&#215;</a>  
   </div>
 
+
+
+
 <%= yield %>
 
 
-<script>
-   $(document).foundation();
-   $(document).ready(function(){
-      locationLabel();
-   });
-</script>
+
 </body>
 </html>
