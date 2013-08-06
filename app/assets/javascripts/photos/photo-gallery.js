@@ -30,12 +30,12 @@ var locationLabel=function(){
 
 //hover相片出現編輯選項
 var editPhoto=function(){
-/*	var photos=$('#photo_container > li');
-	var tool=$('#photoEditor');
-	photos.find('.th-item').hover(function(){
-		tool.show().appendTo(photos.find('a'));
+	$('#photo_container li').hover(function(){
+		if($('.visible-img').css('display')=='block'){
+			$(this).find('#photoEditor').css('visibility','hidden');
+		}
 	},function(){
-		tool.hide();
+		$(this).find('#photoEditor').css('visibility','visible');
 	});
-*/
+
 };

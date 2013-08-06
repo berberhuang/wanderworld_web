@@ -1,3 +1,10 @@
+<%= content_for :js do %>
+<script>
+    $(document).ready(function(){
+          editPhoto();
+    });
+</script>
+<%end%>
 
 <div class="row wrapper">
     <div class="large-9 columns large-offset-1 gallery panel">
@@ -8,10 +15,10 @@
             </h1>
         </div>
         <hr/>
-    	<ul id="photo_container" class="large-block-grid-6 small-block-grid-2 clearing-thumbs" data-clearing>
+    	<ul id="photo_container" class="clearing-thumbs" data-clearing>
 		<% @photo_src.each do |p| %>
 			<%=photo_tag(p[:picture],p[:source],p[:place_id],@isOwner).html_safe%>
-		<% end %>	
+		<% end %>
     	</ul>
     </div>
     
