@@ -243,14 +243,19 @@
 								<li><a href="#" class="public_button">發佈</a</li>
 							</ul>
 						</div>
-						<div class="large-4 columns">
+						<div class="large-2 columns">
 							<a class="button tiny radius" id="share_journal">
-								<i class="icon-facebook-sign"></i>
+								<i class="icon-facebook-sign icon-large"></i>
 							</a>
 						</div>
+						<!--div class="large-2 columns">
+							<a class="button tiny radius">
+								<i class="icon-camera-retro icon-large"></i>
+							</a>
+						</div-->
 						<div class="large-2 columns">
 							<a class="editTool right button secondary tiny radius" style="<%='visibility:hidden;' if !@isOwner%>" >
-								<i class="foundicon-edit"></i>
+								<i class="icon-edit icon-large"></i>
 							</a>
 						</div>
 					</div>
@@ -317,7 +322,7 @@
 		</a>
 		<div class="row" style="margin-top:25px;">
 			<h4 class="text-center" style="display:block; margin:0 auto; color:white;">
-				<i class="foundicon-globe"></i>旅行列表</h4>
+				<i class="icon-globe"></i>旅行列表</h4>
 		</div>
 		<hr />
 		<div class="columns">
@@ -332,9 +337,11 @@
 	<!--click on a trip-->
 	<div class="large-2 columns gallery list" id="trip_one" style="<%='display:none;' if !@trip_id && !@journal_id %>" >
 		<div class="row">
+			
 			<div id="return_triplist" href="/rapid/triplist/<%=@author_id%>">
 				<i class="icon-level-up icon-large icon-rotate-270 pull-left"></i>
 			</div>
+
 			<div class="columns" id="trip_name">
 				<%=tripName_gen(@trip_info) if @trip_info%>
 			</div>
@@ -362,7 +369,7 @@
 		<hr style="margin:0 0 5px 0"/>
 		<div class="row" id="trippoint-list-bottom">
 			<div class="large-7 columns">
-				<p><i class="icon-eye-open icon-large"></i><span id="count"><%=@trip_info.count.to_s if @trip_info%></span></p>	
+				<p>人氣：<span id="count"><%=@trip_info.count.to_s if @trip_info%></span></p>	
 			</div>
 			<div class="large-4 columns button radius tiny pull-1" id="share" data-reveal-id="share_button">
 				<i class="icon-share-alt"></i>分享

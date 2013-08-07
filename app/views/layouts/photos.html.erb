@@ -143,11 +143,11 @@ _gaq.push(['_trackPageview']);
       </li>
     </ul>
     <ul class="user-function-switcher">
-    <li >
-      <a class="white" href="/rapid/triplist/<%=@author_id%>" style="border:none;">遊記</a>
-    </li>
     <li>
-      <a class="white" href="/photos/all/<%=@author_id%>" >相簿</a>
+      <a class="white" href="/rapid/triplist/<%=@author_id%>" onclick="showTravelJournal()" style="border:none"><i class="icon-globe"></i>旅行</a>
+    </li>
+    <li >
+      <a class="white" href="/photos/all/<%=@author_id%>" ><i class="icon-camera"></i>相簿</a>
     </li>
   </ul>  
 </nav>
