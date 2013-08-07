@@ -5,7 +5,7 @@ module PhotosHelper
 		
     		str='<li data-id="'+id.to_s+'" data-location_id="'+location_id.to_s+'" style="display:block">'+
         #照片tool
-        '<a class="th th-item gallery" href="'+source+'" style="background-image:url(\''+picture+'\')">'+
+        '<a class="th th-item" href="'+source+'" style="background-image:url(\''+picture+'\')">'+
         '<img src="'+picture+' "class="transparent"></a>'
         if show_editor
           str+='<div id="photoEditor"><a class="photo_delete_button" href="#"><i class="icon-trash"></i></a></div>'
