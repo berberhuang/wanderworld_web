@@ -38,7 +38,7 @@
 							content.find('input:[value=s]').attr('checked',true);
 							break;
 						default:
-							content.find('input:[value=l]').attr('checked',true);
+							content.find('input:[value=m]').attr('checked',true);
 						
 					};
 				},

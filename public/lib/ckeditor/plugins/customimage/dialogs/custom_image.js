@@ -23,6 +23,8 @@
 
 			var needReloadAlbum=true;
 			
+			var filter=/[^A-Za-z0-9\%\-]/g;
+
 			var showAlbum=function(obj,datas){
 				var ul=obj.find('.img_plugin_albums ul');
 				ul.empty();
@@ -107,7 +109,8 @@
 					disableImageResize: /Android(?!.*Chrome)|Opera/
 						.test(window.navigator && navigator.userAgent)
 				}).bind('fileuploadadd',function(e,data){
-					var imgObj=$('<li data-filename="'+data.files[0].name+'" class="img_plugin_selected"><img src=""/><div class="img_plugin_progress_bar"><div></div></div></li>');
+					var name=encodeURIComponent(data.files[0].name.replace(/[\s]/g,'' )).replace(filter,'');
+					var imgObj=$('<li data-filename="'+name+'" class="img_plugin_selected"><img src=""/><div class="img_plugin_progress_bar"><div></div></div></li>');
 					needReloadAlbum=true;
 					imgObj.appendTo(preview_ul)
 						.click(function(event){
@@ -124,7 +127,8 @@
 				}).bind('fileuploaddone',function(e,data){
 					$.each(JSON.parse(data.result).files, function (index, file) {
 						if(!index){
-							var imgObj=preview_ul.find('li:[data-filename="'+file.name+'"]');
+							var name=encodeURIComponent(file.name).replace(filter,'');
+							var imgObj=preview_ul.find('li:[data-filename="'+name+'"]');
 							imgObj.find('img').attr('src',file.url).data('src',file.original).data('id',file.id);
 							imgObj.find('.img_plugin_progress_bar').hide();
 						}
@@ -133,7 +137,8 @@
 				}).bind('fileuploadprogress',function(e,data){
 					$.each(data.files, function (index, file) {
 						if(!index){
-							var imgObj=preview_ul.find('li:[data-filename="'+file.name+'"]');
+							var name=encodeURIComponent(file.name.replace(/[\s]/g,'')).replace(filter,'');
+							var imgObj=preview_ul.find('li:[data-filename="'+name+'"]');
 							var bar=imgObj.find('.img_plugin_progress_bar div');
 							bar.css('width',(data.loaded/data.total)*100 +'%');
 						}

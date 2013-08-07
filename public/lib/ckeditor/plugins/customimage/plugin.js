@@ -56,14 +56,14 @@
 			}
 
 			// If the "contextmenu" plugin is loaded, register the listeners.
-			/*
+			
 			if ( editor.contextMenu ) {
 				editor.contextMenu.addListener( function( element, selection ) {
 					if ( getSelectedImage( editor, element ) )
 						return { image: CKEDITOR.TRISTATE_OFF };
 				});
 			}
-			*/
+			
 		},
 		afterInit: function( editor ) {
 			// Customize the behavior of the alignment commands. (#7430)

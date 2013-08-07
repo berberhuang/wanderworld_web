@@ -95,7 +95,7 @@ var ContentBoxModule = function(item){
 			str+='</div>';
 		}
 		
-		$(str).appendTo(contentPanel);
+		$(str).appendTo(contentPanel).find('img').attr('onerror','this.src="/assets/photo_deleted.gif"');
 	};
 	
 	var hideJournalSwitchToggle=function(){

@@ -164,6 +164,7 @@
 			%>				
 				PathOnMap.centerTripPointOnLeftMap(<%=@contents[0].id%>);
 				PathOnMap.showTripPointInfo(<%=@contents[0].id%>);
+				$('#postContent img').attr('onerror','this.src="/assets/photo_deleted.gif"');
 			<%else%>
 				PathOnMap.centerTripOnMap();
 			<%end%>

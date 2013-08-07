@@ -5,7 +5,7 @@ class Photo < ActiveRecord::Base
 	attr_accessible :img ,:trip_id, :user_id, :place_id
 	has_attached_file :img ,
 	:url=>':s3_domain_url',
-	:path => "photos/:photos_trip_id/:style/:id:basename.:extension",
+	:path => "photos/:photos_trip_id/:style/:hash_filename.:extension",
 	:storage=>:s3,
 	:bucket=>'wwtest-photo',
 	:styles=>{:thumb=>"200x200",:original=>"1917x1917"},
