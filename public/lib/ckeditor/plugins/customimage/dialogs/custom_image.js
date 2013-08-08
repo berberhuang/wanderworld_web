@@ -23,7 +23,7 @@
 
 			var needReloadAlbum=true;
 			
-			var filter=/[^A-Za-z0-9\%\-]/g;
+			var filter=/[\s\\\/:!\?\"<>|#_+\-=^\*]/g;
 
 			var showAlbum=function(obj,datas){
 				var ul=obj.find('.img_plugin_albums ul');
@@ -100,6 +100,7 @@
 			
 
 			var attachFileUploadListener=function(file_selector,preview_ul){
+				var fileIndex=0;
 				var place_id=tripPointItemManager.getPlaceIdByTripPointId(contentBox.getEditTripPointId());
 				file_selector.fileupload({
 					datatype: 'json',
@@ -109,7 +110,7 @@
 					disableImageResize: /Android(?!.*Chrome)|Opera/
 						.test(window.navigator && navigator.userAgent)
 				}).bind('fileuploadadd',function(e,data){
-					var name=encodeURIComponent(data.files[0].name.replace(/[\s]/g,'' )).replace(filter,'');
+					var name=data.files[0].name.replace(filter,'');
 					var imgObj=$('<li data-filename="'+name+'" class="img_plugin_selected"><img src=""/><div class="img_plugin_progress_bar"><div></div></div></li>');
 					needReloadAlbum=true;
 					imgObj.appendTo(preview_ul)
@@ -127,7 +128,7 @@
 				}).bind('fileuploaddone',function(e,data){
 					$.each(JSON.parse(data.result).files, function (index, file) {
 						if(!index){
-							var name=encodeURIComponent(file.name).replace(filter,'');
+							var name=file.name;
 							var imgObj=preview_ul.find('li:[data-filename="'+name+'"]');
 							imgObj.find('img').attr('src',file.url).data('src',file.original).data('id',file.id);
 							imgObj.find('.img_plugin_progress_bar').hide();
@@ -137,7 +138,7 @@
 				}).bind('fileuploadprogress',function(e,data){
 					$.each(data.files, function (index, file) {
 						if(!index){
-							var name=encodeURIComponent(file.name.replace(/[\s]/g,'')).replace(filter,'');
+							var name=file.name.replace(filter,'');
 							var imgObj=preview_ul.find('li:[data-filename="'+name+'"]');
 							var bar=imgObj.find('.img_plugin_progress_bar div');
 							bar.css('width',(data.loaded/data.total)*100 +'%');
@@ -189,18 +190,18 @@
 					if(this.insertType=='url'){
 						selected=$(this.getContentElement('url','preview').getElement().$).find('.img_plugin_selected');
 						for(var i=0;i<selected.length;i++){
-							editor.insertHtml(selected.eq(i).html())
+							editor.insertHtml(selected.eq(i).find('img').attr('width','75%').end().html())
 						}
 						
 					}else if(this.insertType=='upload'){
 						selected=$(this.getContentElement('upload','preview').getElement().$).find('.img_plugin_selected');
 						for(var i=0;i<selected.length;i++){
-							editor.insertHtml('<img src="'+selected.eq(i).find('img').data('src')+'" />');
+							editor.insertHtml('<img src="'+selected.eq(i).find('img').data('src')+'" width="75%" />');
 						}
 					}else if(this.insertType=='album'){
 						selected=$(this.getContentElement('album','preview').getElement().$).find('.img_plugin_selected');
 						for(var i=0;i<selected.length;i++){
-							editor.insertHtml('<img src="'+selected.eq(i).find('img').data('src')+'" />');
+							editor.insertHtml('<img src="'+selected.eq(i).find('img').data('src')+'" width="75%" />');
 							var photo_id=selected.eq(i).data('id');
 							var place_id=tripPointItemManager.getPlaceIdByTripPointId(contentBox.getEditTripPointId());
 							$.post('/photos/setLocation',{id:photo_id,place_id:place_id});
@@ -209,7 +210,7 @@
 					}else if(this.insertType=='other'){
 						selected=$(this.getContentElement('other','preview').getElement().$).find('.img_plugin_selected');
 						for(var i=0;i<selected.length;i++){
-							editor.insertHtml('<img src="'+selected.eq(i).find('img').data('src')+'" />');
+							editor.insertHtml('<img src="'+selected.eq(i).find('img').data('src')+'" width="75%" />');
 						}
 					}
 					

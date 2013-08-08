@@ -28,6 +28,8 @@ var ContentBoxModule = function(item){
 	var moduleInstance;
 
 	
+	var onlineData=[];
+
 	var isBounce=function(){
 		if(target.css('z-index')==-1){
 			return false;
@@ -93,6 +95,7 @@ var ContentBoxModule = function(item){
 			str+='<div class="tp_box" id="tp_box_'+id+'" data-id="'+id+'" >';
 			str+=DataStatus.contentList[id];
 			str+='</div>';
+
 		}
 		
 		$(str).appendTo(contentPanel).find('img').attr('onerror','this.src="/assets/photo_deleted.gif"');
@@ -177,8 +180,8 @@ var ContentBoxModule = function(item){
 			if(!DataStatus.contentList){
 				DataStatus.contentList=[];
 			}
-			DataStatus.contentList[id]=str;
-			if(str){
+			if(DataStatus.contentList[id]!=str){
+				DataStatus.contentList[id]=str;
 				Data.savePost(id);
 			}
 		}

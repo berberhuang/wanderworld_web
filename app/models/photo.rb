@@ -7,7 +7,7 @@ class Photo < ActiveRecord::Base
 	:url=>':s3_domain_url',
 	:path => "photos/:photos_trip_id/:style/:hash_filename.:extension",
 	:storage=>:s3,
-	:bucket=>'wwtest-photo',
+	:bucket=>'wwonline-photo',
 	:styles=>{:thumb=>"200x200",:original=>"1917x1917"},
 	:source_file_options=>{:all=>'-auto-orient'}
 	
@@ -20,13 +20,11 @@ class Photo < ActiveRecord::Base
 
 	def to_jq_upload
 		{
-		"name" => read_attribute(:img_file_name),
+		"name" => read_attribute(:img_file_name).gsub(/[\s\\\/:!\?\"<>|#_\-^+=\*]/,''),
 		"size" => read_attribute(:img_file_size),
 		"url" => img.url(:thumb),
 		"original"=>img.url(:original),
 		"id"=>id
-		#"delete_url" => file.path(self),
-		#"delete_type" => "DELETE" 
 		}
 	end
 end
