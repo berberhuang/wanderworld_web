@@ -52,7 +52,7 @@ var deletePhoto=function(){
 
 		$.post('/photos/deletePhoto',{photo_id:id},function(result){
 			if(result){
-				target.remove();	
+				target.animate({width:'0px'},500,function(){target.remove();});
 			}
 		});
 	});
