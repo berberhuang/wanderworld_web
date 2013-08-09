@@ -103,13 +103,7 @@ var GroupItemModule=function(obj){
 	var initEvent=function(item,group_id){
 		item.find('.journal_title input').keydown(keydownEditGroupName).end()
 			.find('.journal_title').click(function(event){
-				//console.log('click');
-				//contentBox.cancelEditWarning(group_id,function(){
-
 				clickGroupTitle(group_id);
-				//var item=$(event.target);
-				//selectGroupEffect(item.parents('.trip_point_group'));
-				//});
 			}).end();
 	};
 	

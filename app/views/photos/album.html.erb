@@ -7,6 +7,11 @@
 </script>
 <%end%>
 
+<%= content_for :info_head do %>
+	<title><%=@trip_name%>的相片 - WanderWorld地球漫遊</title>
+	<meta property="og:title" content="<%=@trip_name%>的相片 - WanderWorld地球漫遊" />
+<%end%>
+
 <div class="row wrapper">
     <div class="large-9 columns large-offset-1 gallery panel">
         <div class="album-title large-10 columns">

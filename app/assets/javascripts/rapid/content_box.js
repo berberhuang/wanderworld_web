@@ -444,7 +444,7 @@ var ContentBoxModule = function(item){
 				showJournalSwitchToggle();
 			},
 			showBlankContentBox:function(group_id){
-				//show_group_id=group_id;
+				show_group_id=group_id;
 				readJournal_s=true;
 				initInterface();
 				var g_item=$('.trip_point_group:[data-id='+group_id+']');
