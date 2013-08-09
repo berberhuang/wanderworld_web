@@ -33,7 +33,12 @@ var ContentBoxModule = function(item){
 
 
 	var getScrollTop=function(){
-		return target.scrollTop()-header_height;
+		var top=target.scrollTop()-header_height;
+		if(top<0){
+			return 0;	
+		}else{
+			return top;
+		}
 	};
 
 	var setScrollTop=function(p){
