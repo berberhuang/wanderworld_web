@@ -23,7 +23,8 @@
 	/*height: 100%;*/
 	background: rgba(240,239,233,0.9);
 	z-index:1;
-	overflow:hidden;
+	overflow: scroll;
+
 }
 #slidesContainer:hover img {
 	display:inline;
@@ -56,14 +57,8 @@
 	cursor:pointer;
 }
 
-#journal {
-	height:350px;
-	overflow-y:scroll;
-}
 
 
-.tp_box{
-}
 
 .postTitle{
 	font-weight:bold;
