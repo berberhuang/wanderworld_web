@@ -5,15 +5,3 @@
 #postContent img ::-moz-selection {
     background:rgba(0,0,0,0);
 }
-
-
-.controlPoint{
-	width:15px;
-	height:15px;
-	background-color:#E0E0E0;
-	border:solid;
-	border-width:1px;
-	border-color:#858585;
-	position:absolute;
-	cursor:pointer;
-}
