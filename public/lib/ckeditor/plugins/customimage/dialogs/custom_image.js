@@ -105,6 +105,7 @@
 				file_selector.fileupload({
 					datatype: 'json',
 					autoUpload: true,
+					dropZone:preview_ul,
 					formData:{'photo[trip_id]':DataStatus.trip_id,'photo[trip_point_id]':place_id,'photo[place_id]':place_id},
 					acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
 					disableImageResize: /Android(?!.*Chrome)|Opera/
@@ -231,8 +232,8 @@
 					var preview=$(this.getContentElement('upload','preview').getElement().$);
 					
 					var file_selector=preview.find('#fileupload');
-					attachFileUploadListener(file_selector,preview.find('.img_plugin_preview ul'));
-					
+					var drag_area=preview.find('.img_plugin_file_drag ul');
+					attachFileUploadListener(file_selector,drag_area);
 				
 					
 				},
