@@ -1,0 +1,174 @@
+/*---------------必要tag設定--------------*/
+#return_triplist{
+	position: absolute;
+	left:10px;
+	cursor: pointer;
+}
+#return_triplist i{
+	margin-top: -10px;
+	margin-left: -5px;
+}
+
+/*旅行資訊*/
+#trip_name{
+	margin-top:10px;
+}
+#trip_name_editDiv{
+	height:4.1em;
+	cursor:pointer;
+	overflow:hidden;
+}
+
+
+#trip_date {
+	width: 100%;
+	float:left;
+	margin:5px 0px 5px 5px;
+	font-size: 15px;
+}
+
+#trip_date input {
+	width:100%;
+    font-size:16px;
+}
+
+
+
+/*景點列表*/
+
+.journal_title{
+	overflow:hidden;
+}
+
+#trip_point_list{
+	overflow-x: hidden;
+	overflow-y: auto; 
+	height: 260px;
+}
+
+.trippoint_placeholder {
+	border: 2px dashed #AAA;
+	height:20px;
+}
+.point_name{
+	cursor: pointer;
+}
+
+.point_mark{
+	width:20px;
+}
+
+/*未整理*/
+.trip_point_group {	
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+.trip_point_group i{	
+	display: inline;
+	visibility: hidden;
+	color: rgba(160,160,160,1)
+}
+
+.trip_point_group:hover .trip_point_edit i{
+	visibility: visible;
+}
+.trip_point_group i:hover{	
+	color: rgba(255,255,255,1)
+}
+
+.point:hover i{
+	visibility: visible;
+}
+
+.add_trip_point{
+	font-size: 0.8em;
+	color: rgba(160,160,160,1);
+	i{
+		visibility:visible;	/*使icon-plus保留*/
+	};
+}
+
+.add_trip_point:hover {
+    color: rgba(255,255,255,1);
+    display: inline;
+    text-decoration: underline;
+    i{
+    	color: rgba(255,255,255,1);
+    }
+}
+
+.trip_point_group_selected{
+	background-color:rgba(240,239,233,0.2);
+}
+
+.trip_point_selected{
+	background-color:rgba(0, 149, 255, 0.45);
+}
+
+.trip_point {
+	list-style-type:none;
+}
+
+
+.group_edit_menu {
+	display: none;
+	position: absolute;
+	width: 130px;
+	background: rgba(153,179,204,1) ;
+	border-radius: 3px;
+	padding:2px 0;
+	cursor:pointer;
+	color:black;
+}
+
+.group_edit_menu div {
+	padding:3px 5px;
+}
+.group_edit_menu div:hover {
+        background-color:#F8CB9C;
+}
+
+  
+#trip_friend {
+	width: 100%;
+	margin: 5px 0px 0px 0px;
+	padding: 0px;
+	float: left;
+}
+#trip_friend_add {
+	display:none;
+	float:right;
+	width:18px;
+	cursor:pointer;
+}
+#trip_status {
+	width: 100%;
+	margin: 5px 0px 0px 0px;
+	padding: 0px;
+	float: left;
+}
+
+.hidden {
+	visibility:hidden;
+}
+
+/*讀取列表*/
+.loading {
+	height:2em;
+	line-height: 2em;
+	background:rgba(40,40,40,0.7);
+	display:none;
+}
+
+@-moz-keyframes move{
+	0%{-moz-transform: scale(1.2);opacity:1;}
+	100%{-moz-transform: scale(0.7);opacity:0.1;}
+}
+@-webkit-keyframes move{
+	0%{-webkit-transform: scale(1.2);opacity:1;}
+	100%{-webkit-transform: scale(0.7);opacity:0.1;}
+}
+
