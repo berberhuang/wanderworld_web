@@ -8,7 +8,7 @@ class Photo < ActiveRecord::Base
 	:path => "photos/:photos_trip_id/:style/:hash_filename.:extension",
 	:storage=>:s3,
 	:bucket=>'wwonline-photo',
-	:styles=>{:thumb=>"200x200",:original=>"1917x1917"},
+	:styles=>{:thumb=>"200x200>",:large=>"1917x1917>"},
 	:source_file_options=>{:all=>'-auto-orient'}
 	
 
@@ -23,7 +23,7 @@ class Photo < ActiveRecord::Base
 		"name" => read_attribute(:img_file_name).gsub(/[\s\\\/:!\?\"<>|#_\-^+=\*]/,''),
 		"size" => read_attribute(:img_file_size),
 		"url" => img.url(:thumb),
-		"original"=>img.url(:original),
+		"original"=>img.url(:large),
 		"id"=>id
 		}
 	end
