@@ -123,7 +123,13 @@ _gaq.push(['_trackPageview']);
 <nav class="top-bar">
     <ul class="title-area">
       <li class="name">
-        <a href="#"><img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/></a>
+        <a href="#">
+        <%if @author_avatar %>
+          <img  class="user-avatar" src='<%=@author_avatar%>'/>
+        <%else%>
+          <img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/>
+        <%end%>
+        </a>
       </li>
     </ul>
     <ul class="title-area">

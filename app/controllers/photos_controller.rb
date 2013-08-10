@@ -18,6 +18,7 @@ class PhotosController < ApplicationController
 	@author=User.find(@author_id) if @author_id
 	if @author
 		@author_name=@author.username
+		@author_avatar='https://graph.facebook.com/'+@author.fbid+'/picture?type=large '
 	
 		@albums=Photo.select('*,count(*) as number,trips.name,photos.id').where(:user_id=>@author_id).group(:trip_id).joins(:trip)
 	else
@@ -46,6 +47,11 @@ class PhotosController < ApplicationController
 		@author=@authors[0]
 		@author_id=@author.id
 		@author_name=@author.username
+
+		if @author.fbid
+			@author_avatar='https://graph.facebook.com/'+@author.fbid+'/picture?type=large '
+		end
+
 		@trip_name=@author.name
 		
 

@@ -32,19 +32,72 @@ class RapidController < ApplicationController
 				@triplist=true
 				@url= '/rapid/triplist/'+@user_id
 				logSrcURL = @url
-				return
-			end
-			if session[:user_id]
+			elsif session[:user_id]
 				@triplist=true
 				@user_id=session[:user_id].to_s
 				@url= '/rapid/triplist/'+@user_id
 				logSrcURL = @url
-				
-				return
+
+			else
+				redirect_to '/'
 			end
-			redirect_to '/'
 		end
 		
+
+		if @trip_id
+			@trip_selected=true
+
+			@trip_info=Trip.find(@trip_id)
+			@author=@trip_info.user
+			@author_id=@author.id
+			@author_name=@author.username
+			if(@author.fbid)
+				@author_avatar='https://graph.facebook.com/'+@author.fbid+'/picture?type=large '
+			end
+			
+			@trip_info.count+=1
+			@trip_info.save!
+			@groups=Group.order('sort_id ASC').where(:trip_id=>@trip_id)
+			@tripPoints=TripPoint.select('trip_points.id,group_id,sort_id,place_id,name,longitude,latitude').order('group_id,sort_id ASC').joins(:place).where(:trip_id=>@trip_id)
+				
+			@journal_selected=false
+			@contents=[]
+			@public=false
+			@journal_name=nil
+			@isOwner=false;
+			if @trip_info.user_id.to_s==session[:user_id].to_s
+				@isOwner=true
+			end
+			
+			if @journal_id 
+				@journal_selected=true
+				@journal=Group.select('title,public,photo,count').find_by_id(@journal_id)
+				@journal.count=@journal.count+1
+				@journal.save		
+
+				@journal_name=@journal.title
+				@public=@journal.public
+				if @isOwner or @public
+					@contents=Micropost.select('article,trip_points.sort_id,trip_points.id').joins(:trip_point).where('trip_points.group_id=?', @journal_id).order('trip_points.sort_id ASC')
+				end
+			end		
+			
+			
+		 elsif @user_id 
+			    @author_id=@user_id 
+				@trips=Trip.order('start_date DESC').where(:user_id=>@user_id)
+				@user = User.find(@user_id)
+				@author_name=@user.username
+				if @user.fbid
+					@author_avatar='https://graph.facebook.com/'+@user.fbid+'/picture?type=large '
+				end
+				if @user.id.to_s==session[:user_id].to_s
+					@isOwner=true
+				end
+			
+		end
+
+
 	end
 
 	def triplist
