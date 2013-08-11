@@ -295,7 +295,11 @@
 			</div>
 
 			<div class="columns" id="trip_name">
-				<%=tripName_gen(@trip_info) if @trip_info%>
+				<% if @trip_info %>
+					<%=tripName_gen(@trip_info)%>
+				<% else	%>
+					<%=tripName_gen(nil)%>
+				<% end%>
 			</div>
 		</div>
 		<div id="trip_date" class="row word-break">

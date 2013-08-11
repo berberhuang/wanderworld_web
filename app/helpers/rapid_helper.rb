@@ -37,7 +37,11 @@ module RapidHelper
 	end
 
 	def tripName_gen(trip_info)
-		tripName=ERB::Util.html_escape(trip_info.name)
+		if trip_info
+			tripName=ERB::Util.html_escape(trip_info.name)
+		else
+			tripName=' '
+		end
 		str='<div class="columns word-break text-centered" id="trip_name_editDiv" title="'+tripName+'">'
 		str+='<h4><i class="foundicon-flag white"></i><a>'+tripName+'</a></h4>'
 		str+='</div>'
