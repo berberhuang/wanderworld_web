@@ -9,7 +9,8 @@ class Photo < ActiveRecord::Base
 	:storage=>:s3,
 	:bucket=>'wwonline-photo',
 	:styles=>{:thumb=>["200x200>", :jpg],:large=>["1917x1917>",:jpg]},
-	:source_file_options=>{:all=>'-auto-orient'}
+	:source_file_options=>{:all=>'-auto-orient'},
+	:convert_options=>{:all=>'-background white -flatten'}
 	
 
 	validates_attachment_presence :img
