@@ -8,7 +8,7 @@ class Photo < ActiveRecord::Base
 	:path => "photos/:photos_trip_id/:style/:hash_filename.:extension",
 	:storage=>:s3,
 	:bucket=>'wwonline-photo',
-	:styles=>{:thumb=>["200x200>", :jpg],:large=>["1917x1917>",:jpg]},
+	:styles=>{:thumb=>["200x200>", :JPG],:large=>["1917x1917>",:JPG]},
 	:source_file_options=>{:all=>'-auto-orient'},
 	:convert_options=>{:all=>'-background white -flatten'}
 	
