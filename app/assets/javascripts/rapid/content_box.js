@@ -16,7 +16,8 @@ var ContentBoxModule = function(item){
 	var toDraft=target.find('#toDraft');
 	
 	var journal=target.find('#journal');
-	
+	var header_height;	
+
 	editor=[];
 
 	var edit_id;
@@ -29,6 +30,18 @@ var ContentBoxModule = function(item){
 
 	
 	var onlineData=[];
+
+
+	var getScrollTop=function(){
+		return target.scrollTop()-header_height;
+	};
+
+	var setScrollTop=function(p){
+		if(p!=0)
+			target.scrollTop(header_height+p);
+		else
+			target.scrollTop(0);
+	};
 
 	var isBounce=function(){
 		if(target.css('z-index')==-1){
@@ -64,6 +77,7 @@ var ContentBoxModule = function(item){
 		hideControlButton();
 		editTool.hide().unbind('click');
 		target.find('#release_status').css('visibility','hidden');
+		
 	};
 	
 	var refreshInterface=function(group_id){
@@ -166,7 +180,7 @@ var ContentBoxModule = function(item){
 		contentPanel.empty()
 
 		loadContent(showingGroupItem);
-		journal.scroll(detectScrollOnWhichPost);
+		target.scroll(detectScrollOnWhichPost);
 		
 		edit_id=null;
 		edit_group_id=null;
@@ -222,7 +236,7 @@ var ContentBoxModule = function(item){
 	};
 	
 	var focusPost=function(tp_box){
-		setTimeout(function(){journal.scrollTop(tp_box.position().top)},500);
+		setTimeout(function(){setScrollTop(tp_box.position().top);},500);
 	};
 	
 	var focusEditPost=function(tp_box){
@@ -234,7 +248,7 @@ var ContentBoxModule = function(item){
 		if(edit_group_id){
 			return ;
 		}
-		var pos=journal.scrollTop();
+		var pos=getScrollTop();
 		var id;
 		var list=contentPanel.find('.tp_box');
 		var posBase=0;
@@ -405,13 +419,15 @@ var ContentBoxModule = function(item){
 	return{
 		init:function(){
 			moduleInstance=this;
+			header_height=$('#journal_cc_1st_stack').height()+$('#journal_cc_2nd_stack').height()+12;  //12 is height of hr	
 		},
 		initJavascript:function(){
 			editTool.click(function(){
 				var id=$('.trip_point_group:[data-id='+show_group_id+'] .point:first').data('id');
 				moduleInstance.clickEditPost(show_group_id,id);	
 			});
-			journal.scroll(detectScrollOnWhichPost);
+			
+			target.scroll(detectScrollOnWhichPost);
 		},
 		ownerModeSwitch:function(){
 			if(DataStatus.isOwner){
@@ -467,7 +483,7 @@ var ContentBoxModule = function(item){
 						}
 						select_id=id;
 					}else{
-						journal.scrollTop(0);
+						setScrollTop(0);
 					}
 					if(callback)
 						callback();
@@ -482,7 +498,7 @@ var ContentBoxModule = function(item){
 						showContentPanel();
 						
 						refreshInterface(group_id);
-						journal.scroll(detectScrollOnWhichPost);
+						target.scroll(detectScrollOnWhichPost);
 						moduleInstance.UiControl.showContent(group_id,id,callback);
 					});		
 				}
