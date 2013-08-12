@@ -28,7 +28,7 @@
         </div>
         <div class="large-2 columns">
             <% if @isOwner %>
-                <a id="launch_upload" class="button radius right tiny"><i class="icon-cloud-upload"></i></a>
+                <a id="launch_upload" class="button radius right tiny" data-reveal-id="upload_interface"><i class="icon-cloud-upload icon-large"> 上傳</i></a>
             <% end %>
         </div>
         <hr/>
@@ -50,9 +50,9 @@
 </div>
 <div id="none" style="display:none;"></div>
 
-	<div id="upload_interface" style="display:none">
+	<div id="upload_interface" class="reveal-modal large">
 		<form id="fileupload" action="/photos/uploadPhoto" ><input type="file" name="photo[img]" multiple /></form>
 		<div class="img_plugin_preview img_plugin_file_drag"><ul></ul></div>
-		<a id="upload_compelete">完成</a>
+		<a id="upload_compelete" class="button radius right">完成</a>
 	</div>
 
