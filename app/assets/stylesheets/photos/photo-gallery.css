@@ -7,6 +7,10 @@
 	overflow: hidden;
 }
 
+#upload_compelete{
+	margin-left: 1em;
+}
+
 .location-picker ul{
 	margin-left: 0.1em;
 }
