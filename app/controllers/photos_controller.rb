@@ -23,7 +23,17 @@ class PhotosController < ApplicationController
 			@author_avatar='https://graph.facebook.com/'+@author.fbid+'/picture?type=large '
 		end
 
-		@albums=Photo.select('*,count(*) as number,trips.name,photos.id').where(:user_id=>@author_id).group(:trip_id).joins(:trip)
+		#@albums=Photo.select('*,count(*) as number,trips.name,photos.id').where(:user_id=>@author_id).group(:trip_id).joins(:trip)
+
+		@trips=Trip.select('*').where(:user_id=>@author_id)
+		@albums_raw=Photo.select('*,count(*) as number,photos.id').where(:user_id=>@author_id).group(:trip_id)
+
+		@albums={}
+		@albums_raw.each do |a|
+			@albums[a.trip_id]=a
+		end
+
+
 	else
 		redirect_to '/'
 	end
