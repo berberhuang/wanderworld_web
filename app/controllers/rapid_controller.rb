@@ -55,8 +55,7 @@ class RapidController < ApplicationController
 				@author_avatar='https://graph.facebook.com/'+@author.fbid+'/picture?type=large '
 			end
 			
-			@trip_info.count+=1
-			@trip_info.save!
+			add_count_on_trip @trip_id, @trip_info
 			@groups=Group.order('sort_id ASC').where(:trip_id=>@trip_id)
 			@tripPoints=TripPoint.select('trip_points.id,group_id,sort_id,place_id,name,longitude,latitude').order('group_id,sort_id ASC').joins(:place).where(:trip_id=>@trip_id)
 				
@@ -72,8 +71,8 @@ class RapidController < ApplicationController
 			if @journal_id 
 				@journal_selected=true
 				@journal=Group.select('title,public,photo,count').find_by_id(@journal_id)
-				@journal.count=@journal.count+1
-				@journal.save		
+				
+				add_count_on_journal @journal_id, @journal
 
 				@journal_name=@journal.title
 				@public=@journal.public
@@ -138,4 +137,27 @@ class RapidController < ApplicationController
 		session[:url]=str
 	end	
 
+	def add_count_on_trip id, trip 
+		if session[:trip_log]==nil
+			session[:trip_log]={}
+		end
+
+		if !session[:trip_log][id]
+			session[:trip_log][id]=true
+			trip.count+=1
+			trip.save!
+		end
+	end
+
+	def add_count_on_journal id, journal
+		if session[:journal_log]==nil
+			session[:journal_log]={}
+		end
+
+		if !session[:journal_log][id]
+			session[:journal_log][id]=true
+			journal.count+=1
+			journal.save!
+		end
+	end
 end

@@ -59,10 +59,10 @@ class TripController < ApplicationController
 	end
 	
 	def getTripPointList
+		id=params[:id]
 		@trip=isTripExist(params[:id])
 		if @trip
-			@trip.count+=1
-			@trip.save	
+			add_count_on_trip id, @trip
 			
 			@group_list=@trip.groups.find(:all,:order=>'sort_id ASC')
 			
@@ -547,4 +547,15 @@ class TripController < ApplicationController
 		end
 	end
 	
+	def add_count_on_trip id, trip 
+		if session[:trip_log]==nil
+			session[:trip_log]={}
+		end
+
+		if !session[:trip_log][id]
+			session[:trip_log][id]=true
+			trip.count+=1
+			trip.save!
+		end
+	end
 end
