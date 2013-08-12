@@ -24,12 +24,12 @@
             <h1>
             <a class="black" id="return-album-list" href="/photos/all/<%=@author_id%>" title="返回相簿"><i class="icon-level-up icon-rotate-270" ></i></a>
             <a class="black" href="#"><%=@trip_name%></a>
-			
-			<% if @isOwner %>
-				<a id="launch_upload">上傳</a>
-			<% end %>
-				
             </h1>
+        </div>
+        <div class="large-2 columns">
+            <% if @isOwner %>
+                <a id="launch_upload" class="button radius right tiny"><i class="icon-cloud-upload"></i></a>
+            <% end %>
         </div>
         <hr/>
     	<ul id="photo_container" class="small-block-grid-4 clearing-thumbs" data-clearing>

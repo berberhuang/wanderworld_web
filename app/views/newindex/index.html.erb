@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8" />
+
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width" />
+
+  <title>WanderWorld地球漫遊</title>
+  <link rel="shortcut icon" href="http://www.wanderworld.com.tw/assets/logo-31972393d4fb52fb065cab20c547f7a2.ico">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <%= javascript_include_tag "newindex" %>
+  <%= stylesheet_link_tag "newindex" %>
+  <%= csrf_meta_tags %>
+</head>
+<!-- Header and Nav -->
+<body>
+  <div id="fb-root"></div>
+  <script>
+    $(function(){
+    fb_init(function(){
+      FB.getLoginStatus(function(){
+        if(login_s&&fid){
+          <%=yield :fb_init_yes %>
+        }
+            });
+        });
+      if(!login_s||!fid){ 
+      <%=yield :fb_init_no %>
+      }
+    });
+</script>
+<div id="fb-root"></div>
+ <script>(function(d, s, id) {
+   var js, fjs = d.getElementsByTagName(s)[0];
+   if (d.getElementById(id)) return;
+   js = d.createElement(s); js.id = id;
+   js.src = "//connect.facebook.net/zh_TW/all.js#xfbml=1&appId=319719498074982";
+   fjs.parentNode.insertBefore(js, fjs);
+ }(document, 'script', 'facebook-jssdk'));</script>
+      <nav class="top-bar add-shadow" >
+        <ul class="title-area">
+          <li class="name">
+          <a href="#"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
+          </li>
+        </ul>
+          <section class="top-bar-section">
+          <ul class="right">
+            <li class="divider"></li>
+            <li><a href="/newindex/browse">瀏覽遊記</a></li>
+            <li class="divider"></li>
+            <li class="name"><a href="#" data-reveal-id="register">註冊</a></li>
+            <li class="divider"></li>
+            <li><a href="#" data-reveal-id="login">登入</a></li>
+          </ul>
+        </section>
+      </nav>
+  <!-- End Header and Nav -->
+<div class="large-9 columns large-centered">
+  <div class="row">
+    <div class="large-3 columns">
+      <h1>漫遊哥專欄</h1>
+    </div>
+  </div>
+
+<!-- First Band (Slider) -->
+
+  <div class="row">
+    <div class="large-9 columns">
+    <div id="slider">
+    	<img src="http://placehold.it/1000x400&text=[ img 1 ]" />
+    </div>
+    </div>
+    <div class="large-3 columns">
+    <h3>焦點旅行</h3>
+    <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in </p>
+    </div>
+  </div>
+  <br />  
+<!-- Three-up Content Blocks -->
+
+	<div class="row">
+		<div class="large-4 columns">
+      <img src="http://placehold.it/400x300&text=[img]" />
+      <h4>This is a content section.</h4>
+      <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa. Boudin aliqua adipisicing rump corned beef.</p>
+    </div>
+    
+    <div class="large-4 columns">
+      <img src="http://placehold.it/400x300&text=[img]" />
+      <h4>This is a content section.</h4>
+      <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa. Boudin aliqua adipisicing rump corned beef.</p>
+    </div>
+    
+    <div class="large-4 columns">
+      <img src="http://placehold.it/400x300&text=[img]" />
+      <h4>This is a content section.</h4>
+      <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa. Boudin aliqua adipisicing rump corned beef.</p>
+    </div>
+	<hr/>
+  </div>
+  <!--最新遊記-->
+  <div class="row">
+    <div class="large-3 columns">
+      <h1>最新遊記</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-4 columns">
+      <img src="http://placehold.it/400x300&text=[img]" />
+      <h4>This is a content section.</h4>
+      <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa. Boudin aliqua adipisicing rump corned beef.</p>
+    </div>
+    
+    <div class="large-4 columns">
+      <img src="http://placehold.it/400x300&text=[img]" />
+      <h4>This is a content section.</h4>
+      <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa. Boudin aliqua adipisicing rump corned beef.</p>
+    </div>
+    
+    <div class="large-4 columns">
+      <img src="http://placehold.it/400x300&text=[img]" />
+      <h4>This is a content section.</h4>
+      <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa. Boudin aliqua adipisicing rump corned beef.</p>
+    </div>
+    <hr />
+  </div>
+
+  
+<!--人氣遊記-->
+<div class="row">
+    <div class="large-3 columns">
+      <h1>人氣遊記</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-4 columns">
+      <img src="http://placehold.it/400x300&text=[img]" />
+      <h4>This is a content section.</h4>
+      <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa. Boudin aliqua adipisicing rump corned beef.</p>
+    </div>
+    
+    <div class="large-4 columns">
+      <img src="http://placehold.it/400x300&text=[img]" />
+      <h4>This is a content section.</h4>
+      <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa. Boudin aliqua adipisicing rump corned beef.</p>
+    </div>
+    
+    <div class="large-4 columns">
+      <img src="http://placehold.it/400x300&text=[img]" />
+      <h4>This is a content section.</h4>
+      <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa. Boudin aliqua adipisicing rump corned beef.</p>
+    </div>
+  
+  </div>
+
+<!-- Call to Action Panel -->
+  <div class="row">
+    <div class="large-12 columns panel" style="margin-top:7em;">
+          <div class="large-4 columns">
+            <h2>和我們聯絡！</h2>
+            <p>有任何疑問或建議，請讓我們知道!</p> 
+            <div class="large-10 columns" style="padding-left:0px;">
+            <a target="_blank" href="http://goo.gl/mnxVi" class="button large expand radius left">聯絡我們</a>
+            </a>
+          </div>
+          </div>
+          <div class="large-4 columns offset-by-four fb-like-box" data-href="http://www.facebook.com/WanderWorld" data-width="292" data-height="185" data-show-faces="true" data-stream="false" data-header="false" data-border-color="#f2f2f2">
+          </div>
+        </div>
+    </div>
+</div>
+
+  <!-- Footer -->
+  
+  <footer class="row">
+      <hr />
+      <div class="row">
+        <div class="large-6 columns">
+          <a href="/term/index.html">WanderWorld地球漫遊 &copy; 2013</a>
+        </div>
+        <div class="large-6 columns">
+          <ul class="inline-list right">
+            <li><a href="http://wanderworld-ideaaxis.blogspot.tw/" target="blank">地球漫遊開發日誌</a></li>
+            <li><a href="href="http://goo.gl/mnxVi"">問題回報</a></li>
+          </ul>
+        </div>
+      </div> 
+  </footer>
+</div>
+  <!--註冊-->
+  <div id="register" class="reveal-modal medium">
+    <div class="large-8 columns">
+      <%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
+      <fieldset>
+      
+     <legend><h2>註冊</h2></legend>
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">電子郵件:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+         <input id="user_email" name="user[email]" placeholder="請輸入您註冊的電子郵件地址" size="30" type="email" />   
+        </div>
+      </div>  
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">名稱:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.text_field :username,:placeholder=>"您在網站中的名稱"%>
+        </div>
+      </div>
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">密碼:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.password_field :password, :placeholder=>'請輸入6~20字半形英數密碼'%>
+        </div>
+      </div>
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">確認密碼:</label>
+        </div>
+        <div class="small-7 large-8 columns">
+          <%=f.password_field :password_confirmation, :placeholder=>"請輸入第二次密碼"%>
+        </div>
+        <div class="small-2 large-2 columns">
+          <%=f.submit '註冊',:class=>"button radius postfix"%>
+        </div>
+        <div class="large-10 columns right"><p class="right">註冊使用本服務，代表您同意<a href="/term/index.html" target="blank">服務條款</a></p></div>
+      </div>
+
+     <%if(flash[:signupfail])%>
+      <p class="loginfail">註冊失敗</p>
+     <%end%>
+
+      </fieldset>
+      <%end%>
+  </div>
+  
+
+  <div class="large-4 columns">
+    <fieldset>
+    <legend><h4>以其他帳號登入</h4></legend>
+      <div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">facebook</div>
+      </fieldset>
+  </div>
+  <a class="close-reveal-modal">&#215;</a>  
+  </div>
+
+<!--登入-->
+  <div id="login" class="reveal-modal medium">
+    <div class="large-8 columns">
+    
+        
+    <%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
+     <fieldset>
+      <legend><h2>登入</h2></legend>
+     <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">電子郵件:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
+        </div>
+    </div>
+    <div class="row collapse">
+      <div class="small-3 large-2 columns">
+        <label for="right-label" class="right inline">密碼:</label>
+      </div>
+      <div class="small-9 large-8 columns">
+        <%=f.password_field :password, :placeholder=>"請輸入6~20字半形英數密碼"%>
+      </div>
+      <div class="small-9 large-2 columns">
+        <%=f.submit '登入',:class=>"button radius postfix"%>
+        </div>
+    </div>
+     <!--<input type="submit" class="alert button medium" value="忘記密碼">-->
+     <%if(flash[:loginfail])%>
+      <p class="loginfail">您輸入的帳號或密碼有誤</p>
+      <%end%>
+
+      </fieldset>
+      <%end%>
+    
+
+</div>
+
+  <div class="large-4 columns">
+    <fieldset>
+    <legend><h4>以其他帳號登入</h4></legend>
+      <div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">facebook</div>
+      </fieldset>
+  </div>
+  <a class="close-reveal-modal">&#215;</a>  
+  </div>
+
+
+  
+<script>
+  $(document).foundation();
+</script>
+</body>
+</html>

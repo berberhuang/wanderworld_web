@@ -1,4 +1,21 @@
 class NewindexController < ApplicationController
+	def index
+		if flash[:login]
+			redirect_to '/rapid/triplist/'+session[:user_id].to_s
+			return
+		end
+	
+		if params[:id]
+			redirect_to '/rapid/index/'+params[:id]
+			return
+		end		
+		
+		logPosition '/'
+		@newuser=User.new
+		@user_session=UserSession.new
+		
+	end
+
 	def banded
 		if flash[:login]
 			redirect_to '/rapid/triplist/'+session[:user_id].to_s
@@ -18,6 +35,8 @@ class NewindexController < ApplicationController
 			@user_session=UserSession.new
 		end
 	end
+
+	
 	
 	def orbit
 		if params[:id]
