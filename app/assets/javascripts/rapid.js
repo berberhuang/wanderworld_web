@@ -9,6 +9,7 @@
 //= require spin
 //= require foundation
 //= require jquery.movingboxes
+//= require jQuery_upload
 //= require_tree ./rapid
 //= require_tree ./jquery_ui
 //= require_tree ./foundation

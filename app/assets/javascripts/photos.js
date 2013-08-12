@@ -7,6 +7,7 @@
 //= require jquery_ujs
 //= require fblogin
 //= require foundation
+//= require jQuery_upload
 //= require_tree ./photos
 //= require_tree ./jquery_ui
 //= require_tree ./foundation

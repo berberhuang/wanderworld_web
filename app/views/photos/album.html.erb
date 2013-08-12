@@ -1,8 +1,14 @@
 <%= content_for :js do %>
 <script>
     $(document).ready(function(){
-          editPhoto();
-	  deletePhoto();
+        editPhoto();
+		deletePhoto();
+		<% if @isOwner %>
+			var uploadInterface=$('#upload_interface');
+			var uploader=new UploadPhotoModule(uploadInterface);
+			uploader.init(1);
+			$('#launch_upload').click(function(){uploadInterface.show();});
+		<% end %>
     });
 </script>
 <%end%>
@@ -18,6 +24,11 @@
             <h1>
             <a class="black" id="return-album-list" href="/photos/all/<%=@author_id%>" title="返回相簿"><i class="icon-level-up icon-rotate-270" ></i></a>
             <a class="black" href="#"><%=@trip_name%></a>
+			
+			<% if @isOwner %>
+				<a id="launch_upload">上傳</a>
+			<% end %>
+				
             </h1>
         </div>
         <hr/>
@@ -38,3 +49,10 @@
     </div>
 </div>
 <div id="none" style="display:none;"></div>
+
+	<div id="upload_interface" style="display:none">
+		<form id="fileupload" action="/photos/uploadPhoto" ><input type="file" name="photo[img]" multiple /></form>
+		<div class="img_plugin_preview img_plugin_file_drag"><ul></ul></div>
+		<a id="upload_compelete">完成</a>
+	</div>
+
