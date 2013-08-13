@@ -15,7 +15,7 @@
 			<% if a %>
 				<%=album_tag(t.id,t.name,a.img(:thumb),a.number).html_safe%>
 			<% else %>
-				<%=album_tag(t.id,t.name,'/assets/banded/banded-cover.jpg',0).html_safe%>
+				<%=album_tag(t.id,t.name,'/assets/photos/nophoto.png',0).html_safe%>
 			<% end %>
 		<%end%>
         </ul>
