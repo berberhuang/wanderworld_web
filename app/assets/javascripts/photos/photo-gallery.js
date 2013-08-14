@@ -62,6 +62,6 @@ var emptyAlbumDetect=function(){
 	var detecter=$('#photo_container li');
 	if (detecter.length==0){
 		console.log("cool");
-		$('#photo_container').append('<h4 class="text-center"><i class="icon-picture">相簿沒有照片</i><a id="launch_upload" data-reveal-id="upload_interface"><i class="icon-cloud-upload">上傳</i></a></h4>');
+		$('#photo_container').append('<h4 class="text-center"><i class="icon-picture">相簿沒有照片：</i><a id="launch_upload" data-reveal-id="upload_interface"><i class="icon-cloud-upload">上傳</i></a></h4>');
 	};
 };
