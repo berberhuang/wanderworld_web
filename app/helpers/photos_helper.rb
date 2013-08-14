@@ -18,7 +18,7 @@ module PhotosHelper
             '<li><div class="album gallery word-break" href="#">'+
                 '<a class="th th-item" href="/photos/album/'+trip_id.to_s+'" style="background-image:url('+cover_src+')"></a>'+
                 '<div class="album-info">'+
-                   '<h6 class="album-name"><a href="/photos/album/'+trip_id.to_s+'">'+trip_name+'</a></h6>'+
+                   '<h5 class="album-name"><a href="/photos/album/'+trip_id.to_s+'">'+trip_name+'</a></h5>'+
                     '<p class="subheader">'+number_of_photo.to_s+'張照片</p>'+
                '</div></div></li>'
 	end
