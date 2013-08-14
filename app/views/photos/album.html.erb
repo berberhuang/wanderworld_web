@@ -3,12 +3,14 @@
     $(document).ready(function(){
         editPhoto();
 		deletePhoto();
-		<% if @isOwner %>
-			var uploadInterface=$('#upload_interface');
+		<% if @isOwner %>	
+            var uploadInterface=$('#upload_interface');
 			var uploader=new UploadPhotoModule(uploadInterface);
 			uploader.init(<%=@trip_id.to_s%>);
 			$('#launch_upload').click(function(){uploadInterface.show();});
+            emptyAlbumDetect();
 		<% end %>
+        
     });
 </script>
 <%end%>
@@ -54,7 +56,6 @@
 		<form id="fileupload" action="/photos/uploadPhoto" ><input type="file" name="photo[img]" multiple /></form>
 		<div class="img_plugin_preview img_plugin_file_drag"><ul></ul></div>
             <a id="upload_compelete" class="button radius right small">完成</a>
-            <!--<a id="discard_upload" class="button alert radius right small">放棄</a>
-	-->	
+            <!--<a id="discard_upload" class="button alert radius right small">放棄</a>-->	
 	</div>
 
