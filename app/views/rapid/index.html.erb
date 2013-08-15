@@ -315,11 +315,13 @@
 				<%=tripPointList_gen(@groups,@tripPoints) if @groups&&@tripPoints%>
 			</div>
 		</div>
-		<div class="row" id="group_create_button" style="<%='display:none' if !@isOwner%>">
-			<div class="large-10 large-offset-2 columns">
-				<a class="add_group_title button tiny round secondary" href="#">新增遊記
-				<i class="foundicon-add-doc">
-				</i></a>
+		<div class="row" style="<%='display:none' if !@isOwner%>">
+			<div class="large-6 columns button tiny radius" id="group_create_button">
+				<!--a class="add_group_title button tiny round secondary" href="#"--><i class="icon-plus"></i>新增遊記
+				<!--/a-->
+			</div>
+			<div class="large-6 columns button tiny radius secondary" id="launchSorting" style="<%='display:none' if !@isOwner%>">
+				<i class="icon-exchange icon-rotate-90"></i>景點排序
 			</div>
 		</div>
 		<hr style="margin:0 0 5px 0"/>
