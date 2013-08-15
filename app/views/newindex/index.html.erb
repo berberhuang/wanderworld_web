@@ -62,106 +62,202 @@
       </nav>
   <!-- End Header and Nav -->
 <div class="large-9 columns large-centered">
-  <div class="row">
-    <div class="large-3 columns">
-      <h1>漫遊哥專欄</h1>
-    </div>
-  </div>
-
 <!-- First Band (Slider) -->
-
-  <div class="row">
-    <div class="large-9 columns">
-    <div id="slider">
-    	<img src="http://placehold.it/1000x400&text=[ img 1 ]" />
+<div class="slideshow-wrapper">
+  <div class="preloader"><img src="<%=asset_path('loading.gif')%>"></div>
+  <ul data-orbit>
+  <li>
+    <img src="<%=asset_path('banded/banded-cover.jpg')%>" />
+    <div class="orbit-caption">
+      <h3 class="white">帥哥Rola Jeffrey的appWorks創業之旅</h3>
+      <ul class="inline-list">
+        <li>
+          <%if @author_avatar %>
+            <img class="user-avatar" src='<%=@author_avatar%>'/>
+          <%else%>
+            <img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/>
+          <%end%>
+        </li>
+        <li>Rola Jeffrey</li>
+      </ul>
+    
     </div>
+  </li>
+  <li>
+    <img src="<%=asset_path('banded/banded-cover.jpg')%>" />
+    <div class="orbit-caption">
+    <h3 class="white">神人Bert Huang的appWorks創業之旅</h3>
+    <ul >
+        <li><%if @author_avatar %>
+          <img  class="user-avatar" src='<%=@author_avatar%>'/>
+        <%else%>
+          <img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/>
+        <%end%></li>
+        <li>Bert Huang</li>
+      </ul>
     </div>
-    <div class="large-3 columns">
-    <h3>焦點旅行</h3>
-    <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in </p>
-    </div>
-  </div>
-  <br />  
+  </li>
+</ul>
+</div>
 <!-- Three-up Content Blocks -->
-
 	<div class="row">
-		<div class="large-4 columns">
-      <img src="http://placehold.it/400x300&text=[img]" />
-      <h4>This is a content section.</h4>
-      <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa. Boudin aliqua adipisicing rump corned beef.</p>
-    </div>
-    
-    <div class="large-4 columns">
-      <img src="http://placehold.it/400x300&text=[img]" />
-      <h4>This is a content section.</h4>
-      <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa. Boudin aliqua adipisicing rump corned beef.</p>
-    </div>
-    
-    <div class="large-4 columns">
-      <img src="http://placehold.it/400x300&text=[img]" />
-      <h4>This is a content section.</h4>
-      <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa. Boudin aliqua adipisicing rump corned beef.</p>
-    </div>
-	<hr/>
+		<ul class="large-block-grid-3 small-block-grid-3">
+      <li>
+        <div class="journal-column">
+          <a href="#">
+            <img src="http://placehold.it/400x300&text=[img]" />
+            <div class="caption">
+              <ul class="inline-list">
+                <li><%if @author_avatar %>
+                <img  class="user-avatar" src='<%=@author_avatar%>'/>
+                <%else%>
+                <img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/>
+                <%end%></li>
+                <li>Rola Jeffrey</li>
+              </ul>
+            </div>
+          </a>
+        </div>
+        <h4>This is a content section.</h4>
+        <p class="show-for-medium-up">Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit.</p>
+      </li>
+      <li>
+        <div class="journal-column">
+          <a href="#">
+            <img src="http://placehold.it/400x300&text=[img]" />
+            <div class="caption">
+              <ul class="inline-list">
+                <li><%if @author_avatar %>
+                <img  class="user-avatar" src='<%=@author_avatar%>'/>
+                <%else%>
+                <img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/>
+                <%end%></li>
+                <li>Rola Jeffrey</li>
+              </ul>
+            </div>
+          </a>
+        </div>
+        <h4>This is a content section.</h4>
+        <p class="show-for-medium-up">Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit.</p>
+      </li>
+      <li>
+        <div class="journal-column">
+          <a href="#">
+            <img src="http://placehold.it/400x300&text=[img]" />
+            <div class="caption">
+              <ul class="inline-list">
+                <li><%if @author_avatar %>
+                <img  class="user-avatar" src='<%=@author_avatar%>'/>
+                <%else%>
+                <img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/>
+                <%end%></li>
+                <li>Rola Jeffrey</li>
+              </ul>
+            </div>
+          </a>
+        </div>
+        <h4>This is a content section.</h4>
+        <p class="show-for-medium-up">Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit.</p>
+      </li>
+      </ul>
+
   </div>
   <!--最新遊記-->
   <div class="row">
-    <div class="large-3 columns">
-      <h1>最新遊記</h1>
+    <div class="large-6 columns" style="border-right:dashed 1px grey">
+      <h1><a href="#" class="black"><i class="icon-time"></i>最新遊記</a></h1>
+    
+    <ul class="large-block-grid-2 small-block-grid-1">
+      <li>
+        <div class="journal-column">
+          <a href="#">
+            <img src="http://placehold.it/400x300&text=[img]" />
+            <div class="caption">
+              <ul class="inline-list">
+                <li><%if @author_avatar %>
+                <img  class="user-avatar" src='<%=@author_avatar%>'/>
+                <%else%>
+                <img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/>
+                <%end%></li>
+                <li>Rola Jeffrey</li>
+              </ul>
+            </div>
+          </a>
+        </div>
+        <h4>This is a content section.</h4>
+        <p class="show-for-medium-up">Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit.</p>
+      </li>
+      <li>
+        <div class="journal-column">
+          <a href="#">
+            <img src="http://placehold.it/400x300&text=[img]" />
+            <div class="caption">
+              <ul class="inline-list">
+                <li><%if @author_avatar %>
+                <img  class="user-avatar" src='<%=@author_avatar%>'/>
+                <%else%>
+                <img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/>
+                <%end%></li>
+                <li>Rola Jeffrey</li>
+              </ul>
+            </div>
+          </a>
+        </div>
+        <h4>This is a content section.</h4>
+        <p class="show-for-medium-up">Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit.</p>
+      </li>
+      </ul>
+      </div>
+      <!--人氣遊記-->
+    <div class="large-6 columns">
+      <h1><a href="#" class="black"><i class="icon-star"></i>人氣遊記</a></h1>
+      <ul class="large-block-grid-2 small-block-grid-1">
+      <li>
+        <div class="journal-column">
+          <a href="#">
+            <img src="http://placehold.it/400x300&text=[img]" />
+            <div class="caption">
+              <ul class="inline-list">
+                <li><%if @author_avatar %>
+                <img  class="user-avatar" src='<%=@author_avatar%>'/>
+                <%else%>
+                <img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/>
+                <%end%></li>
+                <li>Rola Jeffrey</li>
+              </ul>
+            </div>
+          </a>
+        </div>
+        <h4>This is a content section.</h4>
+        <p class="show-for-medium-up">Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit.</p>
+      </li>
+      <li>
+        <div class="journal-column">
+          <a href="#">
+            <img src="http://placehold.it/400x300&text=[img]" />
+            <div class="caption">
+              <ul class="inline-list">
+                <li><%if @author_avatar %>
+                <img  class="user-avatar" src='<%=@author_avatar%>'/>
+                <%else%>
+                <img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/>
+                <%end%></li>
+                <li>Rola Jeffrey</li>
+              </ul>
+            </div>
+          </a>
+        </div>
+        <h4>This is a content section.</h4>
+        <p class="show-for-medium-up">Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit.</p>
+      </li>
+      </ul>
     </div>
   </div>
-  <div class="row">
-    <div class="large-4 columns">
-      <img src="http://placehold.it/400x300&text=[img]" />
-      <h4>This is a content section.</h4>
-      <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa. Boudin aliqua adipisicing rump corned beef.</p>
-    </div>
-    
-    <div class="large-4 columns">
-      <img src="http://placehold.it/400x300&text=[img]" />
-      <h4>This is a content section.</h4>
-      <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa. Boudin aliqua adipisicing rump corned beef.</p>
-    </div>
-    
-    <div class="large-4 columns">
-      <img src="http://placehold.it/400x300&text=[img]" />
-      <h4>This is a content section.</h4>
-      <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa. Boudin aliqua adipisicing rump corned beef.</p>
-    </div>
-    <hr />
-  </div>
-
-  
-<!--人氣遊記-->
-<div class="row">
-    <div class="large-3 columns">
-      <h1>人氣遊記</h1>
-    </div>
-  </div>
-  <div class="row">
-    <div class="large-4 columns">
-      <img src="http://placehold.it/400x300&text=[img]" />
-      <h4>This is a content section.</h4>
-      <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa. Boudin aliqua adipisicing rump corned beef.</p>
-    </div>
-    
-    <div class="large-4 columns">
-      <img src="http://placehold.it/400x300&text=[img]" />
-      <h4>This is a content section.</h4>
-      <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa. Boudin aliqua adipisicing rump corned beef.</p>
-    </div>
-    
-    <div class="large-4 columns">
-      <img src="http://placehold.it/400x300&text=[img]" />
-      <h4>This is a content section.</h4>
-      <p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong. Eiusmod swine spare ribs reprehenderit culpa. Boudin aliqua adipisicing rump corned beef.</p>
-    </div>
-  
-  </div>
+  <hr />
 
 <!-- Call to Action Panel -->
   <div class="row">
-    <div class="large-12 columns panel" style="margin-top:7em;">
+    <div class="large-12 columns panel">
           <div class="large-4 columns">
             <h2>和我們聯絡！</h2>
             <p>有任何疑問或建議，請讓我們知道!</p> 
@@ -305,7 +401,38 @@
 
   
 <script>
-  $(document).foundation();
+  $(document).foundation(
+    'orbit',{
+      animation: 'fade',
+      timer_speed: 3000,
+      pause_on_hover: false,
+      resume_on_mouseout: false,
+      animation_speed: 500,
+      stack_on_small: false,
+      navigation_arrows: false,
+      slide_number: false,
+      container_class: 'orbit-container',
+      stack_on_small_class: 'orbit-stack-on-small',
+      next_class: 'orbit-next',
+      prev_class: 'orbit-prev',
+      timer_container_class: 'orbit-timer',
+      timer_paused_class: 'paused',
+      timer_progress_class: 'orbit-progress',
+      slides_container_class: 'orbit-slides-container',
+      bullets_container_class: 'orbit-bullets',
+      bullets_active_class: 'active',
+      slide_number_class: 'orbit-slide-number',
+      caption_class: 'orbit-caption',
+      active_slide_class: 'active',
+      orbit_transition_class: 'orbit-transitioning',
+      bullets: true,
+      timer: true,
+      variable_height: false,
+      before_slide_change: function(){},
+      after_slide_change: function(){}
+
+
+  });
 </script>
 </body>
 </html>

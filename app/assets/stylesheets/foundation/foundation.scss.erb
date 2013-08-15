@@ -2965,6 +2965,54 @@ form.custom {
       right: 0; }
       .top-bar-section ul.right li .dropdown li .dropdown {
         right: 100%; } }
+/* Orbit Graceful Loading */
+.slideshow-wrapper {
+  position: relative; }
+  .slideshow-wrapper ul {
+    list-style-type: none;
+    margin: 0; }
+    .slideshow-wrapper ul li,
+    .slideshow-wrapper ul li .orbit-caption {
+      display: none; }
+    .slideshow-wrapper ul li:first-child {
+      display: block; }
+  .slideshow-wrapper .orbit-container {
+    background-color: transparent; }
+    .slideshow-wrapper .orbit-container li {
+      display: block; }
+      .slideshow-wrapper .orbit-container li .orbit-caption {
+        display: block; }
+
+.preloader {
+  display: block;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -20px;
+  margin-left: -20px;
+  /*border: solid 3px;
+  border-color: #555555 whitesmoke;
+  -webkit-border-radius: 1000px;
+  border-radius: 1000px;
+  -webkit-animation-name: rotate;
+  -webkit-animation-duration: 1.5s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  -moz-animation-name: rotate;
+  -moz-animation-duration: 1.5s;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-timing-function: linear;
+  -o-animation-name: rotate;
+  -o-animation-duration: 1.5s;
+  -o-animation-iteration-count: infinite;
+  -o-animation-timing-function: linear;
+  animation-name: rotate;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;*/ }
+
 .orbit-container {
   overflow: hidden;
   width: 100%;
@@ -2976,29 +3024,32 @@ form.custom {
     padding: 0;
     position: relative; }
     .orbit-container .orbit-slides-container img {
-      display: block; }
+      display: block;
+      max-width: 100%; }
     .orbit-container .orbit-slides-container > * {
-      position: relative;
-      float: left;
-      height: 100%; }
+      position: absolute;
+      top: 0;
+      width: 100%;
+      margin-left: 100%; }
+      .orbit-container .orbit-slides-container > *:first-child {
+        margin-left: 0%; }
       .orbit-container .orbit-slides-container > * .orbit-caption {
         position: absolute;
         bottom: 0;
         background-color: black;
         background-color: rgba(0, 0, 0, 0.6);
-        color: #fff;
+        color: white;
         width: 100%;
         padding: 10px 14px;
         font-size: 0.875em; }
-        .orbit-container .orbit-slides-container > * .orbit-caption * {
-          color: white; }
   .orbit-container .orbit-slide-number {
     position: absolute;
     top: 10px;
     left: 10px;
     font-size: 12px;
     color: white;
-    background: rgba(0, 0, 0, 0); }
+    background: rgba(0, 0, 0, 0);
+    z-index: 10; }
     .orbit-container .orbit-slide-number span {
       font-weight: 700;
       padding: 0.3125em; }
@@ -3007,7 +3058,8 @@ form.custom {
     top: 10px;
     right: 10px;
     height: 6px;
-    width: 100px; }
+    width: 100px;
+    z-index: 10; }
     .orbit-container .orbit-timer .orbit-progress {
       height: 100%;
       background-color: black;
@@ -3045,7 +3097,8 @@ form.custom {
     height: 60px;
     line-height: 50px;
     color: white;
-    text-indent: -9999px !important; }
+    text-indent: -9999px !important;
+    z-index: 10; }
     .orbit-container .orbit-prev > span,
     .orbit-container .orbit-next > span {
       position: absolute;
@@ -3078,19 +3131,20 @@ form.custom {
   margin: 0 auto 30px auto;
   overflow: hidden;
   position: relative;
+  float: right;
   top: 10px; }
   .orbit-bullets li {
     display: block;
-    width: 18px;
-    height: 18px;
+    width: 10px;
+    height: 10px;
     background: #999999;
     float: left;
     margin-right: 6px;
-    border: solid 2px #222222;
+    border: solid 1px #555555;
     -webkit-border-radius: 1000px;
     border-radius: 1000px; }
     .orbit-bullets li.active {
-      background: #222222; }
+      background: #555555; }
     .orbit-bullets li:last-child {
       margin-right: 0; }
 
