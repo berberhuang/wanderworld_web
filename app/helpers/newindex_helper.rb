@@ -40,4 +40,50 @@ module NewindexHelper
       		str+='</li>'
 		return str.html_safe
 	end
+
+
+	def orbit_item journal_id,img
+		@g=Group.select('*').joins(:user).find(journal_id)
+  		str='<li>'
+    		str+='<img src="'+img+'" />'
+    		str+='<div class="orbit-caption">'
+      		str+='<h3 class="white">'+@g.title+'</h3>'
+      		str+='<ul class="inline-list">'
+        	str+='<li>'
+          	if @g.fbid
+                	str+='<img  class="user-avatar" src="https://graph.facebook.com/'+@g.fbid+'/picture" />'
+          	else
+            		str+='<img  class="user-avatar" src="/assets/user_avatar.png"/>'
+          	end
+        	str+='</li>'
+        	str+='<li>'+@g.username+'</li>'
+      		str+='</ul>'
+		str+='</div>'
+		str+='</li>'
+		return str.html_safe
+	end
+
+	def classic_item journal_id,img,abstract
+		@g=Group.select('*').joins(:user).find(journal_id)
+      		str='<li>'
+        	str+='<div class="journal-column">'
+         	str+='<a href="#">'
+            	str+='<img src="'+img+'" />'
+            	str+='<div class="caption">'
+              	str+='<ul class="inline-list">'
+                str+='<li>'
+		if @g.fbid
+                	str+='<img  class="user-avatar" src="https://graph.facebook.com/'+@g.fbid+'/picture" />'
+                else
+                	str+='<img  class="user-avatar" src="/assets/user_avatar.png"/>'
+                end
+		
+		str+='</li>'
+                str+='<li>'+@g.username+'</li>'
+              	str+='</ul></div></a></div>'
+        	str+='<h4>'+@g.title+'</h4>'
+        	str+='<p class="show-for-medium-up">'+abstract+'</p>'
+      		str+='</li>'
+		return str.html_safe
+	end
 end

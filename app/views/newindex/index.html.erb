@@ -134,34 +134,10 @@
 <div class="slideshow-wrapper">
   <div class="preloader"><img src="<%=asset_path('loading.gif')%>"></div>
   <ul data-orbit>
-  <li>
-    <img src="<%=asset_path('banded/banded-cover.jpg')%>" />
-    <div class="orbit-caption">
-      <h3 class="white">帥哥Rola Jeffrey的appWorks創業之旅</h3>
-      <ul class="inline-list">
-        <li>
-          <%if @author_avatar %>
-            <img class="user-avatar" src='<%=@author_avatar%>'/>
-          <%else%>
-            <img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/>
-          <%end%>
-        </li>
-        <li>Rola Jeffrey</li>
-      </ul>
-    
-    </div>
-  </li>
-  <li>
-    <img src="<%=asset_path('banded/banded-cover.jpg')%>" />
-    <div class="orbit-caption">
-    <h3 class="white">神人Bert Huang的appWorks創業之旅</h3>
-    <ul >
-        <li><%if @author_avatar %>
-          <img  class="user-avatar" src='<%=@author_avatar%>'/>
-        <%else%>
-          <img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/>
-        <%end%></li>
-        <li>Bert Huang</li>
+	<!--相信你看得懂 -->
+	<!--             journal_id   ,img_url	-->
+	<%=orbit_item 1,'/assets/banded-cover.jpg' %>
+	<%=orbit_item 1,'/assets/banded-cover.jpg' %>
       </ul>
     </div>
   </li>
@@ -170,63 +146,9 @@
 <!-- Three-up Content Blocks -->
 	<div class="row">
 		<ul class="large-block-grid-3 small-block-grid-3">
-      <li>
-        <div class="journal-column">
-          <a href="#">
-            <img src="http://placehold.it/400x300&text=[img]" />
-            <div class="caption">
-              <ul class="inline-list">
-                <li><%if @author_avatar %>
-                <img  class="user-avatar" src='<%=@author_avatar%>'/>
-                <%else%>
-                <img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/>
-                <%end%></li>
-                <li>Rola Jeffrey</li>
-              </ul>
-            </div>
-          </a>
-        </div>
-        <h4>This is a content section.</h4>
-        <p class="show-for-medium-up">Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit.</p>
-      </li>
-      <li>
-        <div class="journal-column">
-          <a href="#">
-            <img src="http://placehold.it/400x300&text=[img]" />
-            <div class="caption">
-              <ul class="inline-list">
-                <li><%if @author_avatar %>
-                <img  class="user-avatar" src='<%=@author_avatar%>'/>
-                <%else%>
-                <img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/>
-                <%end%></li>
-                <li>Rola Jeffrey</li>
-              </ul>
-            </div>
-          </a>
-        </div>
-        <h4>This is a content section.</h4>
-        <p class="show-for-medium-up">Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit.</p>
-      </li>
-      <li>
-        <div class="journal-column">
-          <a href="#">
-            <img src="http://placehold.it/400x300&text=[img]" />
-            <div class="caption">
-              <ul class="inline-list">
-                <li><%if @author_avatar %>
-                <img  class="user-avatar" src='<%=@author_avatar%>'/>
-                <%else%>
-                <img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/>
-                <%end%></li>
-                <li>Rola Jeffrey</li>
-              </ul>
-            </div>
-          </a>
-        </div>
-        <h4>This is a content section.</h4>
-        <p class="show-for-medium-up">Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit.</p>
-      </li>
+	<%=classic_item 1, '/assets/banded-cover.jpg','這個是摘要'%>
+	<%=classic_item 1, '/assets/banded-cover.jpg','這個是摘要'%>
+	<%=classic_item 1, '/assets/banded-cover.jpg','這個是摘要'%>
       </ul>
 
   </div>

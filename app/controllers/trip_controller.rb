@@ -125,7 +125,7 @@ class TripController < ApplicationController
 		@g=Group.find_by_id(params[:group_id])
 		@g.photo=nil
 		@g.abstract=''
-		count=50
+		count=30
 		fin=false
 		if @g&&@g.trip.user.id==session[:user_id]		
 			@g.trip_points.order('sort_id ASC').each do |t|
@@ -135,7 +135,7 @@ class TripController < ApplicationController
 					  @str=@m.article.gsub(/<[^>]*>/,'')
 					  s=@str.size
 					  if(s>count)
-					  	@g.abstract+=@str.str(0,count-1)
+					  	@g.abstract+=@str.slice(0,count-1)
 						fin=true
 					  else
 						@g.abstract+=@str

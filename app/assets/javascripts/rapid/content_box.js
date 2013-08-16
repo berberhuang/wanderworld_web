@@ -194,6 +194,7 @@ var ContentBoxModule = function(item){
 	};
 
 	var saveJournal=function(){
+		var saveList=[];
 		for(var id in editor){
 			var str=editor[id].getData().replace(/.*<span style="display: none;">&nbsp;<\/span><\/div>/,'');
 			if(!DataStatus.contentList){
@@ -201,11 +202,21 @@ var ContentBoxModule = function(item){
 			}
 			if(DataStatus.contentList[id]!=str){
 				DataStatus.contentList[id]=str;
-				Data.savePost(id);
+				saveList.push(id);
 			}
 		}
 		
-		Data.updateGroupPhoto(edit_group_id);
+		for(var i=0;i<saveList.length;i++){
+			var id=saveList[i];
+			if(i==saveList.length-1){
+			    var journal_id=edit_group_id;
+			    Data.savePost(id,function(){
+				Data.updateGroupPhoto(journal_id);	
+			    });
+			}else{
+			    Data.savePost(id);
+			}
+		}
 		
 	};
 	
