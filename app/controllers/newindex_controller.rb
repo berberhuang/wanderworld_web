@@ -1,5 +1,9 @@
 class NewindexController < ApplicationController
 	def index
+		if flash[:login]
+			redirect_to '/rapid/triplist/'+session[:user_id].to_s
+			return
+		end
 		
 		@newuser=User.new
 		@user_session=UserSession.new

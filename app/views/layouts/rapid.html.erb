@@ -66,14 +66,13 @@ _gaq.push(['_trackPageview']);
 <nav class="top-bar">
         <ul class="title-area">
           <li class="name">
-            <a href="/newindex/browse"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
+            <a href="/"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
           </li>
         </ul>
           <section class="top-bar-section">
-  <script type="text/javascript" src="<%=asset_path('rapid/uievent.js')%>"></script>
       <ul class="right">
       <li class="divider"></li>
-            <li><a href="/newindex/browse" id="readJournal">瀏覽遊記</a></li>
+            <li><a href="/" id="readJournal">瀏覽遊記</a></li>
             <li class="divider"></li>
         <li class="active"><% if session[:avatar_src]%><img style="height:40px" src='<%=session[:avatar_src]%>'></img><% end %></li>
         <li class="has-dropdown"><a href="/rapid/index"><%=session[:username]%></a>
@@ -100,7 +99,7 @@ _gaq.push(['_trackPageview']);
   <nav class="top-bar">
         <ul class="title-area">
           <li class="name">
-            <a href='/newindex/banded'><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
+            <a href='/'><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
           </li>
         </ul>
           <section class="top-bar-section">
