@@ -126,28 +126,32 @@ class TripController < ApplicationController
 		@g.photo=nil
 		@g.abstract=''
 		count=30
-		fin=false
+		abstract_fin=false
+		photo_fin=false
 		if @g&&@g.trip.user.id==session[:user_id]		
 			@g.trip_points.order('sort_id ASC').each do |t|
 				@m=t.micropost
 				if @m
-					if !fin
+					if !abstract_fin
 					  @str=@m.article.gsub(/<[^>]*>/,'')
 					  s=@str.size
 					  if(s>count)
 					  	@g.abstract+=@str.slice(0,count-1)
-						fin=true
+						abstract_fin=true
 					  else
 						@g.abstract+=@str
 					  end					
 					end					
-
-					@str=@m.article[/<img [^>]*src="[^"]*"/]
-					if @str
-						@str=@str[/src="[^"]*"/].split('"')[1]
-						@g.photo=@str
-						break
+					
+					if !photo_fin
+						@str=@m.article[/<img [^>]*src="[^"]*"/]
+						if @str
+							@str=@str[/src="[^"]*"/].split('"')[1]
+							@g.photo=@str
+							photo_fin=true
+						end
 					end
+					break if photo_fin && abstract_fin
 				end
 			end				
 			@g.abstract+='...'

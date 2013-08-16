@@ -44,6 +44,7 @@ module NewindexHelper
 
 	def orbit_item journal_id,img
 		@g=Group.select('*').joins(:user).find(journal_id)
+		return '' if !@g
   		str='<li>'
     		str+='<img src="'+img+'" />'
     		str+='<div class="orbit-caption">'
@@ -65,6 +66,7 @@ module NewindexHelper
 
 	def classic_item journal_id,img,abstract
 		@g=Group.select('*').joins(:user).find(journal_id)
+		return '' if !@g
       		str='<li>'
         	str+='<div class="journal-column">'
          	str+='<a href="#">'
