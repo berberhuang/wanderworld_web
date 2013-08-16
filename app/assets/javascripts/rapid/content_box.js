@@ -194,6 +194,7 @@ var ContentBoxModule = function(item){
 	};
 
 	var saveJournal=function(){
+		$('#saving').show();
 		var saveList=[];
 		for(var id in editor){
 			var str=editor[id].getData().replace(/.*<span style="display: none;">&nbsp;<\/span><\/div>/,'');
@@ -210,14 +211,25 @@ var ContentBoxModule = function(item){
 			var id=saveList[i];
 			if(i==saveList.length-1){
 			    var journal_id=edit_group_id;
-			    Data.savePost(id,function(){
-				Data.updateGroupPhoto(journal_id);	
+			    Data.savePost(id,function(result){
+				if(result){
+					Data.updateGroupPhoto(journal_id,function(){
+						$('#saving').hide();
+						exitEditor();
+					});
+				}else{
+					alert("儲存失敗,可能您的網路中斷或我們伺服器出了問題,請稍後在試");
+					$('#saving').hide();
+				}
 			    });
 			}else{
 			    Data.savePost(id);
 			}
 		}
-		
+		if(saveList.length==0){
+			$('#saving').hide();
+			exitEditor();
+		}
 	};
 	
 	var equipEditorOnBlock=function(id,item){
@@ -391,17 +403,14 @@ var ContentBoxModule = function(item){
 		},
 		clickFinishPost:function(){
 			saveJournal();
-			exitEditor();
 		},
 		clickReleasePost:function(){
 			setPublic();
 			saveJournal();
-			exitEditor();
 		},
 		clickConvertToDraft:function(){
 			setPrivate();
 			saveJournal();
-			exitEditor();
 		},
 		clickSetPublic:function(){
 			setPublic();			

@@ -1,5 +1,6 @@
 *.log
 *~
+*.swap
 tmp/*
 log/*
 public/assets/*

@@ -316,19 +316,23 @@ var Data=(function(){
 				if(result){
 					log('write successful');
 					if(callback)
-						callback();	
+						callback(result);	
 				}else{
 					log('write fail');
+					if(callback)
+						callback(result);	
 				}
 			});
 		},
-		updateGroupPhoto:function(group_id){
+		updateGroupPhoto:function(group_id,fn){
 			$.post('/trip/updateGroupPhoto',{group_id:group_id},function(result){
 				if(result){
 					log('updatePhotoYes');
 				}else{
 					log('updatePhotoYes');
 				}
+				if(fn)
+					fn();
 			});
 		},
 		//發布遊記
