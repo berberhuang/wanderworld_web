@@ -17,6 +17,33 @@
   <%= javascript_include_tag "newindex" %>
   <%= stylesheet_link_tag "newindex" %>
   <%= csrf_meta_tags %>
+	
+	<script type="text/javascript">
+
+
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-30218831-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+
+		<%if session[:username]%>
+			var login_s=true;
+		<%else%>
+			var login_s=false;
+		<%end%>
+
+		<%if session[:fbid]%>
+			var fid=<%=session[:fbid]%>;
+		<%else%>
+			var fid=null;
+		<%end%>
+		
+	</script>
 </head>
 <!-- Header and Nav -->
 <body>
@@ -43,23 +70,55 @@
    js.src = "//connect.facebook.net/zh_TW/all.js#xfbml=1&appId=319719498074982";
    fjs.parentNode.insertBefore(js, fjs);
  }(document, 'script', 'facebook-jssdk'));</script>
-      <nav class="top-bar add-shadow" >
+
+<%if UserSession.find%>
+<nav class="top-bar add-shadow" >
         <ul class="title-area">
           <li class="name">
-          <a href="#"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
+          	<a href="#"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
           </li>
         </ul>
           <section class="top-bar-section">
-          <ul class="right">
-            <li class="divider"></li>
-            <li><a href="/newindex/browse">瀏覽遊記</a></li>
+	<script type="text/javascript" src="<%=asset_path('rapid/uievent.js')%>"></script>
+			<ul class="right">
+				<li class="active"><% if session[:avatar_src]%><img style="height:40px" src='<%=session[:avatar_src]%>'></img><% end %></li>
+				<li class="has-dropdown"><a href="/rapid/index"><%=session[:username]%></a>
+					<ul class="dropdown">
+						<li><a href="/rapid/index">我的旅行</a></li>
+						<li><a href="/photos/all/">我的相簿</a></li>
+						<%if session[:fbid]%>
+						<li><a id="logout_a" href="javascript:onLogout()">登出Facebook</a></li>
+						<li><a id="logout_a" href="/user_session/logout">登出</a></li>
+						<%else%>
+						<li><a id="logout_a" href="/user_session/logout">登出</a></li>
+						<%end%>
+						<li class="divider"></li>
+						<li><a href="http://goo.gl/JeAZ2" target="blank">問題回報</a></li>
+					</ul>
+				</li>
+			</ul>
+		</section>
+		</nav>		
+	<%else%>
+	<nav class="top-bar add-shadow" >
+        <ul class="title-area">
+          <li class="name">
+          	<a href="#"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
+          </li>
+        </ul>
+          <section class="top-bar-section">
+		<ul class="right">
             <li class="divider"></li>
             <li class="name"><a href="#" data-reveal-id="register">註冊</a></li>
             <li class="divider"></li>
-            <li><a href="#" data-reveal-id="login">登入</a></li>
+    		<li><a href="#" data-reveal-id="login">登入</a></li>
           </ul>
-        </section>
-      </nav>
+          </section>
+          
+	
+</nav>
+<%end%>
+
   <!-- End Header and Nav -->
 <div class="large-9 columns large-centered">
 <!-- First Band (Slider) -->
@@ -172,51 +231,16 @@
       </div>
       <div class="large-6 columns">
         <h5>
-          <a href="./browse" class="right">更多最新遊記&nbsp;
+          <a href="./browse?type=new" class="right">更多&nbsp;
           <i class="icon-level-down icon-rotate-270"></i>
         </a>  
         </h5>
       </div>
       
     <ul class="large-block-grid-2 small-block-grid-1 seperation-line">
-      <li>
-        <div class="journal-column">
-          <a href="#">
-            <img src="http://placehold.it/400x300&text=[img]" />
-            <div class="caption">
-              <ul class="inline-list">
-                <li><%if @author_avatar %>
-                <img  class="user-avatar" src='<%=@author_avatar%>'/>
-                <%else%>
-                <img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/>
-                <%end%></li>
-                <li>Rola Jeffrey</li>
-              </ul>
-            </div>
-          </a>
-        </div>
-        <h4>This is a content section.</h4>
-        <p class="show-for-medium-up">Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit.</p>
-      </li>
-      <li>
-        <div class="journal-column">
-          <a href="#">
-            <img src="http://placehold.it/400x300&text=[img]" />
-            <div class="caption">
-              <ul class="inline-list">
-                <li><%if @author_avatar %>
-                <img  class="user-avatar" src='<%=@author_avatar%>'/>
-                <%else%>
-                <img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/>
-                <%end%></li>
-                <li>Rola Jeffrey</li>
-              </ul>
-            </div>
-          </a>
-        </div>
-        <h4>This is a content section.</h4>
-        <p class="show-for-medium-up">Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit.</p>
-      </li>
+	<%@new_groups.each do |g|%>
+		<%=journal_column g.trip_id,g.id,g.username,g.fbid,g.title,g.abstract,g.photo%>
+	<%end%>
       </ul>
       </div>
       <!--人氣遊記-->
@@ -228,50 +252,15 @@
       </div>
       <div class="large-6 columns">
         <h5>
-          <a href="./browse" class="right">更多人氣遊記&nbsp;
+          <a href="./browse?type=pop" class="right">更多&nbsp;
           <i class="icon-level-down icon-rotate-270"></i>
         </a>  
         </h5>
       </div>
       <ul class="large-block-grid-2 small-block-grid-1">
-      <li>
-        <div class="journal-column">
-          <a href="#">
-            <img src="http://placehold.it/400x300&text=[img]" />
-            <div class="caption">
-              <ul class="inline-list">
-                <li><%if @author_avatar %>
-                <img  class="user-avatar" src='<%=@author_avatar%>'/>
-                <%else%>
-                <img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/>
-                <%end%></li>
-                <li>Rola Jeffrey</li>
-              </ul>
-            </div>
-          </a>
-        </div>
-        <h4>This is a content section.</h4>
-        <p class="show-for-medium-up">Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit.</p>
-      </li>
-      <li>
-        <div class="journal-column">
-          <a href="#">
-            <img src="http://placehold.it/400x300&text=[img]" />
-            <div class="caption">
-              <ul class="inline-list">
-                <li><%if @author_avatar %>
-                <img  class="user-avatar" src='<%=@author_avatar%>'/>
-                <%else%>
-                <img  class="user-avatar" src='<%=asset_path("user_avatar.png")%>'/>
-                <%end%></li>
-                <li>Rola Jeffrey</li>
-              </ul>
-            </div>
-          </a>
-        </div>
-        <h4>This is a content section.</h4>
-        <p class="show-for-medium-up">Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit.</p>
-      </li>
+	<%@new_groups.each do |g|%>
+		<%=journal_column g.trip_id,g.id,g.username,g.fbid,g.title,g.abstract,g.photo%>
+	<%end%>
       </ul>
     </div>
   </div>
@@ -422,6 +411,7 @@
 
   
 <script>
+  $(document).foundation('reveal');
   $(document).foundation(
     'orbit',{
       animation: 'fade',

@@ -124,10 +124,24 @@ class TripController < ApplicationController
 	def updateGroupPhoto
 		@g=Group.find_by_id(params[:group_id])
 		@g.photo=nil
+		@g.abstract=''
+		count=50
+		fin=false
 		if @g&&@g.trip.user.id==session[:user_id]		
 			@g.trip_points.order('sort_id ASC').each do |t|
 				@m=t.micropost
 				if @m
+					if !fin
+					  @str=@m.article.gsub(/<[^>]*>/,'')
+					  s=@str.size
+					  if(s>count)
+					  	@g.abstract+=@str.str(0,count-1)
+						fin=true
+					  else
+						@g.abstract+=@str
+					  end					
+					end					
+
 					@str=@m.article[/<img [^>]*src="[^"]*"/]
 					if @str
 						@str=@str[/src="[^"]*"/].split('"')[1]
@@ -136,7 +150,7 @@ class TripController < ApplicationController
 					end
 				end
 			end				
-			
+			@g.abstract+='...'
 			@g.save
 			render :json=>true
 		else
