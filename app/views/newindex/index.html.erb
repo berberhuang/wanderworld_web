@@ -166,7 +166,7 @@
       </div>
       <div class="large-6 columns">
         <h5>
-          <a href="./browse?type=new" class="right">更多&nbsp;
+          <a href="/newindex/browse?type=new" class="right">更多&nbsp;
           <i class="icon-level-down icon-rotate-270"></i>
         </a>  
         </h5>
@@ -182,18 +182,18 @@
     <div class="large-6 columns">
       <div class="large-6 columns">
         <h1>
-          <a href="#" class="black"><i class="icon-time"></i>最新遊記</a>
+          <a href="#" class="black"><i class="icon-time"></i>人氣遊記</a>
         </h1>  
       </div>
       <div class="large-6 columns">
         <h5>
-          <a href="./browse?type=pop" class="right">更多&nbsp;
+          <a href="/newindex/browse?type=pop" class="right">更多&nbsp;
           <i class="icon-level-down icon-rotate-270"></i>
         </a>  
         </h5>
       </div>
       <ul class="large-block-grid-2 small-block-grid-1">
-	<%@new_groups.each do |g|%>
+	<%@pop_groups.each do |g|%>
 		<%=journal_column g.trip_id,g.id,g.username,g.fbid,g.title,g.abstract,g.photo%>
 	<%end%>
       </ul>
