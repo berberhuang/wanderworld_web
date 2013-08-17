@@ -14,12 +14,13 @@ module NewindexHelper
 				img='http://maps.googleapis.com/maps/api/staticmap?maptype=satellite&size=400x300&markers=color%3Ablue'+pos_str+'&sensor=false'
 			end
 		end
-
+		
 		abstract='' if !abstract
+		url='/'+trip_id.to_s+'/'+journal_id.to_s
 
       		str='<li>'
         	str+='<div class="journal-column">'
-          	str+='<a href="/'+trip_id.to_s+'/'+journal_id.to_s+'">'
+          	str+='<a href="/'+url+'">'
             	str+='<img src="'+img+'" />'
             	str+='<div class="caption">'
               	str+='<ul class="inline-list">'
@@ -35,7 +36,7 @@ module NewindexHelper
             	str+='</div>'
          	str+='</a>'
         	str+='</div>'
-        	str+='<h4>'+title+'</h4>'
+        	str+='<a href="'+url+'"><h4>'+title+'</h4></a>'
         	str+='<p class="show-for-medium-up">'+abstract+'</p>'
       		str+='</li>'
 		return str.html_safe
@@ -45,7 +46,8 @@ module NewindexHelper
 	def orbit_item journal_id,img,abstract
 		@g=Group.select('*').joins(:user).find_by_id(journal_id)
 		return '' if !@g
-  		str='<li>'
+		url='/'+@g.trip_id.to_s+'/'+journal_id.to_s
+  		str='<li><a href="'+url+'">'
     		str+='<img src="'+img+'" class="slide-photos"/>'
     		str+='<div class="orbit-caption">'
       		str+='<div class="large-3 columns">'
@@ -62,16 +64,18 @@ module NewindexHelper
       		str+='</ul></div>'
           str+='<div class="large-9 columns"><p class="white">'+abstract+'</p</div>'
 		str+='</div>'
-		str+='</li>'
+		str+='</a></li>'
 		return str.html_safe
 	end
 
 	def classic_item journal_id,img,abstract
 		@g=Group.select('*').joins(:user).find_by_id(journal_id)
 		return '' if !@g
-      		str='<li>'
+		url='/'+@g.trip_id.to_s+'/'+journal_id.to_s
+      		
+		str='<li>'
         	str+='<div class="journal-column">'
-         	str+='<a href="#">'
+         	str+='<a href="'+url+'">'
             	str+='<img class="classic-image" src="'+img+'" />'
             	str+='<div class="caption">'
               	str+='<ul class="inline-list">'
@@ -85,7 +89,7 @@ module NewindexHelper
 		str+='</li>'
                 str+='<li>'+@g.username+'</li>'
               	str+='</ul></div></a></div>'
-        	str+='<h4>'+@g.title+'</h4>'
+        	str+='<a href="'+url+'"><h4>'+@g.title+'</h4></a>'
         	str+='<p class="show-for-medium-up">'+abstract+'</p>'
       		str+='</li>'
 		return str.html_safe
