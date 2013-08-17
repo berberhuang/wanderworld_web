@@ -125,7 +125,7 @@ class TripController < ApplicationController
 		@g=Group.find_by_id(params[:group_id])
 		@g.photo=nil
 		@g.abstract=''
-		count=30
+		count=50
 		abstract_fin=false
 		photo_fin=false
 		if @g&&@g.trip.user.id==session[:user_id]		

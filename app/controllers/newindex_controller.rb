@@ -13,8 +13,8 @@ class NewindexController < ApplicationController
 		@new_order_str='groups.created_at DESC'
 	  
 	  
-		@pop_groups=Group.joins(:trip,:user).where(:public=>true).order(@pop_order_str).select('username,fbid,name,groups.id,groups.user_id,photo,trip_id,title,abstract').group(:trip_id).limit(2)
-		@new_groups=Group.joins(:trip,:user).where(:public=>true).order(@new_order_str).select('username,fbid,name,groups.id,groups.user_id,photo,trip_id,title,abstract').group(:trip_id).limit(2)
+		@pop_groups=Group.joins(:trip,:user).where(:public=>true).order(@pop_order_str).select('username,fbid,name,groups.id,groups.user_id,photo,trip_id,title,abstract').group(:trip_id).limit(4)
+		@new_groups=Group.joins(:trip,:user).where(:public=>true).order(@new_order_str).select('username,fbid,name,groups.id,groups.user_id,photo,trip_id,title,abstract').group(:trip_id).limit(4)
 	
 
 	end
