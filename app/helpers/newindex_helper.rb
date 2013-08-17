@@ -20,7 +20,7 @@ module NewindexHelper
 
       		str='<li>'
         	str+='<div class="journal-column">'
-          	str+='<a class="th th-item" href="/'+url+'" style="background-image:url(\''+img+'\')">'
+          	str+='<a class="th th-item" href="'+url+'" style="background-image:url(\''+img+'\')">'
             	str+='<img class="transparent" src="'+img+'" />'
             	str+='<div class="caption">'
               	str+='<ul class="inline-list">'
