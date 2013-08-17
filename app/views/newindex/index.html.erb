@@ -130,28 +130,32 @@
 
   <!-- End Header and Nav -->
 <div class="large-9 columns large-centered">
-<!-- First Band (Slider) -->
-<div class="slideshow-wrapper">
-  <div class="preloader"><img src="<%=asset_path('loading.gif')%>"></div>
-  <ul data-orbit>
-	<!--相信你看得懂 -->
-	<!--             journal_id   ,img_url	-->
-	<%=orbit_item 1,'/assets/banded-cover.jpg' %>
-	<%=orbit_item 1,'/assets/banded-cover.jpg' %>
-      </ul>
+<!-- First Band (Slider) style="background-color:rgba(100,100,100,0.9)" -->
+    <div class="row">
+      <div class="slideshow-wrapper large-12 columns">
+        <div class="preloader">
+          <img src="<%=asset_path('loading.gif')%>">
+        </div>
+        <ul data-orbit>
+      <!--相信你看得懂,journal_id,img_url 593 -->
+      <%=orbit_item 13 ,'http://wwonline-photo.s3.amazonaws.com/photos/418/large/b33957646c4f889acfe81a85deed4466.JPG?1376750582','今天的行程就在絕美的長崎稻佐山夜景下結束，長崎真的是個很有趣的地方，北從佐世保南至長崎市内。雖然因為時間不夠還有很多地方沒有去，不過光是今天的行程就非常充實，之後有機會再去剩下的景點。' %>
+      <%=orbit_item 14,'http://wwonline-photo.s3.amazonaws.com/photos/418/large/01fe97ba40b62d81f2e299c4f1a99131.JPG?1376750583','而路面電車穿梭於其間，感覺有一種乘坐時光機回到過去的感覺，將過去與現在銜接起來。' %>
+        </ul>
+      </div>
+      <!--div class="large-4 columns">
+        <blockquote >I do not fear computers. I fear the lack of them. Maecenas faucibus mollis interdum. Aenean lacinia bibendum nulla sed consectetur.<cite>Isaac Asimov</cite></blockquote>
+      </div-->
     </div>
-  </li>
-</ul>
-</div>
+    
 <!-- Three-up Content Blocks -->
-	<div class="row">
-		<ul class="large-block-grid-3 small-block-grid-3">
-	<%=classic_item 1, '/assets/banded-cover.jpg','這個是摘要'%>
-	<%=classic_item 1, '/assets/banded-cover.jpg','這個是摘要'%>
-	<%=classic_item 1, '/assets/banded-cover.jpg','這個是摘要'%>
+  <div class="columns">
+    <ul class="large-block-grid-3 small-block-grid-3">
+      <%=classic_item 559, 'https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-prn2/190678_1623737197940_4561351_n.jpg','第一站是非常空曠，兩邊有個小山谷的區域。這裏的回音非常大，於是玩起在山谷中喊出"與會者國家"的遊戲。在埃及的沙漠中喊出不斷有回音的"Taiwan"的時候，或許是因為在這樣的國際化場合能被大家看見，心中小小的感動。'%>
+      <%=classic_item 39, 'https://lh5.googleusercontent.com/-od-1tZBrPTo/T32skz-4ESI/AAAAAAAAGCo/d5XsRro5cHQ/s640/IMG_3587.JPG','我和景翔哥兩人依然結伴同行，前往香格里拉古城中，稻城媽媽的老闆為我們預定好的旅館。 雲南省不愧是中國旅遊資源開發最完善的地方，香格里拉古城充滿了各式各樣，非常有味道的旅館和商店，各民族的人們穿著爭奇鬥艷，古城鋪石底辦和木造建築，儘管充滿了人造的痕跡，但還是相當美觀。'%>
+      <%=classic_item 696, 'http://wwonline-photo.s3.amazonaws.com/photos/410/large/3fda53edf317a816f6883ae2eef256d5.JPG?1376549068','慕谷慕魚的水非～常～清澈，夏天來到這邊，光看到這個景象就足夠消暑了，更不用說跳下水的瞬間，真的只能用爽來形容阿！'%>
       </ul>
-
   </div>
+
   <!--最新遊記-->
   <div class="row">
     <div class="large-6 columns">
@@ -346,7 +350,7 @@
   $(document).foundation(
     'orbit',{
       animation: 'fade',
-      timer_speed: 3000,
+      timer_speed: 10000,
       pause_on_hover: false,
       resume_on_mouseout: false,
       animation_speed: 500,
@@ -367,9 +371,9 @@
       caption_class: 'orbit-caption',
       active_slide_class: 'active',
       orbit_transition_class: 'orbit-transitioning',
-      bullets: true,
+      bullets:false,
       timer: true,
-      variable_height: false,
+      variable_height: true,
       before_slide_change: function(){},
       after_slide_change: function(){}
     });

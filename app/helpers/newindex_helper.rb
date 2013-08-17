@@ -42,13 +42,14 @@ module NewindexHelper
 	end
 
 
-	def orbit_item journal_id,img
+	def orbit_item journal_id,img,abstract
 		@g=Group.select('*').joins(:user).find_by_id(journal_id)
 		return '' if !@g
   		str='<li>'
-    		str+='<img src="'+img+'" />'
+    		str+='<img src="'+img+'" class="slide-photos"/>'
     		str+='<div class="orbit-caption">'
-      		str+='<h3 class="white">'+@g.title+'</h3>'
+      		str+='<div class="large-3 columns">'
+          str+='<h3 class="white">'+@g.title+'</h3>'
       		str+='<ul class="inline-list">'
         	str+='<li>'
           	if @g.fbid
@@ -58,7 +59,8 @@ module NewindexHelper
           	end
         	str+='</li>'
         	str+='<li>'+@g.username+'</li>'
-      		str+='</ul>'
+      		str+='</ul></div>'
+          str+='<div class="large-9 columns"><p class="white">'+abstract+'</p</div>'
 		str+='</div>'
 		str+='</li>'
 		return str.html_safe
@@ -70,7 +72,7 @@ module NewindexHelper
       		str='<li>'
         	str+='<div class="journal-column">'
          	str+='<a href="#">'
-            	str+='<img src="'+img+'" />'
+            	str+='<img class="classic-image" src="'+img+'" />'
             	str+='<div class="caption">'
               	str+='<ul class="inline-list">'
                 str+='<li>'

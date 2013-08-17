@@ -3154,12 +3154,25 @@ form.custom {
 .touch .orbit-bullets {
   display: none; }
 
-@media only screen and (min-width: 48em) {
+@media only screen and (min-width: 768px) {
   .touch .orbit-container .orbit-prev,
   .touch .orbit-container .orbit-next {
     display: inherit; }
   .touch .orbit-bullets {
     display: block; } }
+@media only screen and (max-width: 768px) {
+  .orbit-stack-on-small .orbit-slides-container {
+    height: auto !important; }
+  .orbit-stack-on-small .orbit-slides-container > * {
+    position: relative;
+    margin-left: 0% !important; }
+  .orbit-stack-on-small .orbit-timer,
+  .orbit-stack-on-small .orbit-next,
+  .orbit-stack-on-small .orbit-prev,
+  .orbit-stack-on-small .orbit-bullets {
+    display: none; } }
+
+
 .reveal-modal-bg {
   position: fixed;
   height: 100%;
