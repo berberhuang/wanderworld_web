@@ -23,7 +23,7 @@ module NewindexHelper
 
       		str='<li>'
         	str+='<div class="journal-column">'
-          	str+='<a href="/'+url+'">'
+          	str+='<a href="'+url+'">'
             	str+='<img class="column-image" src="'+img+'" onerror="this.src=\''+backup_img+'\';" />'
             	str+='<div class="caption">'
               	str+='<ul class="inline-list">'
