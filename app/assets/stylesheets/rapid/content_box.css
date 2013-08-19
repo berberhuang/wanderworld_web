@@ -1,5 +1,6 @@
 /*遊記框和時間軸的顏色對照*/
 
+
 .green {
 	/*grey in fact*/
 	background-color:whitesmoke;
@@ -64,7 +65,9 @@
 }
 
 
-
+#release_status{
+	padding:0px;
+}
 
 .postTitle{
 	font-weight:bold;

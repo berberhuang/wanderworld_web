@@ -22,30 +22,28 @@
 
 <div class="row wrapper">
     <div class="large-9 columns large-offset-1 gallery panel" style="margin-bottom:0px;">
-    <div class="row">
-        <div class="album-title large-10 columns">
+        <div class="album-title columns">
             <a class="black" id="return-album-list" href="/photos/all/<%=@author_id%>" title="返回相簿"><i class="icon-level-up icon-rotate-270" ><span>&nbsp;返回</span></i></a>
-            <h1>
-            <a class="black" href="#"><%=@trip_name%></a>
-            </h1>
-        </div>
-        <div class="large-2 columns">
-        <div class="row">
-            <% if @isOwner %>
-                <a id="launch_upload" class="button radius right tiny" data-reveal-id="upload_interface"><i class="icon-cloud-upload icon-large">&nbsp;上傳</i></a>
+            <div class="row">
+               <h1>
+                    <a class="black" href="#"><%=@trip_name%></a>
+                    <% if @isOwner %>
+                <a id="launch_upload" class="button radius right tiny" style="font-size:12px;" data-reveal-id="upload_interface"><i class="icon-cloud-upload icon-large">&nbsp;上傳</i></a>
             <% end %>
-        </div>
+                </h1>
+                
+            </div>
+            <div class="row">
+                <div class="fb-like" data-href="http://www.wanderworld.com.tw/photos/album/<%=@trip_id%>" data-width="450px"data-layout="button_count" data-show-faces="true" data-send="false"></div>
+            </div>
+        <div class="large-2 columns">
         </div>
         </div>
         <!--相簿人氣-->
-        <div class="row">
-            <div class="large-2 columns right">		
-		<div class="fb-like" data-href="http://www.wanderworld.com.tw/photos/album/<%=@trip_id%>" data-width="450" data-layout="button_count" data-show-faces="true" data-send="false" style="margin-left:0px;">
-	        </div>
-                <!--<p class="right" style="margin:0px;">人氣：<span>∞</span></p>-->
-            </div>
+        <!--div class="row">
+            <<p class="right" style="margin:0px;">人氣：<span>∞</span></p>>
+        </div-->
             
-        </div>
         <hr style="margin-top:0px;" />
     	<ul id="photo_container" class="small-block-grid-4 clearing-thumbs" data-clearing>
 		<% @photo_src.each do |p| %>
