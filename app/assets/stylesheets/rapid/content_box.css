@@ -27,6 +27,7 @@
 	background: rgba(240,239,233,0.9);
 	z-index:1;
 	overflow: scroll;
+	overflow-x:hidden; 
 
 }
 #slidesContainer:hover img {
