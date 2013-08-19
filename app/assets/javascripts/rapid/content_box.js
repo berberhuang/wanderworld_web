@@ -436,10 +436,11 @@ var ContentBoxModule = function(item){
 										$('#release_status_text').click();
 										UiListener.clickSetPrivate();
 									});
-									
+	/*								
 	target.find('#share_journal').click(function(){
 		postToWall('http://www.wanderworld.com.tw/'+DataStatus.trip_id+'/'+DataStatus.group_id);
 	});
+	*/
 	
 	return{
 		init:function(){
@@ -524,6 +525,7 @@ var ContentBoxModule = function(item){
 						
 						refreshInterface(group_id);
 						target.scroll(detectScrollOnWhichPost);
+						addLike();
 						moduleInstance.UiControl.showContent(group_id,id,callback);
 					});		
 				}
