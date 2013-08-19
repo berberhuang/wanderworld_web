@@ -227,6 +227,13 @@
 								getAlbum(preview);
 								needReloadAlbum=false;
 							}
+						}else if(this.insertType=='other'){
+							var preview=$(this.getContentElement('other','preview').getElement().$);
+							var li=preview.find('ul li');
+							li.removeClass('img_plugin_selected')
+							  .removeClass('img_plugin_unselected')
+							  .addClass('img_plugin_unselected');
+							
 						}						
 					});
 					var preview=$(this.getContentElement('upload','preview').getElement().$);
