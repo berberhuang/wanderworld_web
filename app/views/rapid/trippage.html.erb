@@ -1,0 +1,62 @@
+<%= content_for :info_head do %>
+	<%if @user_id%>
+		<title><%=@user.username%>的旅行 - WanderWorld地球漫遊</title>
+		<meta property="og:title" content="<%=@user.username%>的旅行 - WanderWorld地球漫遊" />
+		<meta name="description" lang="zh-Hant-TW" content="<%for t in @trips%><%=t.name%>,<%end%>" />
+		<meta property="og:description" lang="zh-Hant-TW" content="<%for t in @trips%><%=t.name%>,<%end%>" />
+	<%end%>
+<%end%>
+
+<div class="row wrapper">
+	<div class="large-8 columns large-offset-2">
+		<div class="row" style="margin-bottom:-10px;">
+			<div class="large-2 columns">
+				<h2>旅行</h2>
+			</div>
+			<div class="large-3 columns right" style="marg">
+				<a href="#" class="button radius right tiny"><i class="icon-plus">新增旅行</i></a>
+			</div>
+		</div>
+		<div class="columns" id="travel-timeline">
+			<div class="row tailored travel-item">
+				<div class="columns travel-cover">
+					<a href="#" target="blank">
+						<img src="<%=asset_path('banded-cover.jpg')%>">
+					</a>
+					<div class="travel-info-cover">
+						<a href="#">
+							<div class="row"><h1 class="white">旅行名稱</h1></div>
+							<div class="row">
+								<ul class="inline-list">
+									<li class="white">
+										<i class="icon-flag">景點A</i>
+									</li>
+									<li class="white">
+										<i class="icon-arrow-right"></i>
+									</li>
+									<li class="white">
+										<i class="icon-flag">景點B</i>
+									</li>	
+								</ul>
+							</div>
+							<div class="row white">
+								<i class="icon-calendar">日期</i>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+			<!--如果有兩篇以上，將travel-item以jquery加上.css(margin-bottom:20px !important)-->
+		</div>
+	</div>
+	<div class="large-2 columns">
+		<div class="row">
+			<ul class="no-bullet picker">
+            	<li class="labelClicked"><a href="#">全部</a></li>
+        	</ul>	
+		</div> 
+	</div>
+
+<script>
+  $(document).foundation();
+</script>

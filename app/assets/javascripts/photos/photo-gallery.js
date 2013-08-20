@@ -9,7 +9,7 @@
 	})
 }*/
 
-//clicked 後有效果，並解決
+//location filter 地點選擇器
 var locationLabel=function(){
 	var picker=$('.location-picker');
 	picker.find('li').click(function(){

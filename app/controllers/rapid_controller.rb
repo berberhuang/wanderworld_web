@@ -80,20 +80,7 @@ class RapidController < ApplicationController
 					@contents=Micropost.select('article,trip_points.sort_id,trip_points.id').joins(:trip_point).where('trip_points.group_id=?', @journal_id).order('trip_points.sort_id ASC')
 				end
 			end		
-			
-			
-		 elsif @user_id 
-			    @author_id=@user_id 
-				@trips=Trip.order('start_date DESC').where(:user_id=>@user_id)
-				@user = User.find(@user_id)
-				@author_name=@user.username
-				if @user.fbid
-					@author_avatar='https://graph.facebook.com/'+@user.fbid+'/picture?type=large '
-				end
-				if @user.id.to_s==session[:user_id].to_s
-					@isOwner=true
-				end
-			
+		
 		end
 
 
@@ -158,6 +145,34 @@ class RapidController < ApplicationController
 			session[:journal_log][id]=true
 			journal.count+=1
 			journal.save!
+		end
+	end
+	def trippage
+		@newuser=User.new
+		@user_session=UserSession.new
+		@user_id = params[:id]
+
+		if @user_id 
+			    @author_id=@user_id 
+				@trips=Trip.order('start_date DESC').where(:user_id=>@user_id)
+				@user = User.find_by_id(@user_id)
+				if !@user
+					redirect_to '/'
+					return 
+				end
+				@author_name=@user.username
+				if @user.fbid
+					@author_avatar='https://graph.facebook.com/'+@user.fbid+'/picture?type=large '
+				end
+				if @user.id.to_s==session[:user_id].to_s
+					@isOwner=true
+				end
+		else
+			if session[:user_id]
+				redirect_to '/rapid/trippage/'+session[:user_id].to_s
+			else
+			redirect_to '/'
+			end
 		end
 	end
 end
