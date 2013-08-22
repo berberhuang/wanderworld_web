@@ -9,43 +9,19 @@
 
 <div class="row wrapper">
 	<div class="large-8 columns large-offset-2">
-		<div class="row" style="margin-bottom:-10px;">
-			<div class="large-2 columns">
-				<h2>旅行</h2>
-			</div>
-			<div class="large-3 columns right" style="marg">
-				<a href="#" class="button radius right tiny"><i class="icon-plus">新增旅行</i></a>
+		<div class="row">
+			<div class="large-3 columns right">
+				<a id="trip_create_button" href="#" class="button radius right tiny" style="<%='display:none' if !@isOwner%>">
+					<i class="icon-plus">
+						<i class="icon-flag"></i>
+					</i>&nbsp;新增旅行
+				</a>
 			</div>
 		</div>
 		<div class="columns" id="travel-timeline">
-			<div class="row tailored travel-item">
-				<div class="columns travel-cover">
-					<a href="#" target="blank">
-						<img src="<%=asset_path('banded-cover.jpg')%>">
-					</a>
-					<div class="travel-info-cover">
-						<a href="#">
-							<div class="row"><h1 class="white">旅行名稱</h1></div>
-							<div class="row">
-								<ul class="inline-list">
-									<li class="white">
-										<i class="icon-flag">景點A</i>
-									</li>
-									<li class="white">
-										<i class="icon-arrow-right"></i>
-									</li>
-									<li class="white">
-										<i class="icon-flag">景點B</i>
-									</li>	
-								</ul>
-							</div>
-							<div class="row white">
-								<i class="icon-calendar">日期</i>
-							</div>
-						</a>
-					</div>
-				</div>
-			</div>
+			<%@trips.each do |t|%>
+				<%=travel_item t.id,t.name,t.start_date,t.end_date%>
+			<%end%>
 			<!--如果有兩篇以上，將travel-item以jquery加上.css(margin-bottom:20px !important)-->
 		</div>
 	</div>

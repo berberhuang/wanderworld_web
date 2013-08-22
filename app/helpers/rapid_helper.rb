@@ -1,6 +1,40 @@
 # encoding: UTF-8
 require 'erb'
 module RapidHelper
+	def trippage  show_editor
+		if show_editor
+			str+='<div id="photoEditor"><a class="photo_delete_button" href="#"><i class="icon-trash"></i></a></div>'
+		end
+		
+	end
+
+	def  travel_item id,title, start_date, end_date
+			img_url='/assets/banded-cover.jpg'
+			url='/'+id.to_s
+
+			str='<div class="row tailored travel-item" style="margin-bottom:20px !important">'
+			str+='<div class="columns travel-cover">'
+			str+='<a href="'+url+'" target="blank">'
+			str+='<img src="'+img_url+'">'
+			str+='</a>'
+			str+='<div class="travel-info-cover">'
+			str+='<a href="'+url+'">'
+			str+='<div class="row"><h1 class="white">'+title+'</h1></div>'
+			str+='<div class="row">'
+			str+='<ul class="inline-list">'
+			str+='<li class="white"><i class="icon-flag">景點A</i></li>'
+			str+='<li class="white"><i class="icon-arrow-right"></i></li>'
+			str+='<li class="white"><i class="icon-flag">景點B</i></li>'	
+			str+='</ul>'
+			str+='</div>'
+			str+='<div class="row white"><i class="icon-calendar">'+start_date.to_s+'-'+end_date.to_s+'</i></div>'
+			str+='</a>'
+			str+='</div>'
+			str+='</div>'
+			str+='</div>'
+		return str.html_safe	
+	end
+
 	def tripList_gen(trips)
 		str=''
 		iter_date=nil

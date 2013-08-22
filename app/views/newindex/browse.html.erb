@@ -220,7 +220,7 @@
 				<li class="active"><% if session[:avatar_src]%><img style="height:40px" src='<%=session[:avatar_src]%>'></img><% end %></li>
 				<li class="has-dropdown"><a href="/rapid/index"><%=session[:username]%></a>
 					<ul class="dropdown">
-						<li><a href="/rapid/index">我的旅行</a></li>
+						<li><a href="/rapid/trippage">我的旅行</a></li>
 						<li><a href="/photos/all/">我的相簿</a></li>
 						<%if session[:fbid]%>
 						<li><a id="logout_a" href="javascript:onLogout()">登出Facebook</a></li>

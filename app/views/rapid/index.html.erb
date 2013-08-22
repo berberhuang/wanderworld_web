@@ -150,12 +150,8 @@
 				tipInstance.show(0);
 			}
 
-		<%end%>
-		
+		<%end%>		
 	});
-
-	
-
 </script>
 
 
@@ -290,11 +286,9 @@
 	<!--click on a trip-->
 	<div class="large-2 columns gallery list" id="trip_one" style="<%='display:none;' if !@trip_id && !@journal_id %>" >
 		<div class="row">
-			
-			<div id="return_triplist" href="/rapid/triplist/<%=@author_id%>">
+			<!--div id="return_triplist" href="/rapid/triplist/<%=@author_id%>">
 				<i class="icon-level-up icon-large icon-rotate-270 pull-left"></i>
-			</div>
-
+			</div-->
 			<div class="columns" id="trip_name">
 				<% if @trip_info %>
 					<%=tripName_gen(@trip_info)%>

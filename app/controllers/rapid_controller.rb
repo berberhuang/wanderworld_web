@@ -4,7 +4,7 @@ class RapidController < ApplicationController
 		@user_session=UserSession.new
 				
 		@trip_id=params[:id]
-		@journal_id=params[:tp_id]	
+		@journal_id=params[:tp_id]
 		
 		#從處理要求triplist要求
 		@user_id = params[:user_id]
@@ -151,6 +151,8 @@ class RapidController < ApplicationController
 		@newuser=User.new
 		@user_session=UserSession.new
 		@user_id = params[:id]
+
+		@trip_id=params[:id]
 
 		if @user_id 
 			    @author_id=@user_id 

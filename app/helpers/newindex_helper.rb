@@ -25,21 +25,21 @@ module NewindexHelper
         	str+='<div class="journal-column">'
           	str+='<a href="'+url+'">'
             	str+='<img class="column-image" src="'+img+'" onerror="this.src=\''+backup_img+'\';" />'
-            	str+='<div class="caption">'
+            	str+='<div class="journal-info-cover">'
               	str+='<ul class="inline-list">'
-                str+='<li>'
-		if fbid
-                	str+='<img  class="user-avatar" src="https://graph.facebook.com/'+fbid+'/picture" />'
-                else
-                	str+='<img  class="user-avatar" src="/assets/user_avatar.png"/>'
-                end
-		str+='</li>'
+                  str+='<li>'
+                		if fbid
+                      str+='<img  class="user-avatar" src="https://graph.facebook.com/'+fbid+'/picture" />'
+                    else  
+                     	str+='<img  class="user-avatar" src="/assets/user_avatar.png"/>'
+                    end
+		              str+='</li>'
                 str+='<li>'+author_name+'</li>'
               	str+='</ul>'
             	str+='</div>'
          	str+='</a>'
         	str+='</div>'
-        	str+='<a href="'+url+'"><h4>'+title+'</h4></a>'
+        	str+='<h4 class="journal-title"><a class="black" href="'+url+'">'+title+'</a></h4>'
         	str+='<p class="show-for-medium-up">'+abstract+'</p>'
       		str+='</li>'
 		return str.html_safe
@@ -80,7 +80,7 @@ module NewindexHelper
         	str+='<div class="journal-column">'
          	str+='<a href="'+url+'">'
             	str+='<img class="classic-image" src="'+img+'" />'
-            	str+='<div class="caption">'
+            	str+='<div class="journal-info-cover">'
               	str+='<ul class="inline-list">'
                 str+='<li>'
 		if @g.fbid
