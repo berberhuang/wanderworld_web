@@ -1,10 +1,8 @@
 var editTrip=function(){
-	$('.travel-item').hover(function(){
-		if($('.visible-img').css('display')=='block'){
-			$(this).find('#journalEditor').css('visibility','hidden');
-		}
+	var target=$('.travel-item');
+	target.hover(function(){
+		$(this).find('.journalEditor').fadeIn(100);
 	},function(){
-		$(this).find('#journalEditor').css('visibility','visible');
+		$(this).find('.journalEditor').fadeOut(100);
 	});
-
 };

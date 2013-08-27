@@ -46,9 +46,9 @@
             
         <hr style="margin-top:0px;" />
     	<ul id="photo_container" class="small-block-grid-4 clearing-thumbs" data-clearing>
-		<% @photo_src.each do |p| %>
-			<%=photo_tag(p[:id],p[:picture],p[:source],p[:place_id],@isOwner).html_safe%>
-		<% end %>
+		  <% @photo_src.each do |p| %>
+		  	<%=photo_tag(p[:id],p[:picture],p[:source],p[:place_id],@isOwner).html_safe%>
+		  <% end %>
     	</ul>
     </div>
     

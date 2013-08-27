@@ -20,7 +20,7 @@
 		</div>
 		<div class="columns" id="travel-timeline">
 			<%@trips.each do |t|%>
-				<%=travel_item t.id,t.name,t.start_date,t.end_date%>
+				<%=travel_item t.id,t.name,t.start_date,t.end_date,true%>
 			<%end%>
 			<!--如果有兩篇以上，將travel-item以jquery加上.css(margin-bottom:20px !important)-->
 		</div>
@@ -35,4 +35,7 @@
 
 <script>
   $(document).foundation();
+  $(document).ready(function(){
+  	editTrip();
+  });
 </script>

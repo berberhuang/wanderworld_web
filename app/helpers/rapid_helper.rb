@@ -2,32 +2,32 @@
 require 'erb'
 module RapidHelper
 
-	def  travel_item id,title, start_date, end_date show_editor
+	def  travel_item id,title, start_date, end_date, show_editor
 			img_url='/assets/banded-cover.jpg'
 			url='/'+id.to_s
 
 			str='<div class="row tailored travel-item" style="margin-bottom:20px !important">'
-			str+='<div class="columns travel-cover">'
-			str+='<a href="'+url+'" target="blank">'
-			str+='<img src="'+img_url+'">'
-			str+='</a>'
-			str+='<div class="travel-info-cover">'
-			str+='<a href="'+url+'">'
-			str+='<div class="row"><h1 class="white">'+title+'</h1></div>'
-			str+='<div class="row">'
-			str+='<ul class="inline-list">'
-			str+='<li class="white"><i class="icon-flag">景點A</i></li>'
-			str+='<li class="white"><i class="icon-arrow-right"></i></li>'
-			str+='<li class="white"><i class="icon-flag">景點B</i></li>'	
-			str+='</ul>'
-			str+='</div>'
-			str+='<div class="row white"><i class="icon-calendar">'+start_date.to_s+'-'+end_date.to_s+'</i></div>'
-			str+='</a>'
-			str+='</div>'
-			str+='</div>'
-			if show_editor
-				str+='<div id="editJournal"><a class="journal_delete_button" href="#"><i class="icon-trash"></i></a></div>'
-			end
+				if show_editor
+					str+='<div class="journalEditor" style="display: none;"><a class="journal_delete_button" href="#"><i class="icon-trash icon-large"></i></a></div>'
+				end
+				str+='<div class="columns travel-cover">'
+					str+='<a href="'+url+'" target="blank">'
+						str+='<img src="'+img_url+'">'
+					str+='</a>'
+					str+='<div class="travel-info-cover">'
+						str+='<a href="'+url+'">'
+							str+='<div class="row"><h1 class="white">'+title+'</h1></div>'
+							str+='<div class="row">'
+								str+='<ul class="inline-list">'
+									str+='<li class="white"><i class="icon-flag">景點A</i></li>'
+									str+='<li class="white"><i class="icon-arrow-right"></i></li>'
+									str+='<li class="white"><i class="icon-flag">景點B</i></li>'	
+								str+='</ul>'
+							str+='</div>'
+						str+='<div class="row white"><i class="icon-calendar">'+start_date.to_s+'-'+end_date.to_s+'</i></div>'
+						str+='</a>'
+					str+='</div>'
+				str+='</div>'
 			str+='</div>'
 		return str.html_safe	
 	end
