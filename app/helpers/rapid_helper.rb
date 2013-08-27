@@ -1,14 +1,8 @@
 # encoding: UTF-8
 require 'erb'
 module RapidHelper
-	def trippage  show_editor
-		if show_editor
-			str+='<div id="photoEditor"><a class="photo_delete_button" href="#"><i class="icon-trash"></i></a></div>'
-		end
-		
-	end
 
-	def  travel_item id,title, start_date, end_date
+	def  travel_item id,title, start_date, end_date show_editor
 			img_url='/assets/banded-cover.jpg'
 			url='/'+id.to_s
 
@@ -31,6 +25,9 @@ module RapidHelper
 			str+='</a>'
 			str+='</div>'
 			str+='</div>'
+			if show_editor
+				str+='<div id="editJournal"><a class="journal_delete_button" href="#"><i class="icon-trash"></i></a></div>'
+			end
 			str+='</div>'
 		return str.html_safe	
 	end

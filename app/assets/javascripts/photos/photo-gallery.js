@@ -48,8 +48,7 @@ var deletePhoto=function(){
 		if(window.confirm('您確定要刪除?') == false){	
 			return false;
 		}	
-		
-
+	
 		$.post('/photos/deletePhoto',{photo_id:id},function(result){
 			if(result){
 				target.animate({width:'0px'},500,function(){target.remove();});
