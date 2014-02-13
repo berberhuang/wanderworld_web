@@ -9,6 +9,7 @@
 .user-status .top-bar, .user-status .top-bar >.title-area{
   background:transparent;
   line-height: 45px !important;
+  margin-bottom: 0px;
 }
 
 
