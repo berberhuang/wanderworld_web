@@ -1,0 +1,44 @@
+.user-status{
+	z-index: 1;
+  height: 45px;
+  background:rgba(0,0,0,0.8); 
+  top: 45px;
+  text-align: center;
+}
+
+.user-status .top-bar, .user-status .top-bar >.title-area{
+  background:transparent;
+  line-height: 45px !important;
+  margin-bottom: 0px;
+}
+
+
+.user-avatar {
+  height: 30px;
+  border-radius: 300px;
+}
+
+
+ul.user-function-switcher{
+  display: inline-block;
+	background: transparent !important;
+  margin-right: 15%;
+  overflow: hidden;
+}
+.user-function-switcher li {
+    width:inherit;
+    float:none;
+    list-style: none;
+    display: inline-block;
+    padding:10px 0px;
+    margin-left: 1.375em;}
+    
+    .user-function-switcher  li  a{
+      cursor: pointer;
+      margin: 10px 0px;
+      border-bottom:4px solid white;  
+      display: block; }
+
+    .user-function-switcher  li  a:hover{
+      font-weight: bold;
+      display: block;}

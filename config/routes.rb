@@ -1,4 +1,10 @@
 Travel::Application.routes.draw do
+  get "photos/all"
+
+  get "photos/album"
+
+  get "photos/photo"
+
   get "term/index"
 
   # The priority is based upon order of creation:
@@ -58,5 +64,5 @@ Travel::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
    match ':controller(/:action(/:id(.:format)))'
    match ':id(/:tp_id)' , :controller=>'rapid', :action=>'index'
-   root :to => 'newindex#banded'
+   root :to => 'newindex#index'
 end

@@ -1,0 +1,29 @@
+.album{
+    padding:0px;
+    background-color: white;
+}
+
+
+.album-info {
+	margin: 0 0 0 0.5em;
+	cursor:pointer;
+	overflow:hidden;
+}
+.album-name{
+	margin-bottom: 0px;
+	height:2.5em;
+	overflow:hidden;
+}
+
+.photo-calc{
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+
+.travel-date{
+	position:absolute;
+	top:0px;
+	left:0px;
+	background-color:rgba(0,0,0,0.4);
+}

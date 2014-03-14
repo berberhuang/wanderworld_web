@@ -1,0 +1,79 @@
+#return-album-list{
+  position: absolute;
+  left: 0px;
+  top: -20px;
+  span:hover{
+  	text-decoration:underline;
+  };
+}
+
+.album-title h1{
+	overflow: hidden;
+	margin-top: 5px;
+	margin-bottom: 0px;
+}
+
+#upload_compelete{
+	margin-left: 1em;
+}
+
+.location-picker ul{
+	margin-left: 0.1em;
+}
+.location-picker li {
+	display: block;
+	margin-bottom: 5px;
+	line-height: 1.5em;
+}
+
+.location-picker a {
+	display: block;
+	margin-left: 5px;
+	font-size: 1em;
+	color: grey;
+	overflow: hidden;
+}
+.location-picker a:hover {
+	text-decoration: underline;
+}
+.location-picker li:hover {
+	border-left:5px solid rgba(119,126,139,1);
+}
+
+.location-picker  .labelUnclicked{
+	border-left:5px solid #C1C5C9;
+}
+.location-picker .labelClicked {
+	border-left:5px solid #41AAF5 !important;
+	color: #41AAF5 !important;
+}
+.location-picker .labelClicked a {
+	color: #41AAF5 !important;
+}
+
+#photo_container li{
+	position: relative;
+	padding:0px;
+}
+
+#photo_container li:hover #photoEditor{
+	display:block;
+}
+
+#photoEditor{
+	display: none;
+	position:absolute;
+	background-color: rgba(0,0,0,0.6);
+	top: 0px;
+	width:100%;
+}
+#photoEditor i{
+	float: right;
+	margin-right: 10px;
+	color: white;
+	font-size: 1.5em;
+}
+
+#photoEditor i:hover{
+	color: #41AAF5;
+}

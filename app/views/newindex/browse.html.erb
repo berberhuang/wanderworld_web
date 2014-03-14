@@ -33,15 +33,10 @@
   <%= csrf_meta_tags %>
 
   <style>
-	#myContent{
-		position:relative;
-		
-	}
-	
 	.journal_card{
 		border-width:5px;
 		padding:4px;
-		background-color:rgba(240,239,233,0.9);
+		background-color:white;
 		width:210px;
 		overflow-x:hidden;
 	}
@@ -213,10 +208,10 @@
 <!-- Header and Nav-->
 
 <%if UserSession.find%>
-<nav class="top-bar" >
+<nav class="top-bar add-shadow" >
         <ul class="title-area">
           <li class="name">
-          	<a href="#"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
+          	<a href="/"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
           </li>
         </ul>
           <section class="top-bar-section">
@@ -226,6 +221,7 @@
 				<li class="has-dropdown"><a href="/rapid/index"><%=session[:username]%></a>
 					<ul class="dropdown">
 						<li><a href="/rapid/index">我的旅行</a></li>
+						<li><a href="/photos/all/">我的相簿</a></li>
 						<%if session[:fbid]%>
 						<li><a id="logout_a" href="javascript:onLogout()">登出Facebook</a></li>
 						<li><a id="logout_a" href="/user_session/logout">登出</a></li>
@@ -240,10 +236,10 @@
 		</section>
 		</nav>		
 	<%else%>
-	<nav class="top-bar" >
+	<nav class="top-bar add-shadow" >
         <ul class="title-area">
           <li class="name">
-          	<a href="#"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
+          	<a href="/"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
           </li>
         </ul>
           <section class="top-bar-section">
@@ -263,10 +259,10 @@
 
   <div class="row">
 	  <% if @type =='pop' %>
-	  <div class="large-5 columns">
+	  <div class="large-5 columns large-offset-1">
         <h1>人氣遊記</h1>
        </div>
-        <div class="large-3 columns large-offset-4">
+        <div class="large-3 columns large-offset-3">
         <dl class="sub-nav">
           <dd style="margin-top:40px" class="active">
               <a href="/newindex/browse?type=pop"><i class="foundicon-star"></i>人氣遊記</a>
@@ -277,10 +273,10 @@
         </dl>
       </div>
 	  <%elsif @type =='new'%>
-		<div class="large-5 columns">
+		<div class="large-5 columns large-offset-1">
         <h1>最新遊記</h1>
        </div>
-		<div class="large-3 columns large-offset-4">
+		<div class="large-3 columns large-offset-3">
         <dl class="sub-nav" >
           <dd style="margin-top:40px">
               <a href="/newindex/browse?type=pop"><i class="foundicon-star">人氣遊記</i></a>
@@ -298,7 +294,7 @@
   <!-- First Band (Image) -->
   
   <div class="row" >
-    <div class="twelve columns" >
+    <div class="large-10 columns large-centered">
 	  <ul id="myContent">
 	  <%
 		@order_str=''
@@ -451,7 +447,7 @@
         <div class="small-2 large-2 columns">
           <%=f.submit '註冊',:class=>"button radius postfix"%>
         </div>
-        <div class="large-10 columns right"><p class="right">註冊使用本服務，代表您同意<a href="/term/index.html" target="blank">服務條款</a></p></div>
+        <div class="large-10 columns right"><p class="right">使用本服務，代表您同意<a href="/term/index.html" target="blank">服務條款</a></p></div>
       </div>
 
      <%if(flash[:signupfail])%>
@@ -503,7 +499,7 @@
      <%if(flash[:loginfail])%>
       <p class="loginfail">您輸入的帳號或密碼有誤</p>
       <%end%>
-
+      <div class="large-10 columns right"><p class="right">使用本服務，代表您同意<a href="/term/index.html" target="blank">服務條款</a></p></div>
       </fieldset>
       <%end%>
     

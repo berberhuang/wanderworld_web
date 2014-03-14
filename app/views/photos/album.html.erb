@@ -1,0 +1,74 @@
+<%= content_for :js do %>
+<script>
+    $(document).ready(function(){
+        editPhoto();
+		deletePhoto();
+		<% if @isOwner %>	
+            var uploadInterface=$('#upload_interface');
+			var uploader=new UploadPhotoModule(uploadInterface);
+			uploader.init(<%=@trip_id.to_s%>);
+			$('#launch_upload').click(function(){uploadInterface.show();});
+            emptyAlbumDetect();
+		<% end %>
+        
+    });
+</script>
+<%end%>
+
+<%= content_for :info_head do %>
+	<title><%=@trip_name%>的相片 - WanderWorld地球漫遊</title>
+	<meta property="og:title" content="<%=@trip_name%>的相片 - WanderWorld地球漫遊" />
+<%end%>
+
+<div class="row wrapper">
+    <div class="large-9 columns large-offset-1 gallery panel" style="margin-bottom:0px;">
+        <div class="album-title columns">
+            <a class="black" id="return-album-list" href="/photos/all/<%=@author_id%>" title="返回相簿"><i class="icon-level-up icon-rotate-270" ><span>&nbsp;返回</span></i></a>
+            <div class="row">
+               <h1>
+                    <a class="black" href="#"><%=@trip_name%></a>
+                    <% if @isOwner %>
+                <a id="launch_upload" class="button radius right tiny" style="font-size:12px;" data-reveal-id="upload_interface"><i class="icon-cloud-upload icon-large">&nbsp;上傳</i></a>
+            <% end %>
+                </h1>
+                
+            </div>
+            <div class="row">
+                <div class="fb-like" data-href="http://www.wanderworld.com.tw/photos/album/<%=@trip_id%>" data-width="50px"data-layout="button_count" data-show-faces="true" data-send="false"></div>
+            </div>
+        <div class="large-2 columns">
+        </div>
+        </div>
+        <!--相簿人氣-->
+        <!--div class="row">
+            <<p class="right" style="margin:0px;">人氣：<span>∞</span></p>>
+        </div-->
+            
+        <hr style="margin-top:0px;" />
+    	<ul id="photo_container" class="small-block-grid-4 clearing-thumbs" data-clearing>
+		<% @photo_src.each do |p| %>
+			<%=photo_tag(p[:id],p[:picture],p[:source],p[:place_id],@isOwner).html_safe%>
+		<% end %>
+    	</ul>
+    </div>
+    
+    <div class="location-picker large-2 columns">
+        <ul class="no-bullet">
+            <li class="labelClicked"><a href="#">全部</a></li>
+            <% @location_rows.each do |l| %>
+                <%=location_picker(l.name,l.place_id).html_safe%>
+            <%end%>
+        </ul>
+    </div>
+</div>
+<div id="none" style="display:none;"></div>
+
+	<div id="upload_interface" class="reveal-modal large">
+		<form id="fileupload" action="/photos/uploadPhoto" ><input type="file" name="photo[img]" multiple /></form>
+		<div class="img_plugin_preview img_plugin_file_drag"><ul></ul></div>
+            <a id="upload_compelete" class="button radius right small">完成</a>
+            <!--<a id="discard_upload" class="button alert radius right small">放棄</a>
+	-->	
+	    <a class="close-reveal-modal">&#215;</a>
+	</div>
+

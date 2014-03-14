@@ -6,14 +6,15 @@ var TripNameModule = function(obj){
 		var tripNameLabel;
 		var tripNameInput;
 
-		var tripNameDivStr='<div class="row word-break" id="trip_name_editDiv" style="pointer:cursor;"><h4><a></a></h4></div>';
-		var tripNameInputStr='<input class="row" id="trip_name_input" style="display:none;" placeholder="輸入旅行名稱" />';
+		var tripNameDivStr='<div class="columns word-break text-centered" id="trip_name_editDiv" ><h4><i class="foundicon-flag white"></i><a></a></h4></div>';
+		var tripNameInputStr='<div class="columns" style="display:none;"><h5><input placeholder="請輸入旅行名稱" style="width:150px;"></input></h5></div>'
 		
 		//按下編輯旅行名稱(click)
 		var clickEditTripName=function(){
 			trip_name=getTripNameInLabel();
 			tripNameLabel.hide();
-			tripNameInput.show().focus().val(trip_name);
+			tripNameInput.show().focus();
+			setTripNameInput(trip_name);
 			
 			setClickOutsideEvent(tripNameInput,finishEditTripName);
 		};
@@ -62,14 +63,14 @@ var TripNameModule = function(obj){
 		};
 		
 		var getTripNameInInput=function(){
-			return tripNameInput.val();
+			return tripNameInput.find('input').val();
 		};
 		var setTripNameLabel=function(str){
 			tripNameLabel.find('a').text(str);
 		};
 		
 		var setTripNameInput=function(str){
-			tripNameInput.val(str);
+			tripNameInput.find('input').val(str);
 		};
 
 		var initTripNameLabel=function(){

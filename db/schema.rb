@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130325034723) do
+ActiveRecord::Schema.define(:version => 20130802072517) do
 
   create_table "checkin_points", :force => true do |t|
     t.integer  "user_id"
@@ -69,6 +69,19 @@ ActiveRecord::Schema.define(:version => 20130325034723) do
     t.text     "article",       :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "photos", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "trip_id"
+    t.integer  "trip_point_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "img_file_name"
+    t.string   "img_content_type"
+    t.integer  "img_file_size"
+    t.datetime "img_updated_at"
+    t.integer  "place_id"
   end
 
   create_table "places", :force => true do |t|

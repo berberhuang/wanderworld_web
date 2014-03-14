@@ -61,13 +61,17 @@ function postToWall(url){
 	FB.ui({method:'feed',link:url});
 }
 
-function addCommentsAndLike(){
+function addLike(){
+	/*
 	var t=document.getElementById('comment');
 	t.innerHTML="<fb:comments href='http://www.wanderworld.com.tw/"+trip_id+"/"+pointData[editTarget_id].tripPoint_id+"' num_posts='4' width='305' data-colorscheme='dark'></fb:comments>";
+	*/
+	console.log(DataStatus.trip_id);
+	console.log(DataStatus.group_id);
 	var k=$('#like')[0];
-	k.innerHTML='<div class="fb-like" data-href="http://www.wanderworld.com.tw/'+trip_id+'/'+pointData[editTarget_id].tripPoint_id+'" data-send="false" data-layout="button_count" data-width="50" data-show-faces="false"></div>';	
+	k.innerHTML='<div class="fb-like" data-href="http://www.wanderworld.com.tw/'+DataStatus.trip_id+'/'+DataStatus.group_id+'" data-send="false" data-layout="button_count" data-width="50" data-show-faces="false"></div>';	
 
-	FB.XFBML.parse(t);
+	//FB.XFBML.parse(t);
 	FB.XFBML.parse(k);
 	
 }

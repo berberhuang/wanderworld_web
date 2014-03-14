@@ -310,24 +310,29 @@ var Data=(function(){
 		/*遊記********************************************************************************/
 
 		//儲存遊記
-		savePost:function(item_id){
+		savePost:function(item_id,callback){
 			log('savePost:'+item_id);
 			$.post('/micropost/savePost',{tripPoint_id:item_id,trip_id:DataStatus.trip_id,content:DataStatus.contentList[item_id]},function(result){
 				if(result){
-					log('write successful');	
-							
+					log('write successful');
+					if(callback)
+						callback(result);	
 				}else{
 					log('write fail');
+					if(callback)
+						callback(result);	
 				}
 			});
 		},
-		updateGroupPhoto:function(group_id){
+		updateGroupPhoto:function(group_id,fn){
 			$.post('/trip/updateGroupPhoto',{group_id:group_id},function(result){
 				if(result){
 					log('updatePhotoYes');
 				}else{
 					log('updatePhotoYes');
 				}
+				if(fn)
+					fn();
 			});
 		},
 		//發布遊記

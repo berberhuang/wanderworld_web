@@ -16,7 +16,8 @@ var ContentBoxModule = function(item){
 	var toDraft=target.find('#toDraft');
 	
 	var journal=target.find('#journal');
-	
+	var header_height;	
+
 	editor=[];
 
 	var edit_id;
@@ -27,17 +28,26 @@ var ContentBoxModule = function(item){
 	
 	var moduleInstance;
 
-	var install_resize=function(e){
-		var t=$(e.target);
-		t.unbind('click');
-		t.resize_by_drag();
-		t.parent().bind('clickoutside',function(){
-			t.resize_by_drag('destroy');
-			t.click(install_resize);
-		});
-		
-	};
 	
+	var onlineData=[];
+
+
+	var getScrollTop=function(){
+		var top=target.scrollTop()-header_height;
+		if(top<0){
+			return 0;	
+		}else{
+			return top;
+		}
+	};
+
+	var setScrollTop=function(p){
+		if(p!=0)
+			target.scrollTop(header_height+p);
+		else
+			target.scrollTop(0);
+	};
+
 	var isBounce=function(){
 		if(target.css('z-index')==-1){
 			return false;
@@ -47,16 +57,22 @@ var ContentBoxModule = function(item){
 	
 	//展開遊記	
 	var bounce=function(){		
+		readJournal_s=true;
 		target.css('z-index','0');			
+		setTitle($('.trip_point_group:[data-id='+show_group_id+'] .journal_title a').text()+' - WanderWorld地球漫遊');
 	};
 	//收合遊記
 	var collapse=function(stopShow){
 		if(edit_group_id){
-			for(var i in editor){
-				editor[i].focusManager.blur();
-			}
+			if(window.confirm('確定放棄編輯內容?') == false){	
+				return false;
+			}	
+			exitEditor();
 		}
+		readJournal_s=false;
 		target.css('z-index','-1');
+		setTitle(DataStatus.trip_name+' - WanderWorld地球漫遊');
+		return true;
 	};
 
 	var initInterface=function(){
@@ -66,6 +82,7 @@ var ContentBoxModule = function(item){
 		hideControlButton();
 		editTool.hide().unbind('click');
 		target.find('#release_status').css('visibility','hidden');
+		
 	};
 	
 	var refreshInterface=function(group_id){
@@ -97,9 +114,10 @@ var ContentBoxModule = function(item){
 			str+='<div class="tp_box" id="tp_box_'+id+'" data-id="'+id+'" >';
 			str+=DataStatus.contentList[id];
 			str+='</div>';
+
 		}
 		
-		$(str).appendTo(contentPanel);
+		$(str).appendTo(contentPanel).find('img').attr('onerror','this.src="/assets/photo_deleted.gif"');
 	};
 	
 	var hideJournalSwitchToggle=function(){
@@ -167,7 +185,7 @@ var ContentBoxModule = function(item){
 		contentPanel.empty()
 
 		loadContent(showingGroupItem);
-		journal.scroll(detectScrollOnWhichPost);
+		target.scroll(detectScrollOnWhichPost);
 		
 		edit_id=null;
 		edit_group_id=null;
@@ -176,20 +194,42 @@ var ContentBoxModule = function(item){
 	};
 
 	var saveJournal=function(){
-		contentPanel.find('img').resize_by_drag('destroy').unbind('click');
+		$('#saving').show();
+		var saveList=[];
 		for(var id in editor){
 			var str=editor[id].getData().replace(/.*<span style="display: none;">&nbsp;<\/span><\/div>/,'');
 			if(!DataStatus.contentList){
 				DataStatus.contentList=[];
 			}
-			DataStatus.contentList[id]=str;
-			if(str){
-				Data.savePost(id);
+			if(DataStatus.contentList[id]!=str){
+				DataStatus.contentList[id]=str;
+				saveList.push(id);
 			}
 		}
 		
-		Data.updateGroupPhoto(edit_group_id);
-		
+		for(var i=0;i<saveList.length;i++){
+			var id=saveList[i];
+			if(i==saveList.length-1){
+			    var journal_id=edit_group_id;
+			    Data.savePost(id,function(result){
+				if(result){
+					Data.updateGroupPhoto(journal_id,function(){
+						$('#saving').hide();
+						exitEditor();
+					});
+				}else{
+					alert("儲存失敗,可能您的網路中斷或我們伺服器出了問題,請稍後在試");
+					$('#saving').hide();
+				}
+			    });
+			}else{
+			    Data.savePost(id);
+			}
+		}
+		if(saveList.length==0){
+			$('#saving').hide();
+			exitEditor();
+		}
 	};
 	
 	var equipEditorOnBlock=function(id,item){
@@ -201,19 +241,20 @@ var ContentBoxModule = function(item){
 					
 					PathOnMap.centerTripPointOnLeftMap(id);
 					PathOnMap.showTripPointInfo(id);
-					contentPanel.find('img').unbind('click').click(install_resize);
+					edit_id=id;
 					$('.tp_box').attr('title','');
 				
 				}
 			},
 								// Remove unnecessary plugins to make the editor simpler.
-			removePlugins: 'find,flash,' +
+			removePlugins: 'find,flash,image,' +
 							'forms,iframe,newpage,' +
 							'smiley,specialchar,stylescombo,templates',
+			extraPlugins: 'customimage',
 			height : '100%',
 			toolbar : [	[ 'Undo','Redo' ],
 						[ 'Link','Unlink' ],
-						[ 'Image' , 'HorizontalRule'],
+						[ 'CustomImage' , 'HorizontalRule'],
 						['FontSize'],
 						'/' ,
 						[ 'Bold','Italic','Underline', 'RemoveFormat','TextColor','Font' ]
@@ -223,7 +264,7 @@ var ContentBoxModule = function(item){
 	};
 	
 	var focusPost=function(tp_box){
-		setTimeout(function(){journal.scrollTop(tp_box.position().top)},500);
+		setTimeout(function(){setScrollTop(tp_box.position().top);},500);
 	};
 	
 	var focusEditPost=function(tp_box){
@@ -235,7 +276,7 @@ var ContentBoxModule = function(item){
 		if(edit_group_id){
 			return ;
 		}
-		var pos=journal.scrollTop();
+		var pos=getScrollTop();
 		var id;
 		var list=contentPanel.find('.tp_box');
 		var posBase=0;
@@ -266,8 +307,9 @@ var ContentBoxModule = function(item){
 
 		clickJournalSwitchToggle:function(){
 			if(isBounce()){
-				readJournal_s=false;
-				collapse();
+				if(!collapse()){
+					return;
+				}
 				var id=tripPointItemManager.getSelectedTripPointId();
 				if(id){
 					PathOnMap.centerTripPointOnAllMap(id);
@@ -276,9 +318,7 @@ var ContentBoxModule = function(item){
 					var group_id=groupItemManager.getSelectedGroupId();
 					PathOnMap.centerGroupOnMap();
 				}
-				setTitle(DataStatus.trip_name+' - WanderWorld地球漫遊');
 			}else{
-				readJournal_s=true;
 				bounce();
 				var id=tripPointItemManager.getSelectedTripPointId();
 				if(id){
@@ -297,7 +337,6 @@ var ContentBoxModule = function(item){
 							moduleInstance.UiControl.showBlankContentBox($('.trip_point_group:first').data('id'));		
 					}
 				}
-				setTitle($('.trip_point_group:[data-id='+show_group_id+'] .journal_title a').text()+' - WanderWorld地球漫遊');
 				
 				tipInstance.show(6);
 				tipInstance.disable();				
@@ -364,17 +403,14 @@ var ContentBoxModule = function(item){
 		},
 		clickFinishPost:function(){
 			saveJournal();
-			exitEditor();
 		},
 		clickReleasePost:function(){
 			setPublic();
 			saveJournal();
-			exitEditor();
 		},
 		clickConvertToDraft:function(){
 			setPrivate();
 			saveJournal();
-			exitEditor();
 		},
 		clickSetPublic:function(){
 			setPublic();			
@@ -400,21 +436,24 @@ var ContentBoxModule = function(item){
 										$('#release_status_text').click();
 										UiListener.clickSetPrivate();
 									});
-									
+	/*								
 	target.find('#share_journal').click(function(){
 		postToWall('http://www.wanderworld.com.tw/'+DataStatus.trip_id+'/'+DataStatus.group_id);
 	});
+	*/
 	
 	return{
 		init:function(){
 			moduleInstance=this;
+			header_height=$('#journal_cc_1st_stack').height()+$('#journal_cc_2nd_stack').height()+12;  //12 is height of hr	
 		},
 		initJavascript:function(){
 			editTool.click(function(){
 				var id=$('.trip_point_group:[data-id='+show_group_id+'] .point:first').data('id');
 				moduleInstance.clickEditPost(show_group_id,id);	
 			});
-			journal.scroll(detectScrollOnWhichPost);
+			
+			target.scroll(detectScrollOnWhichPost);
 		},
 		ownerModeSwitch:function(){
 			if(DataStatus.isOwner){
@@ -431,18 +470,23 @@ var ContentBoxModule = function(item){
 		},
 		UiControl:{
 			hide:function(){
-				collapse();
+				if(!collapse())
+					return false;
 				hideJournalSwitchToggle();
+				return true;
 			},
 			hideContent:function(){
-				if(isBounce())
-					collapse();
+				if(isBounce()){
+					if(!collapse())
+						return false;
+				}
+				return true;
 			},
 			showJournalSwitchToggle:function(){
 				showJournalSwitchToggle();
 			},
 			showBlankContentBox:function(group_id){
-				//show_group_id=group_id;
+				show_group_id=group_id;
 				readJournal_s=true;
 				initInterface();
 				var g_item=$('.trip_point_group:[data-id='+group_id+']');
@@ -465,7 +509,7 @@ var ContentBoxModule = function(item){
 						}
 						select_id=id;
 					}else{
-						journal.scrollTop(0);
+						setScrollTop(0);
 					}
 					if(callback)
 						callback();
@@ -480,7 +524,8 @@ var ContentBoxModule = function(item){
 						showContentPanel();
 						
 						refreshInterface(group_id);
-						journal.scroll(detectScrollOnWhichPost);
+						target.scroll(detectScrollOnWhichPost);
+						addLike();
 						moduleInstance.UiControl.showContent(group_id,id,callback);
 					});		
 				}
@@ -631,7 +676,6 @@ var ContentBoxModule = function(item){
 												editor[id].setReadOnly(false);
 												tripPointList.UiControl.selectTripPoint($('.trip_point_all li[value='+id+'] .point_name'));
 												
-												contentPanel.find('img').unbind('click').click(install_resize);
 												$('.tp_box').attr('title','');
 											
 											}
@@ -700,7 +744,7 @@ var ContentBoxModule = function(item){
 			bounce();
 		},
 		collapse:function(){
-			collapse();
+			return collapse();
 		},
 		isShow:function(){
 			if(show_group_id!=null)
@@ -715,6 +759,9 @@ var ContentBoxModule = function(item){
 		},
 		getShowGroupId:function(){
 			return show_group_id;
+		},
+		getEditTripPointId:function(){
+			return edit_id;
 		}
 	};
 };

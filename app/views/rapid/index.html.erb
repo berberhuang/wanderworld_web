@@ -1,52 +1,5 @@
-<% if @trip_id %>
-	<%
-	@trip_selected=true
-
-	@trip_info=Trip.find(@trip_id)
-	@author_id=@trip_info.user_id
-	@trip_info.count+=1
-	@trip_info.save!
-	@groups=Group.order('sort_id ASC').where(:trip_id=>@trip_id)
-	@tripPoints=TripPoint.select('trip_points.id,group_id,sort_id,name,longitude,latitude').order('group_id,sort_id ASC').joins(:place).where(:trip_id=>@trip_id)
-		
-	@journal_selected=false
-	@contents=[]
-	@public=false
-	@journal_name=nil
-	@isOwner=false;
-	if @trip_info.user_id.to_s==session[:user_id].to_s
-		@isOwner=true
-	end
-	
-	if @journal_id 
-		@journal_selected=true
-		@journal=Group.select('title,public,photo,count').find_by_id(@journal_id)
-		@journal.count=@journal.count+1
-		@journal.save		
-
-		@journal_name=@journal.title
-		@public=@journal.public
-		if @isOwner or @public
-			@contents=Micropost.select('article,trip_points.sort_id,trip_points.id').joins(:trip_point).where('trip_points.group_id=?', @journal_id).order('trip_points.sort_id ASC')
-		end
-	end		
-	
-	%>
-<% elsif @user_id %>
-	<% @author_id=@user_id 
-		@trips=Trip.order('start_date DESC').where(:user_id=>@user_id)
-		@user = User.find(@user_id)
-		
-		if @user.id.to_s==session[:user_id].to_s
-			@isOwner=true
-		end
-	%>
-<% end %>
-
-
 <%= content_for :css do %>
 	<%= stylesheet_link_tag "index_layout" %>
-	<%= stylesheet_link_tag "newindex" %>
 <%end%>
 
 <%= content_for :info_head do %>
@@ -162,9 +115,10 @@
 			%>				
 				PathOnMap.centerTripPointOnLeftMap(<%=@contents[0].id%>);
 				PathOnMap.showTripPointInfo(<%=@contents[0].id%>);
-			<%
-			end
-			%>
+				$('#postContent img').attr('onerror','this.src="/assets/photo_deleted.gif"');
+			<%else%>
+				PathOnMap.centerTripOnMap();
+			<%end%>
 			
 		<% elsif @user_id %>	
 			DataStatus.owner_user_id=<%=@user_id%>;
@@ -195,6 +149,7 @@
 				tipInstance.enable($(document));
 				tipInstance.show(0);
 			}
+
 		<%end%>
 		
 	});
@@ -209,24 +164,9 @@
 	 <div id="newTripLoad"></div>
 </div-->
 <!--內容-->
-<div class="row expandView">
-
-<!--main control-->
-	<div class="large-1 columns panel gallery">
-	    <div class="row">
-	        <% if @user.fbid%>
-		    	<img src='https://graph.facebook.com/<%=@user.fbid%>/picture?type=normal'></img>
-		<% else%>
-			<img src='<%=asset_path("user_avatar.png")%>' style="display:block; margin:auto;"></img>
-		<% end %>
-        	<h5><a class="black text-center" id="person_name" href="#" style="display:block; word-wrap:break-word" ><%=@user.username %></a></h5>
-        </div>
-        <div class="row">
-        		<h6 class="title" ><a href="/rapid/triplist/<%=@author_id%>" class="black" id="firstStop" onclick="showTravelJournal()"><i class="foundicon-globe"></i>旅行列表</a></h5>
-        </div>
-    </div>
+<div class="row wrapper" media="screen">
 	<!--map-->
-	<div class="large-2 columns">
+	<div class="large-2 columns large-offset-1">
 		<div class="gallery" id="map_canvas"></div>
 		<div id="trippoint_infowindow_reading" class="arrow_box_bottom"></div>
 	</div>
@@ -235,14 +175,18 @@
 			<!--遊記控制中心第一層-->
 			<div class="row" id="journal_cc_1st_stack">
 			<!--↓遊記標題↓，之後可以在編輯遊記的模式下重新編輯-->
-				<div class="large-7 columns word-break" style=" height:3em; overflow: hidden;" id="journal_name">
+				<div class="large-9 columns word-break" id="journal_name">
 					<h3 title="<%=@journal_name%>"><%=@journal_name%></h3>
+					<div id="like">
+						<div class="fb-like" data-href="http://www.wanderworld.com.tw/<%=@trip_id%>/<%=@journal_id%>" data-width="450" data-layout="button_count" data-show-faces="true" data-send="false">
+						</div>
+					</div>
 				</div>
 
 				<!--↓社交元件↓-->
-				<div class="large-5 columns" id="social_toggle">
+				<div class="large-3 columns" id="social_toggle">
 					<div class="row">
-						<div id="release_status" class="large-6 columns" style="<%='visibility:hidden' if !@isOwner%>">
+						<div id="release_status" class="large-8 columns" style="<%='visibility:hidden' if !@isOwner%>">
 							<a id="release_status_text" class="tiny permission secondary button dropdown" href="#" data-dropdown="1">
 								<%if @public %>
 									 已發佈
@@ -255,14 +199,15 @@
 								<li><a href="#" class="public_button">發佈</a</li>
 							</ul>
 						</div>
-						<div class="large-4 columns">
-							<a class="button tiny radius" id="share_journal">
-								<i class="icon-facebook-sign"></i>
+						
+						<!--div class="large-2 columns">
+							<a class="button tiny radius">
+								<i class="icon-camera-retro icon-large"></i>
 							</a>
-						</div>
-						<div class="large-2 columns">
+						</div-->
+						<div class="large-4 columns right">
 							<a class="editTool right button secondary tiny radius" style="<%='visibility:hidden;' if !@isOwner%>" >
-								<i class="foundicon-edit"></i>
+								<i class="icon-edit icon-large"></i>
 							</a>
 						</div>
 					</div>
@@ -271,10 +216,10 @@
 			<!--遊記控制中心第二層-->
 			<div class="row" id="journal_cc_2nd_stack">
 				<!--遊記編輯工具-->
-				<div class="large-8 columns" >
+				<div class="large-7 columns" >
 				</div>
 				<!--遊記狀態/權限區塊-->
-				<div class="large-4 columns controlButton" style="display:none">
+				<div class="large-5 columns controlButton" style="display:none">
 					<div id="draftButtons" style="display:none">
 						<ul class="button-group radius">
 							<li><a class="button secondary tiny" id="releasePost">發佈</a></li>
@@ -298,11 +243,14 @@
 			<div id="foo" class="large-12 columns">
 				<h6 class="text-center">請稍候</h6>
 			</div>			
+			<div id="saving" class="large-12 columns">
+				<h6 class="text-center">儲存中，請稍候</h6>
+			</div>			
 			<div class="large-12 columns large-centered" id="postContent">
 				<% if @journal_selected %>
 				<% for c in @contents %>
 				<div class="tp_box" id="tp_box_<%=c.id%>" data-id="<%=c.id%>">
-					<%=sanitize c.article, tags: %w(table tr td p img a span hr), attributes: %w(id href src class style height width alt)%>
+					<%=sanitize c.article, tags: %w(table tr td p img a span hr em strong i), attributes: %w(id href src style class height width alt)%>
 				</div>
 				<% end %>
 				<% end %>				
@@ -314,7 +262,7 @@
 		
 	<!--遊記開關-->
 	<div class="large-1 columns" style="padding-left:0px;<%='visibility:hidden;' if !@trip_selected or @groups.size==0 %>">
-		<div class="large-12 columns large-centered control button secondary radius" id="bounce" title="展開/收合遊記">
+		<div class="large-12 columns control button secondary radius" id="bounce" title="展開/收合遊記">
 			<h1>	
 				<i class="icon-book icon large"></i>
 			</h1>
@@ -329,7 +277,7 @@
 		</a>
 		<div class="row" style="margin-top:25px;">
 			<h4 class="text-center" style="display:block; margin:0 auto; color:white;">
-				<i class="foundicon-globe"></i>旅行列表</h4>
+				<i class="icon-globe"></i>旅行列表</h4>
 		</div>
 		<hr />
 		<div class="columns">
@@ -343,20 +291,21 @@
 	</div>
 	<!--click on a trip-->
 	<div class="large-2 columns gallery list" id="trip_one" style="<%='display:none;' if !@trip_id && !@journal_id %>" >
-		<a  id="return_triplist" href="/rapid/triplist/<%=@author_id%>" style="position:absolute;">
-			<i class="icon-level-up icon-rotate-270 pull-left"></i>旅行列表</a>
-		<div class="row text-center"  style="margin-top:10px;">
-				<div class="large-12 columns large-centered" id="trip_name">
-					<div class="row">
-						<h4><i class="foundicon-flag white"></i></h4>
-					</div>
-					<%=tripName_gen(@trip_info) if @trip_info%>
-					
-				</div>
-				
-			
+		<div class="row" style="height:30px;padding:0px;">
+			<a id="return_triplist" href="/rapid/triplist/<%=@author_id%>" style="height:40px">
+				<i class="icon-level-up icon-large icon-rotate-270 pull-left"></i>
+			</a>
 		</div>
-		<div id="trip_date" class="row" style="margin:0px;padding:0px;white-space:nowrap;">
+		<div class="row">
+			<div class="columns" id="trip_name">
+				<% if @trip_info %>
+					<%=tripName_gen(@trip_info)%>
+				<% else	%>
+					<%=tripName_gen(nil)%>
+				<% end%>
+			</div>
+		</div>
+		<div id="trip_date" class="row word-break">
 			<%=tripDate_gen(@trip_info) if @trip_info%>
 		</div>
 		<div id="trip_status" class="row" style="display:none;">狀態：
@@ -369,20 +318,27 @@
 				<%=tripPointList_gen(@groups,@tripPoints) if @groups&&@tripPoints%>
 			</div>
 		</div>
-		<div class="add_group_title button round secondary tiny columns large-centered" id="group_create_button" style="<%='display:none' if !@isOwner%>">新增遊記
-		<i class="foundicon-add-doc"></i>
-		</div>
-		<div class="row">
-			<div id="view_num">
-			<span>瀏覽人次：<span id="count"><%=@trip_info.count.to_s if @trip_info%></span></span>
+		<div class="row" style="<%='display:none' if !@isOwner%>">
+			<div class="large-6 columns large-offset-3 button tiny radius" id="group_create_button">
+				<!--a class="add_group_title button tiny round secondary" href="#"--><i class="icon-plus"></i>新增遊記
+				<!--/a-->
 			</div>
-			<div class="button tiny radius" id="sharetoFB">
-				<a href="#share_button" data-reveal-id="share_button" id="share"><i class="icon-share-alt"></i>分享</a>
+			<!--div class="large-6 columns button tiny radius secondary" id="launchSorting" style="<%='display:none' if !@isOwner%>">
+				<i class="icon-exchange icon-rotate-90"></i>景點排序
+			</div-->
+		</div>
+		<hr style="margin:0 0 5px 0"/>
+		<div class="row" id="trippoint-list-bottom">
+			<div class="large-7 columns">
+				<p>人氣：<span id="count"><%=@trip_info.count.to_s if @trip_info%></span></p>	
+			</div>
+			<div class="large-4 columns button radius tiny pull-1" id="share" data-reveal-id="share_button">
+				<i class="icon-share-alt"></i>分享
 			</div>
 		</div>
+		
 	</div>
 </div>
-
 
 <!--share-->
 <div id="share_button" class="reveal-modal small">
@@ -435,51 +391,6 @@
 		</fieldset>
 </div>
 
-
-<!--fb_photo_selector-->
-		<div id="CSPhotoSelector">
-			<div class="CSPhotoSelector_dialog">
-				<a href="#" id="CSPhotoSelector_buttonClose">x</a>
-				<div class="CSPhotoSelector_form">
-					<div class="CSPhotoSelector_header">
-						<p>Choose from Photos</p>
-					</div>
-
-					<div class="CSPhotoSelector_content CSAlbumSelector_wrapper">
-						<p>Browse your albums until you find a picture you want to use</p>
-						<div class="CSPhotoSelector_searchContainer CSPhotoSelector_clearfix">
-							<div class="CSPhotoSelector_selectedCountContainer">Select an album</div>
-						</div>
-						<div class="CSPhotoSelector_photosContainer CSAlbum_container"></div>
-					</div>
-
-					<div class="CSPhotoSelector_content CSPhotoSelector_wrapper">
-						<p>Select a new photo</p>
-						<div class="CSPhotoSelector_searchContainer CSPhotoSelector_clearfix">
-							<div class="CSPhotoSelector_selectedCountContainer"><span class="CSPhotoSelector_selectedPhotoCount">0</span> / <span class="CSPhotoSelector_selectedPhotoCountMax">0</span> photos selected</div>
-							<a href="#" id="CSPhotoSelector_backToAlbums">Back to albums</a>
-						</div>
-						<div class="CSPhotoSelector_photosContainer CSPhoto_container"></div>
-					</div>
-
-					<div id="CSPhotoSelector_loader"></div>
-
-
-					<div class="CSPhotoSelector_footer CSPhotoSelector_clearfix">
-						<a href="#" id="CSPhotoSelector_pagePrev" class="CSPhotoSelector_disabled">Previous</a>
-						<a href="#" id="CSPhotoSelector_pageNext">Next</a>
-						<div class="CSPhotoSelector_pageNumberContainer">
-							Page <span id="CSPhotoSelector_pageNumber">1</span> / <span id="CSPhotoSelector_pageNumberTotal">1</span>
-						</div>
-						<a href="#" id="CSPhotoSelector_buttonOK">OK</a>
-						<a href="#" id="CSPhotoSelector_buttonCancel">Cancel</a>
-					</div>
-				</div>
-			</div>
-		</div>
-  <footer class="expandView row">
-     <hr style="margin:5px" /> 
-  </footer>
 
   <ol class="joyride-list" data-joyride>
   <li data-text="開始導覽">

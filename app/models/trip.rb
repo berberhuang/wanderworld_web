@@ -7,7 +7,8 @@ class Trip < ActiveRecord::Base
 	has_many :journey,:through=>:trip_points
 	has_many :checkin_points, :through=>:trip_points	
 	has_many :groups,:dependent=>:destroy
-
+	has_many :photos,:dependent=>:destroy
+	
 	validates :user, :presence=>true
 	
 	

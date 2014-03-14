@@ -5,11 +5,11 @@
 // the compiled file.
 //
 //= require jquery_ujs
-//= require facebox
 //= require fblogin
 //= require spin
 //= require foundation
 //= require jquery.movingboxes
+//= require jQuery_upload
 //= require_tree ./rapid
 //= require_tree ./jquery_ui
 //= require_tree ./foundation

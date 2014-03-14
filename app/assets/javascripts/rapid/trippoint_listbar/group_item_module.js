@@ -103,22 +103,16 @@ var GroupItemModule=function(obj){
 	var initEvent=function(item,group_id){
 		item.find('.journal_title input').keydown(keydownEditGroupName).end()
 			.find('.journal_title').click(function(event){
-				//console.log('click');
-				//contentBox.cancelEditWarning(group_id,function(){
-
 				clickGroupTitle(group_id);
-				//var item=$(event.target);
-				//selectGroupEffect(item.parents('.trip_point_group'));
-				//});
 			}).end();
 	};
 	
 		
 	var ownerModeEnable=function(item){
-		var str='<h5><i class="foundicon-tools white"></i></h5>';
+		var str='<h5><i class="foundicon-tools"></i></h5>';
 		item.find('.trip_point_edit').append(str).click(showEditGroupMenu);
 		
-		str='<div class="add_trip_point large-12 columns text-center"><i class="foundicon-plus"></i><i class="foundicon-location"> </i>新增景點</div>';
+		str='<div class="add_trip_point large-12 columns"><i class="foundicon-plus"></i>新增景點</div>';
 		item.find('#add_trip_point_div').append(str);
 		
 		var addTripPointButton=item.find('.add_trip_point');

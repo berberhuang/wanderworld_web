@@ -152,6 +152,7 @@ function loadTrip(id,callback){
 		},
 		tripPointList:function(groupList,pointList){
 			tripPointList.loadTripPointList(groupList,pointList);
+			PathOnMap.centerTripOnMap();
 		}
 	});
 }
@@ -214,12 +215,12 @@ function resetEnv(){
 }
 //因應解析度重新布局
 function reLayout(){
-	$('#map_canvas').css('width',window.innerWidth*0.724 );
+	$('#map_canvas').css('width',window.innerWidth*0.724 );	
+	$('#map_canvas').css('height',window.innerHeight-135 );
 	
-	$('#map_canvas').css('height',window.innerHeight-86 );
-	$('#slidesContainer').css('height',window.innerHeight-105 );
-	$('#journal').css('height',window.innerHeight-216 );
-	$('#bounce').css('height',window.innerHeight-105 );
+	$('#slidesContainer').css('height',window.innerHeight-155 );
+	$('#journal').css('height',window.innerHeight-265 );
+	$('#bounce').css('height',window.innerHeight-155 );
 	
 	/*
 	var main_h=$(window).height()-$('.header').height();	

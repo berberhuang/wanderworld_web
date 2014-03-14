@@ -37,15 +37,19 @@ module RapidHelper
 	end
 
 	def tripName_gen(trip_info)
-		tripName=ERB::Util.html_escape(trip_info.name)
-		str='<div class="row word-break" id="trip_name_editDiv" style="cursor:pointer; height:4em; overflow:hidden;" title="'+tripName+'">'
-		str+='<h4><a>'+tripName+'</a></h4>'
+		if trip_info
+			tripName=ERB::Util.html_escape(trip_info.name)
+		else
+			tripName=' '
+		end
+		str='<div class="columns word-break text-centered" id="trip_name_editDiv" title="'+tripName+'">'
+		str+='<h4><i class="foundicon-flag white"></i><a>'+tripName+'</a></h4>'
 		str+='</div>'
 		return str.html_safe
 	end
 	
 	def tripDate_gen(trip_info)
-		str='<div style="cursor:pointer;"><h4 class="white"></h4>'
+		str='<div style="cursor:pointer;"><h6 class="white"></h6>'
 		if trip_info.start_date == trip_info.end_date
 			start_date=ERB::Util.html_escape(trip_info.start_date.to_s.gsub('-','/'))
 			str+='<a>'+start_date+'</a>'
@@ -82,6 +86,7 @@ module RapidHelper
 				str+=' data-sort_id="'+tripPoints[iter].sort_id.to_s+'"'
 				str+=' data-latitude="'+tripPoints[iter].latitude.to_s+'"'
 				str+=' data-longitude="'+tripPoints[iter].longitude.to_s+'"'
+				str+=' data-place_id="'+tripPoints[iter].place_id.to_s+'"'
 				str+='>'
 				str+='<div class="row">' 
 				str+='<div class="large-2 columns">'

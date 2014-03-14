@@ -1,12 +1,15 @@
 /*遊記框和時間軸的顏色對照*/
 
+
 .green {
 	/*grey in fact*/
-	background-color:rgba(233,239,240,0.9);
+	background-color:whitesmoke;
 	min-height:150px;
+
+
 }
 .red {
-	background-color:rgba(242,231,163,0.9);
+	background-color:wheat;
 	min-height:150px;
 }
 .green_box{
@@ -23,10 +26,16 @@
 	/*height: 100%;*/
 	background: rgba(240,239,233,0.9);
 	z-index:1;
-	overflow:hidden;
+	overflow: scroll;
+	overflow-x:hidden; 
+
 }
 #slidesContainer:hover img {
 	display:inline;
+}
+/*不同景點遊記框連接*/
+.tp_box{
+	margin-bottom: -15px !important;
 }
 /*
 #slidesContainer ::-webkit-scrollbar {
@@ -56,16 +65,9 @@
 	cursor:pointer;
 }
 
-#journal {
-	height:350px;
-	overflow-y:scroll;
-}
 
-#postContent{
-	
-}
-
-.tp_box{
+#release_status{
+	padding:0px;
 }
 
 .postTitle{

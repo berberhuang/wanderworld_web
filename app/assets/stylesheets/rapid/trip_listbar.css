@@ -1,11 +1,11 @@
 /*旅行清單*/
 .list {
-	height:520px;
+	height:485px;
 	background:rgba(0,0,0,0.7);
-	z-index:1;
+	z-index:0;
 }
 .list, .list a {
-	color:white !important;
+	color:white;
 }
 .list ::-webkit-scrollbar {
 	width: 8px;
@@ -46,7 +46,7 @@
 
 
 #timeline{
-	max-height: 400px;
+	max-height: 350px;
 	border-left: dotted white;
 	overflow-y:auto;
 }
@@ -59,18 +59,12 @@
 }
 #dates li {
 	list-style: none;	
-	font-size: 1em;
 }
 #dates a {
-	color: #ffffcc;
 	padding-left: 10px;
+	font-size: 1.5em;
 }
-#dates a:hover ,a.selected {
-	color: #ffcc00;
-}
-#dates .selected {
-	color: #ffcc00;
-}
+
 
 
 #trip_logo {

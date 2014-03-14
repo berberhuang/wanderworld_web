@@ -79,12 +79,6 @@ var TripPointEditModule = function(item){
 				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmOk()">確定</button>&nbsp'
 				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmCancel()">取消</button></div>'
 				+'<a class="button alert tiny radius right white" id="isWrong" href="javascript:tripPointEdit.UiListener.wrongTripPoint()">位置錯了嗎?</a>';	
-		if(confirmWindow){
-			if(confirmWindow.s_new)
-				tripPointEdit.UiListener.confirmNewOK();
-			else
-				tripPointEdit.UiListener.confirmOk();
-		}
 		confirmWindow = new google.maps.InfoWindow({
 			 content: contentStr,
 			 s_new:false
@@ -114,16 +108,6 @@ var TripPointEditModule = function(item){
 				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmNewOK()">確定</button>&nbsp;'
 				+'<button class="tiny radius" onclick="tripPointEdit.UiListener.confirmCancel()">取消</button></div>'
 				+'<a class="button alert tiny radius right white" id="isWrong" href="javascript:tripPointEdit.UiListener.wrongTripPoint()">位置錯了嗎？</a>';	
-		if(confirmWindow){
-			var s=(confirmWindow);
-			if(confirmWindow.s_new)
-				tripPointEdit.UiListener.confirmNewOK();
-			else
-				tripPointEdit.UiListener.confirmOk();
-			if(s)
-				return;
-			//closePost();
-		}
 		confirmWindow = new google.maps.InfoWindow({
 			 content: contentStr,
 			s_new:true
@@ -151,10 +135,6 @@ var TripPointEditModule = function(item){
 	//需要新增找不到位置的地點
 	var setNewManPos=function(){
 		if(confirmWindow){
-			if(confirmWindow.s_new)
-				this.UiListener.confirmNewOK();
-			else
-				this.UiListener.confirmOk();
 			$('#slidesContainer').hide();
 		}
 		PathOnMap.closeInfoWindow();
@@ -211,6 +191,7 @@ var TripPointEditModule = function(item){
 					city="";
 				writePlaceToDB(name,city,latlng);
 			}else{
+				writePlaceToDB(name,"Global",latlng);
 			}
 		});
 	};
@@ -245,7 +226,7 @@ var TripPointEditModule = function(item){
 					longitude:tmp_mark.position.lng()
 				}
 											
-				insertTripPoint(tp.id,group_id,sort_id,name,tmp_mark.position.lat(),tmp_mark.position.lng());
+				insertTripPoint(tp.id,place_id,group_id,sort_id,name,tmp_mark.position.lat(),tmp_mark.position.lng());
 				
 				updateMark();	
 					
@@ -273,8 +254,8 @@ var TripPointEditModule = function(item){
 		confirmWindow=null;	
 	}
 		
-	var insertTripPoint=function(id,group_id,sort_id,title,lat,lng){
-		tripPointItemManager.insertTripPoint(id,group_id,sort_id,title,lat,lng);
+	var insertTripPoint=function(id,place_id,group_id,sort_id,title,lat,lng){
+		tripPointItemManager.insertTripPoint(id,place_id,group_id,sort_id,title,lat,lng);
 	};
 	
 	var updateMark=function(){
@@ -335,7 +316,7 @@ var TripPointEditModule = function(item){
 					
 					
 					//tripPointList.UiControl.enableAddTripPoint(group_id);
-					insertTripPoint(tp.id,group_id,sort_id,name,tmp_mark.position.lat(),tmp_mark.position.lng());
+					insertTripPoint(tp.id,place_id,group_id,sort_id,name,tmp_mark.position.lat(),tmp_mark.position.lng());
 					updateMark();
 					
 					
@@ -371,7 +352,7 @@ var TripPointEditModule = function(item){
 						Data.saveTripPoint(-1,place_id,sort_id,group_id,function(tp){
 							tripPointEdit.UiListener.confirmCancel();
 							
-							insertTripPoint(tp.id,group_id,sort_id,box[0],tmp_mark.position.lat(),tmp_mark.position.lng());
+							insertTripPoint(tp.id,place_id,group_id,sort_id,box[0],tmp_mark.position.lat(),tmp_mark.position.lng());
 							updateMark();
 							
 							
@@ -419,8 +400,9 @@ var TripPointEditModule = function(item){
 				var tmp_mark=PathOnMap.getTmpMark();
 				if(tmp_mark){
 					findZoneByPos(newTripPointData.name,tmp_mark.position);
-				}else
+				}else{
 					tripPointEdit.UiListener.confirmCancel();
+				}
 				$('#add_new').hide();
 			},
 			wrongTripPoint:function(){

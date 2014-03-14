@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8" />
+
+  <!-- Set the viewport width to device width for mobile -->
+  <meta name="viewport" content="width=device-width" />
+
+  <title>WanderWorld地球漫遊</title>
+  <meta name="description" lang="zh-Hant-TW" content="WanderWorld地球漫遊是一個專為旅行者打造的雲端遊記服務，我們將「人、事、時、地」以獨特的介面整合在一起，幫助旅行者說故事，或者規劃下一趟旅程。" />
+  <meta property="og:type" content="article"/>
+  <meta property="og:title" content="WanderWorld地球漫遊"/>
+  <meta property="og:description" content="WanderWorld地球漫遊是一個>專為旅行者打造的雲端遊記服務，我們將「人、事、時、地」以獨特的介面整合在一起，幫
+助旅行者說故事，或者規劃下一趟旅程。" />
+  <meta property="og:image" content="http://www.wanderworld.com.tw/assets/banded-cover.jpg"/>
+  
+  <link rel="canonical" href="http://www.wanderworld.com.tw/newindex/browse" />
+  <link rel="shortcut icon" href="http://www.wanderworld.com.tw/assets/logo-31972393d4fb52fb065cab20c547f7a2.ico">
+  <link rel="shortcut icon" href="http://www.wanderworld.com.tw/assets/logo-31972393d4fb52fb065cab20c547f7a2.ico">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <%= javascript_include_tag "newindex" %>
+  <%= stylesheet_link_tag "newindex" %>
+  <%= csrf_meta_tags %>
+	
+	<script type="text/javascript">
+
+
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-30218831-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+
+		<%if session[:username]%>
+			var login_s=true;
+		<%else%>
+			var login_s=false;
+		<%end%>
+
+		<%if session[:fbid]%>
+			var fid=<%=session[:fbid]%>;
+		<%else%>
+			var fid=null;
+		<%end%>
+		
+	</script>
+</head>
+<!-- Header and Nav -->
+<body>
+  <div id="fb-root"></div>
+  <script>
+    $(function(){
+    fb_init(function(){
+      FB.getLoginStatus(function(){
+        if(login_s&&fid){
+          <%=yield :fb_init_yes %>
+        }
+            });
+        });
+      if(!login_s||!fid){ 
+      <%=yield :fb_init_no %>
+      }
+    });
+</script>
+<div id="fb-root"></div>
+ <script>(function(d, s, id) {
+   var js, fjs = d.getElementsByTagName(s)[0];
+   if (d.getElementById(id)) return;
+   js = d.createElement(s); js.id = id;
+   js.src = "//connect.facebook.net/zh_TW/all.js#xfbml=1&appId=319719498074982";
+   fjs.parentNode.insertBefore(js, fjs);
+ }(document, 'script', 'facebook-jssdk'));</script>
+
+<%if UserSession.find%>
+<nav class="top-bar add-shadow" >
+        <ul class="title-area">
+          <li class="name">
+          	<a href="/"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
+          </li>
+        </ul>
+          <section class="top-bar-section">
+	<script type="text/javascript" src="<%=asset_path('rapid/uievent.js')%>"></script>
+			<ul class="right">
+				<li class="active"><% if session[:avatar_src]%><img style="height:40px" src='<%=session[:avatar_src]%>'></img><% end %></li>
+				<li class="has-dropdown"><a href="/rapid/index"><%=session[:username]%></a>
+					<ul class="dropdown">
+						<li><a href="/rapid/index">我的旅行</a></li>
+						<li><a href="/photos/all/">我的相簿</a></li>
+						<%if session[:fbid]%>
+						<li><a id="logout_a" href="javascript:onLogout()">登出Facebook</a></li>
+						<li><a id="logout_a" href="/user_session/logout">登出</a></li>
+						<%else%>
+						<li><a id="logout_a" href="/user_session/logout">登出</a></li>
+						<%end%>
+						<li class="divider"></li>
+						<li><a href="http://goo.gl/JeAZ2" target="blank">問題回報</a></li>
+					</ul>
+				</li>
+			</ul>
+		</section>
+		</nav>		
+	<%else%>
+	<nav class="top-bar add-shadow" >
+        <ul class="title-area">
+          <li class="name">
+          	<a href="/"><img id="logo" src="<%=asset_path('banded/main_logo.png')%>" /></a>
+          </li>
+        </ul>
+          <section class="top-bar-section">
+		<ul class="right">
+            <li class="divider"></li>
+            <li class="name"><a href="#" data-reveal-id="register">註冊</a></li>
+            <li class="divider"></li>
+    		<li><a href="#" data-reveal-id="login">登入</a></li>
+          </ul>
+          </section>
+          
+	
+</nav>
+<%end%>
+
+  <!-- End Header and Nav -->
+<div class="large-9 columns large-centered">
+<!-- First Band (Slider) style="background-color:rgba(100,100,100,0.9)" -->
+    <div class="row">
+      <div class="slideshow-wrapper large-12 columns">
+        <div class="preloader">
+          <img src="<%=asset_path('loading.gif')%>">
+        </div>
+        <ul data-orbit>
+      <!--相信你看得懂,journal_id,img_url 593 -->
+      <%=orbit_item 351 ,'http://dl.dropboxusercontent.com/u/15101202/cover1.jpg','今天的行程就在絕美的長崎稻佐山夜景下結束，長崎真的是個很有趣的地方，北從佐世保南至長崎市内。雖然因為時間不夠還有很多地方沒有去，不過光是今天的行程就非常充實，之後有機會再去剩下的景點。' %>
+      <%=orbit_item 692,'http://dl.dropboxusercontent.com/u/15101202/cover2.jpg','而路面電車穿梭於其間，感覺有一種乘坐時光機回到過去的感覺，將過去與現在銜接起來。' %>
+        </ul>
+      </div>
+      <!--div class="large-4 columns">
+        <blockquote >I do not fear computers. I fear the lack of them. Maecenas faucibus mollis interdum. Aenean lacinia bibendum nulla sed consectetur.<cite>Isaac Asimov</cite></blockquote>
+      </div-->
+    </div>
+    
+<!-- Three-up Content Blocks -->
+  <div class="columns">
+    <ul class="large-block-grid-3 small-block-grid-3">
+      <%=classic_item 559, 'https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-prn2/190678_1623737197940_4561351_n.jpg','第一站是非常空曠，兩邊有個小山谷的區域。這裏的回音非常大，於是玩起在山谷中喊出"與會者國家"的遊戲。在埃及的沙漠中喊出不斷有回音的"Taiwan"的時候，或許是因為在這樣的國際化場合能被大家看見，心中小小的感動。'%>
+      <%=classic_item 39, 'https://lh5.googleusercontent.com/-od-1tZBrPTo/T32skz-4ESI/AAAAAAAAGCo/d5XsRro5cHQ/s640/IMG_3587.JPG','我和景翔哥兩人依然結伴同行，前往香格里拉古城中，稻城媽媽的老闆為我們預定好的旅館。 雲南省不愧是中國旅遊資源開發最完善的地方，香格里拉古城充滿了各式各樣，非常有味道的旅館和商店，各民族的人們穿著爭奇鬥艷，古城鋪石底辦和木造建築，儘管充滿了人造的痕跡，但還是相當美觀。'%>
+      <%=classic_item 696, 'http://wwonline-photo.s3.amazonaws.com/photos/410/large/3fda53edf317a816f6883ae2eef256d5.JPG?1376549068','慕谷慕魚的水非～常～清澈，夏天來到這邊，光看到這個景象就足夠消暑了，更不用說跳下水的瞬間，真的只能用爽來形容阿！'%>
+      </ul>
+  </div>
+
+  <!--最新遊記-->
+  <div class="row">
+    <div class="large-6 columns">
+      <div class="large-6 columns">
+        <h1>
+          <a href="/newindex/browse?type=new" class="black"><i class="icon-time"></i>最新遊記</a>
+        </h1>  
+      </div>
+      <div class="large-6 columns">
+        <h5>
+          <a href="/newindex/browse?type=new" class="right">更多&nbsp;
+          <i class="icon-level-down icon-rotate-270"></i>
+        </a>  
+        </h5>
+      </div>
+      
+    <ul class="large-block-grid-2 small-block-grid-1 seperation-line">
+	<%@new_groups.each do |g|%>
+		<%=journal_column g.trip_id,g.id,g.username,g.fbid,g.title,g.abstract,g.photo%>
+	<%end%>
+      </ul>
+      </div>
+      <!--人氣遊記-->
+    <div class="large-6 columns">
+      <div class="large-6 columns">
+        <h1>
+          <a href="/newindex/browse?type=pop" class="black"><i class="icon-star"></i>人氣遊記</a>
+        </h1>  
+      </div>
+      <div class="large-6 columns">
+        <h5>
+          <a href="/newindex/browse?type=pop" class="right">更多&nbsp;
+          <i class="icon-level-down icon-rotate-270"></i>
+        </a>  
+        </h5>
+      </div>
+      <ul class="large-block-grid-2 small-block-grid-1">
+	<%@pop_groups.each do |g|%>
+		<%=journal_column g.trip_id,g.id,g.username,g.fbid,g.title,g.abstract,g.photo%>
+	<%end%>
+      </ul>
+    </div>
+  </div>
+
+<!-- Call to Action Panel -->
+  <div class="row">
+    <div class="large-12 columns panel">
+          <div class="large-4 columns">
+            <h2>和我們聯絡！</h2>
+            <p>有任何疑問或建議，請讓我們知道!</p> 
+            <div class="large-10 columns" style="padding-left:0px;">
+            <a target="_blank" href="http://goo.gl/mnxVi" class="button large expand radius left">聯絡我們</a>
+            </a>
+          </div>
+          </div>
+          <div class="large-4 columns offset-by-four fb-like-box" data-href="http://www.facebook.com/WanderWorld" data-width="292" data-height="185" data-show-faces="true" data-stream="false" data-header="false" data-border-color="#f2f2f2">
+          </div>
+        </div>
+    </div>
+</div>
+
+  <!-- Footer -->
+  
+  <footer class="row">
+      <hr />
+      <div class="row">
+        <div class="large-6 columns">
+          <a href="/term/index.html">WanderWorld地球漫遊 &copy; 2013</a>
+        </div>
+        <div class="large-6 columns">
+          <ul class="inline-list right">
+            <li><a href="http://wanderworld-ideaaxis.blogspot.tw/" target="blank">地球漫遊開發日誌</a></li>
+            <li><a href="href="http://goo.gl/mnxVi"">問題回報</a></li>
+          </ul>
+        </div>
+      </div> 
+  </footer>
+</div>
+  <!--註冊-->
+  <div id="register" class="reveal-modal medium">
+    <div class="large-8 columns">
+      <%=form_for @newuser,:url=>{:controller=>'user',:action=>'create'} do |f|%>
+      <fieldset>
+      
+     <legend><h2>註冊</h2></legend>
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">電子郵件:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+         <input id="user_email" name="user[email]" placeholder="請輸入您註冊的電子郵件地址" size="30" type="email" />   
+        </div>
+      </div>  
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">名稱:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.text_field :username,:placeholder=>"您在網站中的名稱"%>
+        </div>
+      </div>
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">密碼:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.password_field :password, :placeholder=>'請輸入6~20字半形英數密碼'%>
+        </div>
+      </div>
+      <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">確認密碼:</label>
+        </div>
+        <div class="small-7 large-8 columns">
+          <%=f.password_field :password_confirmation, :placeholder=>"請輸入第二次密碼"%>
+        </div>
+        <div class="small-2 large-2 columns">
+          <%=f.submit '註冊',:class=>"button radius postfix"%>
+        </div>
+        <div class="large-10 columns right"><p class="right">註冊使用本服務，代表您同意<a href="/term/index.html" target="blank">服務條款</a></p></div>
+      </div>
+
+     <%if(flash[:signupfail])%>
+      <p class="loginfail">註冊失敗</p>
+     <%end%>
+
+      </fieldset>
+      <%end%>
+  </div>
+  
+
+  <div class="large-4 columns">
+    <fieldset>
+    <legend><h4>以其他帳號登入</h4></legend>
+      <div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">facebook</div>
+      </fieldset>
+  </div>
+  <a class="close-reveal-modal">&#215;</a>  
+  </div>
+
+<!--登入-->
+  <div id="login" class="reveal-modal medium">
+    <div class="large-8 columns">
+    
+        
+    <%=form_for @user_session,:url=>{:controller=>'UserSession',:action=>'create_by_index'} do |f| %>
+     <fieldset>
+      <legend><h2>登入</h2></legend>
+     <div class="row collapse">
+        <div class="small-3 large-2 columns">
+          <label for="right-label" class="right inline">電子郵件:</label>
+        </div>
+        <div class="small-9 large-10 columns">
+          <%=f.email_field :email, :placeholder=>"請輸入您註冊的電子郵件地址"%>
+        </div>
+    </div>
+    <div class="row collapse">
+      <div class="small-3 large-2 columns">
+        <label for="right-label" class="right inline">密碼:</label>
+      </div>
+      <div class="small-9 large-8 columns">
+        <%=f.password_field :password, :placeholder=>"請輸入6~20字半形英數密碼"%>
+      </div>
+      <div class="small-9 large-2 columns">
+        <%=f.submit '登入',:class=>"button radius postfix"%>
+        </div>
+    </div>
+     <!--<input type="submit" class="alert button medium" value="忘記密碼">-->
+     <%if(flash[:loginfail])%>
+      <p class="loginfail">您輸入的帳號或密碼有誤</p>
+      <%end%>
+
+      </fieldset>
+      <%end%>
+    
+
+</div>
+
+  <div class="large-4 columns">
+    <fieldset>
+    <legend><h4>以其他帳號登入</h4></legend>
+      <div class="fb-login-button" id="custom_fb_login" autologoutlink="false" onlogin="onLogin()">facebook</div>
+      </fieldset>
+  </div>
+  <a class="close-reveal-modal">&#215;</a>  
+  </div>
+
+
+  
+<script>
+  $(document).foundation('reveal');
+  $(document).foundation(
+    'orbit',{
+      animation: 'fade',
+      timer_speed: 10000,
+      pause_on_hover: false,
+      resume_on_mouseout: false,
+      animation_speed: 500,
+      stack_on_small: false,
+      navigation_arrows: false,
+      slide_number: false,
+      container_class: 'orbit-container',
+      stack_on_small_class: 'orbit-stack-on-small',
+      next_class: 'orbit-next',
+      prev_class: 'orbit-prev',
+      timer_container_class: 'orbit-timer',
+      timer_paused_class: 'paused',
+      timer_progress_class: 'orbit-progress',
+      slides_container_class: 'orbit-slides-container',
+      bullets_container_class: 'orbit-bullets',
+      bullets_active_class: 'active',
+      slide_number_class: 'orbit-slide-number',
+      caption_class: 'orbit-caption',
+      active_slide_class: 'active',
+      orbit_transition_class: 'orbit-transitioning',
+      bullets:false,
+      timer: true,
+      variable_height: true,
+      before_slide_change: function(){},
+      after_slide_change: function(){}
+    });
+</script>
+</body>
+</html>
